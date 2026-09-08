@@ -158,6 +158,30 @@ progress::-moz-progress-bar {
 .skip-link:focus {
   top: 12px;
 }
+// Shared measurements for the app navigation and the screen-specific action bars.
+:root {
+  --mobile-nav-height: 68px;
+  --mobile-nav-bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px));
+}
+@media (max-width: 1199px) {
+  html {
+    scroll-padding-top: 20px;
+    scroll-padding-bottom: calc(var(--mobile-nav-bottom) + 96px);
+  }
+  body {
+    padding-bottom: calc(170px + env(safe-area-inset-bottom, 0px));
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  button, a, input, select, summary { touch-action: manipulation; }
+  input, select, textarea { font-size: 16px; }
+  .primary, .secondary { min-height: 48px; font-size: 14px; border-radius: 10px; }
+  .text-button { min-height: 48px; font-size: 13px; }
+  .eyebrow { font-size: 10px; letter-spacing: 1.3px; }
+  .small-label, .subtle-note, .feedback, .error { font-size: 12px; }
+  :focus-visible { scroll-margin-bottom: calc(var(--mobile-nav-bottom) + 100px); }
+  .skip-link { z-index: 60; }
+}
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   ElementRef,
   inject,
   OnInit,
@@ -12,12 +13,15 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { SKILLS } from '../../domain/catalog';
 import { GameStore } from '../../state/game.store';
-import { Chibi } from '../../shared/chibi';
+import { CharacterPortrait } from '../../shared/character-portrait';
 import { ProgressFeedback } from '../../state/progress-feedback';
+import { DailyCareStore } from '../../state/daily-care.store';
+import { DailyCarePanel } from '../../shared/daily-care-panel';
+import { JourneySummary } from '../../shared/journey-summary';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [DecimalPipe, FormsModule, Chibi, RouterLink],
+  imports: [DecimalPipe, FormsModule, CharacterPortrait, RouterLink, DailyCarePanel, JourneySummary],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -26,6 +30,22 @@ export class Dashboard implements OnInit {
   readonly store = inject(GameStore);
   readonly feedback = inject(ProgressFeedback);
   readonly catalog = SKILLS;
+  readonly showAllSkills = signal(false);
+  readonly visibleSkills = computed(() => this.showAllSkills() ? this.store.skills() : this.store.focusSkills());
+  readonly care = inject(DailyCareStore);
+  readonly avatarInterest = computed(() => this.care.avatarInterest(this.store.avatarInterest()));
+  readonly avatarMessage = computed(() => {
+    const messages: Record<string, string> = {
+      calisthenics: 'Gut bewegt. Zeit, kurz durchzuatmen.',
+      running: 'Ein Schritt draußen. Ein Schritt weiter.',
+      meditation: 'Ein ruhiger Moment – den nehmen wir mit.',
+      programming: 'Etwas gelernt. Eine neue Idee im Gepäck.',
+    };
+    return this.care.avatarMessage(
+      messages[this.store.avatarInterest()] ??
+        'Was tut dir heute gut? Wir wachsen in deinem Tempo.',
+    );
+  });
   readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('activityDialog');
   readonly selectedSkill = signal('calisthenics');
   readonly minutes = signal<number | null>(20);
@@ -36,8 +56,9 @@ export class Dashboard implements OnInit {
     if (!this.store.snapshot()) void this.store.load();
   }
 
-  openActivity(skillId = 'calisthenics', minutes = 20) {
-    this.selectedSkill.set(skillId);
+  openActivity(skillId?: string, minutes = 20) {
+    this.care.refresh();
+    this.selectedSkill.set(skillId ?? this.store.focusSkills()[0]?.id ?? 'calisthenics');
     this.minutes.set(minutes);
     this.formError.set('');
     this.trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;

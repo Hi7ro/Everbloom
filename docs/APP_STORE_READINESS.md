@@ -1,4 +1,4 @@
-# App Store Readiness & Reichweite · V0.1
+# App Store Readiness & Reichweite · V0.2
 
 Stand: 08.09.2026. Verbindlicher Produkt-/Release-Plan; die App ist noch keine einreichbare Store-Version.
 Die konkreten Store-, SDK- und Kontoanforderungen werden beim nativen Scaffold und vor Einreichung
@@ -9,8 +9,17 @@ erneut anhand der offiziellen Quellen geprüft.
 ASO (App Store Optimization) betrifft die Auffindbarkeit und Installation im Apple App Store und
 bei Google Play. Projektziel: verständliches Nutzenversprechen, passende Suchbegriffe, eigene
 wiedererkennbare Art, echte Screenshots und konsistente Sprache. Zielgruppe zuerst: Menschen, die
-Training, Lernen und Erholung mit RPG-Progression verbinden möchten. DE zuerst; EN vor einem
-internationalen Release vollständig in App und Store übersetzen. Keine Ranking-Garantie.
+Training, Lernen und Erholung mit RPG-Progression verbinden möchten. Finale UI-Zielsprachen:
+Deutsch, Englisch, Spanisch, Schweizerisch, Portugiesisch, Chinesisch, Japanisch, Russisch und
+Koreanisch. Der Prototyp ist aktuell deutsch; Übersetzungen und Sprachpakete folgen in der
+Endphase/M4. Keine Ranking-Garantie.
+
+Vor der Übersetzungsphase sind Schweizer Hochdeutsch (`de-CH`) versus Schweizerdeutsch (`gsw`),
+Portugiesisch Portugal versus Brasilien und vereinfachtes versus traditionelles Chinesisch zu
+entscheiden. Keine Sprachvariante gilt bereits als gewählt. App-Screens, Status-/Fehlermeldungen,
+Accessibility-Texte, Store und Support werden gemeinsam lokalisiert; Datum, Zahlen, Pluralformen
+und Fallback auf Deutsch gehören zur Abnahme. Sprachnamen statt Länderflaggen verwenden. Die
+Verfügbarkeit der jeweiligen Store-Locale wird vor Erstellung der Listings geprüft.
 
 SEO betrifft die spätere öffentliche Website: Produktseite, Features, FAQ, Support und hilfreiche
 eigene Inhalte. Diese Seiten sollen statisch/prerendered auslieferbares HTML, eindeutige Titel und
@@ -44,6 +53,17 @@ Geplante Screenshot-Geschichte: (1) dein Charakter, (2) eine reale Aktivität gi
 (3) eigene Skills, (4) Daily Quests und Erholung, (5) Wochenboss. Spätere Member-Screens klar
 kennzeichnen. Kein Screenshot darf noch fehlende Features als verfügbar verkaufen.
 
+## Beschlossenes Membership-Preisziel
+
+Geplant sind **3,99 € pro Monat** als monatlicher Endkundenpreis; ein Jahrespreis wurde nicht
+festgelegt. Free bleibt dauerhaft spielbar. Membership-Inhalte und der vorläufige Kandidat von
++10 % Charakter-Aktivitäts-XP stehen im Game Design. Käufe, Entitlements und Bonus sind im
+Web-Prototyp noch nicht implementiert; es ist kein Store-Produkt registriert.
+
+Vor M3 regionale Store-Preisstufen, Steuern, Plattformabzüge und Nettoerlös prüfen. Im produktiven
+Checkout den vom jeweiligen Store gelieferten lokalisierten Preis verwenden. Der Zielpreis allein
+ersetzt weder die Store-Konfiguration noch Kaufprüfung, Restore oder Kündigungs-/Ablaufregeln.
+
 ## Technische Entscheidungen ab jetzt
 
 - Angular-Web-Build weiter kapseln: Domain → State → Oberfläche, Plattformfunktionen in kleine
@@ -55,19 +75,49 @@ kennzeichnen. Kein Screenshot darf noch fehlende Features als verfügbar verkauf
   [Konfiguration](https://capacitorjs.com/docs/config).
 - Native Bundle-ID und Android applicationId erst nach bestätigter Produktidentität setzen.
   Keine erfundene Domain als endgültige ID. Signing-Schlüssel getrennt von Quellcode verwalten.
-- Jede neue Ansicht für Touch, kleine Displays, große Schrift, VoiceOver/TalkBack, Tastatur,
-  Notch/Safe Areas und kurze Unterbrechungen gestalten. Android-Zurück und iOS-Navigation testen.
+- Jede neue Ansicht zuerst für Smartphones im Hochformat und Tablets im Hoch-/Querformat
+  gestalten. Projektziele: Touchflächen mindestens 44 CSS-px, bevorzugt 48 CSS-px; gut erreichbarer
+  Aktivitätsbutton, Creator-Speichern in erreichbarer Fußleiste, große Schrift und VoiceOver/
+  TalkBack. Navigation/Fußleisten berücksichtigen Tastatur, Notch und Safe Areas und verdecken
+  keine Inhalte. Android-Zurück, iOS-Navigation und kurze Unterbrechungen auf Geräten testen.
 - Netzverlust, Timeout, Resume, unterbrochene Aktivität und wiederholten Request vor Beta prüfen.
   Keine verlorenen Einträge oder doppelten XP. Offline-Schreib-Sync wird erst mit eigenem Konfliktkonzept
   ergänzt; bis dahin ehrliche Offline-Rückmeldung.
-- Texte vor internationalem Release in Angular-i18n überführen. Einheiten, Zahlen, Sprache und
-  Zeitperioden zentral behandeln; die Browser-Demo nutzt aktuell Deutsch.
+- Texte jetzt auslagerbar halten und ein zentrales Locale-Modell planen; konkrete Sprachpakete
+  erst zur Übersetzungsphase ergänzen. Einheiten, Zahlen, Datum, Pluralformen, Sprache und
+  Zeitperioden zentral behandeln. Die Browser-Demo nutzt aktuell Deutsch.
 - Benachrichtigungen, Analytics und Health-Anbindungen nur bei konkretem Produktbedarf hinzufügen.
   Datenflüsse und Drittanbieter-SDKs dokumentieren, bevor ein SDK integriert wird.
 
 Bereits im Web-Slice umgesetzt: responsive Layouts, semantische Controls, Fehler-/Statusmeldungen,
 reduzierte Bewegung, deutsche Zahlen, Safe-Area-Grundlage und vergrößerte mobile Formfelder.
-Die native Abnahme dieser Funktionen ist noch offen.
+Der Creator speichert lokal ausschließlich Name/Aussehen; Ton-, Feuerwerk- und Bewegungspräferenzen
+liegen getrennt davon. Fortschritt bleibt flüchtiger Demo-Zustand. Keine Accounts, Tracking- oder
+Health-Anbindung. Die aktuellen lokalen Datenflüsse müssen vor Release in die Bestandsaufnahme
+einfließen; Serverpersistenz und Gerätewechsel sind dadurch nicht gelöst.
+
+Der Chibi verwendet modulare SVG-Grafik mit räumlicher Wirkung und optionalem Idle. Kurzes
+Feuerwerk und ein eigener Web-Audio-Jingle begleiten ausgewählte Meilensteine. Separate Controls
+und reduzierte Bewegung gehören zur Web-Abnahme; Audio-Unterbrechung, Gerätestummschaltung,
+Hintergrund/Resume und Screenreader sind zusätzlich auf echten Geräten zu prüfen. Die native
+Abnahme dieser Funktionen ist noch offen.
+
+## Mobile-Game-Abnahme
+
+Phone-Hochformat hat Priorität; Tablets erhalten im Hoch-/Querformat angepasste Spalten und
+sinnvolle Inhaltsbreiten. Haupttexte haben als Projektziel 14–16 CSS-px, sekundäre Texte mindestens
+12 CSS-px; Vergrößerung darf Bedienung nicht abschneiden. Mobile Formfelder bleiben gut lesbar.
+Inklusive geöffneter Tastatur müssen Aktivität, Navigation und Creator-Speichern erreichbar bleiben.
+
+Der aktuelle Ausbau verbessert mobile Shell, Creator-Fußleiste und Tablet-Layouts; tatsächlich
+bestandene Prüfungen stehen in VALIDATION. Bewegung bleibt abschaltbar. SVG-Gradienten und andere
+Defs brauchen pro Chibi-Instanz eindeutige IDs; Idle/Effekte sollen auf mobilen Geräten sparsam
+bleiben. Lade-, Fehler-, Offline- und Resume-Verhalten gehören zum Kernflow. Der lokale Memory-
+Mock ist kein Beleg für funktionierende Netzwerkwiederaufnahme oder Offline-Synchronisation.
+
+Native Haptik, Lifecycle-/Audio-Unterbrechungen und Store-Billing werden erst über kleine
+Plattformadapter ergänzt und auf echten Geräten geprüft. Haptik bleibt optional. Browserprüfungen
+ersetzen keine native Abnahme und erfüllen allein keine der folgenden Store-Gates.
 
 ## Verbindliche Store-Gates vor Release
 
@@ -112,9 +162,9 @@ Reviews freiwillig über Plattformmechanismen erfragen, ohne XP-/Loot-Anreiz.
 
 | Zeitpunkt | Ergebnis |
 |---|---|
-| Jetzt / M0–M1a | Dieses Dokument, XP-Balancing, mobile Web-Grundlage; keine Veröffentlichung |
+| Jetzt / M0–M1a | Mobile Web-Grundlage, Balance V0.2, lokaler Creator und Erfolgsfeedback; keine Veröffentlichung |
 | M1b | Früher Capacitor-Gerätetest, Account-/Löschmodell, zuverlässiger Aktivitätsflow |
 | M2 | Eigene Art/Assets; lokalisierbare Texte und prüfbare Screenshots |
 | M3 | Storefähige Membership und serverseitige Entitlements |
-| M4 | Signierte native Builds, Store-Metadaten, Privacy-Angaben, Geräte-/Beta-Abnahme |
+| M4 | Signierte native Builds, neun UI-Zielsprachen mit geklärten Varianten, Store-Metadaten, Privacy-Angaben, Geräte-/Beta-Abnahme |
 | M5 | Öffentliche SEO-Seiten, Release-Freigabe, ASO-Experimente und Qualitätsmessung |

@@ -60,7 +60,7 @@ describe('progress feedback lifecycle', () => {
   it('restores device preferences without playing and tolerates denied storage', () => {
     TestBed.resetTestingModule();
     const storage = {
-      getItem: vi.fn(() => JSON.stringify({ sound: false, effects: false })),
+      getItem: vi.fn(() => JSON.stringify({ sound: false, effects: false, motion: false })),
       setItem: vi.fn(() => {
         throw new Error('Denied');
       }),
@@ -75,6 +75,10 @@ describe('progress feedback lifecycle', () => {
     expect(storage.getItem).toHaveBeenCalledWith(FEEDBACK_PREFERENCES_KEY);
     expect(feedback.soundEnabled()).toBe(false);
     expect(feedback.effectsEnabled()).toBe(false);
+    expect(feedback.motionEnabled()).toBe(false);
+    feedback.toggleMotion();
+    expect(feedback.motionEnabled()).toBe(true);
+    expect(feedback.soundEnabled()).toBe(false);
     expect(audio.play).not.toHaveBeenCalled();
     expect(() => feedback.toggleSound()).not.toThrow();
     expect(feedback.soundEnabled()).toBe(true);

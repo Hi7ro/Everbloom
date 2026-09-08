@@ -1,6 +1,11 @@
 export type AttributeId =
   'strength' | 'endurance' | 'focus' | 'knowledge' | 'mindfulness' | 'recovery';
+export type CharacterPresentation = 'male' | 'female';
+export type CharacterArtwork = 'original' | 'custom';
 export interface Appearance {
+  presentation: CharacterPresentation;
+  artwork?: CharacterArtwork;
+  illustration?: string;
   body: string;
   hair: string;
   outfit: string;

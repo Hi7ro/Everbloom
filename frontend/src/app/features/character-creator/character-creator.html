@@ -11,20 +11,73 @@
     <h1>
       {{ store.profileIsSaved() ? 'Dein Look. Deine Geschichte.' : 'Deine Reise hat ein Gesicht.' }}
     </h1>
-    <p>Von cozy bis Abyssal. Gestalte den Charakter, in dem du dich wiederfindest.</p>
+    <p>Wähle eine illustrierte Figur oder gestalte deinen eigenen Look.</p>
   </div>
 
   @if (draft(); as profile) {
     <div class="creator-grid">
-      <aside class="preview" aria-label="Live-Vorschau deines Charakters">
+      <aside class="preview" [class.original-preview]="!isCustom()" aria-label="Live-Vorschau deines Charakters">
         <div class="preview-heading">
           <span class="eyebrow">CHARAKTER-VORSCHAU</span><span class="badge">LIVE</span>
         </div>
-        <div class="avatar-stage"><app-chibi [appearance]="profile.appearance" /></div>
+        <div class="avatar-stage">
+          <app-character-portrait
+            [appearance]="profile.appearance"
+            [level]="previewLevel()"
+            [interest]="previewInterest()"
+            [animated]="feedback.motionEnabled()"
+          />
+        </div>
         <h2>{{ profile.name.trim() || 'Dein Name' }}</h2>
         <p>Ein Look so vielseitig wie dein Leben.</p>
+        @if (isCustom()) {
+        <details class="presence-preview">
+          <summary>Gesten &amp; Entwicklungsstufen</summary>
+          <div class="presence-controls">
+            <label for="preview-interest">Gesten ausprobieren</label>
+            <select
+              id="preview-interest"
+              [ngModel]="previewInterest()"
+              (ngModelChange)="previewInterest.set($event)"
+            >
+              <option value="adventurer">Abenteuer · Begrüßung</option>
+              <option value="calisthenics">Training · Locker werden</option>
+              <option value="meditation">Erholung · Durchatmen</option>
+              <option value="programming">Lernen · Fokus finden</option>
+            </select>
+            <label for="preview-level">Entwicklungsstufe ansehen</label>
+            <select
+              id="preview-level"
+              [ngModel]="previewLevel()"
+              (ngModelChange)="previewLevel.set($event)"
+            >
+              @if (previewLevel() !== 1 && previewLevel() !== 12 && previewLevel() !== 30) {
+                <option [ngValue]="previewLevel()">Dein Level {{ previewLevel() }}</option>
+              }
+              <option [ngValue]="1">Level 1 · Am Anfang</option>
+              <option [ngValue]="12">Level 12 · Geübt</option>
+              <option [ngValue]="30">Level 30 · Erfahren</option>
+            </select>
+            <p class="hint">
+              Nur eine Vorschau – dein Level und deine Skills bleiben gleich. Gesten zeigen sich
+              zwischendurch ganz von selbst.
+            </p>
+
+          </div>
+        </details>
+        }
+        <div class="portrait-motion">
+            <button
+              class="motion-toggle"
+              type="button"
+              [attr.aria-pressed]="feedback.motionEnabled()"
+              (click)="feedback.toggleMotion()"
+            >
+              Bewegung: {{ feedback.motionEnabled() ? 'Ein' : 'Aus' }}
+            </button>
+        </div>
         <div class="preview-foot">
-          <span aria-hidden="true">✧</span> Alle Looks sind frei kombinierbar.
+          <span aria-hidden="true">✧</span> {{ isCustom() ? 'Deine eigene Kombination.' : selectedIllustration()?.name }}
         </div>
       </aside>
 
@@ -48,6 +101,73 @@
           <p id="name-hint" class="hint">
             2–24 Zeichen. Buchstaben, Zahlen, Leerzeichen, Bindestrich oder Apostroph.
           </p>
+          <fieldset class="artwork-field" [disabled]="store.busy()" aria-describedby="artwork-hint">
+            <legend>Dein Look</legend>
+            <div class="artwork-choices">
+              @for (option of artworkOptions; track option.id) {
+                <label class="choice artwork-choice" [class.selected]="artwork() === option.id">
+                  <input type="radio" name="artwork" [value]="option.id"
+                    [ngModel]="artwork()" (ngModelChange)="setArtwork($event)" />
+                  <span><strong>{{ option.label }}</strong><small>{{ option.description }}</small></span>
+                  <span class="selection-mark" aria-hidden="true">{{ artwork() === option.id ? '✓' : '○' }}</span>
+                </label>
+              }
+            </div>
+            <p id="artwork-hint" class="hint artwork-hint">
+              @if (isCustom()) {
+                Kombiniere Frisur, Farben und Outfits in deiner eigenen Vorschau.
+              } @else {
+                Jede Vorlage hat ihre eigene Frisur und Kleidung. Einzelne Teile und Farben werden später kombinierbar. Deinen Namen und deine Aura wählst du selbst.
+              }
+            </p>
+          </fieldset>
+          <fieldset [disabled]="store.busy()" aria-describedby="presentation-hint">
+            <legend>Charakterdarstellung</legend>
+            <div class="choice-row presentation-choices">
+              @for (option of presentations; track option.id) {
+                <label
+                  class="choice"
+                  [class.selected]="profile.appearance.presentation === option.id"
+                >
+                  <input
+                    type="radio"
+                    name="presentation"
+                    [value]="option.id"
+                    [ngModel]="profile.appearance.presentation"
+                    (ngModelChange)="setPresentation($event)"
+                  />
+                  <span>{{ option.label }}</span>
+                  <span class="selection-mark" aria-hidden="true">{{
+                    profile.appearance.presentation === option.id ? '✓' : '○'
+                  }}</span>
+                </label>
+              }
+            </div>
+            <p id="presentation-hint" class="hint">
+              Deine Darstellung, dein Stil. Beide starten mit denselben Fähigkeiten.
+            </p>
+          </fieldset>
+          @if (!isCustom()) {
+            <fieldset class="illustration-field" [disabled]="store.busy()" aria-describedby="illustration-description">
+              <legend>Deine Vorlage <span class="catalog-count">2 Looks</span></legend>
+              <div class="illustration-grid">
+                @for (option of illustrationPreviews(); track option.id) {
+                  <label class="choice illustration-choice" [class.selected]="selectedIllustration()?.id === option.id">
+                    <input type="radio" name="illustration" [value]="option.id"
+                      [ngModel]="selectedIllustration()?.id" (ngModelChange)="chooseIllustration($event)" />
+                    <span class="illustration-thumbnail" aria-hidden="true">
+                      <app-character-portrait [appearance]="option.appearance" [animated]="false" />
+                    </span>
+                    <strong>{{ option.name }}</strong>
+                    <small>{{ option.outfitLabel }}<br />{{ option.hairLabel }}</small>
+                    <span class="illustration-check" aria-hidden="true">{{ selectedIllustration()?.id === option.id ? '✓' : '○' }}</span>
+                  </label>
+                }
+              </div>
+              <p id="illustration-description" class="hint">{{ selectedIllustration()?.description }}</p>
+            </fieldset>
+          }
+          @if (isCustom()) {
           @for (group of shapeGroups; track group.slot) {
             <fieldset [disabled]="store.busy()">
               <legend>{{ group.label }}</legend>
@@ -70,8 +190,36 @@
               </div>
             </fieldset>
           }
+          <fieldset [disabled]="store.busy()">
+            <legend>Frisur <span class="catalog-count">6 Startfrisuren</span></legend>
+            <div class="hairstyle-grid">
+              @for (option of hairstylePreviews(); track option.id) {
+                <label
+                  class="choice hairstyle-choice"
+                  [class.selected]="profile.appearance.hair === option.id"
+                >
+                  <input
+                    type="radio"
+                    name="hair"
+                    [value]="option.id"
+                    [ngModel]="profile.appearance.hair"
+                    (ngModelChange)="choose('hair', $event)"
+                  />
+                  <span class="hair-thumbnail" aria-hidden="true"
+                    ><app-chibi [appearance]="option.appearance" [animated]="false"
+                  /></span>
+                  <span>{{ option.label }}</span>
+                  <span class="hair-check" aria-hidden="true">{{
+                    profile.appearance.hair === option.id ? '✓' : ''
+                  }}</span>
+                </label>
+              }
+            </div>
+          </fieldset>
+          }
         </section>
 
+        @if (isCustom()) {
         <section class="editor-section">
           <p class="eyebrow">02 · STIL</p>
           <h2>Welche Welt trägst du in dir?</h2>
@@ -102,10 +250,12 @@
             </div>
           </fieldset>
         </section>
+        }
 
         <section class="editor-section">
-          <p class="eyebrow">03 · FARBEN & AURA</p>
+          <p class="eyebrow">{{ isCustom() ? '03 · FARBEN & AURA' : '02 · DEINE AURA' }}</p>
           <h2>Mach es zu deinem Look.</h2>
+          @if (isCustom()) {
           @for (group of colorGroups; track group.slot) {
             <fieldset [disabled]="store.busy()">
               <legend>{{ group.label }}</legend>
@@ -138,6 +288,7 @@
               </div>
             </fieldset>
           }
+          }
           <fieldset [disabled]="store.busy()">
             <legend>Aura</legend>
             <div class="choice-row aura-choices">
@@ -148,18 +299,46 @@
                     name="aura"
                     [value]="option.id"
                     [ngModel]="profile.appearance.aura"
-                    (ngModelChange)="choose('aura', $event)"
+                    (ngModelChange)="chooseAura($event)"
                   />
                   <span>{{ option.label }}</span>
                 </label>
               }
             </div>
           </fieldset>
+          <div class="future-auras">
+            <div class="future-heading">
+              <h3>Auren auf deiner Reise</h3>
+              <span>Kommt später</span>
+            </div>
+            <p class="hint">Neue Auren warten als Level-Belohnungen und Boss-Drops auf dich.</p>
+            <ul>
+              @for (aura of auraProgression; track aura.id) {
+                <li>
+                  <span class="aura-emblem" [class]="'aura-emblem ' + aura.id" aria-hidden="true"
+                    >✧</span
+                  >
+                  <div>
+                    <strong>{{ aura.label }}</strong
+                    ><small>
+                      @if (aura.unlock.kind === 'level') {
+                        Ab Level {{ aura.unlock.level }}
+                      } @else {
+                        Boss-Drop · {{ aura.unlock.bossName }}
+                      }
+                    </small>
+                  </div>
+                </li>
+              }
+            </ul>
+            <p class="hint">Geplante Freischaltungen. Die Levelziele können sich noch ändern.</p>
+          </div>
         </section>
         <div class="save-section">
           <p id="profile-storage-note" class="hint">
             Dein Profil wird vorerst nur in diesem Browser gespeichert. Deinen Look kannst du später
-            jederzeit ändern. Beim Gestalten bleibt dein Fortschritt unverändert. Demo-XP werden beim Neuladen zurückgesetzt.
+            jederzeit ändern. Beim Gestalten bleibt dein Fortschritt unverändert. Demo-XP werden
+            beim Neuladen zurückgesetzt.
           </p>
           <p id="profile-form-error" class="error" role="alert">{{ formError() }}</p>
           @if (store.error()) {
@@ -167,7 +346,7 @@
               {{ store.error() }} Deine Auswahl bleibt erhalten; versuche das Speichern erneut.
             </p>
           }
-          <div class="actions">
+          <div class="actions mobile-save-actions">
             <button class="secondary" type="button" [disabled]="store.busy()" (click)="cancel()">
               Abbrechen
             </button>
@@ -186,7 +365,7 @@
       </form>
     </div>
     <p class="art-note">
-      Erste Version des Character Creators · modulare SVG-Platzhalter · weitere Cosmetics folgen.
+      {{ isCustom() ? 'Eigene Kombinationen in einer ersten Vorschau. Weitere illustrierte Looks folgen.' : 'Illustrierte Vorlagen mit festen Frisuren, Farben und Outfits. Weitere Kombinationen folgen.' }}
     </p>
   } @else {
     <div class="load-state" role="status">

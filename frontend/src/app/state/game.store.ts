@@ -5,10 +5,12 @@ import { CharacterProfile, GameSnapshot } from '../domain/models';
 import { bossPhase, levelProgress } from '../domain/progression';
 import { detectMilestones } from '../domain/milestones';
 import { ProgressFeedback } from './progress-feedback';
+import { JourneyStore } from './journey.store';
 
 @Injectable({ providedIn: 'root' })
 export class GameStore {
   private readonly repository = inject(GAME_REPOSITORY);
+  private readonly journey = inject(JourneyStore);
   private readonly feedback = inject(ProgressFeedback);
   private readonly snapshotState = signal<GameSnapshot | null>(null);
   private readonly busyState = signal(false);
@@ -29,6 +31,17 @@ export class GameStore {
         ...levelProgress(progress.totalXp, BALANCE.skillBase, BALANCE.skillStep),
       };
     }),
+  );
+  // Focus changes presentation only; every earned skill remains in the snapshot.
+  readonly focusSkills = computed(() =>
+    this.journey.activeSkillIds().flatMap(id => {
+      const skill = this.skills().find(skill => skill.id === id);
+      return skill ? [skill] : [];
+    }),
+  );
+  readonly avatarInterest = computed(
+    () => this.snapshot()?.activities.find((activity) => activity.xp > 0)?.skillId ??
+      (this.journey.configured() ? this.journey.primaryAvatarInterest() : 'adventurer'),
   );
   readonly attributes = computed(() =>
     ATTRIBUTES.map((attribute) => {

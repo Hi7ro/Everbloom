@@ -1,4 +1,13 @@
 import { GameSnapshot } from '../domain/models';
+import { SKILLS } from '../domain/catalog';
+
+// Preserve the four existing demo levels. Newly available skills begin at zero XP.
+const DEMO_SKILL_XP: Readonly<Record<string, number>> = {
+  calisthenics: 13813,
+  running: 8804,
+  meditation: 5433,
+  programming: 14400,
+};
 
 /** A fixed day deliberately avoids client-clock-based reward resets in the demo. */
 export function createMockSnapshot(): GameSnapshot {
@@ -20,8 +29,9 @@ export function createMockSnapshot(): GameSnapshot {
         recovery: 18,
       },
       appearance: {
+        presentation: 'male',
         body: 'base',
-        hair: 'tousled',
+        hair: 'm-spiky',
         outfit: 'wanderer',
         aura: 'sage',
         skinColor: '#e6b995',
@@ -29,13 +39,7 @@ export function createMockSnapshot(): GameSnapshot {
         outfitColor: '#729e8e',
       },
     },
-    skills: [
-      // Same levels (9/7/5/10) and approximate bar positions as the original mock.
-      { skillId: 'calisthenics', totalXp: 13813 },
-      { skillId: 'running', totalXp: 8804 },
-      { skillId: 'meditation', totalXp: 5433 },
-      { skillId: 'programming', totalXp: 14400 },
-    ],
+    skills: SKILLS.map((skill) => ({ skillId: skill.id, totalXp: DEMO_SKILL_XP[skill.id] ?? 0 })),
     quests: [
       {
         id: 'q-move',

@@ -1,0 +1,260 @@
+<main class="onboarding-shell" id="onboarding-main">
+  <header class="journey-header">
+    <a class="brand" routerLink="/dashboard" aria-label="Everbloom Dashboard"
+      >everbloom<span>.</span></a
+    >
+    <button class="text-button leave-button" type="button" (click)="cancel()">
+      {{ journey.configured() ? 'Abbrechen' : 'Überspringen' }}
+    </button>
+  </header>
+
+  <section class="journey-progress" aria-label="Deine Reise einrichten">
+    <div class="step-counter" aria-live="polite">
+      Schritt {{ step() }} von 3 <span>DEIN ANFANG</span>
+    </div>
+    <ol>
+      @for (label of ['Interessen', 'Skills', 'Deine Reise']; track $index) {
+        <li
+          [class.current]="step() === $index + 1"
+          [class.done]="step() > $index + 1"
+          [attr.aria-current]="step() === $index + 1 ? 'step' : null"
+        >
+          <span aria-hidden="true"></span>{{ label }}
+        </li>
+      }
+    </ol>
+  </section>
+
+  <div class="step-intro">
+    <h1 id="step-heading" tabindex="-1">{{ stepTitle() }}</h1>
+    <p>
+      @if (step() === 1) {
+        Dein kleines Ich begleitet dich im echten Leben. Wähle, was dir gerade wichtig ist.
+      } @else if (step() === 2) {
+        Ein guter Anfang darf klein sein. Wähle 1–{{ maxSkills }} Skills für dein Dashboard.
+      } @else {
+        Das ist dein Ausgangspunkt. Du kannst deine Auswahl jederzeit wieder ändern.
+      }
+    </p>
+  </div>
+
+  <form
+    id="journey-form"
+    (submit)="$event.preventDefault(); step() < 3 ? next() : finish()"
+    novalidate
+  >
+    @if (step() === 1) {
+      <fieldset class="choice-section" aria-describedby="interests-hint">
+        <legend>Deine Interessen</legend>
+        <p class="section-hint" id="interests-hint">
+          Mehrere passen zu dir? Wähle alle, die dich ansprechen.
+        </p>
+        <div class="interest-grid">
+          @for (interest of interests; track interest.id) {
+            <label
+              class="choice-card interest-card"
+              [class.selected]="draft().interestIds.includes(interest.id)"
+            >
+              <input
+                type="checkbox"
+                name="interests"
+                [value]="interest.id"
+                [checked]="draft().interestIds.includes(interest.id)"
+                (change)="toggleInterest(interest.id)"
+              />
+              <span class="choice-symbol" aria-hidden="true">{{ interest.symbol }}</span>
+              <span class="choice-copy"
+                ><strong>{{ interest.label }}</strong
+                ><span>{{ interest.description }}</span></span
+              >
+            </label>
+          }
+        </div>
+      </fieldset>
+      @if (chosenInterests().length) {
+        <fieldset class="choice-section focus-section" aria-describedby="focus-hint">
+          <legend>Dein Schwerpunkt</legend>
+          <p class="section-hint" id="focus-hint">Was steht für dich gerade an erster Stelle?</p>
+          <div class="focus-options">
+            @for (interest of chosenInterests(); track interest.id) {
+              <label
+                class="focus-choice"
+                [class.selected]="draft().primaryInterestId === interest.id"
+              >
+                <input
+                  type="radio"
+                  name="primaryInterest"
+                  [value]="interest.id"
+                  [checked]="draft().primaryInterestId === interest.id"
+                  (change)="setPrimary(interest.id)"
+                />
+                {{ interest.label }}
+              </label>
+            }
+          </div>
+        </fieldset>
+      }
+    } @else if (step() === 2) {
+      <div class="selection-summary" role="status">
+        <strong>{{ draft().activeSkillIds.length }} von {{ maxSkills }} ausgewählt</strong>
+        <span>{{
+          draft().activeSkillIds.length === maxSkills
+            ? 'Tausche einen Skill aus, um einen anderen zu wählen.'
+            : 'Deine Auswahl lässt sich später jederzeit anpassen.'
+        }}</span>
+      </div>
+      @for (group of skillGroups; track group.family) {
+        <fieldset class="choice-section skill-section">
+          <legend>{{ group.family }}</legend>
+          <div class="skill-grid">
+            @for (skill of group.skills; track skill.id) {
+              <label
+                class="choice-card skill-card"
+                [class.selected]="draft().activeSkillIds.includes(skill.id)"
+                [class.at-limit]="
+                  !draft().activeSkillIds.includes(skill.id) &&
+                  draft().activeSkillIds.length >= maxSkills
+                "
+                [style.--skill-color]="skill.color"
+              >
+                <input
+                  type="checkbox"
+                  name="skills"
+                  [value]="skill.id"
+                  [checked]="draft().activeSkillIds.includes(skill.id)"
+                  [disabled]="
+                    !draft().activeSkillIds.includes(skill.id) &&
+                    draft().activeSkillIds.length >= maxSkills
+                  "
+                  (change)="toggleSkill(skill.id)"
+                />
+                <span class="choice-symbol" aria-hidden="true">{{ skill.symbol }}</span>
+                <span class="choice-copy"
+                  ><strong>{{ skill.name }}</strong
+                  ><span
+                    >{{ skill.xpPerMinute }} XP / min · bis {{ skill.dailyMinuteLimit }} min /
+                    Tag</span
+                  ></span
+                >
+              </label>
+            }
+          </div>
+        </fieldset>
+      }
+      <p class="quiet-note">
+        XP sind Spielwerte. Belohnt werden reale Aktivitäten innerhalb des täglichen XP-Limits.
+      </p>
+    } @else {
+      @if (store.snapshot(); as game) {
+        <section class="review-character" aria-labelledby="review-name">
+          <div class="portrait-stage">
+            <app-character-portrait
+              [appearance]="game.character.appearance"
+              [level]="store.level().level"
+              [interest]="primaryInterest()?.avatarInterest ?? 'adventurer'"
+              [animated]="feedback.motionEnabled()"
+            />
+          </div>
+          <div class="review-identity">
+            <p class="small-heading">DEIN KLEINES ICH</p>
+            <h2 id="review-name">{{ game.character.name }}</h2>
+            <p>Du gibst die Richtung vor.</p>
+            <a
+              class="secondary"
+              routerLink="/character/create"
+              [queryParams]="{ returnTo: 'onboarding' }"
+              (click)="rememberDraft()"
+              >Charakter gestalten <span aria-hidden="true">↗</span></a
+            >
+          </div>
+        </section>
+      } @else if (store.error()) {
+        <div class="load-error" role="alert">
+          <p>{{ store.error() }}</p>
+          <button type="button" class="secondary" [disabled]="store.busy()" (click)="store.load()">
+            Charakter erneut laden
+          </button>
+        </div>
+      } @else {
+        <p class="quiet-note" role="status">Dein Charakter wird geladen …</p>
+      }
+      <div class="review-grid">
+        <section class="review-panel" aria-labelledby="review-interests">
+          <div class="review-heading">
+            <h2 id="review-interests">Deine Richtung</h2>
+            <button
+              type="button"
+              class="text-button"
+              (click)="editInterests()"
+              aria-label="Interessen ändern"
+            >
+              Ändern
+            </button>
+          </div>
+          <p class="primary-focus">{{ primaryInterest()?.label }} <span>Dein Schwerpunkt</span></p>
+          <ul class="interest-tags">
+            @for (interest of chosenInterests(); track interest.id) {
+              <li>{{ interest.label }}</li>
+            }
+          </ul>
+        </section>
+        <section class="review-panel" aria-labelledby="review-skills">
+          <div class="review-heading">
+            <h2 id="review-skills">Deine aktiven Skills</h2>
+            <button type="button" class="text-button" (click)="back()" aria-label="Skills ändern">
+              Ändern
+            </button>
+          </div>
+          <ul class="review-skills">
+            @for (skill of chosenSkills(); track skill.id) {
+              <li>
+                <span class="review-skill-symbol" aria-hidden="true" [style.color]="skill.color">{{
+                  skill.symbol
+                }}</span
+                ><span>{{ skill.name }}</span>
+              </li>
+            }
+          </ul>
+        </section>
+      </div>
+      <p class="demo-note">
+        <strong>Dein aktueller Spielstand</strong>Look und Auswahl bleiben auf diesem Gerät.
+        Aktivitätsfortschritt ist noch eine Demo und startet beim Neuladen neu.
+      </p>
+    }
+    @if (formError()) {
+      <p class="form-error" role="alert" id="journey-error">{{ formError() }}</p>
+    }
+  </form>
+
+  <footer class="journey-actions">
+    <div class="actions-inner">
+      @if (step() > 1) {
+        <button type="button" class="secondary" (click)="back()" [disabled]="saving()">
+          Zurück
+        </button>
+      } @else {
+        <p>In deinem Tempo.<br /><span>Jeder Anfang zählt.</span></p>
+      }
+      <button
+        type="submit"
+        class="primary"
+        form="journey-form"
+        [disabled]="saving() || (step() === 3 && (store.busy() || !store.snapshot()))"
+      >
+        {{
+          step() < 3
+            ? 'Weiter'
+            : saving()
+              ? 'Wird übernommen …'
+              : journey.configured()
+                ? 'Auswahl speichern'
+                : 'Meine Reise starten'
+        }}
+        @if (!saving()) {
+          <span aria-hidden="true">↗</span>
+        }
+      </button>
+    </div>
+  </footer>
+</main>

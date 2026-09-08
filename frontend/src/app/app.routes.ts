@@ -13,5 +13,10 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/character-creator/character-creator').then((m) => m.CharacterCreator),
   },
+  {
+    path: 'onboarding',
+    title: 'Deine Reise beginnt · Everbloom',
+    loadComponent: () => import('./features/onboarding/onboarding').then((m) => m.Onboarding),
+  },
   { path: '**', redirectTo: 'dashboard' },
 ];

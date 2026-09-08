@@ -18,9 +18,11 @@ export class ProgressFeedback implements OnDestroy {
   private readonly preferences = this.readPreferences();
   private readonly soundState = signal(this.preferences.sound);
   private readonly effectsState = signal(this.preferences.effects);
+  private readonly motionState = signal(this.preferences.motion);
   private readonly noticeState = signal<Celebration | null>(null);
   readonly soundEnabled = this.soundState.asReadonly();
   readonly effectsEnabled = this.effectsState.asReadonly();
+  readonly motionEnabled = this.motionState.asReadonly();
   readonly notice = this.noticeState.asReadonly();
   private timer: ReturnType<typeof setTimeout> | undefined;
   private nextId = 0;
@@ -63,6 +65,11 @@ export class ProgressFeedback implements OnDestroy {
     this.savePreferences();
   }
 
+  toggleMotion() {
+    this.motionState.update((value) => !value);
+    this.savePreferences();
+  }
+
   dismiss() {
     if (this.timer) clearTimeout(this.timer);
     this.timer = undefined;
@@ -73,23 +80,28 @@ export class ProgressFeedback implements OnDestroy {
     this.dismiss();
   }
 
-  private readPreferences(): { sound: boolean; effects: boolean } {
+  private readPreferences(): { sound: boolean; effects: boolean; motion: boolean } {
     try {
       const raw = this.storage?.getItem(FEEDBACK_PREFERENCES_KEY);
       const value = raw ? JSON.parse(raw) : null;
       return {
         sound: typeof value?.sound === 'boolean' ? value.sound : true,
         effects: typeof value?.effects === 'boolean' ? value.effects : true,
+        motion: typeof value?.motion === 'boolean' ? value.motion : true,
       };
     } catch {
-      return { sound: true, effects: true };
+      return { sound: true, effects: true, motion: true };
     }
   }
   private savePreferences() {
     try {
       this.storage?.setItem(
         FEEDBACK_PREFERENCES_KEY,
-        JSON.stringify({ sound: this.soundEnabled(), effects: this.effectsEnabled() }),
+        JSON.stringify({
+          sound: this.soundEnabled(),
+          effects: this.effectsEnabled(),
+          motion: this.motionEnabled(),
+        }),
       );
     } catch {
       /* Preferences still work for this session when storage is blocked. */

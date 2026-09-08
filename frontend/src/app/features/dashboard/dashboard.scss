@@ -125,7 +125,7 @@ h1 span {
   place-items: center;
   margin-top: 2px;
 }
-app-chibi {
+app-character-portrait {
   position: relative;
   z-index: 1;
   width: 208px;
@@ -213,6 +213,8 @@ app-chibi {
   font-weight: 500;
 }
 .character-note {
+  display: block;
+  min-height: 44px;
   font-size: 10px;
   padding: 14px 8px;
   text-align: center;
@@ -226,12 +228,6 @@ app-chibi {
 }
 .stats-panel {
   padding: 23px 20px 15px;
-}
-.stats-panel .section-heading {
-  margin-bottom: 20px;
-}
-.stats-panel h2 {
-  font-size: 16px;
 }
 .stats-panel .small-label {
   font-size: 8px;
@@ -749,27 +745,8 @@ form .subtle-note {
   padding: 40px;
   text-align: center;
 }
+// Narrow-screen details that are not covered by the shared mobile shell below.
 @media (max-width: 1050px) {
-  .header-badge {
-    display: none;
-  }
-  .dashboard-grid {
-    grid-template-columns: 280px minmax(0, 1fr);
-    gap: 18px;
-  }
-  .skills-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-  .momentum-panel {
-    padding: 22px;
-  }
-  .rhythm {
-    gap: 7px;
-  }
-  .momentum-score .score-ring {
-    width: 103px;
-    height: 103px;
-  }
   .boss-emblem {
     width: 74px;
     height: 92px;
@@ -781,58 +758,22 @@ form .subtle-note {
 }
 @media (max-width: 760px) {
   .site-header {
-    min-height: 72px;
-    padding: 0 20px;
     flex-wrap: wrap;
     gap: 0;
   }
   .brand {
     font-size: 25px;
-    padding: 16px 0;
-  }
-  nav {
-    width: 100%;
-    margin: 0;
-    gap: 24px;
-    height: 43px;
-  }
-  nav a {
-    font-size: 12px;
-  }
-  main {
-    padding: 28px 18px 18px;
   }
   .page-heading {
     align-items: flex-start;
     flex-direction: column;
     gap: 19px;
   }
-  .page-heading .primary {
-    width: 100%;
-    justify-content: center;
-  }
-  .dashboard-grid {
-    grid-template-columns: 1fr;
-    gap: 22px;
-  }
   .character-column {
     gap: 16px;
   }
-  .character-card {
-    display: grid;
-    grid-template-columns: 46% 54%;
-  }
   .card-top {
-    grid-column: 1 / -1;
     padding: 17px 19px 0;
-  }
-  .avatar-stage {
-    grid-row: 2 / 4;
-    height: 223px;
-  }
-  .avatar-stage app-chibi {
-    width: 168px;
-    height: 205px;
   }
   .orbit-one {
     width: 143px;
@@ -851,48 +792,8 @@ form .subtle-note {
     font-size: 19px;
     bottom: 6px;
   }
-  .identity {
-    padding: 43px 16px 12px 0;
-    text-align: left;
-  }
-  .identity .eyebrow {
-    font-size: 7px;
-    letter-spacing: 1px;
-    line-height: 1.6;
-  }
-  .identity h2 {
-    font-size: 30px;
-    margin-top: 5px;
-  }
   .identity > p:last-child {
-    font-size: 10px;
     line-height: 1.6;
-  }
-  .character-xp {
-    padding: 0 19px 20px 0;
-  }
-  .character-xp .row {
-    font-size: 9px;
-    gap: 4px;
-    flex-wrap: wrap;
-  }
-  .character-xp p {
-    text-align: left;
-    font-size: 9px;
-  }
-  .character-note {
-    grid-column: 1 / -1;
-  }
-  .stats-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px 14px;
-  }
-  .stat {
-    grid-template-columns: 21px 1fr;
-    font-size: 9px;
-  }
-  .stat strong {
-    grid-column: 2;
   }
   .recovery-note {
     display: none;
@@ -903,101 +804,11 @@ form .subtle-note {
   .stats-panel .subtle-note {
     margin-top: 15px;
   }
-  .momentum-panel {
-    padding: 21px;
-    gap: 10px;
-  }
-  .momentum-copy .eyebrow {
-    font-size: 8px;
-  }
-  .momentum-copy h2 {
-    font-size: 18px;
-  }
-  .momentum-copy > p:not(.eyebrow) {
-    font-size: 10px;
-  }
-  .rhythm {
-    gap: 6px;
-  }
-  .rhythm-day > span {
-    width: 23px;
-    height: 23px;
-    font-size: 11px;
-  }
-  .momentum-score .score-ring {
-    width: 83px;
-    height: 83px;
-    padding: 4px;
-  }
-  .score-ring strong {
-    font-size: 25px;
-  }
-  .score-ring small {
-    font-size: 12px;
-  }
-  .score-ring span {
-    font-size: 6px;
-    letter-spacing: 1px;
-  }
-  .momentum-score > span {
-    font-size: 8px;
-    max-width: 83px;
-  }
-  .quest-panel {
-    padding: 22px 18px 0;
-  }
-  .quest-row {
-    gap: 10px;
-  }
-  .quest-content h3 {
-    font-size: 12px;
-  }
-  .quest-content p {
-    font-size: 10px;
-  }
   .quest-symbol {
-    width: 29px;
     height: 36px;
-    font-size: 20px;
-  }
-  .quest-progress {
-    gap: 6px;
   }
   .quest-progress progress {
     max-width: 80px;
-  }
-  .quest-progress > span {
-    font-size: 8px;
-  }
-  .quest-action button {
-    font-size: 9px;
-  }
-  .quest-action .reward {
-    font-size: 10px;
-  }
-  .section-heading h2 {
-    font-size: 17px;
-  }
-  .section-heading .eyebrow {
-    font-size: 7px;
-    letter-spacing: 1px;
-  }
-  .section-foot {
-    font-size: 9px;
-    line-height: 1.6;
-  }
-  .skill-card {
-    padding: 18px;
-  }
-  .skill-card h3 {
-    font-size: 14px;
-  }
-  .skill-card p {
-    font-size: 10px;
-  }
-  .boss-panel {
-    padding: 21px 18px;
-    gap: 16px;
   }
   .boss-emblem {
     width: 54px;
@@ -1007,14 +818,6 @@ form .subtle-note {
   .boss-content h2 {
     font-size: 23px;
   }
-  .boss-content > p {
-    font-size: 10px;
-    line-height: 1.6;
-  }
-  .boss-bottom {
-    flex-wrap: wrap;
-    line-height: 1.6;
-  }
   .boss-bottom .pill {
     display: none;
   }
@@ -1023,32 +826,8 @@ form .subtle-note {
     flex-direction: column;
     gap: 0;
   }
-  footer p {
-    line-height: 1.6;
-  }
-  .activity-history li {
-    font-size: 11px;
-  }
-  .activity-history li strong {
-    font-size: 10px;
-  }
 }
 
-// Keep touch controls readable without automatic input zoom on small mobile screens.
-@media (max-width: 760px) {
-  form select,
-  form input {
-    font-size: 16px;
-  }
-  .quest-action button {
-    min-height: 44px;
-  }
-}
-
-.character-note {
-  display: block;
-  min-height: 44px;
-}
 .character-note:hover {
   color: var(--accent);
   background: #b6cb9110;
@@ -1084,5 +863,419 @@ form .subtle-note {
   .experience-settings {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+.avatar-message {
+  margin: 0 22px 22px;
+  padding: 12px 14px;
+  border: 1px solid #a7c88922;
+  border-radius: 12px;
+  color: #d2dcc7;
+  background: #97b9830a;
+  font-size: 12px;
+  line-height: 1.7;
+  text-align: center;
+}
+.avatar-message span {
+  color: #bccb99;
+  margin-right: 4px;
+}
+
+.mobile-activity-action {
+  display: none;
+}
+
+// Shared mobile/tablet shell; narrower queries below adjust only their differences.
+@media (max-width: 1199px) {
+  .dashboard-grid {
+    gap: 22px;
+  }
+  .skills-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .momentum-score {
+    margin-left: auto;
+  }
+  .site-header {
+    min-height: 72px;
+    padding: 0 24px;
+  }
+  .site-header nav,
+  .site-header .header-badge {
+    display: none;
+  }
+  .site-header .brand {
+    min-height: 64px;
+    padding: 12px 0;
+  }
+  main {
+    padding: 28px 24px 24px;
+  }
+  .page-heading > .primary {
+    display: none;
+  }
+  .page-heading {
+    margin-bottom: 24px;
+  }
+  .page-heading p:last-child {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .mobile-activity-action {
+    display: inline-flex;
+    position: fixed;
+    z-index: 35;
+    right: calc(24px + env(safe-area-inset-right, 0px));
+    bottom: calc(var(--mobile-nav-bottom) + 12px);
+    width: min(360px, calc(100% - 48px));
+    min-height: 56px;
+    padding: 14px 20px;
+    border-radius: 14px;
+    font-size: 16px;
+    box-shadow:
+      0 8px 32px #06120eb3,
+      0 0 0 1px #d9e9bb22;
+  }
+  .eyebrow,
+  .section-heading .eyebrow,
+  .identity .eyebrow,
+  .dialog-heading .eyebrow {
+    font-size: 10px;
+    line-height: 1.5;
+    letter-spacing: 1.2px;
+  }
+  .small-label,
+  .stats-panel .small-label {
+    font-size: 10px;
+    line-height: 1.5;
+  }
+  .pill,
+  .count-badge {
+    font-size: 12px;
+  }
+  .identity h2 {
+    overflow-wrap: anywhere;
+  }
+  .identity > p:last-child {
+    font-size: 13px;
+  }
+  .avatar-message {
+    font-size: 13px;
+  }
+  .character-xp .row {
+    font-size: 12px;
+    flex-wrap: wrap;
+  }
+  .character-xp p {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .character-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    font-size: 13px;
+    padding: 12px;
+  }
+  .stat {
+    font-size: 12px;
+    grid-template-columns: 24px minmax(0, 1fr);
+  }
+  .stat strong {
+    grid-column: 2;
+    font-size: 20px;
+  }
+  .stats-panel .subtle-note,
+  .recovery-note p {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .momentum-panel {
+    flex-wrap: wrap;
+    gap: 14px;
+    padding: 22px;
+  }
+  .momentum-copy > p:not(.eyebrow),
+  .momentum-copy .subtle-note {
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .rhythm {
+    gap: 6px;
+  }
+  .rhythm-day > span {
+    width: 28px;
+    height: 28px;
+    font-size: 13px;
+  }
+  .rhythm-day small {
+    font-size: 11px;
+  }
+  .momentum-score .score-ring {
+    width: 96px;
+    height: 96px;
+    padding: 5px;
+  }
+  .score-ring strong {
+    font-size: 29px;
+  }
+  .score-ring small {
+    font-size: 14px;
+  }
+  .score-ring span {
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+  .momentum-score > span {
+    font-size: 11px;
+    max-width: 100px;
+    line-height: 1.4;
+  }
+  .quest-content h3 {
+    font-size: 15px;
+    line-height: 1.4;
+  }
+  .quest-content p,
+  .quest-progress > span {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .quest-action .reward,
+  .quest-action button {
+    font-size: 12px;
+  }
+  .quest-action button {
+    min-height: 48px;
+  }
+  .quest-progress {
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+  .quest-progress progress {
+    min-width: 65px;
+  }
+  .section-foot {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .skill-card {
+    min-height: 170px;
+    padding: 18px;
+  }
+  .skill-card h3 {
+    font-size: 15px;
+  }
+  .skill-card p,
+  .skill-level,
+  .skill-footer {
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .skill-footer {
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+  .boss-panel {
+    padding: 22px;
+    gap: 16px;
+  }
+  .boss-content > p,
+  .boss-health,
+  .boss-bottom,
+  .boss-bottom .pill,
+  .boss-period {
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .boss-health {
+    flex-wrap: wrap;
+    gap: 4px 10px;
+  }
+  .activity-history li,
+  .activity-history li strong,
+  .activity-history .section-heading > span {
+    font-size: 13px;
+  }
+  .experience-settings strong {
+    font-size: 15px;
+  }
+  .experience-settings p,
+  .experience-actions button {
+    font-size: 13px;
+  }
+  .experience-actions {
+    gap: 10px;
+  }
+  footer strong {
+    font-size: 10px;
+  }
+  footer p,
+  footer button {
+    font-size: 12px;
+    line-height: 1.7;
+  }
+  dialog {
+    padding: 24px;
+    border-radius: 20px;
+  }
+  dialog > p,
+  form label,
+  form .subtle-note {
+    font-size: 14px;
+  }
+  form input,
+  form select {
+    min-height: 50px;
+    font-size: 16px;
+  }
+  .close-button {
+    min-width: 48px;
+    min-height: 48px;
+  }
+  .dialog-actions {
+    gap: 10px;
+  }
+  .dialog-actions button {
+    min-height: 50px;
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+  .dashboard-grid {
+    grid-template-columns: 300px minmax(0, 1fr);
+  }
+  .momentum-copy {
+    flex: 1 1 210px;
+  }
+  .quest-panel {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .quest-row {
+    gap: 10px;
+  }
+  .quest-symbol {
+    width: 32px;
+  }
+  .boss-emblem {
+    width: 58px;
+    height: 84px;
+    font-size: 44px;
+  }
+}
+
+@media (max-width: 767px) {
+  .site-header {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  main {
+    padding: 24px 18px;
+  }
+  .dashboard-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .mobile-activity-action {
+    left: calc(16px + env(safe-area-inset-left, 0px));
+    right: calc(16px + env(safe-area-inset-right, 0px));
+    width: auto;
+  }
+  .character-card {
+    display: grid;
+    grid-template-columns: 44% minmax(0, 56%);
+  }
+  .card-top {
+    grid-column: 1 / -1;
+  }
+  .avatar-stage {
+    min-width: 0;
+    grid-column: 1;
+    grid-row: 2 / 4;
+    height: 230px;
+  }
+  .avatar-stage app-character-portrait {
+    width: min(170px, 100%);
+    height: 205px;
+    max-width: 100%;
+  }
+  .identity {
+    grid-column: 2;
+    grid-row: 2;
+    text-align: left;
+    padding: 28px 16px 8px 0;
+  }
+  .identity h2 {
+    margin-top: 5px;
+    font-size: 30px;
+  }
+  .identity > p:last-child {
+    font-size: 12px;
+  }
+  .character-xp {
+    grid-column: 2;
+    grid-row: 3;
+    padding: 0 18px 20px 0;
+  }
+  .character-xp .row {
+    gap: 5px;
+    font-size: 11px;
+  }
+  .character-xp p {
+    text-align: left;
+    font-size: 11px;
+  }
+  .avatar-message {
+    grid-column: 1 / -1;
+    grid-row: 4;
+    margin: 2px 18px 18px;
+    text-align: left;
+  }
+  .character-note {
+    grid-column: 1 / -1;
+    grid-row: 5;
+  }
+  .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px 20px;
+  }
+  .momentum-panel {
+    padding: 20px;
+  }
+  .momentum-copy {
+    flex: 1 1 200px;
+  }
+  .quest-panel {
+    padding: 22px 16px 0;
+  }
+  .quest-row {
+    gap: 9px;
+  }
+  .quest-symbol {
+    width: 27px;
+    font-size: 20px;
+  }
+  .quest-content h3 {
+    font-size: 14px;
+  }
+  .boss-panel {
+    padding: 20px 16px;
+  }
+  .boss-bottom {
+    flex-wrap: wrap;
+  }
+  .experience-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .experience-actions button {
+    width: 100%;
+  }
+  .activity-history li {
+    flex-wrap: wrap;
+    gap: 6px;
   }
 }
