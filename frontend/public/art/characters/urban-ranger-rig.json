@@ -1,0 +1,21 @@
+{
+  "id": "urban-ranger",
+  "width": 1667,
+  "height": 943,
+  "divider": 915,
+  "body": {
+    "neckX": 526,
+    "neckY": 168,
+    "footY": 855
+  },
+  "eyes": {
+    "left": {
+      "x": 1180,
+      "y": 527
+    },
+    "right": {
+      "x": 1377,
+      "y": 558
+    }
+  }
+}

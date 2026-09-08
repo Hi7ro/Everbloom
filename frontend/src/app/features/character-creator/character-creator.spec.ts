@@ -1,5 +1,9 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { CharacterAura } from '../../shared/character-aura';
+import { CharacterPortrait } from '../../shared/character-portrait';
+import { BROWSER_STORAGE } from '../../data/browser-storage';
 import { ActivatedRoute, convertToParamMap, provideRouter, Router } from '@angular/router';
 import { createMockSnapshot } from '../../data/mock-data';
 import { GameSnapshot } from '../../domain/models';
@@ -30,6 +34,7 @@ describe('character creator flow', () => {
       imports: [CharacterCreator],
       providers: [
         provideRouter([]),
+        { provide: BROWSER_STORAGE, useValue: null },
         { provide: ActivatedRoute, useValue: { snapshot: routeSnapshot } },
         { provide: JourneyStore, useValue: { configured } },
         {
@@ -50,32 +55,39 @@ describe('character creator flow', () => {
     vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
   });
 
-  it('previews a form edit immediately, saves a normalized profile, and returns to the dashboard', async () => {
+  it('previews independent module and color edits, saves a normalized profile and returns to the dashboard', async () => {
     const fixture = TestBed.createComponent(CharacterCreator);
-    await fixture.whenStable();
-    fixture.componentInstance.setArtwork('custom');
     await fixture.whenStable();
     const root = fixture.nativeElement as HTMLElement;
     const original = structuredClone(snapshot());
     const name = root.querySelector<HTMLInputElement>('#character-name')!;
     name.value = '  Noé Moon  ';
     name.dispatchEvent(new Event('input'));
-    // RadioControlValueAccessor owns the bound value; select by the visible option label.
-    const outfit = Array.from(root.querySelectorAll('label.style-choice')).find(
-      (label) => label.querySelector('strong')?.textContent === 'Abyssal',
+    const outfit = Array.from(
+      root.querySelectorAll<HTMLButtonElement>('.outfit-field button'),
+    ).find((button) => button.textContent?.includes('Obsidianrüstung'))!;
+    outfit.click();
+    const hair = Array.from(root.querySelectorAll<HTMLButtonElement>('.hair-field button')).find(
+      (button) => button.textContent?.includes('Aschblaue Curtains'),
     )!;
-    const aura = Array.from(root.querySelectorAll('.aura-choices label')).find(
-      (label) => label.textContent?.trim() === 'Blütenzauber',
+    hair.click();
+    root.querySelector<HTMLButtonElement>('button[aria-label="Augenfarbe: Blau"]')!.click();
+    const aura = Array.from(root.querySelectorAll('.aura-choices label')).find((label) =>
+      label.textContent?.includes('Blütenzauber'),
     )!;
-    outfit.querySelector<HTMLInputElement>('input')!.click();
     aura.querySelector<HTMLInputElement>('input')!.click();
     await fixture.whenStable();
-    expect(root.querySelector('app-chibi [data-slot="outfit"]')!.getAttribute('data-variant')).toBe(
-      'abyssal',
-    );
-    expect(root.querySelector('app-chibi [data-slot="aura"]')!.getAttribute('data-variant')).toBe(
-      'rose',
-    );
+    const preview = fixture.debugElement.query(By.css('.preview app-character-portrait'))
+      .componentInstance as CharacterPortrait;
+    expect(preview.appearance()).toBe(fixture.componentInstance.draft()!.appearance);
+    expect(preview.appearance()).toMatchObject({
+      artwork: 'original',
+      illustratedHair: 'frost-scholar',
+      outfitSet: 'abyss-walker',
+      eyeColor: '#5e92c7',
+      aura: 'rose',
+    });
+    expect(root.querySelector('app-chibi')).toBeNull();
     expect(snapshot()).toEqual(original);
     expect(load).not.toHaveBeenCalled();
     root
@@ -84,7 +96,14 @@ describe('character creator flow', () => {
     await fixture.whenStable();
     expect(updateCharacter).toHaveBeenCalledExactlyOnceWith({
       name: 'Noé Moon',
-      appearance: { ...original!.character.appearance, artwork: 'custom', outfit: 'abyssal', aura: 'rose' },
+      appearance: {
+        ...original!.character.appearance,
+        artwork: 'original',
+        illustratedHair: 'frost-scholar',
+        outfitSet: 'abyss-walker',
+        eyeColor: '#5e92c7',
+        aura: 'rose',
+      },
     });
     expect(TestBed.inject(Router).navigateByUrl).toHaveBeenCalledWith('/dashboard');
   });
@@ -109,10 +128,10 @@ describe('character creator flow', () => {
     });
     const fixture = TestBed.createComponent(CharacterCreator);
     await fixture.whenStable();
-    fixture.componentInstance.choose('hair', 'm-topknot');
+    fixture.componentInstance.chooseModule('illustratedHair', 'forest-scout');
     await fixture.componentInstance.save();
     await fixture.whenStable();
-    expect(fixture.componentInstance.draft()!.appearance.hair).toBe('m-topknot');
+    expect(fixture.componentInstance.draft()!.appearance.illustratedHair).toBe('forest-scout');
     expect(fixture.nativeElement.textContent).toContain('Deine Auswahl bleibt erhalten');
     expect(TestBed.inject(Router).navigateByUrl).not.toHaveBeenCalled();
     await fixture.componentInstance.save();
@@ -126,174 +145,283 @@ describe('character creator flow', () => {
     await fixture.whenStable();
     expect(load).toHaveBeenCalledOnce();
     const original = structuredClone(snapshot());
-    fixture.componentInstance.choose('body', 'compact');
+    fixture.componentInstance.chooseModule('outfitSet', 'forest-scout');
     fixture.componentInstance.cancel();
     expect(updateCharacter).not.toHaveBeenCalled();
     expect(snapshot()).toEqual(original);
     expect(TestBed.inject(Router).navigateByUrl).toHaveBeenCalledWith('/dashboard');
   });
-  it('previews level and interest without changing or saving the actual profile and XP', async () => {
-    const fixture = TestBed.createComponent(CharacterCreator);
-    await fixture.whenStable();
-    fixture.componentInstance.setArtwork('custom');
-    await fixture.whenStable();
-    const before = structuredClone(snapshot());
-    const root = fixture.nativeElement as HTMLElement;
-    const interest = root.querySelector<HTMLSelectElement>('#preview-interest')!;
-    interest.value = 'meditation';
-    interest.dispatchEvent(new Event('change'));
-    const level = root.querySelector<HTMLSelectElement>('#preview-level')!;
-    level.selectedIndex = 2;
-    level.dispatchEvent(new Event('change'));
-    await fixture.whenStable();
-    expect(fixture.componentInstance.previewInterest()).toBe('meditation');
-    expect(fixture.componentInstance.previewLevel()).toBe(30);
-    expect(snapshot()).toEqual(before);
-    expect(updateCharacter).not.toHaveBeenCalled();
-  });
-  it('offers six own hairstyles per presentation and remembers each draft choice without changing progress', async () => {
-    const fixture = TestBed.createComponent(CharacterCreator);
-    await fixture.whenStable();
-    fixture.componentInstance.setArtwork('custom');
-    await fixture.whenStable();
-    const root = fixture.nativeElement as HTMLElement;
-    const before = structuredClone(snapshot());
-    const inputs = () => root.querySelectorAll<HTMLInputElement>('input[name="hair"]');
-    expect(inputs()).toHaveLength(6);
-    fixture.componentInstance.choose('hair', 'm-undercut');
-    const female = Array.from(root.querySelectorAll('.presentation-choices label')).find((label) =>
-      label.textContent?.includes('Weiblich'),
-    )!;
-    female.querySelector<HTMLInputElement>('input')!.click();
-    await fixture.whenStable();
-    expect(inputs()).toHaveLength(6);
-    expect(fixture.componentInstance.draft()?.appearance).toMatchObject({
-      presentation: 'female',
-      hair: 'f-bob',
-    });
-    expect(fixture.componentInstance.hairstyles().every((hair) => hair.id.startsWith('f-'))).toBe(
-      true,
-    );
-    fixture.componentInstance.choose('hair', 'f-ponytail');
-    fixture.componentInstance.setPresentation('male');
-    expect(fixture.componentInstance.draft()?.appearance.hair).toBe('m-undercut');
-    fixture.componentInstance.setPresentation('female');
-    expect(fixture.componentInstance.draft()?.appearance.hair).toBe('f-ponytail');
-    expect(snapshot()).toEqual(before);
-    await fixture.componentInstance.save();
-    expect(updateCharacter).toHaveBeenCalledWith(
-      expect.objectContaining({
-        appearance: expect.objectContaining({ presentation: 'female', hair: 'f-ponytail' }),
-      }),
-    );
-  });
 
-  it('starts an older male profile in the original look with only supported controls', async () => {
+  it('offers only six illustrated presets, hair variants and outfit sets per presentation', async () => {
     const fixture = TestBed.createComponent(CharacterCreator);
     await fixture.whenStable();
     const root = fixture.nativeElement as HTMLElement;
-    expect(fixture.componentInstance.artwork()).toBe('original');
-    expect(root.querySelector('.preview.original-preview')).not.toBeNull();
-    expect(root.querySelector('app-character-portrait')).not.toBeNull();
-    expect(root.querySelector('input[name="hair"]')).toBeNull();
+    for (const presentation of ['male', 'female'] as const) {
+      fixture.componentInstance.setPresentation(presentation);
+      await fixture.whenStable();
+      expect(root.querySelectorAll('.illustration-choice')).toHaveLength(6);
+      expect(root.querySelectorAll('.hair-field button')).toHaveLength(6);
+      expect(root.querySelectorAll('.outfit-field button')).toHaveLength(6);
+      for (const child of fixture.debugElement.queryAll(
+        By.css('.illustration-thumbnail app-character-portrait'),
+      )) {
+        const portrait = child.componentInstance as CharacterPortrait;
+        expect(portrait.animated()).toBe(false);
+        expect(portrait.appearance().presentation).toBe(presentation);
+        expect(portrait.appearance().artwork).toBe('original');
+      }
+    }
+    expect(root.textContent).not.toContain('Selbst gestalten');
     expect(root.querySelector('input[name="body"]')).toBeNull();
+    expect(root.querySelector('input[name="hair"]')).toBeNull();
     expect(root.querySelector('input[name="outfit"]')).toBeNull();
     expect(root.querySelector('input[type="color"]')).toBeNull();
     expect(root.querySelector('#preview-interest')).toBeNull();
-    expect(root.querySelector('.motion-toggle')).not.toBeNull();
-    expect(root.querySelector('input[name="aura"]')).not.toBeNull();
-    fixture.componentInstance.chooseAura('rose');
-    expect(fixture.componentInstance.artwork()).toBe('original');
-    expect(fixture.componentInstance.draft()?.appearance.artwork).toBeUndefined();
+    expect(root.querySelector('app-chibi')).toBeNull();
+    expect(root.querySelector('#outfit-note')?.textContent).toContain('vollständiges Set');
   });
 
-  it('switches the actual look radios and female selection without losing the previous custom look', async () => {
+  it('remembers both presentations with independent hair, outfits and colors', async () => {
     const fixture = TestBed.createComponent(CharacterCreator);
     await fixture.whenStable();
-    const root = fixture.nativeElement as HTMLElement;
+    const component = fixture.componentInstance;
     const before = structuredClone(snapshot());
-    const clickLook = async (labelText: string) => {
-      const label = Array.from(root.querySelectorAll('.artwork-choice')).find(
-        (label) => label.querySelector('strong')?.textContent === labelText,
-      )!;
-      label.querySelector<HTMLInputElement>('input')!.click();
-      await fixture.whenStable();
-    };
-    await clickLook('Selbst gestalten');
-    expect(root.querySelectorAll('input[name="hair"]')).toHaveLength(6);
-    const female = Array.from(root.querySelectorAll('.presentation-choices label')).find(
-      (label) => label.textContent?.includes('Weiblich'),
-    )!;
-    female.querySelector<HTMLInputElement>('input')!.click();
-    await fixture.whenStable();
-    fixture.componentInstance.choose('hair', 'f-ponytail');
-    fixture.componentInstance.choose('outfitColor', '#dfbfc3');
-    await clickLook('Illustrierter Look');
-    expect(fixture.componentInstance.draft()?.appearance).toMatchObject({ presentation: 'female', artwork: 'original', illustration: 'moonblade' });
-    expect(root.querySelector('input[name="hair"]')).toBeNull();
-    await clickLook('Selbst gestalten');
-    expect(fixture.componentInstance.draft()?.appearance).toMatchObject({
-      presentation: 'female', artwork: 'custom', hair: 'f-ponytail', outfitColor: '#dfbfc3',
+    component.chooseModule('illustratedHair', 'frost-scholar');
+    component.chooseModule('outfitSet', 'abyss-walker');
+    component.chooseColor('hairTint', '#d5dbe0');
+    const male = structuredClone(component.draft()!.appearance);
+    component.setPresentation('female');
+    component.chooseModule('illustratedHair', 'rose-runner');
+    component.chooseModule('outfitSet', 'starweaver');
+    component.chooseColor('skinTone', '#68442f');
+    const female = structuredClone(component.draft()!.appearance);
+    expect(female).toMatchObject({
+      presentation: 'female',
+      hair: 'f-bob',
+      illustration: 'moonblade',
+      illustratedHair: 'rose-runner',
+      outfitSet: 'starweaver',
     });
+    expect(female).not.toHaveProperty('hairTint');
+    component.setPresentation('male');
+    expect(component.draft()!.appearance).toEqual(male);
+    component.setPresentation('female');
+    expect(component.draft()!.appearance).toEqual(female);
     expect(snapshot()).toEqual(before);
-    await fixture.componentInstance.save();
-    expect(updateCharacter).toHaveBeenCalledWith(expect.objectContaining({
-      appearance: expect.objectContaining({ presentation: 'female', artwork: 'custom', hair: 'f-ponytail' }),
-    }));
+    await component.save();
+    expect(updateCharacter).toHaveBeenCalledWith(expect.objectContaining({ appearance: female }));
   });
 
-  it('chooses real illustrated presets, remembers both presentations, and saves without changing progression', async () => {
+  it('choosing a preset resets only illustrated modules and colors, including a repeated selection', async () => {
+    const fixture = TestBed.createComponent(CharacterCreator);
+    await fixture.whenStable();
+    const component = fixture.componentInstance;
+    component.setName('Ari Moon');
+    component.chooseAura('void');
+    const root = fixture.nativeElement as HTMLElement;
+    const selectUrban = () =>
+      root
+        .querySelector<HTMLButtonElement>('[aria-label="Urbaner Abenteurer als Vorlage wählen"]')!
+        .click();
+    for (let selection = 0; selection < 2; selection++) {
+      component.chooseModule('illustratedHair', 'forest-scout');
+      component.chooseModule('outfitSet', 'abyss-walker');
+      component.chooseColor('hairTint', '#9478bc');
+      component.chooseColor('eyeColor', '#5f9e6e');
+      component.chooseColor('skinTone', '#68442f');
+      selectUrban();
+      await fixture.whenStable();
+      const profile = component.draft()!;
+      expect(profile).toMatchObject({
+        name: 'Ari Moon',
+        appearance: { artwork: 'original', illustration: 'urban-ranger', aura: 'void' },
+      });
+      for (const slot of ['illustratedHair', 'outfitSet', 'eyeColor', 'skinTone', 'hairTint'])
+        expect(profile.appearance).not.toHaveProperty(slot);
+      expect(component.selectedHair()).toBe('urban-ranger');
+      expect(component.selectedOutfit()).toBe('urban-ranger');
+    }
+  });
+
+  it('offers original plus six palette colors and clears only the chosen color on reset', async () => {
     const fixture = TestBed.createComponent(CharacterCreator);
     await fixture.whenStable();
     const root = fixture.nativeElement as HTMLElement;
-    const before = structuredClone(snapshot());
-    const clickPreset = async (name: string) => {
-      const label = Array.from(root.querySelectorAll('.illustration-choice')).find(
-        (entry) => entry.querySelector('strong')?.textContent === name,
-      )!;
-      label.querySelector<HTMLInputElement>('input')!.click();
-      await fixture.whenStable();
-    };
-    expect(root.querySelectorAll('.illustration-choice')).toHaveLength(2);
-    await clickPreset('Urbaner Abenteurer');
-    expect(fixture.componentInstance.selectedIllustration()?.id).toBe('urban-ranger');
-    fixture.componentInstance.setPresentation('female');
+    expect(root.querySelectorAll('.color-field')).toHaveLength(3);
+    for (const field of root.querySelectorAll('.color-field'))
+      expect(field.querySelectorAll('button')).toHaveLength(7);
+    root.querySelector<HTMLButtonElement>('[aria-label="Augenfarbe: Blau"]')!.click();
+    root.querySelector<HTMLButtonElement>('[aria-label="Hautton: Tiefbraun"]')!.click();
+    root.querySelector<HTMLButtonElement>('[aria-label="Haarfarbe: Silber"]')!.click();
+    root.querySelector<HTMLButtonElement>('[aria-label="Augenfarbe: Original"]')!.click();
     await fixture.whenStable();
-    expect(fixture.componentInstance.artwork()).toBe('original');
-    expect(root.querySelectorAll('.illustration-choice')).toHaveLength(2);
-    expect(root.querySelector('input[name="hair"]')).toBeNull();
-    await clickPreset('Sternenweberin');
-    fixture.componentInstance.setPresentation('male');
-    expect(fixture.componentInstance.selectedIllustration()?.id).toBe('urban-ranger');
-    fixture.componentInstance.setPresentation('female');
-    expect(fixture.componentInstance.selectedIllustration()?.id).toBe('starweaver');
-    fixture.componentInstance.chooseAura('void');
-    expect(snapshot()).toEqual(before);
-    await fixture.componentInstance.save();
-    expect(updateCharacter).toHaveBeenCalledWith(expect.objectContaining({
-      appearance: expect.objectContaining({
-        presentation: 'female', artwork: 'original', illustration: 'starweaver', aura: 'void',
-      }),
-    }));
+    expect(fixture.componentInstance.draft()!.appearance).toMatchObject({
+      skinTone: '#422b23',
+      hairTint: '#d5dbe0',
+    });
+    expect(fixture.componentInstance.draft()!.appearance).not.toHaveProperty('eyeColor');
+    expect(
+      root.querySelector('[aria-label="Augenfarbe: Original"]')?.getAttribute('aria-pressed'),
+    ).toBe('true');
   });
 
-  it('keeps an older female profile in its existing custom mode', async () => {
-    snapshot.update((current) => current ? {
-      ...current, character: { ...current.character, appearance: {
-        ...current.character.appearance, presentation: 'female', hair: 'f-braid',
-      } },
-    } : current);
+  it('migrates an older female custom profile in the draft without changing its name or XP', async () => {
+    snapshot.update((current) =>
+      current
+        ? {
+            ...current,
+            character: {
+              ...current.character,
+              name: 'Liora',
+              appearance: {
+                ...current.character.appearance,
+                presentation: 'female',
+                hair: 'f-braid',
+                artwork: 'custom',
+              },
+            },
+          }
+        : current,
+    );
+    const before = structuredClone(snapshot());
     const fixture = TestBed.createComponent(CharacterCreator);
     await fixture.whenStable();
-    expect(fixture.componentInstance.artwork()).toBe('custom');
-    expect(fixture.nativeElement.querySelectorAll('input[name="hair"]')).toHaveLength(6);
-    fixture.componentInstance.setPresentation('male');
-    expect(fixture.componentInstance.artwork()).toBe('custom');
+    expect(fixture.componentInstance.draft()).toMatchObject({
+      name: 'Liora',
+      appearance: { presentation: 'female', artwork: 'original', hair: 'f-braid' },
+    });
+    expect(fixture.componentInstance.selectedIllustration()?.id).toBe('moonblade');
+    expect(snapshot()).toEqual(before);
+    expect(fixture.nativeElement.querySelector('app-chibi')).toBeNull();
+  });
+
+  it('keeps all draft changes blocked during save and changes motion without changing progression', async () => {
+    const fixture = TestBed.createComponent(CharacterCreator);
+    await fixture.whenStable();
+    const component = fixture.componentInstance;
+    const profile = structuredClone(component.draft());
+    const before = structuredClone(snapshot());
+    busy.set(true);
+    component.setName('Changed');
+    component.setPresentation('female');
+    component.chooseModule('outfitSet', 'abyss-walker');
+    component.chooseIllustration('urban-ranger');
+    component.chooseColor('eyeColor', '#5f9e6e');
+    component.chooseAura('void');
+    await component.save();
+    component.cancel();
+    expect(component.draft()).toEqual(profile);
+    expect(updateCharacter).not.toHaveBeenCalled();
+    expect(TestBed.inject(Router).navigateByUrl).not.toHaveBeenCalled();
+    const motion = component.feedback.motionEnabled();
+    fixture.nativeElement.querySelector('.motion-toggle').click();
+    await fixture.whenStable();
+    expect(component.feedback.motionEnabled()).toBe(!motion);
+    expect(snapshot()).toEqual(before);
+  });
+
+  it('previews future aura effects and colors without saving them or changing progression', async () => {
+    const fixture = TestBed.createComponent(CharacterCreator);
+    await fixture.whenStable();
+    const component = fixture.componentInstance;
+    component.chooseAura('rose');
+    const before = structuredClone(snapshot());
+    const profile = structuredClone(component.draft());
+    const root = fixture.nativeElement as HTMLElement;
+    const details = root.querySelector<HTMLDetailsElement>('.aura-lab details')!;
+    details.open = true;
+    await fixture.whenStable();
+    const buttons = Array.from(
+      root.querySelectorAll<HTMLButtonElement>('.advanced-aura-choices button'),
+    );
+    expect(buttons).toHaveLength(10);
+    buttons.find((button) => button.textContent?.includes('Geistwächter'))!.click();
+    await fixture.whenStable();
+    root.querySelector<HTMLButtonElement>('[aria-label="Aurafarbe: Gold"]')!.click();
+    await fixture.whenStable();
+    const aura = fixture.debugElement.query(By.css('.aura-tryout'))
+      .componentInstance as CharacterAura;
+    const portrait = fixture.debugElement.query(By.css('.preview app-character-portrait'))
+      .componentInstance as CharacterPortrait;
+    expect(aura.aura()).toBe('guardian');
+    expect(aura.color()).toBe('#f1d58e');
+    expect(portrait.appearance()).toEqual({ ...profile!.appearance, aura: 'none' });
+    expect(component.draft()).toEqual(profile);
+    expect(snapshot()).toEqual(before);
+    expect(root.querySelector('#aura-preview-note')?.textContent).toContain(
+      'Wird nicht gespeichert',
+    );
+    await component.save();
+    expect(updateCharacter).toHaveBeenCalledExactlyOnceWith(profile);
+    expect(snapshot()).toEqual(before);
+  });
+
+  it('ends the tryout when choosing a real aura, preset, presentation or closing its controls', async () => {
+    const fixture = TestBed.createComponent(CharacterCreator);
+    await fixture.whenStable();
+    const component = fixture.componentInstance;
+    const details = fixture.nativeElement.querySelector('.aura-lab details') as HTMLDetailsElement;
+    details.open = true;
+    await fixture.whenStable();
+    const endActions = [
+      () => component.chooseAura('sage'),
+      () => component.chooseIllustration('urban-ranger'),
+      () => component.setPresentation('female'),
+      () => component.endAuraPreview(),
+      () => {
+        details.open = false;
+        details.dispatchEvent(new Event('toggle'));
+      },
+    ];
+    for (const end of endActions) {
+      component.choosePreviewAura('demonic');
+      component.previewFierce.set(true);
+      expect(component.previewAppearance()?.aura).toBe('none');
+      end();
+      expect(component.previewAura()).toBeNull();
+      expect(component.previewFierce()).toBe(false);
+      expect(component.previewAppearance()).toBe(component.draft()!.appearance);
+    }
+    await fixture.whenStable();
+    expect(fixture.nativeElement.querySelector('.aura-tryout')).toBeNull();
+  });
+
+  it('limits preview inputs and passes the motion setting and optional shadow eyes to the effect', async () => {
+    const fixture = TestBed.createComponent(CharacterCreator);
+    await fixture.whenStable();
+    const component = fixture.componentInstance;
+    component.choosePreviewAura('unreleased');
+    expect(component.previewAura()).toBeNull();
+    const details = fixture.nativeElement.querySelector('.aura-lab details') as HTMLDetailsElement;
+    details.open = true;
+    await fixture.whenStable();
+    component.choosePreviewAura('demonic');
+    const defaultColor = component.previewColor();
+    component.choosePreviewColor('url(https://example.org)');
+    expect(component.previewColor()).toBe(defaultColor);
+    await fixture.whenStable();
+    fixture.nativeElement.querySelector('input[name="previewFierce"]').click();
+    if (component.feedback.motionEnabled()) component.feedback.toggleMotion();
+    await fixture.whenStable();
+    const aura = fixture.debugElement.query(By.css('.aura-tryout'))
+      .componentInstance as CharacterAura;
+    expect(aura.fierce()).toBe(true);
+    expect(aura.animated()).toBe(false);
+    const profile = structuredClone(component.draft());
+    busy.set(true);
+    component.choosePreviewAura('angel');
+    component.choosePreviewColor('#f1d58e');
+    expect(component.previewAura()).toBe('demonic');
+    expect(component.previewColor()).toBe(defaultColor);
+    expect(component.draft()).toEqual(profile);
   });
 
   it('returns a first successful profile to onboarding before preferences are configured', async () => {
     configured.set(false);
-    updateCharacter.mockImplementationOnce(async () => { profileIsSaved.set(true); return true; });
+    updateCharacter.mockImplementationOnce(async () => {
+      profileIsSaved.set(true);
+      return true;
+    });
     const fixture = TestBed.createComponent(CharacterCreator);
     await fixture.whenStable();
     await fixture.componentInstance.save();

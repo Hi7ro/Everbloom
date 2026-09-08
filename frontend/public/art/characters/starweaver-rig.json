@@ -1,0 +1,21 @@
+{
+  "id": "starweaver",
+  "width": 1667,
+  "height": 943,
+  "divider": 864,
+  "body": {
+    "neckX": 490,
+    "neckY": 166,
+    "footY": 882
+  },
+  "eyes": {
+    "left": {
+      "x": 1229,
+      "y": 446
+    },
+    "right": {
+      "x": 1417,
+      "y": 485
+    }
+  }
+}

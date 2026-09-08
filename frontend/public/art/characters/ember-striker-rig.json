@@ -1,0 +1,23 @@
+{
+  "id": "ember-striker",
+  "width": 1667,
+  "height": 944,
+  "divider": 833.5,
+  "maskWidth": 1665,
+  "maskHeight": 944,
+  "body": {
+    "neckX": 461,
+    "neckY": 168,
+    "footY": 901
+  },
+  "eyes": {
+    "left": {
+      "x": 1174.0,
+      "y": 499.9
+    },
+    "right": {
+      "x": 1402.7,
+      "y": 530.3
+    }
+  }
+}

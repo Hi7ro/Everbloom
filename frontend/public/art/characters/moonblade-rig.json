@@ -1,0 +1,21 @@
+{
+  "id": "moonblade",
+  "width": 1667,
+  "height": 943,
+  "divider": 820,
+  "body": {
+    "neckX": 470,
+    "neckY": 125,
+    "footY": 862
+  },
+  "eyes": {
+    "left": {
+      "x": 1203,
+      "y": 520
+    },
+    "right": {
+      "x": 1394,
+      "y": 561
+    }
+  }
+}

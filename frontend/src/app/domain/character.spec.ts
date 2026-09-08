@@ -1,5 +1,9 @@
 import { CharacterPresentation, CharacterProfile } from './models';
-import { ILLUSTRATED_CHARACTERS, resolveCharacterIllustration } from './character-illustrations';
+import {
+  ILLUSTRATED_CHARACTERS,
+  ILLUSTRATED_COLOR_PALETTES,
+  resolveCharacterIllustration,
+} from './character-illustrations';
 import {
   AURA_PROGRESSION_PLAN,
   CHARACTER_HAIRSTYLES,
@@ -26,80 +30,191 @@ describe('character profile validation', () => {
     },
   };
 
-  it('normalizes a current profile without mutating it', () => {
+  it('normalizes a current profile without changing its name, legacy options or source object', () => {
+    const before = structuredClone(profile);
     const result = normalizeCharacterProfile(profile);
     expect(result.name).toBe('Élia Moon');
-    expect(result.appearance.skinColor).toBe('#e8c3a2');
-    expect(result.appearance.outfit).toBe('wanderer');
-    expect(result.appearance.presentation).toBe('male');
-    expect(profile.name).toBe('  Élia  Moon  ');
+    expect(result.appearance).toMatchObject({
+      skinColor: '#e8c3a2',
+      outfit: 'wanderer',
+      presentation: 'male',
+      artwork: 'original',
+    });
+    expect(profile).toEqual(before);
     expect(result.appearance).not.toBe(profile.appearance);
-    expect(result.appearance).not.toHaveProperty('artwork');
   });
 
-  it('resolves old profiles without storing a synthetic artwork default', () => {
-    const male = normalizeCharacterProfile(profile);
-    const female = normalizeCharacterProfile({ ...profile, appearance: {
-      ...profile.appearance, presentation: 'female', hair: 'f-bob',
-    } });
-    expect(resolveCharacterArtwork(male.appearance)).toBe('original');
-    expect(resolveCharacterArtwork(female.appearance)).toBe('custom');
-    expect(male.appearance).not.toHaveProperty('artwork');
-    expect(female.appearance).not.toHaveProperty('artwork');
-    expect(resolveCharacterArtwork({ ...male.appearance, artwork: 'custom' })).toBe('custom');
-  });
-
-  it.each(['original', 'custom'] as const)('preserves the explicit %s look', (artwork) => {
-    const result = normalizeCharacterProfile({ ...profile, appearance: { ...profile.appearance, artwork } });
-    expect(result.appearance.artwork).toBe(artwork);
-  });
+  it.each(['male', 'female'] as const)(
+    'migrates %s custom profiles to illustrated artwork without manufacturing colors or modules',
+    (presentation) => {
+      const input = {
+        ...profile,
+        appearance: {
+          ...profile.appearance,
+          presentation,
+          hair: defaultHairstyle(presentation),
+          artwork: 'custom',
+        },
+      };
+      const before = structuredClone(input);
+      const result = normalizeCharacterProfile(input);
+      expect(result.name).toBe('Élia Moon');
+      expect(result.appearance.artwork).toBe('original');
+      expect(resolveCharacterArtwork(result.appearance)).toBe('original');
+      expect(resolveCharacterArtwork({ ...result.appearance, artwork: 'custom' })).toBe('original');
+      for (const slot of ['illustratedHair', 'outfitSet', 'eyeColor', 'skinTone', 'hairTint']) {
+        expect(result.appearance).not.toHaveProperty(slot);
+      }
+      expect(input).toEqual(before);
+    },
+  );
 
   it.each([null, '', 'unknown', 0, {}, []])('rejects unavailable artwork %j', (artwork) => {
-    expect(() => normalizeCharacterProfile({ ...profile, appearance: { ...profile.appearance, artwork } })).toThrow('Look');
+    expect(() =>
+      normalizeCharacterProfile({ ...profile, appearance: { ...profile.appearance, artwork } }),
+    ).toThrow('Look');
   });
 
-  it('keeps the exact original default and accepts all four matching illustrated presets', () => {
-    const original = normalizeCharacterProfile(profile);
-    expect(resolveCharacterIllustration(original.appearance).id).toBe('emerald-knight');
-    expect(original.appearance).not.toHaveProperty('illustration');
-    expect(new Set(ILLUSTRATED_CHARACTERS.map((entry) => entry.id)).size).toBe(4);
+  it('offers six illustrated presets per presentation and retains the approved original defaults', () => {
+    expect(new Set(ILLUSTRATED_CHARACTERS.map((entry) => entry.id)).size).toBe(12);
+    for (const presentation of ['male', 'female'] as const) {
+      expect(
+        ILLUSTRATED_CHARACTERS.filter((entry) => entry.presentation === presentation),
+      ).toHaveLength(6);
+      const original = normalizeCharacterProfile({
+        ...profile,
+        appearance: {
+          ...profile.appearance,
+          presentation,
+          hair: defaultHairstyle(presentation),
+        },
+      });
+      expect(resolveCharacterIllustration(original.appearance).id).toBe(
+        presentation === 'male' ? 'emerald-knight' : 'moonblade',
+      );
+      expect(original.appearance).not.toHaveProperty('illustration');
+    }
     for (const preset of ILLUSTRATED_CHARACTERS) {
-      const result = normalizeCharacterProfile({ ...profile, appearance: {
-        ...profile.appearance, artwork: 'original', presentation: preset.presentation,
-        hair: defaultHairstyle(preset.presentation), illustration: preset.id,
-      } });
-      expect(result.appearance.illustration).toBe(preset.id);
+      const result = normalizeCharacterProfile({
+        ...profile,
+        appearance: {
+          ...profile.appearance,
+          presentation: preset.presentation,
+          hair: defaultHairstyle(preset.presentation),
+          illustration: preset.id,
+        },
+      });
       expect(resolveCharacterIllustration(result.appearance)).toBe(preset);
-      expect(preset.imagePath).toBe(`/art/characters/${preset.id}-original.png`);
-      expect(preset.maskPath).toBe(`/art/characters/${preset.id}-mask.png`);
     }
-    const female = normalizeCharacterProfile({ ...profile, appearance: {
-      ...profile.appearance, presentation: 'female', hair: 'f-bob', artwork: 'original',
-    } });
-    expect(resolveCharacterIllustration(female.appearance).id).toBe('moonblade');
-    expect(female.appearance).not.toHaveProperty('illustration');
   });
 
-  it.each([null, '', 'unreleased', 0, {}, []])('rejects an unavailable illustration %j', (illustration) => {
-    expect(() => normalizeCharacterProfile({ ...profile, appearance: {
-      ...profile.appearance, illustration,
-    } })).toThrow('Illustration');
-  });
-
-  it('rejects mismatched active illustrations but safely renders the presentation default', () => {
+  it('allows independent hair and outfit modules without changing the selected preset or input', () => {
     for (const preset of ILLUSTRATED_CHARACTERS) {
-      const presentation: CharacterPresentation = preset.presentation === 'male' ? 'female' : 'male';
-      const appearance = {
-        ...profile.appearance, presentation, hair: defaultHairstyle(presentation),
-        artwork: 'original' as const, illustration: preset.id,
-      };
-      expect(() => normalizeCharacterProfile({ ...profile, appearance })).toThrow('Illustration');
-      expect(resolveCharacterIllustration(appearance).presentation).toBe(presentation);
-      expect(normalizeCharacterProfile({ ...profile, appearance: {
-        ...appearance, artwork: 'custom',
-      } }).appearance.illustration).toBe(preset.id);
+      const same = ILLUSTRATED_CHARACTERS.filter(
+        (entry) => entry.presentation === preset.presentation,
+      );
+      for (const hair of same) {
+        for (const outfit of same) {
+          const input = {
+            ...profile,
+            totalXp: 9999,
+            appearance: {
+              ...profile.appearance,
+              presentation: preset.presentation,
+              hair: defaultHairstyle(preset.presentation),
+              illustration: preset.id,
+              illustratedHair: hair.id,
+              outfitSet: outfit.id,
+            },
+          };
+          const before = structuredClone(input);
+          const result = normalizeCharacterProfile(input);
+          expect(result.appearance).toMatchObject({
+            illustration: preset.id,
+            illustratedHair: hair.id,
+            outfitSet: outfit.id,
+          });
+          expect(result).not.toHaveProperty('totalXp');
+          expect(input).toEqual(before);
+        }
+      }
     }
-    expect(resolveCharacterIllustration({ ...profile.appearance, illustration: 'missing' }).id).toBe('emerald-knight');
+  });
+
+  it('rejects unknown and cross-presentation presets or modules, including old custom inputs', () => {
+    for (const slot of ['illustration', 'illustratedHair', 'outfitSet']) {
+      for (const value of [
+        null,
+        '',
+        'unreleased',
+        [],
+        {},
+        'https://example.org/hair.png',
+        'moonblade',
+      ]) {
+        expect(() =>
+          normalizeCharacterProfile({
+            ...profile,
+            appearance: {
+              ...profile.appearance,
+              artwork: 'custom',
+              [slot]: value,
+            },
+          }),
+        ).toThrow('Charakterdarstellung');
+      }
+      expect(() =>
+        normalizeCharacterProfile({
+          ...profile,
+          appearance: {
+            ...profile.appearance,
+            presentation: 'female',
+            hair: 'f-bob',
+            [slot]: 'emerald-knight',
+          },
+        }),
+      ).toThrow('Charakterdarstellung');
+    }
+    expect(
+      resolveCharacterIllustration({ ...profile.appearance, illustration: 'moonblade' }).id,
+    ).toBe('emerald-knight');
+  });
+
+  it('accepts only palette colors and preserves absent values as original artwork colors', () => {
+    for (const [slot, palette] of Object.entries(ILLUSTRATED_COLOR_PALETTES)) {
+      expect(palette).toHaveLength(6);
+      expect(new Set(palette.map((color) => color.hex)).size).toBe(6);
+      for (const color of palette) {
+        const result = normalizeCharacterProfile({
+          ...profile,
+          appearance: { ...profile.appearance, [slot]: color.hex.toUpperCase() },
+        });
+        expect(result.appearance).toHaveProperty(slot, color.hex);
+      }
+      const original = normalizeCharacterProfile({
+        ...profile,
+        appearance: { ...profile.appearance, [slot]: undefined },
+      });
+      expect(original.appearance).not.toHaveProperty(slot);
+      for (const value of [
+        null,
+        [],
+        {},
+        0,
+        '',
+        '#ffffff',
+        'red',
+        'url(https://example.org)',
+        palette[0].hex + ';',
+      ]) {
+        expect(() =>
+          normalizeCharacterProfile({
+            ...profile,
+            appearance: { ...profile.appearance, [slot]: value },
+          }),
+        ).toThrow('Palette');
+      }
+    }
   });
 
   it('accepts each of the twelve hairstyles for its presentation', () => {

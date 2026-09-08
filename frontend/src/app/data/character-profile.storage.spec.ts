@@ -9,7 +9,7 @@ import { MockGameRepository } from './mock-game.repository';
 import { createMockSnapshot } from './mock-data';
 import { CharacterProfile } from '../domain/models';
 import { ILLUSTRATED_CHARACTERS } from '../domain/character-illustrations';
-import { defaultHairstyle } from '../domain/character';
+import { defaultHairstyle, normalizeCharacterProfile } from '../domain/character';
 
 describe('device-local character profiles', () => {
   let entries: Map<string, string>;
@@ -46,13 +46,16 @@ describe('device-local character profiles', () => {
     expect(result.persisted).toBe(true);
     expect(result.snapshot.character.name).toBe('Liora');
     expect(result.snapshot.character.totalXp).toBe(initial.character.totalXp);
-    expect(JSON.parse(entries.get(CHARACTER_PROFILE_KEY)!)).toEqual({ version: 2, profile });
+    expect(JSON.parse(entries.get(CHARACTER_PROFILE_KEY)!)).toEqual({
+      version: 2,
+      profile: normalizeCharacterProfile(profile),
+    });
     expect(entries.get(CHARACTER_PROFILE_KEY)).not.toContain('totalXp');
     await repository.record({ requestId: 'one', skillId: 'meditation', minutes: 10 });
     const reloaded = TestBed.runInInjectionContext(() => new MockGameRepository());
     const restored = await reloaded.load();
     expect(restored.character).toMatchObject({
-      ...profile,
+      ...normalizeCharacterProfile(profile),
       createdByPlayer: true,
       totalXp: initial.character.totalXp,
     });
@@ -60,58 +63,162 @@ describe('device-local character profiles', () => {
     expect(restored.skills).toEqual(initial.skills);
     expect(restored.quests).toEqual(initial.quests);
     expect(restored.boss).toEqual(initial.boss);
-    expect((await repository.resetDemo()).character).toMatchObject(profile);
+    expect((await repository.resetDemo()).character).toMatchObject(
+      normalizeCharacterProfile(profile),
+    );
   });
+
+  it('reads an older custom v2 profile as illustrated while retaining the name and source data', () => {
+    const oldProfile = {
+      name: 'Liora',
+      appearance: {
+        ...createMockSnapshot().character.appearance,
+        presentation: 'female',
+        hair: 'f-braid',
+        artwork: 'custom',
+      },
+    };
+    const raw = JSON.stringify({ version: 2, profile: oldProfile });
+    entries.set(CHARACTER_PROFILE_KEY, raw);
+    const result = TestBed.inject(CharacterProfileStorage).read();
+    expect(result).toMatchObject({
+      name: 'Liora',
+      appearance: { presentation: 'female', artwork: 'original', hair: 'f-braid' },
+    });
+    expect(entries.get(CHARACTER_PROFILE_KEY)).toBe(raw);
+  });
+
+  it('restores independent illustrated modules and palette colors in v2 without saving progression', async () => {
+    const repository = TestBed.runInInjectionContext(() => new MockGameRepository());
+    const before = await repository.load();
+    const profile: CharacterProfile = {
+      name: 'Liora',
+      appearance: {
+        ...before.character.appearance,
+        presentation: 'female',
+        hair: 'f-bob',
+        artwork: 'original',
+        illustration: 'moonblade',
+        illustratedHair: 'starweaver',
+        outfitSet: 'dawn-priestess',
+        eyeColor: '#5f9e6e',
+        skinTone: '#68442f',
+        hairTint: '#d5dbe0',
+      },
+    };
+    await repository.record({ requestId: 'before-modules', skillId: 'meditation', minutes: 10 });
+    const earned = await repository.load();
+    const saved = await repository.updateCharacter(profile);
+    expect(saved.snapshot.character.totalXp).toBe(earned.character.totalXp);
+    expect(saved.snapshot.skills).toEqual(earned.skills);
+    expect(saved.snapshot.quests).toEqual(earned.quests);
+    expect(saved.snapshot.boss).toEqual(earned.boss);
+    expect(TestBed.inject(CharacterProfileStorage).read()).toEqual(profile);
+    expect(JSON.parse(entries.get(CHARACTER_PROFILE_KEY)!)).toEqual({ version: 2, profile });
+    expect(entries.size).toBe(1);
+    expect(entries.get(CHARACTER_PROFILE_KEY)).not.toContain('totalXp');
+  });
+
+  it.each(['illustratedHair', 'outfitSet', 'eyeColor', 'skinTone', 'hairTint'])(
+    'rejects corrupt optional %s without persisting a partial profile',
+    (slot) => {
+      const storage = TestBed.inject(CharacterProfileStorage);
+      const invalid = {
+        name: 'Ari',
+        appearance: { ...createMockSnapshot().character.appearance, [slot]: ['invalid'] },
+      };
+      expect(storage.save(invalid)).toBe(false);
+      expect(entries.size).toBe(0);
+      entries.set(CHARACTER_PROFILE_KEY, JSON.stringify({ version: 2, profile: invalid }));
+      expect(storage.read()).toBeNull();
+    },
+  );
 
   it('persists an explicit original look and its aura without changing earned progress', async () => {
     const repository = TestBed.runInInjectionContext(() => new MockGameRepository());
     await repository.record({ requestId: 'before-look', skillId: 'meditation', minutes: 10 });
     const before = await repository.load();
     const profile: CharacterProfile = {
-      name: 'Ari', appearance: { ...before.character.appearance, artwork: 'original', aura: 'rose' },
+      name: 'Ari',
+      appearance: { ...before.character.appearance, artwork: 'original', aura: 'rose' },
     };
     const saved = await repository.updateCharacter(profile);
     expect(saved.snapshot.character.totalXp).toBe(before.character.totalXp);
     expect(saved.snapshot.skills).toEqual(before.skills);
     expect(saved.snapshot.quests).toEqual(before.quests);
     expect(saved.snapshot.boss).toEqual(before.boss);
-    expect(JSON.parse(entries.get(CHARACTER_PROFILE_KEY)!)).toEqual({ version: 2, profile });
+    expect(JSON.parse(entries.get(CHARACTER_PROFILE_KEY)!)).toEqual({
+      version: 2,
+      profile: normalizeCharacterProfile(profile),
+    });
     const restored = TestBed.runInInjectionContext(() => new MockGameRepository());
     expect((await restored.load()).character.appearance).toEqual(profile.appearance);
   });
 
-  it.each(ILLUSTRATED_CHARACTERS)('persists the $id preset without changing earned progress', async (preset) => {
-    const repository = TestBed.runInInjectionContext(() => new MockGameRepository());
-    await repository.record({ requestId: 'before-preset', skillId: 'meditation', minutes: 10 });
-    const before = await repository.load();
-    const profile: CharacterProfile = {
-      name: 'Ari', appearance: {
-        ...before.character.appearance, artwork: 'original', illustration: preset.id,
-        presentation: preset.presentation, hair: defaultHairstyle(preset.presentation), aura: 'rose',
-      },
-    };
-    const saved = await repository.updateCharacter(profile);
-    expect(saved.snapshot.character.totalXp).toBe(before.character.totalXp);
-    expect(saved.snapshot.activities).toEqual(before.activities);
-    expect(saved.snapshot.skills).toEqual(before.skills);
-    expect(saved.snapshot.quests).toEqual(before.quests);
-    expect(saved.snapshot.boss).toEqual(before.boss);
-    expect(JSON.parse(entries.get(CHARACTER_PROFILE_KEY)!)).toEqual({ version: 2, profile });
-    const restored = TestBed.runInInjectionContext(() => new MockGameRepository());
-    expect((await restored.load()).character.appearance).toEqual(profile.appearance);
-  });
+  it.each(ILLUSTRATED_CHARACTERS)(
+    'persists the $id preset without changing earned progress',
+    async (preset) => {
+      const repository = TestBed.runInInjectionContext(() => new MockGameRepository());
+      await repository.record({ requestId: 'before-preset', skillId: 'meditation', minutes: 10 });
+      const before = await repository.load();
+      const profile: CharacterProfile = {
+        name: 'Ari',
+        appearance: {
+          ...before.character.appearance,
+          artwork: 'original',
+          illustration: preset.id,
+          presentation: preset.presentation,
+          hair: defaultHairstyle(preset.presentation),
+          aura: 'rose',
+        },
+      };
+      const saved = await repository.updateCharacter(profile);
+      expect(saved.snapshot.character.totalXp).toBe(before.character.totalXp);
+      expect(saved.snapshot.activities).toEqual(before.activities);
+      expect(saved.snapshot.skills).toEqual(before.skills);
+      expect(saved.snapshot.quests).toEqual(before.quests);
+      expect(saved.snapshot.boss).toEqual(before.boss);
+      expect(JSON.parse(entries.get(CHARACTER_PROFILE_KEY)!)).toEqual({
+        version: 2,
+        profile: normalizeCharacterProfile(profile),
+      });
+      const restored = TestBed.runInInjectionContext(() => new MockGameRepository());
+      expect((await restored.load()).character.appearance).toEqual(profile.appearance);
+    },
+  );
 
-  it.each(['missing', null, 'moonblade'])('ignores an invalid active male illustration %j on read', (illustration) => {
-    entries.set(CHARACTER_PROFILE_KEY, JSON.stringify({ version: 2, profile: {
-      name: 'Ari', appearance: { ...createMockSnapshot().character.appearance, artwork: 'original', illustration },
-    } }));
-    expect(TestBed.inject(CharacterProfileStorage).read()).toBeNull();
-  });
+  it.each(['missing', null, 'moonblade'])(
+    'ignores an invalid active male illustration %j on read',
+    (illustration) => {
+      entries.set(
+        CHARACTER_PROFILE_KEY,
+        JSON.stringify({
+          version: 2,
+          profile: {
+            name: 'Ari',
+            appearance: {
+              ...createMockSnapshot().character.appearance,
+              artwork: 'original',
+              illustration,
+            },
+          },
+        }),
+      );
+      expect(TestBed.inject(CharacterProfileStorage).read()).toBeNull();
+    },
+  );
 
   it('rejects a corrupt artwork field on read without restoring an older profile', () => {
-    entries.set(CHARACTER_PROFILE_KEY, JSON.stringify({ version: 2, profile: {
-      name: 'Ari', appearance: { ...createMockSnapshot().character.appearance, artwork: null },
-    } }));
+    entries.set(
+      CHARACTER_PROFILE_KEY,
+      JSON.stringify({
+        version: 2,
+        profile: {
+          name: 'Ari',
+          appearance: { ...createMockSnapshot().character.appearance, artwork: null },
+        },
+      }),
+    );
     expect(TestBed.inject(CharacterProfileStorage).read()).toBeNull();
   });
 
@@ -141,7 +248,7 @@ describe('device-local character profiles', () => {
       },
     };
     expect(storage.save(selected)).toBe(true);
-    expect(storage.read()).toEqual(selected);
+    expect(storage.read()).toEqual(normalizeCharacterProfile(selected));
     expect(entries.get(LEGACY_CHARACTER_PROFILE_KEY)).toBe(legacy);
   });
 

@@ -1,12 +1,16 @@
 import { Appearance, CharacterArtwork, CharacterPresentation, CharacterProfile } from './models';
-import { ILLUSTRATED_CHARACTERS } from './character-illustrations';
+import {
+  ILLUSTRATED_CHARACTERS,
+  ILLUSTRATED_COLOR_PALETTES,
+  IllustratedColor,
+} from './character-illustrations';
 
 export type CharacterSlot = 'body' | 'hair' | 'outfit' | 'aura';
 export type CharacterColor = 'skinColor' | 'hairColor' | 'outfitColor';
 
-/** Presentation default only; old v2 profiles keep their stored shape unchanged. */
-export function resolveCharacterArtwork(appearance: Appearance): CharacterArtwork {
-  return appearance.artwork ?? (appearance.presentation === 'female' ? 'custom' : 'original');
+/** Legacy custom profiles now use the illustrated renderer for both presentations. */
+export function resolveCharacterArtwork(_appearance: Appearance): CharacterArtwork {
+  return 'original';
 }
 
 export const CHARACTER_PRESENTATIONS = [
@@ -138,21 +142,32 @@ export function normalizeCharacterProfile(profile: unknown): CharacterProfile {
   if (presentation !== 'male' && presentation !== 'female') {
     throw new Error('Bitte eine verfügbare Charakterdarstellung wählen.');
   }
-  const appearance = { presentation } as Appearance;
+  const appearance = { presentation, artwork: 'original' } as Appearance;
   const artwork = source['artwork'];
-  if (artwork !== undefined) {
-    if (artwork !== 'original' && artwork !== 'custom') {
-      throw new Error('Bitte einen verfügbaren Look wählen.');
-    }
-    appearance.artwork = artwork;
+  if (artwork !== undefined && artwork !== 'original' && artwork !== 'custom') {
+    throw new Error('Bitte einen verfügbaren Look wählen.');
   }
-  const illustration = source['illustration'];
-  if (illustration !== undefined) {
-    const selected = ILLUSTRATED_CHARACTERS.find((entry) => entry.id === illustration);
-    if (!selected || (resolveCharacterArtwork(appearance) === 'original' && selected.presentation !== presentation)) {
-      throw new Error('Bitte eine verfügbare Illustration für deine Charakterdarstellung wählen.');
+  for (const slot of ['illustration', 'illustratedHair', 'outfitSet'] as const) {
+    const value = source[slot];
+    if (value === undefined) continue;
+    const selected = ILLUSTRATED_CHARACTERS.find((entry) => entry.id === value);
+    if (!selected || selected.presentation !== presentation) {
+      throw new Error(
+        'Bitte eine verfügbare Illustration, Frisur oder ein Outfitset für deine Charakterdarstellung wählen.',
+      );
     }
-    appearance.illustration = selected.id;
+    appearance[slot] = selected.id;
+  }
+  for (const color of Object.keys(ILLUSTRATED_COLOR_PALETTES) as IllustratedColor[]) {
+    const value = source[color];
+    if (value === undefined) continue;
+    if (
+      typeof value !== 'string' ||
+      !ILLUSTRATED_COLOR_PALETTES[color].some((option) => option.hex === value.toLowerCase())
+    ) {
+      throw new Error('Bitte eine Farbe aus der verfügbaren Palette wählen.');
+    }
+    appearance[color] = value.toLowerCase();
   }
   for (const slot of slots) {
     const id = source[slot];

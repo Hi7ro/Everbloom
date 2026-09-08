@@ -6,6 +6,13 @@ export interface Appearance {
   presentation: CharacterPresentation;
   artwork?: CharacterArtwork;
   illustration?: string;
+  /** Illustrated module IDs; omitted values follow the selected preset. */
+  illustratedHair?: string;
+  outfitSet?: string;
+  /** Allowlisted palette colors; omitted values preserve the original artwork. */
+  eyeColor?: string;
+  skinTone?: string;
+  hairTint?: string;
   body: string;
   hair: string;
   outfit: string;

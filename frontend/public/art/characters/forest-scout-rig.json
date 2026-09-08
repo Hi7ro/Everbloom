@@ -1,0 +1,23 @@
+{
+  "id": "forest-scout",
+  "width": 1667,
+  "height": 944,
+  "divider": 833.5,
+  "maskWidth": 1666,
+  "maskHeight": 944,
+  "body": {
+    "neckX": 493,
+    "neckY": 179,
+    "footY": 915
+  },
+  "eyes": {
+    "left": {
+      "x": 1191.3,
+      "y": 543.8
+    },
+    "right": {
+      "x": 1400.7,
+      "y": 572.1
+    }
+  }
+}

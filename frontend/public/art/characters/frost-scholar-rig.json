@@ -1,0 +1,23 @@
+{
+  "id": "frost-scholar",
+  "width": 1667,
+  "height": 944,
+  "divider": 833.5,
+  "maskWidth": 1666,
+  "maskHeight": 944,
+  "body": {
+    "neckX": 467,
+    "neckY": 158,
+    "footY": 898
+  },
+  "eyes": {
+    "left": {
+      "x": 1167.1,
+      "y": 490.3
+    },
+    "right": {
+      "x": 1376.8,
+      "y": 520.7
+    }
+  }
+}

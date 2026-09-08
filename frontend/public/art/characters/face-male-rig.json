@@ -1,0 +1,21 @@
+{
+  "id": "face-male",
+  "width": 1254,
+  "height": 1254,
+  "divider": 0,
+  "body": {
+    "neckX": 0,
+    "neckY": 0,
+    "footY": 1
+  },
+  "eyes": {
+    "left": {
+      "x": 520,
+      "y": 678
+    },
+    "right": {
+      "x": 876,
+      "y": 731
+    }
+  }
+}

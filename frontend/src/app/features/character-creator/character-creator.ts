@@ -9,19 +9,21 @@ import {
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
-  CHARACTER_COLOR_PALETTES,
-  CHARACTER_PRESENTATIONS,
-  CHARACTER_HAIRSTYLES,
   AURA_PROGRESSION_PLAN,
   CHARACTER_OPTIONS,
-  CharacterColor,
-  CharacterSlot,
+  CHARACTER_PRESENTATIONS,
+  defaultHairstyle,
   normalizeCharacterProfile,
-  resolveCharacterArtwork,
 } from '../../domain/character';
-import { Appearance, CharacterArtwork, CharacterPresentation, CharacterProfile } from '../../domain/models';
-import { ILLUSTRATED_CHARACTERS, resolveCharacterIllustration } from '../../domain/character-illustrations';
-import { Chibi } from '../../shared/chibi';
+import { Appearance, CharacterPresentation, CharacterProfile } from '../../domain/models';
+import {
+  ILLUSTRATED_CHARACTERS,
+  ILLUSTRATED_COLOR_PALETTES,
+  IllustratedColor,
+  resolveCharacterIllustration,
+} from '../../domain/character-illustrations';
+import { ADVANCED_AURA_DESIGNS, AURA_PREVIEW_COLORS } from '../../domain/aura-designs';
+import { CharacterAura } from '../../shared/character-aura';
 import { CharacterPortrait } from '../../shared/character-portrait';
 import { GameStore } from '../../state/game.store';
 import { JourneyStore } from '../../state/journey.store';
@@ -29,7 +31,7 @@ import { ProgressFeedback } from '../../state/progress-feedback';
 
 @Component({
   selector: 'app-character-creator',
-  imports: [FormsModule, RouterLink, Chibi, CharacterPortrait],
+  imports: [FormsModule, RouterLink, CharacterPortrait, CharacterAura],
   templateUrl: './character-creator.html',
   styleUrl: './character-creator.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -37,73 +39,58 @@ import { ProgressFeedback } from '../../state/progress-feedback';
 export class CharacterCreator implements OnInit {
   readonly store = inject(GameStore);
   readonly feedback = inject(ProgressFeedback);
-  readonly previewLevel = signal(1);
-  readonly previewInterest = signal('adventurer');
   private readonly router = inject(Router);
   private readonly journey = inject(JourneyStore);
-  private readonly returnToOnboarding = inject(ActivatedRoute).snapshot.queryParamMap.get('returnTo') === 'onboarding';
+  private readonly returnToOnboarding =
+    inject(ActivatedRoute).snapshot.queryParamMap.get('returnTo') === 'onboarding';
+  private readonly appearances: Partial<Record<CharacterPresentation, Appearance>> = {};
   readonly draft = signal<CharacterProfile | null>(null);
-  private readonly customAppearances: Partial<Record<CharacterPresentation, Appearance>> = {};
-  private readonly chosenIllustration: Record<CharacterPresentation, string> = {
-    male: 'emerald-knight', female: 'moonblade',
-  };
-  readonly artwork = computed(() => {
-    const appearance = this.draft()?.appearance;
-    return appearance ? resolveCharacterArtwork(appearance) : 'original';
-  });
-  readonly isCustom = computed(() => this.artwork() === 'custom');
-  readonly artworkOptions = [
-    { id: 'original' as const, label: 'Illustrierter Look', description: 'Wähle deine Charaktervorlage' },
-    { id: 'custom' as const, label: 'Selbst gestalten', description: 'Deine eigenen Kombinationen' },
-  ];
   readonly formError = signal('');
+  readonly previewAura = signal<string | null>(null);
+  readonly previewFierce = signal(false);
+  readonly previewColor = signal<string>('#a78bfa');
+  readonly advancedAuras = ADVANCED_AURA_DESIGNS;
+  readonly auraPreviewColors = AURA_PREVIEW_COLORS;
+  readonly previewAuraDesign = computed(
+    () => this.advancedAuras.find((aura) => aura.id === this.previewAura()) ?? null,
+  );
+  readonly previewAppearance = computed(() => {
+    const appearance = this.draft()?.appearance;
+    return appearance && this.previewAura() ? { ...appearance, aura: 'none' } : appearance;
+  });
   readonly options = CHARACTER_OPTIONS;
   readonly presentations = CHARACTER_PRESENTATIONS;
   readonly auraProgression = AURA_PROGRESSION_PLAN;
-  readonly hairstyles = computed(
-    () => CHARACTER_HAIRSTYLES[this.draft()?.appearance.presentation ?? 'male'],
-  );
-  private readonly chosenHair: Record<CharacterPresentation, string> = {
-    male: CHARACTER_HAIRSTYLES.male[0].id,
-    female: CHARACTER_HAIRSTYLES.female[0].id,
-  };
-  readonly hairstylePreviews = computed(() => {
-    const appearance = this.draft()?.appearance;
-    return appearance
-      ? this.hairstyles().map((option) => ({
-          ...option,
-          appearance: {
-            ...appearance,
-            artwork: 'custom',
-            hair: option.id,
-            outfit: 'adventurer',
-            aura: 'none',
-          } as Appearance,
-        }))
-      : [];
-  });
+  readonly palettes = ILLUSTRATED_COLOR_PALETTES;
+  readonly colorGroups: readonly { slot: IllustratedColor; label: string }[] = [
+    { slot: 'eyeColor', label: 'Augenfarbe' },
+    { slot: 'skinTone', label: 'Hautton' },
+    { slot: 'hairTint', label: 'Haarfarbe' },
+  ];
   readonly selectedIllustration = computed(() => {
     const appearance = this.draft()?.appearance;
     return appearance ? resolveCharacterIllustration(appearance) : null;
   });
+  readonly illustrationOptions = computed(() =>
+    ILLUSTRATED_CHARACTERS.filter(
+      (option) => option.presentation === (this.draft()?.appearance.presentation ?? 'male'),
+    ),
+  );
   readonly illustrationPreviews = computed(() => {
     const appearance = this.draft()?.appearance;
-    return appearance ? ILLUSTRATED_CHARACTERS
-      .filter((option) => option.presentation === appearance.presentation)
-      .map((option) => ({
-        ...option,
-        appearance: { ...appearance, artwork: 'original', illustration: option.id, aura: 'none' } as Appearance,
-      })) : [];
+    return appearance
+      ? this.illustrationOptions().map((option) => ({
+          ...option,
+          appearance: { ...this.presetAppearance(appearance, option.id), aura: 'none' },
+        }))
+      : [];
   });
-  readonly palettes = CHARACTER_COLOR_PALETTES;
-  readonly shapeGroups = [
-    { slot: 'body' as const, label: 'Körperform', choices: CHARACTER_OPTIONS.body },
-  ];
-  readonly colorGroups: readonly { slot: CharacterColor; label: string }[] = [
-    { slot: 'skinColor', label: 'Hautfarbe' },
-    { slot: 'hairColor', label: 'Haarfarbe' },
-    { slot: 'outfitColor', label: 'Outfitfarbe' },
-  ];
+  readonly selectedHair = computed(
+    () => this.draft()?.appearance.illustratedHair ?? this.selectedIllustration()?.id,
+  );
+  readonly selectedOutfit = computed(
+    () => this.draft()?.appearance.outfitSet ?? this.selectedIllustration()?.id,
+  );
 
   ngOnInit() {
     void this.loadProfile();
@@ -112,24 +99,23 @@ export class CharacterCreator implements OnInit {
   async loadProfile() {
     if (!this.store.snapshot()) await this.store.load();
     const character = this.store.snapshot()?.character;
-    if (character) {
-      this.customAppearances[character.appearance.presentation] = { ...character.appearance, artwork: 'custom', outfit: character.appearance.outfit === 'wanderer' ? 'adventurer' : character.appearance.outfit };
-      this.chosenIllustration[character.appearance.presentation] = resolveCharacterIllustration(character.appearance).id;
-      this.chosenHair[character.appearance.presentation] = character.appearance.hair;
-      this.previewLevel.set(this.store.level().level);
-      this.previewInterest.set(this.store.avatarInterest());
-      this.draft.set({
+    if (!character) return;
+    try {
+      const profile = normalizeCharacterProfile({
         name: character.name,
-        appearance: {
-          ...character.appearance,
-          outfit:
-            character.appearance.outfit === 'wanderer' ? 'adventurer' : character.appearance.outfit,
-        },
+        appearance: character.appearance,
       });
+      this.appearances[profile.appearance.presentation] = { ...profile.appearance };
+      this.draft.set(profile);
+    } catch (error) {
+      this.formError.set(
+        error instanceof Error ? error.message : 'Bitte lade deinen Charakter erneut.',
+      );
     }
   }
 
   setName(name: string) {
+    if (this.store.busy()) return;
     this.draft.update((current) => (current ? { ...current, name } : current));
     this.formError.set('');
   }
@@ -137,89 +123,115 @@ export class CharacterCreator implements OnInit {
   setPresentation(presentation: CharacterPresentation) {
     const current = this.draft();
     if (!current || this.store.busy() || current.appearance.presentation === presentation) return;
-    const artwork = this.artwork();
-    if (artwork === 'custom') this.rememberCustomAppearance(current.appearance);
-    const ownAppearance = this.customAppearances[presentation];
-    this.draft.set({
-      ...current,
-      appearance: {
-        ...(artwork === 'custom' && ownAppearance ? ownAppearance : current.appearance),
-        presentation,
-        hair: this.chosenHair[presentation],
-        aura: current.appearance.aura,
-        artwork,
-        ...(artwork === 'original' ? { illustration: this.chosenIllustration[presentation] } : {}),
-      },
-    });
-    this.formError.set('');
-  }
-
-  setArtwork(artwork: CharacterArtwork) {
-    const current = this.draft();
-    if (!current || this.store.busy() || artwork === this.artwork()) return;
-    const presentation = current.appearance.presentation;
-    if (artwork === 'original') {
-      this.rememberCustomAppearance(current.appearance);
-      this.draft.set({
-        ...current,
-        appearance: { ...current.appearance, artwork, illustration: this.chosenIllustration[presentation] },
-      });
-    } else {
-      this.draft.set({
-        ...current,
-        appearance: {
-          ...(this.customAppearances[presentation] ?? current.appearance),
-          presentation, hair: this.chosenHair[presentation],
-          aura: current.appearance.aura, artwork,
+    if (!CHARACTER_PRESENTATIONS.some((option) => option.id === presentation)) return;
+    this.endAuraPreview();
+    this.appearances[current.appearance.presentation] = { ...current.appearance };
+    const first = ILLUSTRATED_CHARACTERS.find((option) => option.presentation === presentation)!;
+    const appearance =
+      this.appearances[presentation] ??
+      this.presetAppearance(
+        {
+          ...current.appearance,
+          presentation,
+          hair: defaultHairstyle(presentation),
         },
-      });
-    }
+        first.id,
+      );
+    this.draft.set({ ...current, appearance: { ...appearance } });
     this.formError.set('');
   }
 
   chooseIllustration(id: string) {
     const current = this.draft();
-    if (!current || this.store.busy()) return;
-    const selected = ILLUSTRATED_CHARACTERS.find(
-      (option) => option.id === id && option.presentation === current.appearance.presentation,
-    );
-    if (!selected) return;
-    if (this.isCustom()) this.rememberCustomAppearance(current.appearance);
-    this.chosenIllustration[selected.presentation] = selected.id;
-    this.draft.set({
-      ...current,
-      appearance: { ...current.appearance, artwork: 'original', illustration: selected.id },
-    });
+    if (
+      !current ||
+      this.store.busy() ||
+      !this.illustrationOptions().some((option) => option.id === id)
+    )
+      return;
+    this.endAuraPreview();
+    this.draft.set({ ...current, appearance: this.presetAppearance(current.appearance, id) });
     this.formError.set('');
   }
 
-  private rememberCustomAppearance(appearance: Appearance) {
-    this.customAppearances[appearance.presentation] = { ...appearance, artwork: 'custom' };
-    this.chosenHair[appearance.presentation] = appearance.hair;
-  }
-
-  chooseAura(value: string) {
-    if (this.store.busy()) return;
-    this.draft.update((current) => current ? {
-      ...current, appearance: { ...current.appearance, aura: value },
-    } : current);
-    this.formError.set('');
-  }
-
-  choose(slot: CharacterSlot | CharacterColor, value: string) {
-    if (this.store.busy()) return;
-    if (!this.isCustom()) this.setArtwork('custom');
-    if (slot === 'hair' && this.draft())
-      this.chosenHair[this.draft()!.appearance.presentation] = value;
+  chooseModule(slot: 'illustratedHair' | 'outfitSet', id: string) {
+    if (this.store.busy() || !this.illustrationOptions().some((option) => option.id === id)) return;
     this.draft.update((current) =>
       current
         ? {
             ...current,
-            appearance: { ...current.appearance, artwork: 'custom', [slot]: value },
+            appearance: { ...current.appearance, [slot]: id },
           }
         : current,
     );
     this.formError.set('');
+  }
+
+  chooseColor(slot: IllustratedColor, value: string | undefined) {
+    if (
+      this.store.busy() ||
+      (value !== undefined && !this.palettes[slot].some((option) => option.hex === value))
+    )
+      return;
+    this.draft.update((current) => {
+      if (!current) return current;
+      const appearance = { ...current.appearance };
+      if (value === undefined) delete appearance[slot];
+      else appearance[slot] = value;
+      return { ...current, appearance };
+    });
+    this.formError.set('');
+  }
+
+  chooseAura(value: string) {
+    if (this.store.busy() || !CHARACTER_OPTIONS.aura.some((option) => option.id === value)) return;
+    this.endAuraPreview();
+    this.draft.update((current) =>
+      current
+        ? {
+            ...current,
+            appearance: { ...current.appearance, aura: value },
+          }
+        : current,
+    );
+    this.formError.set('');
+  }
+
+  choosePreviewAura(id: string) {
+    const design = this.advancedAuras.find((aura) => aura.id === id);
+    if (!design || this.store.busy()) return;
+    this.previewAura.set(id);
+    this.previewFierce.set(false);
+    this.previewColor.set(
+      this.auraPreviewColors.find((color) => color.hex === design.color)?.hex ?? '#a78bfa',
+    );
+  }
+
+  choosePreviewColor(value: string) {
+    if (this.store.busy() || !this.auraPreviewColors.some((color) => color.hex === value)) return;
+    this.previewColor.set(value);
+  }
+
+  endAuraPreview() {
+    this.previewAura.set(null);
+    this.previewFierce.set(false);
+  }
+
+  onAuraPreviewToggle(event: Event) {
+    if (!(event.target as HTMLDetailsElement).open) this.endAuraPreview();
+  }
+
+  private presetAppearance(appearance: Appearance, illustration: string): Appearance {
+    const result: Appearance = { ...appearance, artwork: 'original', illustration };
+    for (const slot of [
+      'illustratedHair',
+      'outfitSet',
+      'eyeColor',
+      'skinTone',
+      'hairTint',
+    ] as const)
+      delete result[slot];
+    return result;
   }
 
   async save() {
@@ -235,13 +247,16 @@ export class CharacterCreator implements OnInit {
     this.formError.set('');
     const profileWasSaved = this.store.profileIsSaved();
     if (await this.store.updateCharacter(profile)) {
-      const destination = this.returnToOnboarding || (!profileWasSaved && !this.journey.configured())
-        ? '/onboarding' : '/dashboard';
+      const destination =
+        this.returnToOnboarding || (!profileWasSaved && !this.journey.configured())
+          ? '/onboarding'
+          : '/dashboard';
       await this.router.navigateByUrl(destination);
     }
   }
 
   cancel() {
-    if (!this.store.busy()) void this.router.navigateByUrl(this.returnToOnboarding ? '/onboarding' : '/dashboard');
+    if (!this.store.busy())
+      void this.router.navigateByUrl(this.returnToOnboarding ? '/onboarding' : '/dashboard');
   }
 }

@@ -1,0 +1,23 @@
+{
+  "id": "abyss-walker",
+  "width": 1613,
+  "height": 975,
+  "divider": 806.5,
+  "maskWidth": 1614,
+  "maskHeight": 975,
+  "body": {
+    "neckX": 421,
+    "neckY": 187,
+    "footY": 904
+  },
+  "eyes": {
+    "left": {
+      "x": 1179.0,
+      "y": 477.7
+    },
+    "right": {
+      "x": 1370.7,
+      "y": 515.6
+    }
+  }
+}

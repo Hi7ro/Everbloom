@@ -1,0 +1,21 @@
+{
+  "id": "face-female",
+  "width": 1254,
+  "height": 1254,
+  "divider": 0,
+  "body": {
+    "neckX": 0,
+    "neckY": 0,
+    "footY": 1
+  },
+  "eyes": {
+    "left": {
+      "x": 519,
+      "y": 698
+    },
+    "right": {
+      "x": 889,
+      "y": 776
+    }
+  }
+}

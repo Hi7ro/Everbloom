@@ -1,0 +1,26 @@
+{
+  "width": 1667,
+  "height": 943,
+  "divider": 744,
+  "body": {
+    "neckX": 432,
+    "neckY": 130,
+    "footY": 911
+  },
+  "eyes": {
+    "left": {
+      "x": 1179,
+      "y": 466
+    },
+    "right": {
+      "x": 1380,
+      "y": 513
+    }
+  },
+  "head": {
+    "neckX": 1233,
+    "neckY": 650
+  },
+  "maskWidth": 1667,
+  "maskHeight": 943
+}
