@@ -25,56 +25,80 @@ verdienter XP und keine Schuldzuweisung bei Pausen. Erholung ist Fürsorge, kein
 Langfristig drücken Stimmung, Haltung und Gesten freiwillig angegebene Interessen, Tagesmodus und
 Aktivitäten aus. Das sind nachvollziehbare Spielreaktionen, keine automatische Gesundheits- oder
 Stimmungsdiagnose. Ein umfassendes Bedürfnisse-/Mood-System ist noch nicht implementiert.
-Der aktuelle Ausdruck beschränkt sich auf visuelle Gesten und eine kurze Reaktionszeile passend
-zur letzten belohnten Aktivität oder zum freiwilligen Tages-Check-in. Vier Tagesmodi und drei
+Die illustrierten Figuren zeigen derzeit ruhige Atmung/Idle; eine kurze Reaktionszeile passt
+zur letzten belohnten Aktivität oder zum freiwilligen Tages-Check-in. Ausgearbeitete Gesten und
+Gesichtsausdrücke sind noch nicht für alle Figuren vorhanden. Vier Tagesmodi und drei
 Energieangaben sind lokal gespeichert; Auslassen bleibt folgenlos. Der Check-in ändert keine XP,
 Quests, Bosswerte oder Momentum. Reichere Avatarreaktionen sind M2. Backend, Authentifizierung und Persistenz
 bleiben eigenständige Bestandteile des bestehenden M1b-Plans.
 
 ## Identität und Art Direction
 
-Modulare 2D-Chibi-Figur mit ausdrucksstarkem Gesicht und gut sichtbarem, lesbarem Körper. Creator-Ziel: Name,
-Körperform, Haut, Gesicht/Augen, Haare/Farbe, Starter-Outfit und Fokus. Spätere Slots: Kopf, Körper,
-Schuhe, Waffe, Nebenhand, Rücken, Accessoire, Aura und Companion. Feste Anker, Leinwand und
-Zeichenreihenfolge machen Assets austauschbar. Gameplay-Equipment und sichtbarer Look sind getrennt.
+Die freigegebene [Art Direction](ART_DIRECTION.md) definiert eigenständige Anime-Chibis in leichter
+Dreiviertelansicht: markante Gesichter, ausdrucksstarke Jewel-Augen, definierte Haarsträhnen und
+gemalte 2.5D-Tiefe mit sorgfältigen Stoff-/Metallflächen. Neue modulare Figuren dürfen einen kleineren
+Kopf haben, damit Körper und Kleidung sichtbar bleiben. Die vier ursprünglichen Illustrationen
+behalten ihre Proportionen. Die Gestaltung soll unterschiedliche Altersgruppen ansprechen, ohne
+Altersfreigabe oder Zielgruppenwirkung zu versprechen.
 
-Die freigegebene [Art Direction](ART_DIRECTION.md) hält die bestätigte Anime-Chibi-Vorlage mit markanter Ausstrahlung, ausdrucksstarken Augen und detaillierten Stoff-/Metallflächen fest. Auf ausdrücklichen Wunsch wird das exakte Originalmotiv als fester illustrierter Look übernommen; eine reine Freistellung erhält sein Design. Die fünf Stilfamilien und beide Darstellungen behalten denselben Qualitätsanspruch als eigene IP. Der bestehende modulare SVG-Prototyp bleibt davon getrennt; ein passendes Rig und eigene Frisur-/Outfitvarianten in dieser Bildqualität folgen später.
-
-Ästhetiken: **Cozy → Adventurer → Elegant → Dark → Abyssal**. Freie Mischung, keine Klassenbindung.
-Jede Ästhetik kann jede Seltenheit haben. Eigenständige Figuren und Lore; Genre-Inspiration erlaubt,
-keine übernommenen Designs, Rassen, Jobs, Waffen oder Franchise-Begriffe. UI: ruhiges, dunkles
+Ästhetiken: **Cozy → Adventurer → Elegant → Dark → Abyssal**. Stile, Skills, Klassen und Seltenheit
+bleiben unabhängig. Männliche und weibliche Darstellung sind über Gesicht, Haltung und Silhouette
+lesbar, gleichwertig gestaltet und unsexualisiert. Hauttöne und Darstellung ändern keine Stats,
+Rewards oder Stilzugänge und sagen nichts über reale demografische Eigenschaften aus. Eigene
+Figuren, Lore, Musik und Effekte; keine übernommenen Franchise-Designs. UI: ruhiges, dunkles
 High Fantasy mit warmen Naturakzenten, gut lesbaren Daten und sparsamem Effektgebrauch.
-### M1a-Ausbau – Creator v2
 
-Unter `/character/create` lassen sich Name, männliche/weibliche Darstellung, Körperform, Haare,
-Outfit und Aura sowie Haut-, Haar- und Outfitfarbe mit sofortiger Vorschau bearbeiten. Die visuelle
-Auswahl `presentation: 'male' | 'female'` unterscheidet Gesicht, Körpersilhouette und Outfitdetails
-klar und bleibt eine unsexualisierte Chibi-Darstellung. Sie verändert keine Stats, Skills, Rewards
-oder Stilzugänge und ist keine Aussage über das reale Geschlecht des Nutzers.
+### Aktueller Creator und illustrierte Figuren
 
-Beide Darstellungen erhalten je sechs eigene Starterfrisuren:
+Unter `/character/create` gibt es ausschließlich illustrierte Figuren. Der frühere Vektor-Editor
+ist aus der Benutzeroberfläche entfernt. Name, Darstellung, Vorlage, Frisur, vollständiges Outfitset,
+Haut-/Augen-/Haarfarbe und Starter-Aura sind mit direkter Vorschau wählbar. Jede Farbgruppe bietet
+„Original“ plus sechs Farben. Der Vorlagenwechsel setzt eigene Modul-/Farbwerte auf diese Vorlage
+zurück; Darstellung und Anpassung verändern keine Spielprogression.
 
-| Darstellung | Starterfrisuren-IDs |
+| Darstellung | Sechs Startdesigns mit jeweils eigener Frisur und eigenem Outfitset |
 |---|---|
-| Männlich | `m-spiky`, `m-undercut`, `m-curtains`, `m-messy`, `m-swept`, `m-topknot` |
-| Weiblich | `f-bob`, `f-long`, `f-ponytail`, `f-twin-tails`, `f-braid`, `f-pixie` |
+| Männlich | Smaragdwächter, Urbaner Abenteurer, Frostgelehrter, Glutkämpfer, Waldläufer, Abgrundwanderer |
+| Weiblich | Nachtklinge, Sternenweberin, Morgenhüterin, Rosenläuferin, Leerenweberin, Himmelsjägerin |
 
-Namen, Optionen und die Zuordnung der Frisur zur gewählten Darstellung werden validiert. Profil-
-Schemaversion 2 speichert nur Name/Aussehen; weder Interessen noch XP gehören hinein. Version 1
-wird ausdrücklich migriert: technischer Default `male`, alte Frisuren `tousled` → `m-spiky`,
-`bob` → `m-curtains`, `braid` → `m-topknot`. Der Default dient der Datenkompatibilität und leitet
-keine demografische Eigenschaft ab. Der Demo-Reset erhält das Profil. Zusätzliche frei wählbare
-Gesichts-/Augenoptionen, weitere Slots, aktiver Skillmix und vollständiges Onboarding folgen M1b/M2.
+Frisur und Outfit sind unabhängig innerhalb der passenden Darstellung kombinierbar. Die konkrete
+Garderobe steht im [Art Guide](ART_DIRECTION.md#aktueller-bild--und-creator-stand). Smaragdwächter,
+Urbaner Abenteurer, Nachtklinge und Sternenweberin verwenden ohne Modul-/Farb-Overrides ihre vier
+unveränderten Original-PNGs mit separater Hintergrundmaske. Anpassungen nutzen neu erstellte
+modulare Bildvarianten; diese sind keine pixelidentische Zerlegung der Originale. Zwölf Figuren-Rigs
+und zwei Basiskopf-Rigs unterstützen getrennte Körper-, Gesicht-/Basiskopf- und Haarmasken.
 
-Die aktuelle Gestaltungsrichtung ist ein stylischer Chibi in leicht seitlicher Dreiviertelansicht,
-mit Highlights und Schatten für räumliche 2.5D-Wirkung. Zusätzlich zur Originalillustration
-besteht der frei gestaltbare modulare SVG-Prototyp. Subtile Atmung/Idle und interessenbezogene Gesten vermitteln Leben. Das Dashboard
-verwendet das Charakterlevel und den zuletzt belohnten Skill, ansonsten eine Standarddarstellung;
-im Creator sind Interessen-/Levelvarianten lediglich Vorschau. Eine persistente Interessenwahl
-ist noch nicht umgesetzt. Vorläufige visuelle Levelbereiche: 1–9, 10–24 und 25+. Sie verändern
-weder Stats noch Rewards und sperren keine Stilfamilie. Die Bewegung ist separat abschaltbar
-und berücksichtigt reduzierte Bewegung. Die endgültige Assetqualität, ausdrucksstarke Animation
-und vollständige modulare Garderobe bleiben ein eigenes Produktionsziel; keine 3D-Engine nötig.
+Name und Auswahlwerte werden validiert. Profil-Schema 2 speichert nur Name/Aussehen; Interessen
+werden separat gespeichert, XP bleiben flüchtig. Frühere Profile werden über den bestehenden
+Migrations-/Normalisierungspfad gelesen; alte technische Felder sind keine weiter angebotenen
+Editor-Modi. Der Demo-Reset erhält das Profil. Gesperrter Speicher wird als Sitzungsfallback erklärt.
+
+Ruhige Ganzkörperatmung ist vorhanden: Originale bewegen sich geschlossen, modulare Körper-/Kopfteile
+atmen gekoppelt. Bewegung lässt sich abschalten und respektiert reduzierte Bewegung. Interessen-
+bezogene Gesten, Gesichtsmimik und visuelle Entwicklung in den vorläufigen Levelbereichen 1–9,
+10–24 und 25+ bleiben die weitere Richtung, ohne Stats oder Stilfreischaltungen zu verändern.
+
+### Onboarding und Fokus
+
+`/onboarding` bietet drei Schritte: **Interessen → Fokus-Skills → Zusammenfassung**. Sieben Bereiche
+stehen zur Wahl: Bewegung, Kampfsport, Ruhe & Erholung, Wissen & Lernen, Kreativität, Beruf & Projekte
+und Alltag. Mindestens ein Interesse, eine dazugehörige primäre Richtung und 1–6 aktive Skills aus
+dem 14er-Katalog werden validiert. Die Startauswahl umfasst Calisthenics, Running, Meditation und
+Programming. Änderungen beeinflussen Auswahl und Darstellung, niemals XP oder Rewards.
+
+Die Präferenzen werden getrennt als `everbloom.journey.v1` lokal gespeichert. Überspringen und spätere
+Änderung bleiben möglich; ein Abstecher zum Creator erhält den laufenden Onboarding-Entwurf in der
+Sitzung. Das ist noch kein synchronisiertes Accountprofil oder dauerhafter Fortschrittsstand.
+
+### Equipment-Ziel
+
+Aktuelle Outfitsets sind vollständig bekleidet; Waffen, Taschen, Bücher, Cape und andere befestigte
+Accessoires gehören zum jeweiligen Bildset. Einzelne Slots und Inventarbesitz sind noch nicht
+implementiert. Das Zielsystem umfasst vollständige Sets und **Kopf, Gesicht, Haare, Torso, Arme,
+Beine, Schuhe, Haupthand, Nebenhand, Rücken, Accessoire, Aura und Companion**. Gameplay-Equipment
+und sichtbarer Look bleiben getrennt. Feste Anker, gemeinsame Perspektive, verdeckte Anschlussflächen,
+Masken und definierte Zeichenreihenfolge sind der Produktionsvertrag; eine einzelne gelungene
+Kombination belegt weder alle Kombinationen noch mobile Produktionsreife.
 
 ## Progression – Regeln der Demo
 
@@ -138,18 +162,38 @@ einen primären Skill. Später explizite Gewichtung statt unkontrollierter Mehrf
 | Career | Deep Work, Communication, Leadership, Personal Projects |
 | Life | Healthy Cooking, Planning, Household, Social Skills |
 
-Demo aktiv: Calisthenics, Running, Meditation, Programming. Der Datenkatalog ist erweiterbar;
-vollständiger Skillbaum und freie Auswahl folgen in M1. Attribute der Zielversion: Strength,
-Endurance, Agility, Mobility, Discipline, Focus, Knowledge, Mindfulness, Recovery, Social.
-Die Demo zeigt sechs davon; nicht alle Zielsysteme müssen sofort Oberfläche bekommen.
+Aktuell sind 14 Skills protokollierbar. Die ursprünglichen vier behalten ihre Balance und Demo-
+Startstände; zehn neue Skills starten mit 0 Skill-XP. Fokusauswahl und Ausblenden löschen keine XP.
+
+| Skill | Attribut | XP/Minute | Belohnte Minuten/Tag |
+|---|---|---:|---:|
+| Calisthenics | Strength | 4 | 90 |
+| Running | Endurance | 3 | 60 |
+| Meditation | Mindfulness | 3 | 30 |
+| Programming | Knowledge | 2 | 90 |
+| Weightlifting | Strength | 4 | 90 |
+| Swimming | Endurance | 3 | 60 |
+| Boxing | Strength | 3 | 60 |
+| BJJ | Focus | 3 | 60 |
+| Breathwork | Mindfulness | 2 | 15 |
+| Recovery | Recovery | 2 | 30 |
+| Reading | Knowledge | 2 | 60 |
+| Languages | Knowledge | 2 | 60 |
+| Healthy Cooking | Recovery | 2 | 45 |
+| Instrument üben | Focus | 2 | 60 |
+
+Das sind vorläufige Reward-Grenzen, keine Trainings-/Gesundheitsvorgaben. Subskills und ein vollständiger
+Skillbaum folgen später. Implementierte Attribute: Strength, Endurance, Focus, Knowledge, Mindfulness
+und Recovery. Die Zielversion ergänzt Agility, Mobility, Discipline und Social.
 
 ## Recovery, Rest, Cheat Days und Streaks
 
 Erholung ist eine vollwertige Aktivitätsfamilie. Ein geplanter Ruhetag schützt die Kontinuität;
 ein freiwilliger Cheat Day pausiert Ziele. Ungeplante Pausen kosten mögliche Tagesbelohnungen,
 niemals bereits verdiente XP oder Level. Spätere Momentum-Abnahme bei Inaktivität ist reversibel.
-Ein schwieriger Tag kann durch Erholung zum Recovery Day werden. Diese Tagesmodi und automatische
-Zeitübergänge sind **noch nicht Teil der Demo**. Der angezeigte Wochenrhythmus ist ein Mock-Snapshot.
+Ein schwieriger Tag kann durch Erholung zum Recovery Day werden. Die freiwillige Tagesmoduswahl
+mit lokalem Datumswechsel ist vorhanden; ihre vollständigen Recovery-/Rest-/Cheat-Day-Regeln und
+automatische Spielperioden sind **noch nicht Teil der Demo**. Der Wochenrhythmus ist ein Mock-Snapshot.
 
 Streaks richten sich später nach Zielrhythmus (z. B. dreimal pro Woche statt jeden Tag).
 Kein Anreiz, Erholung zugunsten eines täglichen Sport-Streaks auszulassen. Cold Exposure bekommt
@@ -163,7 +207,17 @@ Phasen geben Feedback, erzwingen keine gefährlicheren Aktivitäten. Loot: Equip
 Seltenheit unabhängig von Stil. Achievements für echte Meilensteine (z. B. erster Boss, 100 Einträge),
 Titles als sichtbare Identität. Inventar, Drop-Tabellen und Claims folgen nach der Basisprogression.
 
-### Geplanter Aura-Fortschritt
+### Aura-Vorschau und geplanter Fortschritt
+
+`CharacterAura` stellt drei Starter-Effekte sowie zehn erweiterte Entwürfe im Creator dar:
+Sterne, mystische Zeichen, innere Energie/Chakra, Dämonenschatten, Licht, Energieströme, Engelsflügel,
+Kirschblüten, Feuer und Geistwächter. Die eigene Namens- und Formensprache steht im
+[Art Guide](ART_DIRECTION.md#aura-richtung-und-aktueller-vorschauumfang). Die erweiterten Entwürfe
+sind ausdrücklich nur Vorschau, mit sechs Farben und ohne Speicherung/Freischaltung. Der optionale
+bedrohliche Blick sitzt derzeit im Schatten hinter der Figur, nicht in ihren echten Augen.
+Gesichtsausdruck und Irisleuchten werden später separat gestaltet. Auren sind rein kosmetisch;
+Chakra ist ein Fantasy-Motiv ohne gesundheitliche Bedeutung. Ganzkörper-VFX mit Boden-, Rücken-
+und Vorderpartikeln sind das Ausbauziel, keine bereits vollständige Produktions-VFX-Bibliothek.
 
 Die vier Starter-Auren bleiben verfügbar: Ohne Aura, Waldlicht, Blütenzauber und Leere.
 `AURA_PROGRESSION_PLAN` beschreibt drei spätere kosmetische Ziele: **Nordlicht ab Charakterlevel 20**,

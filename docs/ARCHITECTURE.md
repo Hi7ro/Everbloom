@@ -12,22 +12,24 @@ Siehe [App Store Readiness & Reichweite](APP_STORE_READINESS.md).
 
 Angular 21 mit kompatibler TypeScript-Version und lokalem CLI unterstützt die vorhandene
 Node-20.20-Umgebung. Standalone, zoneless Change Detection, Signals und lazy Router-Routen
-für Dashboard und `/character/create`. Neue Routenseiten starten oben; Zurücknavigation stellt
+für Dashboard, `/character/create` und `/onboarding`. Neue Routenseiten starten oben; Zurücknavigation stellt
 die Scrollposition wieder her, Abschnittsanker bleiben nutzbar.
 Versionsreferenz: https://angular.dev/reference/versions
 
 ## Frontend-Schichten
 
 ```text
-features/dashboard/ + features/character-creator/   Darstellung + lokaler Formularzustand
+features/dashboard/ + character-creator/ + onboarding/   Views + Formularentwürfe
           ↓
-state/game.store.ts    Signals, computed Views, Commands, Feedback
+state/game.store.ts       Spielstand, Aktivitäten, Profilcommands, Feedback
+state/journey.store.ts    Interessen und Fokusauswahl, getrennt von Progression
+state/daily-care.store.ts freiwilliger Tages-Check-in, getrennt von Progression
           ↓
-data/game.repository  Snapshot laden / Aktivität verbuchen / Profil ändern / Demo-Reset
+data/game.repository     Snapshot / Aktivität / Profil / Demo-Reset
+data/*storage            validierte lokale Profile und Präferenzen
           ↓
-data/mock-*            speichert in Memory, ruft Domainfunktion auf
-          ↓
-domain/                Modelle, Katalog/Balance und reine Progressionsfunktionen
+data/mock-*              Memory-Adapter ruft reine Domainregeln auf
+domain/                  Modelle, Katalog, Progression, Profil-/Journey-/Rigregeln
 ```
 
 Views kennen weder Mock-Seeds noch Transport. Der Store kennt den per InjectionToken bereitgestellten
@@ -38,47 +40,96 @@ Die Progressionsmutation `recordActivity` liefert einen neuen vollständigen Sna
 Reward-Zusammenfassung. Im Mock werden Aktivität, XP, Quests und Boss in einem Rechenschritt geändert.
 Während eines Requests verhindert `busy` parallele UI-Commands. Errors sind sichtbar, Zustand bleibt erhalten.
 
-## Lokales Profil und Darstellung
+## Lokales Profil und illustrierte Darstellung
 
-`domain/character.ts` definiert den kleinen Optionskatalog und die reine Profilvalidierung.
-`CharacterProfile` enthält nur Name und Appearance. `GameRepository.updateCharacter` gibt einen
-neuen Snapshot plus den Speicherstatus zurück; der Store zeigt bei fehlender Persistenz eine
-verständliche Rückmeldung. Der Memory-Mock verwendet `CharacterProfileStorage` mit Profil-
-Schemaversion 2 unter `everbloom.character.v2`. `everbloom.character.v1` bleibt als Legacy-Leseweg
-erhalten. Version-1-Daten werden ausdrücklich migriert und anschließend erneut validiert;
-fehlerhafte oder unbekannte Versionen fallen auf das Demo-Profil zurück. Browserzugriff liegt
-hinter dem `BROWSER_STORAGE`-Token und bleibt außerhalb der Domain. Der nächste explizite
-Profil-Speichervorgang schreibt das normalisierte Version-2-Profil; Lesen allein schreibt keinen
-Migrierungserfolg vor und löscht keine Legacy-Daten.
+`domain/character.ts` validiert `CharacterProfile` mit Name und Appearance. `GameRepository.updateCharacter`
+liefert einen neuen Snapshot plus Speicherstatus; `GameStore` erklärt fehlende Persistenz. Der
+Memory-Mock verwendet `CharacterProfileStorage` unter `everbloom.character.v2`. Version 1 bleibt
+Legacy-Leseweg; gültige Daten werden migriert, normalisiert und bereits beim Legacy-Lesen nach V2
+zu speichern versucht. Der alte Key wird nicht gelöscht. Fehlende/fehlerhafte Daten fallen auf das
+Demo-Profil zurück; gesperrter Speicher lässt einen gekennzeichneten Sitzungsstand zu. Browserzugriff
+liegt hinter `BROWSER_STORAGE`, außerhalb der reinen Domain.
 
-Appearance enthält `presentation: 'male' | 'female'`. Der Optionskatalog bietet je sechs eigene
-Starterfrisuren; der Validator erzwingt die passende Haar-/Darstellungskombination. Namen, Farben,
-Outfits und Auren bleiben reine Profilwerte. Die Legacy-Migration setzt technisch `male` und
-mappt `tousled` → `m-spiky`, `bob` → `m-curtains`, `braid` → `m-topknot`. Das ist keine Ableitung
-realer demografischer Eigenschaften. Der normale V2-Schreibpfad akzeptiert keine Legacy- oder
-falsch zugeordneten Frisur-IDs. Migrations-/Speichertests erhalten vorhandene zulässige Profilwerte
-und prüfen, dass keinerlei XP oder Gameplay-Rechte in die Speicherhülle gelangen.
+Appearance enthält die Darstellung `male`/`female`, illustrierte Vorlage (`illustration`), optionale
+Module (`illustratedHair`, `outfitSet`) und optionale Palettewerte (`eyeColor`, `skinTone`, `hairTint`).
+`character-illustrations.ts` definiert zwölf Vorlagen, sechs je Darstellung, sowie Original plus sechs
+Farben je Farbgruppe. Der Validator erlaubt nur passende Modul-/Darstellungskombinationen und
+bekannte Palettenwerte. Frühere technische Appearance-Felder bleiben Teil des Kompatibilitätspfads;
+der frühere Vektor-Editor ist vollständig aus der UI entfernt. `artwork` wird auf den illustrierten
+Pfad normalisiert. Keine Darstellung oder Hautfarbe beeinflusst Spielregeln oder reale Demografie.
 
-Profiländerungen verändern keine XP, Skills, Quests, Boss-HP oder Momentum. Demo-Reset setzt nur
-Fortschritt zurück und behält das aktuell gewählte Profil. Keine Accountdaten oder Auth-Tokens
-werden hier gespeichert. Eine spätere `PATCH`-API kann denselben Profilvertrag nutzen.
+Profiländerungen verändern keine XP, Skills, Quests, Boss-HP oder Momentum. Demo-Reset behält das
+Profil. Keine Accountdaten, Auth-Tokens oder Kaufrechte werden in diesem Profil gespeichert. Eine
+spätere Profil-API kann denselben fachlichen Vertrag nutzen.
 
-`shared/chibi.ts` rendert dieselben Appearance-Layer in Creator und Dashboard. Die räumliche
-Dreiviertel-Darstellung verwendet SVG-Geometrie, Highlights und Schatten; es gibt keine 3D-Engine.
-Level und eine Aktivitäts-/Interessenauswahl sind reine Darstellungsinputs. Vorläufige visuelle
-Levelbereiche: 1–9, 10–24 und 25+. Das Dashboard leitet die Auswahl aus dem letzten belohnten Skill
-ab oder nutzt den Standard; Creator-Vorschauen bleiben lokaler UI-Zustand. Ein dauerhaftes
-Interessenmodell folgt erst mit vollständigem Onboarding. Idle/Atmung und Gesten sind abschaltbar
-und beachten reduzierte Bewegung. Die male-/female-Auswahl steuert unsexualisierte Unterschiede
-in Gesicht, Körperkontur und Outfitdetails; alle sechs Haarvarianten pro Darstellung werden in
-SVG-Layern gezeichnet. Sie wird weder zur Berechnung von Stats noch zur Wahl von Skillzugängen
-verwendet.
+### Bildkomposition und Rig
 
-`AURA_PROGRESSION_PLAN` speist im Creator nur einen gekennzeichneten Ausblick: Nordlicht ab Level
-20, Sternenkranz ab Level 40, Moosseele als Mooswächter-Bossdrop. Keine Dropchance ist festgelegt.
-Die vier Starter-Auren bleiben im ausrüstbaren Katalog. Der Plan erzeugt keine Ownership, keine
-Loot-Mutation und keine Freischaltung durch Preview-Level; ein späterer servergeprüfter Grant-/
-Claim-Pfad wird getrennt ergänzt.
+`shared/character-portrait.ts` rendert illustrierte Figuren in Dashboard, Creator und Onboarding.
+Vier Vorlagen haben unveränderte Original-PNGs mit separater Luminanzmaske. `usesExactIllustration`
+verwendet diesen Pfad nur ohne explizite Frisur-/Outfit-/Farbwerte. Name, Starter-Aura und Bewegung
+ändern die Bilddateien nicht. Bei Anpassungen nutzt der Renderer modulare, neu erstellte Sheets;
+deren Pixel sind keine exakte Zerlegung der vier Originale.
+
+`domain/character-rig.ts` erzeugt reine `PortraitLayer`-Daten: Bild-/Maskenpfad, Region, Clip,
+Transformation, Kopf-/Körpergruppe und optionale Tönung. `character-rigs.generated.ts` enthält die
+zwölf Figuren-Rigs sowie `face-male` und `face-female`, insgesamt 14. Körper werden über Halsanker
+und Fußlinie ausgerichtet, Köpfe über zwei Irisanker. Ein gemalter Basiskopf füllt beim Frisurwechsel
+Bereiche unter kürzeren Haaren; Gesicht, ausgewählte Haare und Outfitset bleiben unabhängig.
+
+Die semantischen Masken codieren Rot = Haare, Blau = Haut, Weiß = Iris einschließlich Pupille/Reflex,
+Grün = übriger Figurenvordergrund und Schwarz = Hintergrund. SVG-Filter extrahieren Regionen; gezielte
+Tönungen bewahren Helligkeitsabstufung. Pro Portrait eindeutige Masken-/Filter-/Clip-IDs vermeiden
+Kollisionen in Galerien. Masken werden auf die jeweilige Sheetgröße abgebildet; generierte Kanten
+und geschätzte Anker brauchen visuelle Kombinationsprüfung. Vorhandene Assets sind kein Beleg
+pixelgenauer Masken oder fertiger mobiler Produktionsqualität.
+
+Originale atmen als geschlossene Figur. Modulare Kopf-/Körperlayer sind zeitlich gekoppelt und
+zeigen ein ruhiges Gesamt-Idle. Bewegung aus und `prefers-reduced-motion` stoppen Avatar und Aura.
+`resolveAvatarPresence` erhält Level/Interesse als reine Darstellungsinputs; seine vorläufigen
+Levelbereiche 1–9, 10–24 und 25+ sind noch keine ausgearbeitete Gesten-/Mimikbibliothek für alle Assets.
+Keine 3D-Engine oder zusätzliche Animationsabhängigkeit ist eingeführt.
+
+Die aktuelle Kleidung ist ein vollständiges Set mit befestigten Waffen/Accessoires. Künftige Slots
+für Kopf, Gesicht, Haare, Torso, Arme, Beine, Schuhe, Haupthand, Nebenhand, Rücken, Accessoire, Aura
+und Companion benötigen eigene Anker/Layer und Verträge. Weder einzelne Items noch Inventarbesitz
+entstehen automatisch aus der bestehenden Körpermaske. Asset-/Maskenvertrag und Produktionsprompt
+stehen in [ART_DIRECTION.md](ART_DIRECTION.md).
+
+### Aura-Vorschau ohne Rechtevergabe
+
+`domain/aura-designs.ts` beschreibt drei Starter-Effekte plus zehn erweiterte Designs.
+`shared/character-aura.ts` rendert sie dekorativ mit SVG/CSS, ohne Gameplay-Zugriff. Der Creator hält
+`previewAura`, Vorschaufarbe und bedrohlichen Blick ausschließlich im UI-State und blendet während
+der erweiterten Vorschau die Starter-Aura aus. Diese Werte werden nicht gespeichert. Der Blick
+erzeugt aktuell Augen im hinteren Dämonenschatten; er ändert nicht die tatsächlichen Avataraugen.
+Separate Gesichtsmimik/Iris-VFX und vollständige Produktions-VFX bleiben Erweiterungen.
+
+`AURA_PROGRESSION_PLAN` zeigt nur den Ausblick: Nordlicht ab Level 20, Sternenkranz ab Level 40,
+Moosseele als Mooswächter-Bossdrop. Keine Dropchance ist festgelegt. Drei Starter-Effekte plus „Keine“
+bleiben speicherbar; Plan und Vorschauen erzeugen keine Ownership, Loot-Mutation oder Freischaltung.
+Ein späterer servergeprüfter Grant-/Claim-Pfad wird getrennt ergänzt.
+
+## Interessen und Onboarding ohne XP-Mutation
+
+`domain/journey.ts` definiert `JourneyPreferences`: eindeutige `interestIds`, `activeSkillIds` und eine
+in der Auswahl enthaltene `primaryInterestId`. Validiert werden 1–7 bekannte Interessen und 1–6
+aktive Skills aus dem 14er-Katalog. `JourneyPreferencesStorage` speichert eine separate V1-Hülle
+unter `everbloom.journey.v1`, `JourneyStore` hält Präferenzen, Konfigurations-/Persistenzstatus und
+Rückmeldungen. Ungültige Eingaben ändern nichts; ein gesperrter Speicher erlaubt Sitzungsnutzung mit
+Hinweis. Die Defaults enthalten Calisthenics, Running, Meditation und Programming.
+
+`features/onboarding` bietet Interessen, Fokus-Skills und Zusammenfassung. Ein flüchtiger
+`OnboardingDraft` erhält Schritt und Auswahl beim Abstecher zum Creator, ohne Browser-Speicherung.
+Der Creator akzeptiert nur `returnTo=onboarding` als Rückweg; ohne gespeichertes Profil und ohne
+konfigurierte Reise führt der erste erfolgreiche Profilabschluss ebenfalls zur Einführung.
+Abbrechen/Überspringen und spätere Änderung bleiben möglich. `GameStore` leitet aktive Skill-Views
+und Avatarinteresse aus den Präferenzen ab; der letzte belohnte Skill hat bei der Darstellung Vorrang.
+Journey-Speicherung ruft keine Progressionsmutation auf und ändert keine XP, Quests oder Bosswerte.
+
+Der 14er-Katalog liegt weiterhin in `domain/catalog.ts`; `mock-data.ts` erzeugt für jeden Skill
+Fortschritt. Die ursprünglichen vier Demo-Startstände bleiben bestehen, zehn neue starten bei 0 XP.
+Raten und Tageslimits bleiben reine Domainwerte; Fokusauswahl löscht keinen Skillfortschritt.
+Server-Synchronisierung von Profil/Präferenzen und eigentliche Fortschrittspersistenz fehlen weiterhin.
 
 ## Erfolgsfeedback ohne zusätzliche Progressionsmutation
 
@@ -127,8 +178,8 @@ in einem eigenen ADR konkretisieren. Keine Tokens in localStorage als stillschwe
 ## Bewusste Grenzen
 
 Kein Offline-Sync, Event Bus, GraphQL, SSR für das persönliche Dashboard, Microservice, Nx oder NgRx.
-Nur Charakterprofil und Darstellungspräferenzen werden lokal gespeichert; Fortschritt bleibt
-im Arbeitsspeicher. Reset ist ein Mock-Adapter-Kommando und wird nicht als produktiver Account-Reset
+Charakterprofil, Journey-Präferenzen, Feedback-Einstellungen und freiwilliger Tages-Check-in werden
+getrennt lokal gespeichert; Spielprogression bleibt im Arbeitsspeicher. Reset ist ein Mock-Adapter-Kommando und wird nicht als produktiver Account-Reset
 übernommen. Serverperioden, echte Wochenhistorie und Berechtigungen folgen mit der API.
 
 ## Tests und Änderungen
@@ -137,14 +188,19 @@ Reine Domain-Tests prüfen XP/Levelgrenzen, Limits, Idempotenz und atomare Rewar
 Reine Profil-/Meilensteintests prüfen erlaubte Eingaben und einmalige Übergänge.
 Angular-Tests prüfen den echten Store/Mock-Datenfluss, das Formular, Profilgrenzen und Feedback.
 Speichertests prüfen Version-1-Migration, gültige V2-Profile, ungültige Daten, fehlenden Speicher
-und Reload-Verhalten. Katalogtests sichern je sechs Frisuren, Darstellungskompatibilität und
-die Trennung geplanter Auren vom ausrüstbaren Katalog. `npm run build` prüft
+und Reload-Verhalten. Katalog-/Rigtests sichern zwölf Vorlagen, sechs Module je Darstellung,
+Palettegrenzen, Layerzuordnung und die Trennung geplanter Auren vom ausrüstbaren Katalog. Journey-
+Tests prüfen Auswahlgrenzen, getrennte Speicherung und fehlende XP-Mutation; UI-Tests prüfen den
+dreistufigen Ablauf und Creator-Rückweg. Bestehende Testergebnisse und laufende Prüfungen bleiben
+in VALIDATION getrennt; eine neue Dokumentation ergänzt keine bestandenen Testzahlen. `npm run build` prüft
 Templates und TypeScript sowie Bundle-Budgets. Fachregel ändern → GDD, Balance und Test gemeinsam
 ändern. API hinzufügen → Adapter implementieren, Provider tauschen, Fehlerfälle testen.
 
-Für die responsive Dashboard-Ansicht gilt ein Komponenten-CSS-Budget von 16 kB (Warnung) und
+Für Komponentenstyles gilt laut `angular.json` ein CSS-Budget von 16 kB (Warnung) und
 20 kB (Fehler); tatsächliche Größen werden beim Produktionsbuild geprüft. Das Initial-Bundle bleibt bei den
-CLI-Grenzen 500 kB / 1 MB. Kleinere Karten werden erst bei Wiederverwendung separat extrahiert.
+CLI-Grenzen 500 kB / 1 MB. Diese CLI-Budgets belegen keine mobilen Raster-/VFX-Kosten. Eigene
+Download-, Texturspeicher-, Layer-/Filter- und Partikelbudgets sind vor Produktionsfreigabe auf
+Geräten zu kalibrieren. Kleinere Karten werden erst bei Wiederverwendung separat extrahiert.
 
 ## Responsive Mobile-Game-Shell
 
@@ -206,5 +262,6 @@ Reine Validatoren und Datumsregeln liegen in `domain/daily-care.ts`; `DailyCareS
 Signale, den injizierbaren lokalen Tagesgeber und Browser-Speicherung. Das Panel bearbeitet einen
 Formularentwurf und übernimmt ihn erst beim Absenden. Der Store hört auf Fokus/Visibility und
 prüft vor Commands, ohne dauerhaften Timer. Das Dashboard verwendet die freiwillige Auswahl für
-Reaktionszeile und Custom-Avatarinteresse. Original-Artwork bietet zunächst nur dezentes Gesamt-Idle.
+Reaktionszeile und Darstellungsinteresse. Illustrierte Figuren bieten derzeit ruhige Ganzkörperatmung;
+ausgearbeitete interessenbezogene Gesten folgen separat.
 Der Store kennt das GameRepository nicht; Check-in und Auslassen können keine Rewards erzeugen.

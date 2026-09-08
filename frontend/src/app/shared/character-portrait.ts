@@ -37,8 +37,14 @@ let nextPortraitId = 0;
             </clipPath>
             <mask [id]="id + '-mask-' + layer.key" maskUnits="userSpaceOnUse" x="0" y="0"
               [attr.width]="layer.width" [attr.height]="layer.height" style="mask-type:alpha">
-              <image [attr.href]="layer.mask" [attr.width]="layer.width" [attr.height]="layer.height"
-                preserveAspectRatio="none" [attr.filter]="'url(#' + id + '-' + layer.region + ')'" />
+              @if (layer.eyeRegions; as eyes) {
+                @for (eye of eyes; track $index) {
+                  <ellipse [attr.cx]="eye.cx" [attr.cy]="eye.cy" [attr.rx]="eye.rx" [attr.ry]="eye.ry" fill="white" />
+                }
+              } @else {
+                <image [attr.href]="layer.mask" [attr.width]="layer.width" [attr.height]="layer.height"
+                  preserveAspectRatio="none" [attr.filter]="'url(#' + id + '-' + layer.region + ')'" />
+              }
             </mask>
             @if (layer.tint; as tint) {
               <filter [id]="id + '-tint-' + layer.key" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%">

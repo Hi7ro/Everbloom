@@ -15,7 +15,7 @@ Der Arbeitstitel ist vorläufig; eigene Figuren, Lore und Assets, keine übernom
 5. [Lernpfad](docs/LEARNING_PATH.md): Code lesen und den nächsten Slice umsetzen.
 6. [App Store & Reichweite](docs/APP_STORE_READINESS.md): ASO, SEO und Release-Anforderungen.
 7. [Validierung](docs/VALIDATION.md): Tests, Browser-Prüfung und bekannte Grenzen.
-8. [Art Direction](docs/ART_DIRECTION.md): exakter Original-Look und Qualität künftiger Varianten.
+8. [Art Direction](docs/ART_DIRECTION.md): illustrierte Figuren, modulare Teile, Aura-Richtung und Produktionsvertrag.
 
 Der Master Prompt bündelt Vision und Leitplanken; GDD, PRD, Architektur und Domain Model
 konkretisieren Regeln, Umfang und Abnahme. Neue ausdrückliche Nutzerentscheidungen haben Vorrang;
@@ -45,6 +45,7 @@ npm start
 
 Dashboard: http://localhost:4200/dashboard
 Character Creator: http://localhost:4200/character/create
+Onboarding: http://localhost:4200/onboarding
 
 ```sh
 npm test -- --watch=false
@@ -55,8 +56,8 @@ XP, Quests, Boss und Aktivitätsverlauf verwenden Mock-Daten im Arbeitsspeicher.
 „Demo zurücksetzen“ starten denselben Beispieltagesstand. Name und Aussehen werden separat
 lokal im Browser als Profilversion 2 gespeichert und bleiben beim Demo-Reset erhalten. Gültige
 ältere Profile werden aus Version 1 migriert; die Darstellungswahl verändert keine Spielwerte.
-Auch die Einstellungen für
-Ton, Feuerwerk und Charakterbewegung werden lokal gespeichert. Bei blockiertem Speicher bleibt
+Interessen und Fokus-Skills werden getrennt als Journey-Version 1 lokal gespeichert. Auch der
+freiwillige Tages-Check-in sowie Einstellungen für Ton, Feuerwerk und Bewegung bleiben lokal. Bei blockiertem Speicher bleibt
 die Funktion für die laufende Sitzung nutzbar. Keine Anmeldung, Abrechnung oder Serverpersistenz.
 Angular 21 passt zur vorhandenen Node-20-Umgebung; Versionen werden im Lockfile festgehalten.
 Kompatibilitätsquelle: https://angular.dev/reference/versions
@@ -71,14 +72,26 @@ Gerätetests; der Browser-Prototyp ist noch keine fertige mobile Store-App.
 
 ## Stand
 
-M0 und der erste M1-Dashboard-Slice sind vorhanden. Der aktuelle Ausbau ergänzt den lokalen
-Character Creator v2 mit männlicher/weiblicher Darstellung und je sechs Starterfrisuren, einen
-illustrierten Original-Look, zusätzlich einen frei gestaltbaren SVG-Chibi und Erfolgsfeedback mit
-kleinem Feuerwerk und eigenem Jingle. Aktuelle Prüfungen und Grenzen stehen in
-[VALIDATION.md](docs/VALIDATION.md). Das ist weiterhin ein Web-Prototyp, keine produktive
-vollständig modulare Produktionsgrafik oder native Store-Fassung. Der freiwillige Tages-Check-in mit lokalem Tageswechsel ist umgesetzt. Vollständiges Onboarding, Periodenwechsel, API und
-serverseitige Fortschrittsspeicherung bleiben M1b. Membership ist mit **3,99 € pro Monat**
-geplant; Käufe und Membership-Boni sind noch nicht implementiert.
+M0 und der Dashboard-Slice sind vorhanden. Der Creator verwendet zwölf illustrierte Startdesigns,
+je sechs männliche/weibliche, mit unabhängig wählbarer Frisur und vollständigem Outfitset. Haut-,
+Augen- und Haarfarben bieten jeweils Original plus sechs Farben. Die vier ursprünglichen PNG-Looks
+bleiben ohne Anpassung exakt erhalten; Modul-/Farbwechsel nutzen neu erstellte Bildvarianten.
+Der frühere Vektor-Editor ist aus der UI entfernt. Outfitsets enthalten derzeit ihre Waffen und
+Accessoires fest; einzelne Ausrüstungsslots und Inventar folgen später.
+
+Ruhige Ganzkörperatmung ist abschaltbar und respektiert reduzierte Bewegung. Erfolgsmomente zeigen
+ein kleines Feuerwerk mit eigenem Jingle. Drei Starter-Auren plus „Keine“ sind wählbar; zehn weitere
+Auraentwürfe lassen sich nur im Creator ausprobieren und werden nicht gespeichert oder freigeschaltet.
+
+Das dreistufige Onboarding enthält sieben Interessenbereiche, 1–6 Fokus-Skills aus 14 und eine
+Zusammenfassung. Die ursprünglichen vier Skill-Balancewerte bleiben unverändert; zehn Ergänzungen
+starten mit 0 Skill-XP. Freiwilliger Tages-Check-in und lokaler Tageswechsel sind umgesetzt. Aktuelle
+Prüfungen und Grenzen stehen in [VALIDATION.md](docs/VALIDATION.md).
+
+Das Projekt bleibt ein Web-Prototyp. Echte Spielperioden, dauerhafter Verlauf, vollständige Recovery-/
+Streak-Regeln, API, Authentifizierung und PostgreSQL-Fortschrittspersistenz fehlen weiterhin im M1b-
+Umfang. Mobile Assetqualität und native Store-Abnahme sind eigene Arbeitsschritte. Membership ist
+mit **3,99 € pro Monat** geplant; Käufe und Membership-Boni sind noch nicht implementiert.
 
 Die spätere Oberfläche ist für Deutsch, Englisch, Spanisch, Schweizerisch, Portugiesisch,
 Chinesisch, Japanisch, Russisch und Koreanisch vorgesehen. Die Demo ist derzeit deutsch;

@@ -17,7 +17,7 @@
     <div class="creator-grid">
       <aside class="preview" aria-label="Live-Vorschau deines Charakters">
         <div class="avatar-stage">
-          <div class="portrait-frame">
+          <div class="portrait-frame" [class.tall-aura-preview]="previewAura() === 'guardian' || (previewAura() === 'demonic' && previewFierce())">
             @if (previewAura(); as aura) {
               <app-character-aura
                 class="aura-tryout"
@@ -109,9 +109,13 @@
                   (click)="chooseIllustration(option.id)"
                   [attr.aria-label]="option.name + ' als Vorlage wählen'"
                 >
-                  <span class="illustration-thumbnail" aria-hidden="true"
-                    ><app-character-portrait [appearance]="option.appearance" [animated]="false"
-                  /></span>
+                  <span class="illustration-thumbnail" aria-hidden="true">
+                    @defer (on viewport) {
+                      <app-character-portrait [appearance]="option.appearance" [animated]="false" />
+                    } @placeholder {
+                      <span class="thumbnail-placeholder">✧</span>
+                    }
+                  </span>
                   <strong>{{ option.name }}</strong>
                   <span class="illustration-check" aria-hidden="true">{{
                     selectedIllustration()?.id === option.id ? '✓' : '○'

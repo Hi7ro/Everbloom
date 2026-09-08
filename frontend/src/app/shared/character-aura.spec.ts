@@ -47,6 +47,46 @@ describe('decorative character auras', () => {
     expect(outlines.size).toBe(13);
   });
 
+  it('keeps gradient references local to each aura instance without blur filters or external assets', () => {
+    const first = render('fire');
+    const second = render('angel');
+    const allIds = new Set<string>();
+    for (const fixture of [first, second]) {
+      const root = fixture.nativeElement as HTMLElement;
+      const defs = Array.from(root.querySelectorAll('defs [id]'));
+      expect(defs).toHaveLength(4);
+      for (const definition of defs) {
+        expect(allIds.has(definition.id)).toBe(false);
+        allIds.add(definition.id);
+      }
+      for (const region of ['halo', 'surface', 'edge', 'spark'] as const) {
+        const reference = fixture.componentInstance.paint(region);
+        expect(root.querySelector(reference.slice(4, -1))).not.toBeNull();
+      }
+      expect(root.querySelectorAll('filter, feGaussianBlur, image')).toHaveLength(0);
+      expect(root.querySelectorAll('.particle')).toHaveLength(16);
+      expect(root.querySelector('.ambient-glow ellipse')).not.toBeNull();
+      expect(root.querySelector('.ground-light ellipse')).not.toBeNull();
+      expect(root.querySelector('stop[stop-color="#ffffff"]')).not.toBeNull();
+    }
+    expect(allIds.size).toBe(8);
+  });
+
+  it('places the guardian face above the portrait and adds visible outer energy accents', () => {
+    const fixture = render('guardian', false);
+    const root = fixture.nativeElement as HTMLElement;
+    const head = root.querySelector('[data-guardian-head="raised"]');
+    expect(head?.getAttribute('d')).toContain('120-47');
+    expect(root.querySelector('.guardian-shoulders')).not.toBeNull();
+    expect(root.querySelector('.guardian-gaze')).not.toBeNull();
+    for (const id of ['fire', 'energy', 'demonic']) {
+      fixture.componentRef.setInput('aura', id);
+      fixture.detectChanges();
+      expect(root.querySelector('.energy-core')).not.toBeNull();
+      expect(root.querySelector('svg')?.classList.contains('animated')).toBe(false);
+    }
+  });
+
   it('uses natural starter colors and accepts only safe hex color overrides', () => {
     const fixture = render('sage');
     expect(fixture.componentInstance.resolvedColor()).toBe('#b6d791');

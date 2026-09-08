@@ -573,3 +573,9 @@ button[aria-pressed='true'] {
     height: 176px;
   }
 }
+
+// Reserve room for tall aura details, including in the sticky phone preview.
+.portrait-frame.tall-aura-preview {
+  transform: scale(.82);
+  transform-origin: 50% 100%;
+}

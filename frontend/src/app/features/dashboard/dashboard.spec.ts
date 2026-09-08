@@ -1,4 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { CharacterPortrait } from '../../shared/character-portrait';
 import { GAME_REPOSITORY } from '../../data/game.repository';
 import { MockGameRepository } from '../../data/mock-game.repository';
 import { Dashboard } from './dashboard';
@@ -44,9 +46,11 @@ describe('Dashboard activity flow', () => {
     expect(root.querySelector('#boss progress')?.getAttribute('value')).toBe('1400');
     expect(root.querySelector('.feedback')?.textContent).toContain('+60 XP');
     expect(root.querySelector('.avatar-message')?.textContent).toContain('Ein ruhiger Moment');
-    expect(root.querySelector('app-character-portrait svg')?.getAttribute('data-gesture')).toBe(
-      'idle',
-    );
+    expect(
+      root
+        .querySelector('app-character-portrait .illustrated-portrait')
+        ?.getAttribute('data-gesture'),
+    ).toBe('idle');
     expect(
       root.querySelector('app-character-portrait .original-figure image')?.getAttribute('href'),
     ).toBe('/art/characters/emerald-knight-original.png');
@@ -63,25 +67,41 @@ describe('Dashboard activity flow', () => {
       'ganze Minuten',
     );
   });
-  it('lets a rest-day check-in change the custom chibi without granting or removing game progress', async () => {
+  it('updates rest-day presence while preserving the illustrated character layers and all game progress', async () => {
     const fixture = TestBed.createComponent(Dashboard);
     await fixture.whenStable();
     const store = fixture.componentInstance.store;
     const character = store.snapshot()!.character;
     await store.updateCharacter({
       name: character.name,
-      appearance: { ...character.appearance, artwork: 'custom' },
+      appearance: {
+        ...character.appearance,
+        artwork: 'original',
+        illustratedHair: 'frost-scholar',
+        outfitSet: 'urban-ranger',
+        skinTone: '#68442f',
+      },
     });
     await fixture.whenStable();
     const before = structuredClone(store.snapshot());
+    const root = fixture.nativeElement as HTMLElement;
+    const portrait = fixture.debugElement.query(By.directive(CharacterPortrait))
+      .componentInstance as CharacterPortrait;
+    const outfit = root.querySelector('[data-layer="outfit"] image');
+    const hair = root.querySelector('[data-layer="hair"] image');
     const care = TestBed.inject(DailyCareStore);
     care.save('rest', 'low');
     await fixture.whenStable();
-    expect(
-      fixture.nativeElement
-        .querySelector('app-character-portrait app-chibi svg')
-        .getAttribute('data-gesture'),
-    ).toBe('breathe');
+    expect(portrait.interest()).toBe('recovery');
+    expect(root.querySelector('.illustrated-portrait')?.getAttribute('data-gesture')).toBe('idle');
+    expect(root.querySelector('.illustrated-portrait')?.getAttribute('data-renderer')).toBe(
+      'layered',
+    );
+    expect(root.querySelector('[data-layer="outfit"] image')).toBe(outfit);
+    expect(root.querySelector('[data-layer="hair"] image')).toBe(hair);
+    expect(outfit?.getAttribute('href')).toBe('/art/characters/urban-ranger-sheet.png');
+    expect(hair?.getAttribute('href')).toBe('/art/characters/frost-scholar-sheet.png');
+    expect(root.querySelector('app-chibi')).toBeNull();
     expect(fixture.nativeElement.querySelector('.avatar-message').textContent).toContain(
       'Heute hat Ruhe Platz',
     );

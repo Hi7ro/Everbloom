@@ -22,5 +22,15 @@
     "neckY": 737
   },
   "maskWidth": 1667,
-  "maskHeight": 944
+  "maskHeight": 944,
+  "iris": {
+    "left": {
+      "rx": 42,
+      "ry": 45
+    },
+    "right": {
+      "rx": 37,
+      "ry": 43
+    }
+  }
 }

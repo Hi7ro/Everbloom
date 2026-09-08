@@ -9,6 +9,7 @@ export interface SpriteRig {
   divider: number;
   body: { neckX: number; neckY: number; footY: number };
   eyes: { left: { x: number; y: number }; right: { x: number; y: number } };
+  iris?: { left: { rx: number; ry: number }; right: { rx: number; ry: number } };
 }
 export type SpriteRegion = 'all' | 'body' | 'face' | 'hair' | 'skin' | 'eyes';
 export interface PortraitLayer {
@@ -23,6 +24,7 @@ export interface PortraitLayer {
   clipWidth: number;
   transform: string;
   tint?: string;
+  eyeRegions?: { cx: number; cy: number; rx: number; ry: number }[];
 }
 
 /** Coefficients extract alpha from authored RGB region maps, never from the painted artwork. */
@@ -68,6 +70,9 @@ export function portraitLayers(appearance: Appearance): PortraitLayer[] {
   function add(key: string, rig: SpriteRig, region: SpriteRegion, group: 'head' | 'body', tint?: string) {
     const isFaceBase = rig.id.startsWith('face-');
     layers.push({ key, group, region, tint,
+      eyeRegions: region === 'eyes' && rig.iris ? (['left', 'right'] as const).map(side => ({
+        cx: rig.eyes[side].x, cy: rig.eyes[side].y, ...rig.iris![side],
+      })) : undefined,
       image: `/art/characters/${rig.id}${isFaceBase ? '' : '-sheet'}.png`,
       mask: `/art/characters/${rig.id}-layers.png`, width: rig.width, height: rig.height,
       clipX: group === 'body' || isFaceBase || region === 'hair' ? 0 : rig.divider,

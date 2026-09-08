@@ -24,40 +24,45 @@ keine automatische Gesundheitsdiagnose. Ein umfassendes Bedürfnisse-/Mood-Syste
 
 ## M1a – Erster vertikaler Slice
 
-- [x] Charakter mit Chibi-Platzhalter, Name/Titel, Level und XP bis zum nächsten Level.
-- [x] Momentum, Mock-Wochenrhythmus, sechs Stats, Daily Quests, vier aktive Skills, Weekly Boss.
+- [x] Charakter mit illustriertem Portrait, Name/Titel, Level und XP bis zum nächsten Level.
+- [x] Momentum, Mock-Wochenrhythmus, sechs Stats, Daily Quests, Fokus-Skills aus dem 14er-Katalog, Weekly Boss.
 - [x] Aktivität auswählen und Minuten eintragen; synchroner sichtbarer Fortschritt aller Systeme.
 - [x] Eingabevalidierung, abgeschlossene Quest, Levelwechsel, Boss-Sieg, Statusmeldung, Demo-Reset.
 - [x] Arbeitsspeicher-Mock mit sichtbarem Hinweis auf Reset beim Neuladen.
 
-## M1a-Ausbau – Creator v2 und Erfolgsmomente
+## M1a-Ausbau – illustrierter Creator und Erfolgsmomente
 
-Implementierungsumfang des aktuellen Ausbaus; abgeschlossene Prüfungen stehen in
-[VALIDATION.md](VALIDATION.md):
+Implementierungsumfang des aktuellen Ausbaus; abgeschlossene Prüfungen und offene visuelle Grenzen
+stehen in [VALIDATION.md](VALIDATION.md). Die folgenden Punkte sind keine neue Geräte-/Testabnahme:
 
-- Exakt bestätigter Original-Look in Dashboard/Creator, unveränderte PNG plus separate Maske,
-  Aura und abschaltbares Gesamt-Idle. Feste Haare/Farben/Rüstung sind im UI erklärt. Optionales
-  `artwork` wird validiert und gespeichert; eine weibliche Originalillustration folgt noch.
-- „Selbst gestalten“ unter `/character/create`: Name, männliche/weibliche Darstellung, Körper, Haare, Outfit, Aura und
-  drei Farben; sofortige modulare Vorschau. Beide Darstellungen sind an Gesicht, Körpersilhouette
-  und Outfitdetails klar unterscheidbar, unsexualisiert und rein visuell.
-- Je sechs eigene Starterfrisuren für `male` und `female`; gültige Zuordnung zur Darstellung wird
-  an der Domain-/Adapter-Grenze geprüft. Die vollständigen IDs stehen im Domain Model.
-- Validiertes lokales Charakterprofil mit Schemaversion 2 und expliziter Version-1-Migration;
-  technischer Default `male`, keine demografische Ableitung. Nur Name/Aussehen werden gespeichert.
-  XP, Skills, Quests, Boss und Verlauf bleiben im Arbeitsspeicher. Demo-Reset erhält das Profil.
-- Vier Starter-Auren bleiben frei verfügbar. Nordlicht (Level 20), Sternenkranz (Level 40) und
-  Moosseele (Mooswächter-Bossdrop) werden als spätere Ziele gezeigt. Keine aktuelle Freischaltung,
-  Besitzpersistenz, Dropchance oder Loot-Vergabe.
+- Ausschließlich illustrierte Figuren in Creator und Dashboard; der frühere Vektor-Editor ist aus
+  der UI entfernt. Zwölf Startdesigns, je sechs männliche/weibliche Vorlagen mit eigener Frisur
+  und vollständigem Outfitset, detailliert im [Art Guide](ART_DIRECTION.md).
+- Die vier Original-PNGs bleiben ohne Modul-/Farb-Overrides unverändert sichtbar, mit separater
+  Hintergrundmaske. Angepasste Figuren verwenden neu erstellte modulare Bildvarianten; diese
+  dürfen nicht als pixelidentisch zum ursprünglichen Original bezeichnet werden.
+- Name, Darstellung, Vorlage, unabhängig gewählte Frisur und Kleidung, Haut-/Augen-/Haarfarbe
+  (je „Original“ plus sechs Farben), Starter-Aura und Bewegung mit direkter Vorschau. Zwölf
+  Figuren-Rigs plus zwei Basiskopf-Rigs ermöglichen getrennte Körper-, Gesicht-/Kopf- und Haarlayer.
+- Darstellung und Hauttöne sind unsexualisiert und rein visuell, ohne Stats, demografische
+  Ableitung oder fachliche Stilsperren. Modulzuordnungen und Paletten werden validiert.
+- Outfitsets sind vollständig bekleidet; Waffen und befestigte Accessoires gehören derzeit zum
+  Set. Einzelne Ausrüstungsslots, Inventar, Waffenwechsel und Loot folgen später.
+- Validiertes lokales Charakterprofil im Schema 2 mit Legacy-Migrationspfad. Nur Name/Aussehen
+  werden gespeichert; XP, Skills, Quests, Boss und Verlauf bleiben im Arbeitsspeicher. Demo-Reset
+  erhält das Profil. Fehlende Speicherverfügbarkeit wird als Sitzungsfallback erklärt.
+- Drei Starter-Effekte plus „Keine“ sind speicherbar. Nordlicht (Level 20), Sternenkranz (Level 40)
+  und Moosseele (Mooswächter-Bossdrop) bleiben geplante Ziele ohne Besitz-/Loot-Vergabe.
+- Zehn erweiterte Auraentwürfe mit sechs Vorschaufarben sind nur im Creator ausprobierbar und
+  werden nicht gespeichert. Der bedrohliche Blick verändert derzeit den rückwärtigen Dämonenschatten,
+  nicht die Avataraugen. Eigene Mimik/Iris-VFX und Produktions-VFX sind weitere Arbeit.
 - Gebündelte Erfolgskarte, kleines Feuerwerk und eigener Vier-Ton-Jingle bei Charakter-/Skill-
   Levelaufstieg, erstem belohntem Tageseintrag, allen abgeschlossenen Daily Quests und Boss-Sieg.
-- Separate gespeicherte Schalter für Ton, Feuerwerk und Charakterbewegung; reduzierte Bewegung.
-- Frei gestaltbarer Chibi mit 2.5D-Tiefenwirkung, subtiler Atmung/Idle und interessenbezogenen
-  Gesten. Vorläufige visuelle Levelbereiche 1–9, 10–24, 25+. Dashboard nutzt letzten belohnten
-  Skill; Creator bietet rein visuelle Vorschau. Kein gespeichertes Interessenprofil.
+- Separate gespeicherte Schalter für Ton, Feuerwerk und Bewegung; Originale atmen geschlossen,
+  modulare Körper/Köpfe gekoppelt. Reduzierte Bewegung hält Avatar und Aura statisch.
 
-Keine Fortschrittspersistenz, neue XP-Kurve, fertige Produktionsassets oder native Store-Abnahme.
-Die Dokumentation beschreibt den Ausbau V0.3; **Balance V0.2 bleibt unverändert**.
+Keine Server-Fortschrittspersistenz oder native Store-Abnahme. **Balance V0.2 bleibt unverändert**;
+neue Skills erweitern den Katalog, ohne die ursprünglichen vier Raten/Startstände zu verändern.
 
 ## Aktueller Mobile-Ausbau
 
@@ -71,12 +76,16 @@ VALIDATION. Diese Arbeit macht das Spiel noch nicht zu einer abgenommenen native
       freundliche Reaktionszeile und lokaler Tageswechsel. Auslassen bleibt ohne Strafe. Speicherung
       getrennt vom GameSnapshot, keine XP-/Quest-/Boss-/Momentum-Änderung. Kein umfassender
       Bedürfnisse-Simulator; Recovery-/Streak-Regeln sind dadurch noch nicht umgesetzt.
-- [ ] Vollständiges Onboarding auf Basis des einfachen Creators, aktive Skills und gespeicherte
-      Interessen; weitere Gesicht-/Augenoptionen und spätere Asset-Slots nach Umfang M1b/M2.
+- [x] Dreistufiges Onboarding: sieben Interessenbereiche mit primärer Richtung, 1–6 Fokus-Skills
+      aus 14 Skills und Zusammenfassung. Lokal im getrennten Schema `everbloom.journey.v1`;
+      Überspringen und spätere Änderungen möglich, Creator-Rückkehr erhält den Sitzungsentwurf.
+      Keine XP-/Quest-/Bossänderung; noch kein servergespeichertes Interessenprofil.
+- [x] Erweiterter Katalog mit 14 protokollierbaren Skills; ursprüngliche vier unverändert, zehn
+      Ergänzungen mit 0 Start-XP. Alle Raten/Limits stehen im GDD.
 - [ ] Früher Capacitor-Gerätetest des Kernflows, bevor die Zahl der Screens stark wächst.
 - [ ] Account-Löschmodell mit öffentlichem Webweg planen; Texte für die neun späteren Zielsprachen
       auslagerbar halten und ein zentrales Locale-Modell vorbereiten.
-- [ ] Vollständiger konfigurierbarer Skillkatalog und minimale Subskills.
+- [ ] Weiterer Skillkatalog-Ausbau und minimale Subskills; die aktuelle Fokusauswahl ist vorhanden.
 - [ ] Daily/Weekly-Perioden, echte lokale Zeitzone und nachvollziehbarer Aktivitätsverlauf.
 - [ ] Recovery/Rest/Cheat Days und frequenzabhängige Streaks.
 - [ ] Spring Boot REST, PostgreSQL/Flyway, Account und Authentifizierung.
@@ -107,37 +116,51 @@ Backend/DB werden jetzt strukturell vorbereitet, nicht als Scheinfunktion implem
    neuen Ausgangsstand erhalten. Die vorläufigen Kurven und weitere Levelbeispiele stehen im
    [Game Design](GAME_DESIGN.md#progression--regeln-der-demo).
 
-## Abnahme des Creator-v2-/Erfolgsausbaus
+## Abnahme von Creator, Onboarding und Erfolgsfeedback
 
-1. Profiländerung aktualisiert die Figur im Dashboard ohne XP-, Quest-, Boss- oder Momentumänderung.
-2. Name und alle Auswahlwerte werden an der Domain-/Datenadapter-Grenze geprüft; ungültige Werte
-   beschädigen den Zustand nicht. Abbrechen speichert keine Vorschau.
-3. Reload erhält ein gültiges gespeichertes Profil; kaputte/fremde Speicherdaten werden ignoriert.
-   Blockierter Browser-Speicher verhindert die Nutzung für die laufende Sitzung nicht; fehlende
-   Profilpersistenz wird sichtbar erklärt. Fortschritt bleibt ausdrücklich flüchtig.
-4. Ein akzeptierter Übergang löst die zutreffenden Erfolge einmal gebündelt aus. Einzelne Daily
-   Quests, doppelte Requests, Profiländerung, Reload und Reset erzeugen keine zusätzliche Feier.
-5. Ton, Feuerwerk und Idle-Bewegung sind unabhängig steuerbar. Reduzierte Bewegung bleibt
-   wirksam; Tonfehler verhindern keine XP-Vergabe. Vorschauen ändern keinerlei Spielwerte.
-6. Dreiviertel-Silhouette, Highlights/Schatten, Outfit-/Haarvarianten und die drei visuellen
-   Levelbereiche sind lesbar. Interessenbezogene Animation ist rein visuell und darf keine
-   versteckten Skill-, Interessen- oder Fortschrittsdaten speichern.
-7. Creator und Erfolgskarte sind bei 360 px Breite nutzbar; Fokus, beschriftete Controls und
-   verständlicher Erfolgstext funktionieren ohne Ton/Animation. Browser und relevante Tests prüfen.
-8. Männlich/weiblich sind in Creator und Dashboard sichtbar unterscheidbar. Je sechs Frisuren
-   werden eigenständig gerendert; ein Wechsel der Darstellung hinterlässt keine ungültige Frisur.
-   Jeder Style und jede Farbe bleiben zugänglich. Die Auswahl ändert keinerlei Spielwerte.
-9. Gültige Version-1-Profile werden nachvollziehbar nach Version 2 migriert; Name, Farben und andere
-   zulässige Auswahlwerte bleiben erhalten. `tousled` → `m-spiky`, `bob` → `m-curtains`, `braid` →
-   `m-topknot`; `male` ist allein technischer Default. V2 akzeptiert keine unpassende Haarzuordnung.
-10. Die drei geplanten Aura-Ziele können weder gespeichert noch ausgerüstet werden. Weder Level-
-    Vorschau noch ein Demo-Boss-Sieg erzeugen Besitzrechte. Starter-Auren funktionieren weiterhin.
+Diese Kriterien beschreiben die nötige Prüfung des aktuellen Ausbaus. Ergebnisse werden erst nach
+Durchführung in VALIDATION eingetragen, insbesondere visuelle Kombinationen und Geräteverhalten.
+
+1. Profiländerungen aktualisieren das Dashboard ohne XP-, Skill-, Quest-, Boss- oder Momentumänderung.
+   Abbrechen speichert keine Vorschau. Name, Module und Paletten werden an Domain-/Adapter-Grenzen validiert.
+2. Zwölf Vorlagen sind vorhanden, sechs je Darstellung. Frisur und vollständiges Outfitset lassen
+   sich unabhängig innerhalb der passenden Darstellung wählen. Wechsel hinterlässt keine ungültigen
+   Module. Original plus sechs Optionen je Haut-, Augen- und Haarpalette wirken auf die richtige Region.
+3. Die vier Originalansichten verwenden unveränderte PNGs, solange keine Modul-/Farbwerte gesetzt sind.
+   Anpassungen verwenden den modularen Pfad. Vorlagenwechsel stellt dessen Standardwerte wieder her.
+4. Zwölf Figuren- und zwei Basiskopf-Rigs haben nutzbare Maße/Anker. Kurze/lange Haare und alle Outfit-
+   Silhouetten sind mit geschlossenem Hals-/Schulteranschluss, sichtbaren Händen und vollständiger
+   Kleidung zu prüfen. Kein doppeltes Haar, kahler Bereich oder schwebender Kopf. Einzelne Slots
+   dürfen nicht als verfügbar erscheinen, solange sie nur im vollständigen Outfitbild existieren.
+5. Reload erhält ein gültiges Profil; kaputte/fremde Speicherdaten werden ignoriert. Legacy-Daten
+   werden nachvollziehbar normalisiert, ohne demografische Ableitung. Blockierter Speicher erlaubt
+   die laufende Sitzung mit sichtbarem Hinweis. Fortschritt bleibt ausdrücklich flüchtig.
+6. Interessenwahl validiert mindestens einen der sieben Bereiche und eine darin enthaltene primäre
+   Richtung. Fokuswahl akzeptiert 1–6 bekannte, eindeutige Skills aus 14. Speichern ändert nur Präferenzen;
+   bestehende Skill-XP gehen weder bei Auswahlwechsel noch beim Ausblenden verloren.
+7. Onboarding hat drei Schritte, klare Zurück-/Weiteraktionen und eine Zusammenfassung. Überspringen
+   ändert keinen Fortschritt. Der Creator-Rückweg erhält den laufenden Entwurf; lokale Speicherung
+   von Interessen/Fokus ist getrennt vom Charakterprofil und erklärt einen möglichen Sitzungsfallback.
+8. Originale zeigen Gesamtatmung, modulare Körper-/Kopflayer eine gekoppelte ruhige Bewegung.
+   Bewegung aus und reduzierte Bewegung halten Figuren/Auren statisch. Level-/Interesseninputs sind
+   keine versteckten Rewards oder automatisch freigeschalteten Gesten/Outfits.
+9. Ton, Feuerwerk und Bewegung sind unabhängig steuerbar. Ein akzeptierter Meilenstein löst Erfolge
+   einmal gebündelt aus; einzelne Daily Quests, doppelte Requests, Profilspeicherung, Reload und Reset
+   erzeugen keine zusätzliche Feier. Tonfehler verhindern keine XP-Vergabe.
+10. Drei Starter-Effekte plus „Keine“ funktionieren weiterhin. Die geplanten Level-/Boss-Auren und
+    zehn erweiterte Vorschauentwürfe gewähren keine Besitzrechte. Vorschaufarbe und bedrohlicher
+    Schattenblick werden nicht ins Profil übernommen; normale Aura-Auswahl beendet die Vorschau.
+11. Creator, Onboarding und Erfolgskarte sind bei 360 px Breite und den Tablet-Prüfgrößen bedienbar.
+    Fokus, beschriftete Controls und Erfolgstext funktionieren ohne Ton/Animation. Avatar und Aura
+    blockieren keine Bedienung; Safe Areas, Speicherleiste und offene Tastatur verdecken keine Aktion.
+12. Mobile Download-/Textur-/Layer-/VFX-Budgets werden vor Produktionsfreigabe festgelegt und mit
+    echten Geräten geprüft. Ein Web-Build oder vollständiger Assetkatalog erfüllt diese Abnahme nicht.
 
 ## Weitere Meilensteine
 
 | Meilenstein | Ergebnis |
 |---|---|
-| M2 | Produktive Chibi-Assets und reichere Avatarreaktionen, geprüfte Aura-Freischaltungen/Bossdrops, Equipment, Loot, Achievements, Titles, umfangreichere Bosse |
+| M2 | Produktionsreife der modularen Art, individuelle Ausrüstungsslots, reichere Gesten/Mimik, Aura-VFX mit geprüften Freischaltungen/Bossdrops, Equipment, Loot, Achievements, Titles und weitere Bosse |
 | M3 | Free/Member-Entitlements, Preisziel 3,99 €/Monat, moderater Bonus, Store-Billing, Restore und serverseitige Kaufprüfung |
 | M4 | Capacitor, iOS/Android, sichere Sessions, Store-Builds, neun UI-Zielsprachen sowie lokalisierte Listings/Medien und Privacy-Angaben |
 | M5 | Geräte-/Beta-Abnahme, Datenschutz, Account-Löschung, Performance, Store-Freigabe, SEO-Website und ASO-Messung |

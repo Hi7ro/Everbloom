@@ -13,8 +13,9 @@
    Commands, einmalige Erfolgsmeldung und gespeicherte Darstellungspräferenzen.
 6. `features/dashboard/` und `features/character-creator/`: Templates zeigen State; Formulare
    senden fachliche Eingaben. Profil- und Effektvorschau verändern keine Spielprogression.
-7. `shared/chibi.ts`: austauschbare SVG-Layer, Dreiviertel-Tiefe und rein visuelle Level-/Interessen-
-   variation. `shared/success-audio.ts` kapselt die Browser-Audiogrenze.
+7. `shared/character-portrait.ts` und `domain/character-rig.ts`: Originalillustrationen sowie
+   modulare Körper-/Kopf-/Haarlayer mit Masken, Ankern und ruhiger Atmung. `shared/character-aura.ts`
+   enthält dekorative Effekte; `shared/success-audio.ts` kapselt die Browser-Audiogrenze.
 8. `app.routes.ts` und globale SCSS-Tokens: lazy Routen, konsistente Gestaltung, mobile Bedienung
    und Rücksicht auf reduzierte Bewegung.
 
@@ -22,8 +23,9 @@
 
 1. Den Creator-/Feedback-Ausbau anhand der PRD-Kriterien abschließen; tatsächliche Checks und
    verbleibende Grenzen in `VALIDATION.md` dokumentieren.
-2. Vollständiges Onboarding mit aktiven Skills und bewusst gewähltem Interessenprofil entwickeln;
-   den bestehenden Creator erweitern. Visuelle Vorschau ist noch keine Interessenpersistenz.
+2. Das vorhandene dreistufige Onboarding mit sieben Interessenbereichen und 1–6 Fokus-Skills aus
+   14 verstehen: `domain/journey.ts`, `JourneyStore` und separater V1-Speicher. Creator-Rückweg,
+   Sitzungsfallback und fehlende XP-Mutation anhand der PRD-Kriterien prüfen.
 3. Den Skillkatalog in kleinen Schritten um Familien/Subskills erweitern, inklusive Reward-Limits
    und fachlicher Beispiele. Balance V0.2 bleibt bis zu einer expliziten Regeländerung erhalten.
 4. Tages-/Wochenmodell mit IANA-Zeitzone, Recovery-/Rest-/Cheat Days und Zielrhythmus als reine

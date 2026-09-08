@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { AURA_DESIGNS } from '../domain/aura-designs';
 
+let nextAuraId = 0;
+
 /** Decorative, authored VFX. Animation runs in CSS and never changes the character or rewards. */
 @Component({
   selector: 'app-character-aura',
@@ -14,7 +16,47 @@ import { AURA_DESIGNS } from '../domain/aura-designs';
         [attr.data-aura]="effect.id"
         [class.animated]="animated()"
         [style.--aura-color]="resolvedColor()"
+        [style.--aura-surface]="paint('surface')"
+        [style.--aura-edge]="paint('edge')"
+        [style.--aura-spark]="paint('spark')"
       >
+        <defs>
+          <radialGradient [id]="id + '-halo'">
+            <stop offset="0" stop-color="#ffffff" stop-opacity=".5" />
+            <stop offset=".3" [attr.stop-color]="resolvedColor()" stop-opacity=".72" />
+            <stop offset=".64" [attr.stop-color]="resolvedColor()" stop-opacity=".36" />
+            <stop offset="1" [attr.stop-color]="resolvedColor()" stop-opacity="0" />
+          </radialGradient>
+          <linearGradient [id]="id + '-surface'" x1="0" y1="0" x2=".25" y2="1">
+            <stop offset="0" stop-color="#ffffff" stop-opacity=".94" />
+            <stop offset=".2" [attr.stop-color]="resolvedColor()" stop-opacity=".94" />
+            <stop offset=".54" [attr.stop-color]="resolvedColor()" stop-opacity=".56" />
+            <stop offset=".86" stop-color="#ffffff" stop-opacity=".88" />
+            <stop offset="1" [attr.stop-color]="resolvedColor()" stop-opacity=".9" />
+          </linearGradient>
+          <linearGradient [id]="id + '-edge'" x1="0" y1="0" x2=".2" y2="1">
+            <stop offset="0" stop-color="#ffffff" />
+            <stop offset=".28" [attr.stop-color]="resolvedColor()" />
+            <stop offset=".55" stop-color="#ffffff" />
+            <stop offset=".76" [attr.stop-color]="resolvedColor()" />
+            <stop offset="1" stop-color="#ffffff" />
+          </linearGradient>
+          <radialGradient [id]="id + '-spark'">
+            <stop offset="0" stop-color="#ffffff" />
+            <stop offset=".18" stop-color="#ffffff" />
+            <stop offset=".35" [attr.stop-color]="resolvedColor()" stop-opacity=".96" />
+            <stop offset="1" [attr.stop-color]="resolvedColor()" stop-opacity="0" />
+          </radialGradient>
+        </defs>
+        <g class="ambient-glow sway" [attr.fill]="paint('halo')">
+          <ellipse cx="120" cy="167" rx="130" ry="143" opacity=".42" />
+          <ellipse cx="24" cy="176" rx="47" ry="112" opacity=".74" />
+          <ellipse cx="216" cy="176" rx="47" ry="112" opacity=".74" />
+        </g>
+        <g class="ground-light">
+          <ellipse cx="120" cy="284" rx="109" ry="20" [attr.fill]="paint('halo')" />
+          <ellipse class="ground-ring" cx="120" cy="284" rx="82" ry="10" />
+        </g>
         <g class="aura-form" [attr.data-shape]="effect.id">
           @switch (effect.id) {
             @case ('sage') {
@@ -107,12 +149,14 @@ import { AURA_DESIGNS } from '../domain/aura-designs';
                 <path d="M65 112 46 26 84 61 86 99M175 112l19-86-38 35-2 38" />
               </g>
               <path
-                class="trail"
+                class="trail core-flow"
                 d="M33 100 65 161 45 203M208 100l-32 61 19 42M39 222l26-23M202 222l-26-23"
               />
+              <path class="energy-core core-flow"
+                d="m24 254-13-37 10-32 11 27-5 19 14 32Zm194 2 12-39-12-31-9 28 5 19-14 32Z" />
               @if (fierce()) {
                 <g class="fierce-eyes" data-fierce="true">
-                  <path d="m74 46 25 6-8 8-12-4Zm92 0-25 6 8 8 12-4Z" />
+                  <path d="m51-19 48 12-13 11-26-9Zm138 0-48 12 13 11 26-9Z" />
                 </g>
               }
             }
@@ -137,6 +181,8 @@ import { AURA_DESIGNS } from '../domain/aura-designs';
                 class="trail sway"
                 d="M24 260 16 214 30 201 12 176 23 159M212 264l17-45-8-29 16-18-10-42M38 83l13-28-5-19M198 103l17-27-5-20"
               />
+              <path class="energy-core core-flow"
+                d="m26 279-18-44 15-14L7 194l14-24-9-29 23-35-13 51 10 22-12 22 19 23-14 22 15 34Zm188 1 17-43-13-18 15-24-13-27 6-35-19-30 8 53-10 26 12 18-13 25 13 23-16 33Z" />
             }
             @case ('angel') {
               <g class="wings soft-fill sway">
@@ -148,6 +194,8 @@ import { AURA_DESIGNS } from '../domain/aura-designs';
                 class="trail"
                 d="M27 55Q48 101 76 125M22 111Q44 137 73 149M32 159l42 14M213 55Q192 101 164 125M218 111Q196 137 167 149M208 159l-42 14M99 20l21-10 21 10-21 9Z"
               />
+              <path class="white-edge core-flow"
+                d="M26 47Q31 87 58 115M15 99Q24 127 57 144M26 155l32 16M214 47Q209 87 182 115M225 99Q216 127 183 144M214 155l-32 16" />
             }
             @case ('blossom') {
               <path
@@ -170,20 +218,24 @@ import { AURA_DESIGNS } from '../domain/aura-designs';
                 class="trail rise"
                 d="M39 256C15 227 54 217 45 194M198 271C224 248 185 242 197 221M56 73l7-23 5 18M207 149l8-24 3 17"
               />
+              <path class="energy-core core-flow"
+                d="M43 274C13 243 18 213 27 198 24 223 47 226 38 246 55 226 50 194 60 174 72 215 48 242 63 271ZM189 280C218 258 232 234 216 207 217 231 199 233 204 250 185 236 199 204 185 193 184 224 172 246 181 271Z" />
             }
             @case ('guardian') {
               <g class="guardian soft-fill sway">
+                <path class="guardian-shoulders"
+                  d="M82 84 58 50 29 36 5 49-18 84-8 124 21 145 31 191 18 236 38 263 58 248 62 203 51 147 76 125ZM158 84l24-34 29-14 24 13 23 35-10 40-29 21-10 46 13 45-20 27-20-15-4-45 11-56-25-22Z" />
                 <path
-                  d="m87 19 33-17 33 17 10 37-20 30 31 9 24-30 41 32-11 67-25 2 14 71-31 22-21-91-25-13-20 17-20-17-25 13-21 91-31-22 14-71-25-2L1 97l41-32 24 30 31-9-20-30Z"
-                />
-                <path
-                  d="m16 105 25-18 24 30-14 38-27-8Zm208 0-25-18-24 30 14 38 27-8ZM99 21l21-9 21 9-4 31-17 16-17-16Z"
-                />
+                  d="m10 64 20-12 22 22-15 41-28-9Zm220 0-20-12-22 22 15 41 28-9ZM26 156l17 12 5 38-14 27-6-27Zm188 0-17 12-5 38 14 27 6-27Z" />
+                <path class="guardian-head" data-guardian-head="raised"
+                  d="m120-47 26 15 10 26-16 27-20 12-20-12L84-6l10-26Z" />
               </g>
-              <path
-                class="trail"
-                d="m88 24 10 38 22 19 22-19 10-38M69 108 47 130l-17-6M171 108l22 22 17-6M40 177l-8 42 16 17M200 177l8 42-16 17M113 31l7 8 7-8"
-              />
+              <path class="trail"
+                d="M95-27 103-6 120 9l17-15 8-21M11 69l15 31 17-17M229 69l-15 31-17-17M16 123l25 15 7 35M224 123l-25 15-7 35M33 183l5 28-9 21M207 183l-5 28 9 21" />
+              <path class="guardian-gaze white-edge"
+                d="m101-18 10 4m28-4-10 4M116 6h8" />
+              <path class="energy-core core-flow"
+                d="m3 124 12 15 8 38-10-12Zm234 0-12 15-8 38 10-12ZM35 232l9 11-7 12-10-10Zm170 0-9 11 7 12 10-10Z" />
             }
           }
         </g>
@@ -198,12 +250,14 @@ import { AURA_DESIGNS } from '../domain/aura-designs';
                 [style.--delay]="particle.delay + 's'"
                 [style.--duration]="particle.duration + 's'"
               >
+                <circle class="spark-glow" r="10" [attr.fill]="paint('spark')" />
                 @if (effect.id === 'rose' || effect.id === 'blossom') {
                   <path d="M0 0C-10-2-8-11-2-9 0-16 11-10 8-4 12 2 5 7 0 0Z" />
                 } @else if (effect.id === 'sage') {
                   <path d="M0 5Q-9-1-2-9 8-5 0 5Z" />
                 } @else {
-                  <path d="m0-5 1.6 3.4L5 0 1.6 1.6 0 5-1.6 1.6-5 0-1.6-1.6Z" />
+                  <path d="m0-6 1.6 4.4L6 0 1.6 1.6 0 6-1.6 1.6-6 0-1.6-1.6Z" />
+                  <circle class="spark-core" r="1.1" />
                 }
               </g>
             </g>
@@ -228,51 +282,59 @@ import { AURA_DESIGNS } from '../domain/aura-designs';
         color: var(--aura-color, #a78bfa);
       }
       .soft-fill {
-        fill: currentColor;
-        fill-opacity: 0.2;
-        stroke: currentColor;
-        stroke-opacity: 0.4;
-        stroke-width: 1;
+        fill: var(--aura-surface);
+        fill-opacity: .64;
+        stroke: var(--aura-edge);
+        stroke-opacity: .92;
+        stroke-width: 1.3;
         stroke-linejoin: round;
       }
-      .trail {
+      .trail, .ground-ring {
         fill: none;
-        stroke: currentColor;
-        stroke-opacity: 0.64;
-        stroke-width: 1.4;
+        stroke: var(--aura-edge);
+        stroke-opacity: .92;
+        stroke-width: 1.8;
         stroke-linecap: round;
         stroke-linejoin: round;
       }
-      .rays {
-        fill-opacity: 0.14;
+      .ground-ring { stroke-width: 1; stroke-opacity: .65; }
+      .rays { fill-opacity: .72; }
+      .wings { fill-opacity: .8; stroke-width: 1.5; }
+      .guardian { fill-opacity: .68; stroke-width: 1.7; }
+      [data-aura='fire'] .flames,
+      [data-aura='energy'] .rays,
+      [data-aura='demonic'] .soft-fill { fill-opacity: .86; }
+      .guardian-head { fill-opacity: .94; }
+      .energy-core {
+        fill: var(--aura-surface);
+        fill-opacity: .96;
+        stroke: #fff;
+        stroke-opacity: .74;
+        stroke-width: .9;
+        stroke-linejoin: round;
       }
-      .wings {
-        fill-opacity: 0.18;
+      .white-edge {
+        fill: none;
+        stroke: #fff;
+        stroke-opacity: .92;
+        stroke-width: 2;
+        stroke-linecap: round;
       }
-      .guardian {
-        fill-opacity: 0.12;
-        stroke-opacity: 0.35;
-      }
-      .fierce-eyes {
-        fill: currentColor;
-        opacity: 0.8;
-      }
-      .particle-drift {
-        fill: currentColor;
-        opacity: 0.64;
-      }
-      .sway,
-      .rise {
-        transform-origin: 120px 280px;
-      }
-      .animated .sway {
-        animation: aura-breathe 8s ease-in-out infinite;
-      }
-      .animated .rise {
-        animation: aura-rise 7s ease-in-out infinite;
-      }
+      .guardian-gaze { stroke-width: 2.7; }
+      .fierce-eyes { fill: #fff; stroke: currentColor; stroke-width: 2; }
+      .particle-drift { fill: var(--aura-edge); opacity: .9; }
+      .spark-core { fill: #fff; }
+      .spark-glow { opacity: .86; }
+      .sway, .rise, .core-flow { transform-origin: 120px 280px; }
+      .animated .sway { animation: aura-breathe 8s ease-in-out infinite; }
+      .animated .rise { animation: aura-rise 7s ease-in-out infinite; }
+      .animated .core-flow { animation: aura-core-flow 5.6s ease-in-out -2.2s infinite; }
       .animated .particle-drift {
         animation: aura-drift var(--duration, 9s) ease-in-out var(--delay, 0s) infinite;
+      }
+      @keyframes aura-core-flow {
+        0%, 100% { transform: translateY(3px) scaleX(.98); opacity: .72; }
+        50% { transform: translateY(-8px) scaleX(1.02); opacity: 1; }
       }
       @keyframes aura-breathe {
         0%,
@@ -300,17 +362,18 @@ import { AURA_DESIGNS } from '../domain/aura-designs';
         0%,
         100% {
           transform: translate(0, 4px) rotate(-8deg);
-          opacity: 0.3;
+          opacity: 0.5;
         }
         50% {
           transform: translate(3px, -9px) rotate(12deg);
-          opacity: 0.8;
+          opacity: 1;
         }
       }
       @media (prefers-reduced-motion: reduce) {
         .animated .sway,
         .animated .rise,
-        .animated .particle-drift {
+        .animated .particle-drift,
+        .animated .core-flow {
           animation: none;
         }
       }
@@ -319,6 +382,7 @@ import { AURA_DESIGNS } from '../domain/aura-designs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CharacterAura {
+  readonly id = `everbloom-aura-${++nextAuraId}`;
   readonly aura = input('none');
   readonly animated = input(true);
   readonly color = input<string | undefined>(undefined);
@@ -332,6 +396,10 @@ export class CharacterAura {
       ? color.toLowerCase()
       : (this.design()?.color ?? '#a78bfa');
   });
+  paint(region: 'halo' | 'surface' | 'edge' | 'spark'): string {
+    return `url(#${this.id}-${region})`;
+  }
+
   readonly particles = [
     { x: 26, y: 46, delay: -1, duration: 9 },
     { x: 52, y: 26, delay: -6, duration: 11 },
