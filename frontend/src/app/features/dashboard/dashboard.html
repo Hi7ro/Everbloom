@@ -6,8 +6,9 @@
     ></a
   >
   <nav aria-label="Dashboard-Bereiche">
-    <a href="/dashboard#character" class="current">Charakter</a><a href="/dashboard#quests">Quests</a
-    ><a href="/dashboard#skills">Skills</a><a href="/dashboard#boss">Wochenboss</a>
+    <a href="/dashboard#character" class="current">Charakter</a
+    ><a href="/dashboard#quests">Quests</a><a href="/dashboard#skills">Skills</a
+    ><a href="/dashboard#boss">Wochenboss</a>
   </nav>
   <span class="header-badge"><span aria-hidden="true">◇</span> SOLO ADVENTURE</span>
 </header>
@@ -71,9 +72,10 @@
               {{ store.level().level + 1 }}
             </p>
           </div>
-          <div class="character-note">
-            <span aria-hidden="true">◇</span> Chibi-Platzhalter · Creator folgt in M1
-          </div>
+          <a class="character-note" routerLink="/character/create">
+            <span aria-hidden="true">◇</span>
+            {{ store.profileIsSaved() ? 'Charakter gestalten' : 'Eigenen Charakter erstellen' }} ↗
+          </a>
         </section>
 
         <section class="panel stats-panel" aria-labelledby="stats-title">
@@ -299,10 +301,40 @@
     <div class="loading panel" role="status">Dein Abenteuer wird geladen …</div>
   }
 
+  <section class="experience-settings panel" aria-label="Erfolgserlebnis einstellen">
+    <div>
+      <strong>Dein Erfolgsmoment</strong>
+      <p>Ein kleines Feuerwerk und ein heller Klang für deine Meilensteine.</p>
+    </div>
+    <div class="experience-actions">
+      <button
+        class="secondary"
+        type="button"
+        [attr.aria-pressed]="feedback.soundEnabled()"
+        (click)="feedback.toggleSound()"
+      >
+        Erfolgsmusik: {{ feedback.soundEnabled() ? 'Ein' : 'Aus' }}
+      </button>
+      <button
+        class="secondary"
+        type="button"
+        [attr.aria-pressed]="feedback.effectsEnabled()"
+        (click)="feedback.toggleEffects()"
+      >
+        Feuerwerk: {{ feedback.effectsEnabled() ? 'Ein' : 'Aus' }}
+      </button>
+      <button class="text-button" type="button" (click)="feedback.preview()">
+        Effekt testen ✧
+      </button>
+    </div>
+  </section>
   <footer>
     <div>
       <strong>EVERBLOOM · M0 / M1</strong>
-      <p>Demo · Beispieltagesstand 08.09.2026 · Einträge werden beim Neuladen zurückgesetzt.</p>
+      <p>
+        Demo · Beispieltagesstand 08.09.2026 · Aktivitätsfortschritt wird beim Neuladen
+        zurückgesetzt. Dein gespeicherter Look bleibt auf diesem Gerät.
+      </p>
     </div>
     <button class="text-button" (click)="store.reset()" [disabled]="store.busy()">
       Demo zurücksetzen ↺

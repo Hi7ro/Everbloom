@@ -6,6 +6,7 @@ export function createMockSnapshot(): GameSnapshot {
     dayKey: '2026-09-08',
     character: {
       id: 'demo-player',
+      createdByPlayer: false,
       name: 'Ari',
       title: 'Wanderer des Morgenlichts',
       // Rebased demo fixture: keep level 12 and ~51% progress under balance V0.2.

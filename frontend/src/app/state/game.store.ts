@@ -1,12 +1,15 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { GAME_REPOSITORY } from '../data/game.repository';
 import { ATTRIBUTES, BALANCE, SKILLS } from '../domain/catalog';
-import { GameSnapshot } from '../domain/models';
+import { CharacterProfile, GameSnapshot } from '../domain/models';
 import { bossPhase, levelProgress } from '../domain/progression';
+import { detectMilestones } from '../domain/milestones';
+import { ProgressFeedback } from './progress-feedback';
 
 @Injectable({ providedIn: 'root' })
 export class GameStore {
   private readonly repository = inject(GAME_REPOSITORY);
+  private readonly feedback = inject(ProgressFeedback);
   private readonly snapshotState = signal<GameSnapshot | null>(null);
   private readonly busyState = signal(false);
   private readonly errorState = signal('');
@@ -15,6 +18,7 @@ export class GameStore {
   readonly busy = this.busyState.asReadonly();
   readonly error = this.errorState.asReadonly();
   readonly message = this.messageState.asReadonly();
+  readonly profileIsSaved = computed(() => this.snapshot()?.character.createdByPlayer ?? false);
   readonly level = computed(() => levelProgress(this.snapshot()?.character.totalXp ?? 0));
   readonly skills = computed(() =>
     (this.snapshot()?.skills ?? []).map((progress) => {
@@ -55,7 +59,10 @@ export class GameStore {
     });
   }
   async record(skillId: string, minutes: number): Promise<boolean> {
+    this.feedback.prepareAudio();
     return this.execute(async () => {
+      const before = this.snapshot();
+      if (!before) throw new Error('Bitte zuerst deinen Charakter laden.');
       const result = await this.repository.record({
         requestId: crypto.randomUUID(),
         skillId,
@@ -63,6 +70,7 @@ export class GameStore {
       });
       this.snapshotState.set(result.snapshot);
       const r = result.reward;
+      if (!r.duplicate) this.feedback.celebrate(detectMilestones(before, result.snapshot));
       this.messageState.set(
         r.activityXp > 0
           ? 'Aktivität gespeichert. +' +
@@ -79,10 +87,24 @@ export class GameStore {
       );
     });
   }
+  async updateCharacter(profile: CharacterProfile): Promise<boolean> {
+    return this.execute(async () => {
+      const result = await this.repository.updateCharacter(profile);
+      this.snapshotState.set(result.snapshot);
+      this.messageState.set(
+        result.persisted
+          ? 'Dein Charakter ist gespeichert und bleibt auf diesem Gerät erhalten.'
+          : 'Dein Charakter wurde übernommen. Dein Browser blockiert die Speicherung; nach Neuladen geht diese Änderung verloren.',
+      );
+    });
+  }
   async reset() {
     await this.execute(async () => {
       this.snapshotState.set(await this.repository.resetDemo());
-      this.messageState.set('Die Demo startet wieder beim ursprünglichen Beispieltagesstand.');
+      this.feedback.dismiss();
+      this.messageState.set(
+        'Der Demo-Fortschritt wurde zurückgesetzt. Dein Charakter-Look bleibt erhalten.',
+      );
     });
   }
   private async execute(action: () => Promise<void>): Promise<boolean> {

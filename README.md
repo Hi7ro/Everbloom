@@ -12,7 +12,8 @@ Der Arbeitstitel ist vorläufig; eigene Figuren, Lore und Assets, keine übernom
 3. [Architektur](docs/ARCHITECTURE.md): Schichten, Datenfluss und spätere Backend-Anbindung.
 4. [Domain Model](docs/DOMAIN_MODEL.md): Begriffe, Beziehungen und Invarianten.
 5. [Lernpfad](docs/LEARNING_PATH.md): Code lesen und den nächsten Slice umsetzen.
-6. [Validierung](docs/VALIDATION.md): Tests, Browser-Prüfung und bekannte Grenzen.
+6. [App Store & Reichweite](docs/APP_STORE_READINESS.md): ASO, SEO und Release-Anforderungen.
+7. [Validierung](docs/VALIDATION.md): Tests, Browser-Prüfung und bekannte Grenzen.
 
 Diese Dokumente haben Vorrang vor älteren Brainstorming-Vorschlägen. Änderungen an Regeln werden
 zusammen mit Code und Tests angepasst. Das Projekt liegt unter `~/dev/everbloom`.

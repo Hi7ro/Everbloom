@@ -1,10 +1,14 @@
-# Architecture · V0.1
+# Architecture · V0.2
 
 ## Ziel
 
 Angular/TypeScript als CSR-SPA; später identischer Web-Build in Capacitor für iOS/Android.
 Spring Boot als modularer Monolith mit PostgreSQL. Kein SSR: das persönliche Dashboard braucht
 keine Suchmaschinenoptimierung; ein zusätzlicher Node-Server wäre hier unnötig.
+Die öffentliche Produkt-/Support-Website bekommt später statische oder vorgerenderte Seiten
+für SEO. ASO optimiert die Store-Seiten separat. Das private App-Shell erhält noindex;
+Authentifizierung schützt später die eigentlichen Daten.
+Siehe [App Store Readiness & Reichweite](APP_STORE_READINESS.md).
 
 Angular 21 mit kompatibler TypeScript-Version und lokalem CLI unterstützt die vorhandene
 Node-20.20-Umgebung. Standalone, zoneless Change Detection, Signals und lazy Router-Route.
@@ -62,7 +66,7 @@ in einem eigenen ADR konkretisieren. Keine Tokens in localStorage als stillschwe
 
 ## Bewusste Grenzen
 
-Kein Offline-Sync, Event Bus, GraphQL, SSR, Microservice, Nx oder NgRx. Keine dauerhafte Speicherung
+Kein Offline-Sync, Event Bus, GraphQL, SSR für das persönliche Dashboard, Microservice, Nx oder NgRx. Keine dauerhafte Speicherung
 im ersten Slice. Reset ist ein Mock-Adapter-Kommando und wird nicht als produktiver Account-Reset
 übernommen. Serverperioden, echte Wochenhistorie und Berechtigungen folgen mit der API.
 
@@ -76,3 +80,15 @@ Templates und TypeScript sowie Bundle-Budgets. Fachregel ändern → GDD, Balanc
 Für die responsive Dashboard-Ansicht gilt ein Komponenten-CSS-Budget von 16 kB (Warnung) und
 20 kB (Fehler); die aktuelle Ansicht benötigt rund 14 kB. Das Initial-Bundle bleibt bei den
 CLI-Grenzen 500 kB / 1 MB. Kleinere Karten werden erst bei Wiederverwendung separat extrahiert.
+
+## Frühe mobile Abnahme
+
+Schon in M1b einen kleinen Capacitor-Gerätetest des Aktivitätsflows durchführen; die vollständige
+Store-Fassung bleibt M4. webDir wird auf `dist/everbloom/browser` zeigen. Plattformfunktionen
+hinter kleinen Adaptern halten, keine dauerhafte Live-Reload-URL in Release-Builds. Der aktuelle
+Web-Slice berücksichtigt Safe Areas und scrollbare Dialoge; native Back-Navigation, Tastatur,
+Screenreader, Resume, Netzausfall und sichere Sessions benötigen echte Geräteprüfungen.
+
+Vor Account-Persistenz den Löschprozess modellieren; vor Membership Store-Billing mit serverseitiger
+Kaufprüfung, Wiederherstellung und Entitlement-Lebenszyklus. Datenschutz und Store-Angaben folgen
+den tatsächlichen Datenflüssen. Die vollständige Liste und offiziellen Quellen stehen im Readiness-Dokument.

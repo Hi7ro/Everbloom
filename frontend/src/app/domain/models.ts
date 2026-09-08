@@ -9,7 +9,12 @@ export interface Appearance {
   hairColor: string;
   outfitColor: string;
 }
+export interface CharacterProfile {
+  name: string;
+  appearance: Appearance;
+}
 export interface Character {
+  createdByPlayer: boolean;
   id: string;
   name: string;
   title: string;

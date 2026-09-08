@@ -39,7 +39,7 @@ describe('GameStore with repository boundary', () => {
   });
   it('handles transport failure and clears busy for retry', async () => {
     TestBed.resetTestingModule();
-    const repository = new MockGameRepository();
+    const repository = TestBed.runInInjectionContext(() => new MockGameRepository());
     const record = vi
       .spyOn(repository, 'record')
       .mockRejectedValueOnce(new Error('Verbindung unterbrochen'));
@@ -58,7 +58,7 @@ describe('GameStore with repository boundary', () => {
   });
   it('blocks concurrent submissions while a request is pending', async () => {
     TestBed.resetTestingModule();
-    const repository = new MockGameRepository();
+    const repository = TestBed.runInInjectionContext(() => new MockGameRepository());
     let release!: () => void;
     const gate = new Promise<void>((resolve) => {
       release = resolve;

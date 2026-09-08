@@ -13,6 +13,7 @@ import { RouterLink } from '@angular/router';
 import { SKILLS } from '../../domain/catalog';
 import { GameStore } from '../../state/game.store';
 import { Chibi } from '../../shared/chibi';
+import { ProgressFeedback } from '../../state/progress-feedback';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,6 +24,7 @@ import { Chibi } from '../../shared/chibi';
 })
 export class Dashboard implements OnInit {
   readonly store = inject(GameStore);
+  readonly feedback = inject(ProgressFeedback);
   readonly catalog = SKILLS;
   readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('activityDialog');
   readonly selectedSkill = signal('calisthenics');
@@ -31,7 +33,7 @@ export class Dashboard implements OnInit {
   private trigger: HTMLElement | null = null;
 
   ngOnInit() {
-    void this.store.load();
+    if (!this.store.snapshot()) void this.store.load();
   }
 
   openActivity(skillId = 'calisthenics', minutes = 20) {

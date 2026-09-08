@@ -7,5 +7,11 @@ export const routes: Routes = [
     title: 'Dein Charakter · Everbloom',
     loadComponent: () => import('./features/dashboard/dashboard').then((m) => m.Dashboard),
   },
+  {
+    path: 'character/create',
+    title: 'Dein Charakter entsteht · Everbloom',
+    loadComponent: () =>
+      import('./features/character-creator/character-creator').then((m) => m.CharacterCreator),
+  },
   { path: '**', redirectTo: 'dashboard' },
 ];

@@ -677,6 +677,10 @@ footer button {
   font-size: 10px;
 }
 dialog {
+  max-height: calc(
+    100dvh - 32px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)
+  );
+  overflow-y: auto;
   width: min(480px, calc(100% - 32px));
   color: var(--text);
   background: #1d2922;
@@ -1027,5 +1031,58 @@ form .subtle-note {
   }
   .activity-history li strong {
     font-size: 10px;
+  }
+}
+
+// Keep touch controls readable without automatic input zoom on small mobile screens.
+@media (max-width: 760px) {
+  form select,
+  form input {
+    font-size: 16px;
+  }
+  .quest-action button {
+    min-height: 44px;
+  }
+}
+
+.character-note {
+  display: block;
+  min-height: 44px;
+}
+.character-note:hover {
+  color: var(--accent);
+  background: #b6cb9110;
+}
+.experience-settings {
+  margin-top: 24px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.experience-settings strong {
+  font-size: 13px;
+  font-weight: 500;
+}
+.experience-settings p {
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 6px 0 0;
+}
+.experience-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.experience-actions button {
+  font-size: 11px;
+}
+@media (max-width: 900px) {
+  .experience-settings {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

@@ -1,0 +1,203 @@
+<a class="skip-link" href="/character/create#main">Zum Charakter-Editor</a>
+<header class="creator-header">
+  <a class="brand" routerLink="/dashboard" aria-label="Everbloom – zum Dashboard"
+    ><span aria-hidden="true">✧</span> everbloom</a
+  >
+  <span class="chapter">DEIN CHARAKTER</span>
+</header>
+<main id="main" tabindex="-1">
+  <div class="page-heading">
+    <p class="eyebrow">YOU ARE THE CHARACTER</p>
+    <h1>
+      {{ store.profileIsSaved() ? 'Dein Look. Deine Geschichte.' : 'Deine Reise hat ein Gesicht.' }}
+    </h1>
+    <p>Von cozy bis Abyssal. Gestalte den Charakter, in dem du dich wiederfindest.</p>
+  </div>
+
+  @if (draft(); as profile) {
+    <div class="creator-grid">
+      <aside class="preview" aria-label="Live-Vorschau deines Charakters">
+        <div class="preview-heading">
+          <span class="eyebrow">CHARAKTER-VORSCHAU</span><span class="badge">LIVE</span>
+        </div>
+        <div class="avatar-stage"><app-chibi [appearance]="profile.appearance" /></div>
+        <h2>{{ profile.name.trim() || 'Dein Name' }}</h2>
+        <p>Ein Look so vielseitig wie dein Leben.</p>
+        <div class="preview-foot">
+          <span aria-hidden="true">✧</span> Alle Looks sind frei kombinierbar.
+        </div>
+      </aside>
+
+      <form class="editor" (ngSubmit)="save()" aria-describedby="profile-storage-note" novalidate>
+        <section class="editor-section">
+          <p class="eyebrow">01 · IDENTITÄT</p>
+          <h2>Das bist du.</h2>
+          <label class="field-label" for="character-name">Charaktername</label>
+          <input
+            id="character-name"
+            name="characterName"
+            type="text"
+            autocomplete="nickname"
+            spellcheck="false"
+            [ngModel]="profile.name"
+            (ngModelChange)="setName($event)"
+            [disabled]="store.busy()"
+            aria-describedby="name-hint profile-form-error"
+            [attr.aria-invalid]="formError() ? 'true' : null"
+          />
+          <p id="name-hint" class="hint">
+            2–24 Zeichen. Buchstaben, Zahlen, Leerzeichen, Bindestrich oder Apostroph.
+          </p>
+          @for (group of shapeGroups; track group.slot) {
+            <fieldset [disabled]="store.busy()">
+              <legend>{{ group.label }}</legend>
+              <div class="choice-row">
+                @for (option of group.choices; track option.id) {
+                  <label
+                    class="choice"
+                    [class.selected]="profile.appearance[group.slot] === option.id"
+                  >
+                    <input
+                      type="radio"
+                      [name]="group.slot"
+                      [value]="option.id"
+                      [ngModel]="profile.appearance[group.slot]"
+                      (ngModelChange)="choose(group.slot, $event)"
+                    />
+                    <span>{{ option.label }}</span>
+                  </label>
+                }
+              </div>
+            </fieldset>
+          }
+        </section>
+
+        <section class="editor-section">
+          <p class="eyebrow">02 · STIL</p>
+          <h2>Welche Welt trägst du in dir?</h2>
+          <fieldset [disabled]="store.busy()">
+            <legend>Outfit-Stil</legend>
+            <div class="style-grid">
+              @for (option of options.outfit; track option.id) {
+                <label
+                  class="choice style-choice"
+                  [class.selected]="profile.appearance.outfit === option.id"
+                >
+                  <input
+                    type="radio"
+                    name="outfit"
+                    [value]="option.id"
+                    [ngModel]="profile.appearance.outfit"
+                    (ngModelChange)="choose('outfit', $event)"
+                  />
+                  <span
+                    ><strong>{{ option.label }}</strong
+                    ><small>{{ option.description }}</small></span
+                  >
+                  <span class="selection-mark" aria-hidden="true">{{
+                    profile.appearance.outfit === option.id ? '✓' : '○'
+                  }}</span>
+                </label>
+              }
+            </div>
+          </fieldset>
+        </section>
+
+        <section class="editor-section">
+          <p class="eyebrow">03 · FARBEN & AURA</p>
+          <h2>Mach es zu deinem Look.</h2>
+          @for (group of colorGroups; track group.slot) {
+            <fieldset [disabled]="store.busy()">
+              <legend>{{ group.label }}</legend>
+              <div class="palette-row">
+                <div class="swatches">
+                  @for (color of palettes[group.slot]; track color) {
+                    <button
+                      class="swatch"
+                      type="button"
+                      [style.--swatch]="color"
+                      [attr.aria-label]="group.label + ' ' + color"
+                      [attr.aria-pressed]="profile.appearance[group.slot].toLowerCase() === color"
+                      (click)="choose(group.slot, color)"
+                    >
+                      @if (profile.appearance[group.slot].toLowerCase() === color) {
+                        <span aria-hidden="true">✓</span>
+                      }
+                    </button>
+                  }
+                </div>
+                <label class="custom-color"
+                  ><input
+                    type="color"
+                    [name]="group.slot"
+                    [ngModel]="profile.appearance[group.slot]"
+                    (ngModelChange)="choose(group.slot, $event)"
+                    [attr.aria-label]="group.label + ' frei wählen'"
+                  /><span>Frei wählen</span></label
+                >
+              </div>
+            </fieldset>
+          }
+          <fieldset [disabled]="store.busy()">
+            <legend>Aura</legend>
+            <div class="choice-row aura-choices">
+              @for (option of options.aura; track option.id) {
+                <label class="choice" [class.selected]="profile.appearance.aura === option.id">
+                  <input
+                    type="radio"
+                    name="aura"
+                    [value]="option.id"
+                    [ngModel]="profile.appearance.aura"
+                    (ngModelChange)="choose('aura', $event)"
+                  />
+                  <span>{{ option.label }}</span>
+                </label>
+              }
+            </div>
+          </fieldset>
+        </section>
+        <div class="save-section">
+          <p id="profile-storage-note" class="hint">
+            Dein Profil wird vorerst nur in diesem Browser gespeichert. Deinen Look kannst du später
+            jederzeit ändern. Beim Gestalten bleibt dein Fortschritt unverändert. Demo-XP werden beim Neuladen zurückgesetzt.
+          </p>
+          <p id="profile-form-error" class="error" role="alert">{{ formError() }}</p>
+          @if (store.error()) {
+            <p class="error" role="alert">
+              {{ store.error() }} Deine Auswahl bleibt erhalten; versuche das Speichern erneut.
+            </p>
+          }
+          <div class="actions">
+            <button class="secondary" type="button" [disabled]="store.busy()" (click)="cancel()">
+              Abbrechen
+            </button>
+            <button class="primary" type="submit" [disabled]="store.busy()">
+              {{
+                store.busy()
+                  ? 'Wird gespeichert …'
+                  : store.profileIsSaved()
+                    ? 'Änderungen speichern'
+                    : 'Charakter speichern'
+              }}
+              <span aria-hidden="true">↗</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <p class="art-note">
+      Erste Version des Character Creators · modulare SVG-Platzhalter · weitere Cosmetics folgen.
+    </p>
+  } @else {
+    <div class="load-state" role="status">
+      @if (store.error()) {
+        <p class="error">{{ store.error() }}</p>
+        <button class="primary" type="button" [disabled]="store.busy()" (click)="loadProfile()">
+          Erneut laden
+        </button>
+      } @else {
+        <p>Dein Charakter wird geladen …</p>
+      }
+    </div>
+  }
+</main>

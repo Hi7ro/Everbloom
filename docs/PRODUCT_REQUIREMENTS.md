@@ -25,6 +25,8 @@ als Full-Stack-Lernprojekt: kleine vertikale Slices, lesbare Dateien, klare Rege
 ## M1b – Spielbares Solo-MVP (Folgeauftrag)
 
 - [ ] Onboarding mit Name, einfacher modularer Chibi-Auswahl und aktiven Skills.
+- [ ] Früher Capacitor-Gerätetest des Kernflows, bevor die Zahl der Screens stark wächst.
+- [ ] Account-Löschmodell mit öffentlichem Webweg planen; Texte für spätere Lokalisierung vorbereiten.
 - [ ] Vollständiger konfigurierbarer Skillkatalog und minimale Subskills.
 - [ ] Daily/Weekly-Perioden, echte lokale Zeitzone und nachvollziehbarer Aktivitätsverlauf.
 - [ ] Recovery/Rest/Cheat Days und frequenzabhängige Streaks.
@@ -60,9 +62,9 @@ Backend/DB werden jetzt strukturell vorbereitet, nicht als Scheinfunktion implem
 | Meilenstein | Ergebnis |
 |---|---|
 | M2 | Produktive Chibi-Assets, Equipment, Loot, Achievements, Titles, umfangreichere Bosse |
-| M3 | Free/Member-Entitlements, Inhaltsgrenzen, moderater Bonus, Subscription-Integration |
-| M4 | Capacitor, iOS/Android, sichere Sessionablage, Push und Store-Builds |
-| M5 | Beta, Balancing, Datenschutz, Account-Löschung, Sicherheit, Performance, Store-Freigabe |
+| M3 | Free/Member-Entitlements, moderater Bonus, Store-Billing, Restore und serverseitige Kaufprüfung |
+| M4 | Capacitor, iOS/Android, sichere Sessions, Store-Builds, lokalisierte Listings/Medien und Privacy-Angaben |
+| M5 | Geräte-/Beta-Abnahme, Datenschutz, Account-Löschung, Performance, Store-Freigabe, SEO-Website und ASO-Messung |
 | Danach | Classes/Archetypes, Parties, Guilds und Raids |
 
 ## Qualitätsanforderungen und Grenzen
@@ -72,3 +74,10 @@ konkreten Bedarf. SCSS mit Tokens, semantisches HTML, beschriftete Felder und Fo
 Statusmeldungen per Live-Region, reduzierte Animation bei entsprechender Systemeinstellung.
 Keine externe Tracking-/Font-Abhängigkeit. Keine öffentliche Veröffentlichung für diesen lokalen
 Projektstart. Vor produktiven Daten: Datenschutz, Zugriffsschutz und Löschkonzept konkret umsetzen.
+
+## Store-Reife und Reichweite als Produktanforderung
+
+ASO, öffentliche Web-SEO, mobile Qualität und Store-Vorgaben werden während der Entwicklung
+berücksichtigt. Vor Veröffentlichung müssen die offenen Gates in
+[APP_STORE_READINESS.md](APP_STORE_READINESS.md) abgearbeitet sein. Ein erfolgreicher Web-Build
+ist noch keine native Abnahme. Store-Texte dürfen nur tatsächlich verfügbare Funktionen versprechen.
