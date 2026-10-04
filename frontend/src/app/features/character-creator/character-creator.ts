@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  ElementRef,
   inject,
   OnInit,
   signal,
@@ -9,7 +10,6 @@ import {
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import {
-  AURA_PROGRESSION_PLAN,
   CHARACTER_OPTIONS,
   CHARACTER_PRESENTATIONS,
   defaultHairstyle,
@@ -23,6 +23,8 @@ import {
   resolveCharacterIllustration,
 } from '../../domain/character-illustrations';
 import { ADVANCED_AURA_DESIGNS, AURA_PREVIEW_COLORS } from '../../domain/aura-designs';
+import { AuraCollection } from '../../shared/aura-collection';
+import { ProgressStorageNote } from '../../shared/progress-storage-note';
 import { CharacterAura } from '../../shared/character-aura';
 import { CharacterPortrait } from '../../shared/character-portrait';
 import { GameStore } from '../../state/game.store';
@@ -31,7 +33,14 @@ import { ProgressFeedback } from '../../state/progress-feedback';
 
 @Component({
   selector: 'app-character-creator',
-  imports: [FormsModule, RouterLink, CharacterPortrait, CharacterAura],
+  imports: [
+    FormsModule,
+    RouterLink,
+    CharacterPortrait,
+    CharacterAura,
+    AuraCollection,
+    ProgressStorageNote,
+  ],
   templateUrl: './character-creator.html',
   styleUrl: './character-creator.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -40,12 +49,21 @@ export class CharacterCreator implements OnInit {
   readonly store = inject(GameStore);
   readonly feedback = inject(ProgressFeedback);
   private readonly router = inject(Router);
+  private readonly element = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly journey = inject(JourneyStore);
   private readonly returnToOnboarding =
     inject(ActivatedRoute).snapshot.queryParamMap.get('returnTo') === 'onboarding';
   private readonly appearances: Partial<Record<CharacterPresentation, Appearance>> = {};
   readonly draft = signal<CharacterProfile | null>(null);
   readonly formError = signal('');
+  readonly stage = signal<1 | 2 | 3>(
+    inject(ActivatedRoute).snapshot.fragment === 'aura-rewards' ? 3 : 1,
+  );
+  readonly stages = [
+    { id: 1, label: 'Figur', detail: 'Name & Vorlage' },
+    { id: 2, label: 'Stil', detail: 'Haare & Farben' },
+    { id: 3, label: 'Aura', detail: 'Dein Leuchten' },
+  ] as const;
   readonly previewAura = signal<string | null>(null);
   readonly previewFierce = signal(false);
   readonly previewColor = signal<string>('#a78bfa');
@@ -60,7 +78,6 @@ export class CharacterCreator implements OnInit {
   });
   readonly options = CHARACTER_OPTIONS;
   readonly presentations = CHARACTER_PRESENTATIONS;
-  readonly auraProgression = AURA_PROGRESSION_PLAN;
   readonly palettes = ILLUSTRATED_COLOR_PALETTES;
   readonly colorGroups: readonly { slot: IllustratedColor; label: string }[] = [
     { slot: 'eyeColor', label: 'Augenfarbe' },
@@ -112,6 +129,19 @@ export class CharacterCreator implements OnInit {
         error instanceof Error ? error.message : 'Bitte lade deinen Charakter erneut.',
       );
     }
+  }
+
+  selectStage(stage: 1 | 2 | 3) {
+    if (this.store.busy() || this.stage() === stage) return;
+    this.stage.set(stage);
+    if (stage !== 3) this.endAuraPreview();
+    queueMicrotask(() => {
+      const heading = this.element.nativeElement.querySelector<HTMLElement>(
+        `.editor-section:not([hidden]) h2`,
+      );
+      heading?.focus({ preventScroll: true });
+      heading?.scrollIntoView?.({ block: 'start', behavior: 'instant' });
+    });
   }
 
   setName(name: string) {
@@ -184,7 +214,7 @@ export class CharacterCreator implements OnInit {
   }
 
   chooseAura(value: string) {
-    if (this.store.busy() || !CHARACTER_OPTIONS.aura.some((option) => option.id === value)) return;
+    if (this.store.busy() || !this.store.canEquipAura(value)) return;
     this.endAuraPreview();
     this.draft.update((current) =>
       current
@@ -241,6 +271,7 @@ export class CharacterCreator implements OnInit {
     try {
       profile = normalizeCharacterProfile(draft);
     } catch (error) {
+      this.selectStage(1);
       this.formError.set(error instanceof Error ? error.message : 'Bitte prüfe deine Angaben.');
       return;
     }

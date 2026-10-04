@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { BROWSER_STORAGE } from '../data/browser-storage';
+import { GAME_DAY_CLOCK } from '../data/game-clock';
+import { GAME_PROGRESS_KEY } from '../data/game-progress.storage';
 import { MockGameRepository } from '../data/mock-game.repository';
 import { DailyCareMode, localDayKey } from '../domain/daily-care';
 import { DAILY_CARE_KEY, DAY_CLOCK, DailyCareStore } from './daily-care.store';
@@ -25,6 +27,7 @@ describe('independent daily care store', () => {
       providers: [
         { provide: BROWSER_STORAGE, useValue: storage },
         { provide: DAY_CLOCK, useValue: () => today },
+        { provide: GAME_DAY_CLOCK, useValue: () => today },
       ],
     });
   });
@@ -34,11 +37,12 @@ describe('independent daily care store', () => {
   it('persists only voluntary daily preferences and leaves the entire game snapshot unchanged', async () => {
     const repository = TestBed.runInInjectionContext(() => new MockGameRepository());
     const before = await repository.load();
+    const journalBefore = entries.get(GAME_PROGRESS_KEY);
     const care = TestBed.inject(DailyCareStore);
     expect(care.save('rest', 'low')).toBe(true);
     expect(care.checkIn()).toEqual({ dayKey: today, mode: 'rest', energy: 'low' });
     expect(care.persisted()).toBe(true);
-    expect([...entries.keys()]).toEqual([DAILY_CARE_KEY]);
+    expect([...entries.keys()]).toEqual([GAME_PROGRESS_KEY, DAILY_CARE_KEY]);
     expect(JSON.parse(entries.get(DAILY_CARE_KEY)!)).toEqual({
       version: 1,
       dayKey: today,
@@ -48,6 +52,7 @@ describe('independent daily care store', () => {
     care.skip();
     care.reset();
     expect(await repository.load()).toEqual(before);
+    expect(entries.get(GAME_PROGRESS_KEY)).toBe(journalBefore);
   });
 
   it('restores same-day choices, rereads changes and expires old or future decisions', () => {

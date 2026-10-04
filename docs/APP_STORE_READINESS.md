@@ -92,9 +92,9 @@ ersetzt weder die Store-Konfiguration noch Kaufprüfung, Restore oder Kündigung
 Bereits im Web-Slice umgesetzt: responsive Layouts, semantische Controls, Fehler-/Statusmeldungen,
 reduzierte Bewegung, deutsche Zahlen, Safe-Area-Grundlage und vergrößerte mobile Formfelder.
 Der Creator speichert lokal ausschließlich Name/Aussehen; Ton-, Feuerwerk- und Bewegungspräferenzen
-liegen getrennt davon. Fortschritt bleibt flüchtiger Demo-Zustand. Keine Accounts, Tracking- oder
-Health-Anbindung. Die aktuellen lokalen Datenflüsse müssen vor Release in die Bestandsaufnahme
-einfließen; Serverpersistenz und Gerätewechsel sind dadurch nicht gelöst.
+liegen getrennt davon. Der erste Backend-Auth-Slice bietet inzwischen Accounts und Sessions, die
+Web-Demo nutzt ihn noch nicht für den lokalen Spielstand. Es gibt kein Tracking- oder Health-SDK.
+Serverpersistenz für Charakter und Fortschritt sowie Gerätewechsel sind dadurch noch nicht gelöst.
 
 Der Chibi verwendet modulare SVG-Grafik mit räumlicher Wirkung und optionalem Idle. Kurzes
 Feuerwerk und ein eigener Web-Audio-Jingle begleiten ausgewählte Meilensteine. Separate Controls

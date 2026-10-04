@@ -1,370 +1,137 @@
 <a class="skip-link" href="/dashboard#main">Zum Dashboard</a>
 <header class="site-header">
-  <a class="brand" routerLink="/dashboard" aria-label="Everbloom Dashboard"
-    ><span class="brand-mark" aria-hidden="true">✳</span> everbloom<span class="brand-dot"
-      >.</span
-    ></a
-  >
+  <a class="brand" routerLink="/dashboard" aria-label="Everbloom Dashboard"><span class="brand-mark" aria-hidden="true">✳</span> everbloom<span class="brand-dot">.</span></a>
   <nav aria-label="Dashboard-Bereiche">
-    <a href="/dashboard#character" class="current">Charakter</a
-    ><a href="/dashboard#quests">Quests</a><a href="/dashboard#skills">Skills</a
-    ><a href="/dashboard#boss">Wochenboss</a>
+    <a href="/dashboard#character">Dein Charakter</a><a href="/dashboard#quests">Quests</a><a href="/dashboard#skills">Skills</a><a href="/dashboard#boss">Mooslichtung</a>
   </nav>
-  <span class="header-badge"><span aria-hidden="true">◇</span> SOLO ADVENTURE</span>
+  <span class="header-status"><span aria-hidden="true"></span> Dein Abenteuer</span>
 </header>
 
 <main id="main" tabindex="-1">
   <div class="page-heading">
-    <div>
-      <p class="eyebrow">DEIN ALLTAG. DEIN ABENTEUER.</p>
-      <h1>Wachse über dich hinaus<span>.</span></h1>
-      <p>Kümmere dich um dich. Dein kleines Ich wächst mit.</p>
-    </div>
-    <button class="primary" (click)="openActivity()" [disabled]="!store.snapshot() || store.busy()">
-      <span aria-hidden="true">＋</span> Aktivität eintragen
-    </button>
+    <div><p class="eyebrow">WILLKOMMEN ZURÜCK</p><h1>Ein neuer Schritt<span>.</span></h1></div>
+    <button class="primary" (click)="openActivity()" [disabled]="!store.snapshot() || store.busy()"><span aria-hidden="true">＋</span> Aktivität eintragen</button>
   </div>
-
-  <app-journey-summary />
-
+  @if (store.snapshot() && store.persistence().state !== 'saved') { <app-progress-storage-note /> }
   <div class="feedback" role="status" aria-live="polite">{{ store.message() }}</div>
   @if (store.error()) {
-    <div class="error" role="alert">
-      {{ store.error() }}
-      @if (!store.snapshot()) {
-        <button (click)="store.load()">Erneut laden</button>
-      }
-    </div>
+    <div class="error" role="alert">{{ store.error() }} @if (!store.snapshot()) { <button class="text-button" (click)="store.load()">Erneut laden</button> }</div>
   }
 
   @if (store.snapshot(); as game) {
     <div class="dashboard-grid">
-      <aside class="character-column" aria-label="Dein Charakter und Attribute">
-        <section class="character-card panel" id="character" aria-labelledby="character-name">
-          <div class="card-top">
-            <span class="eyebrow">DEIN CHARAKTER</span><span class="pill">Free</span>
-          </div>
-          <div class="avatar-stage">
-            <span class="orbit orbit-one" aria-hidden="true"></span
-            ><span class="orbit orbit-two" aria-hidden="true"></span>
-            <span class="avatar-spark spark-one" aria-hidden="true">✦</span
-            ><span class="avatar-spark spark-two" aria-hidden="true">✧</span>
-            <app-character-portrait
-              [appearance]="game.character.appearance"
-              [level]="store.level().level"
-              [interest]="avatarInterest()"
-              [animated]="feedback.motionEnabled()"
-            />
-            <span class="level-seal" aria-label="Charakter-Level">{{ store.level().level }}</span>
-          </div>
-          <div class="identity">
-            <p class="eyebrow">DAS NÄCHSTE KAPITEL WARTET</p>
-            <h2 id="character-name">{{ game.character.name }}</h2>
-            <p>{{ game.character.title }}</p>
-          </div>
-          <p class="avatar-message"><span aria-hidden="true">✧</span> {{ avatarMessage() }}</p>
-          <div class="character-xp">
-            <div class="row">
-              <strong>Level {{ store.level().level }}</strong
-              ><span
-                >{{ store.level().xp | number }} / {{ store.level().required | number }} XP</span
-              >
-            </div>
-            <progress
-              [value]="store.level().xp"
-              [max]="store.level().required"
-              aria-label="Charakter-XP im aktuellen Level"
-            ></progress>
-            <p>
-              Noch <strong>{{ store.level().required - store.level().xp }} XP</strong> bis Level
-              {{ store.level().level + 1 }}
-            </p>
-          </div>
-          <a class="character-note" routerLink="/character/create">
-            <span aria-hidden="true">◇</span>
-            {{ store.profileIsSaved() ? 'Charakter gestalten' : 'Eigenen Charakter erstellen' }} ↗
-          </a>
-        </section>
-
-        <section class="panel stats-panel" aria-labelledby="stats-title">
-          <div class="section-heading">
-            <h2 id="stats-title">Deine Attribute</h2>
-            <span class="small-label">SPIELWERTE</span>
-          </div>
-          <div class="stats-grid">
-            @for (attribute of store.attributes(); track attribute.id) {
-              <div class="stat">
-                <span class="stat-icon" aria-hidden="true">{{ attribute.symbol }}</span
-                ><span>{{ attribute.label }}</span
-                ><strong>{{ attribute.value }}</strong>
-              </div>
-            }
-          </div>
-          <p class="subtle-note">Entwickeln sich mit deinen Skill-XP.</p>
-        </section>
-        <div class="recovery-note">
-          <span aria-hidden="true">☾</span>
-          <div>
-            <strong>Auch Ruhe bringt dich weiter.</strong>
-            <p>Erholung gehört zu deinem Abenteuer.</p>
-          </div>
+      <section class="character-card panel" id="character" aria-labelledby="character-name">
+        <div class="character-heading">
+          <div><p class="eyebrow">DEIN KLEINES ICH</p><h2 id="character-name">{{ game.character.name }}</h2><p class="character-title">{{ game.character.title }}</p></div>
+          <a routerLink="/character/create" class="wardrobe-link" [attr.aria-label]="store.profileIsSaved() ? 'Charakter gestalten' : 'Eigenen Charakter erstellen'"><span aria-hidden="true">◇</span> Look</a>
         </div>
-      </aside>
+        <div class="avatar-stage">
 
-      <div class="journey-column">
-        <app-daily-care-panel />
-        <section class="panel momentum-panel" aria-labelledby="momentum-title">
-          <div class="momentum-copy">
-            <p class="eyebrow">BLEIB IN DEINEM RHYTHMUS</p>
-            <h2 id="momentum-title">Dein Momentum <span>↗</span></h2>
-            <p>Heute reicht ein guter Anfang.</p>
-            <div class="rhythm" aria-label="Beispielrhythmus der letzten sieben Tage">
-              @for (day of game.momentum.rhythm; track $index) {
-                <div class="rhythm-day" [class.today]="day.status === 'today'">
-                  <span
-                    [class.done]="day.status === 'done'"
-                    [class.rest]="day.status === 'rest'"
-                    [attr.aria-label]="
-                      day.label +
-                      ': ' +
-                      (day.status === 'done'
-                        ? 'aktiv'
-                        : day.status === 'rest'
-                          ? 'Ruhetag'
-                          : 'heute')
-                    "
-                    >{{ day.status === 'done' ? '✓' : day.status === 'rest' ? '☾' : '·' }}</span
-                  ><small>{{ day.label }}</small>
-                </div>
-              }
-            </div>
-            <span class="subtle-note">Beispielwoche · ☾ Ruhetag</span>
-          </div>
-          <div class="momentum-score">
-            <div
-              class="score-ring"
-              [style.--score]="game.momentum.value + '%'"
-              role="meter"
-              aria-label="Momentum"
-              aria-valuemin="0"
-              aria-valuemax="100"
-              [attr.aria-valuenow]="game.momentum.value"
-            >
-              <div>
-                <strong>{{ game.momentum.value }}<small>%</small></strong
-                ><span>IM FLOW</span>
-              </div>
-            </div>
-            <span>Beständigkeit wächst.</span>
-          </div>
-        </section>
 
-        <section class="panel quest-panel" id="quests" aria-labelledby="quests-title">
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">KLEINE SCHRITTE, ECHTER FORTSCHRITT</p>
-              <h2 id="quests-title">Deine Daily Quests</h2>
-            </div>
-            <span class="count-badge">{{ store.questsDone() }} / {{ game.quests.length }}</span>
-          </div>
-          @for (quest of game.quests; track quest.id) {
-            <div class="quest-row" [class.completed]="quest.claimed">
-              <span class="quest-symbol" [class.finished]="quest.claimed" aria-hidden="true">{{
-                quest.claimed
-                  ? '✓'
-                  : quest.skillId === 'meditation'
-                    ? '✧'
-                    : quest.skillId === 'programming'
-                      ? '⌘'
-                      : '↟'
-              }}</span>
-              <div class="quest-content">
-                <h3>{{ quest.title }}</h3>
-                <p>{{ quest.description }}</p>
-                <div class="quest-progress">
-                  <progress
-                    [value]="quest.progressMinutes"
-                    [max]="quest.targetMinutes"
-                    [attr.aria-label]="quest.title + ': Minuten'"
-                  ></progress
-                  ><span>{{ quest.progressMinutes }}/{{ quest.targetMinutes }} min</span>
-                </div>
-              </div>
-              <div class="quest-action">
-                <span class="reward">+{{ quest.bonusXp }} XP</span
-                ><button
-                  class="text-button"
-                  [disabled]="quest.claimed || store.busy()"
-                  (click)="openActivity(quest.skillId, quest.targetMinutes - quest.progressMinutes)"
-                  [attr.aria-label]="
-                    quest.claimed
-                      ? quest.title + ' abgeschlossen'
-                      : quest.title + ': Aktivität eintragen'
-                  "
-                >
-                  {{ quest.claimed ? 'Erledigt ✓' : 'Eintragen ↗' }}
-                </button>
-              </div>
-            </div>
-          }
-          <div class="section-foot">
-            <span aria-hidden="true">✧</span> Quest-Boni kommen zusätzlich zu deinen Aktivitäts-XP.
-          </div>
-        </section>
+          <span class="presence-label"><span aria-hidden="true"></span>{{ dailyMode() }}</span>
+          <app-character-portrait [appearance]="game.character.appearance" [level]="store.level().level" [interest]="avatarInterest()" [animated]="feedback.motionEnabled()" />
+          <div class="level-seal" aria-label="Charakter-Level"><small>LVL</small><strong>{{ store.level().level }}</strong></div>
+        </div>
+        <p class="avatar-message"><span aria-hidden="true">✧</span>{{ avatarMessage() }}</p>
+        <div class="character-xp">
+          <div class="row"><strong>Level {{ store.level().level }}</strong><span>{{ store.level().xp | number }} <span class="muted">/ {{ store.level().required | number }} XP</span></span></div>
+          <progress [value]="store.level().xp" [max]="store.level().required" aria-label="Charakter-XP im aktuellen Level"></progress>
+          <p>Noch <strong>{{ store.level().required - store.level().xp | number }} XP</strong> bis zum nächsten Level.</p>
+        </div>
+      </section>
 
-        <section class="skills-section" id="skills" aria-labelledby="skills-title">
-          <div class="section-heading">
-            <h2 id="skills-title">{{ showAllSkills() ? 'Alle Skills' : 'Deine Fokus-Skills' }}</h2>
-            <button class="text-button" type="button" [attr.aria-expanded]="showAllSkills()" aria-controls="skill-list" (click)="showAllSkills.set(!showAllSkills())">{{ showAllSkills() ? 'Fokus anzeigen' : 'Alle ' + catalog.length + ' ansehen' }}</button>
-          </div>
-          <div class="skills-grid" id="skill-list">
-            @for (skill of visibleSkills(); track skill.id) {
-              <button
-                class="skill-card panel"
-                [style.--skill-color]="skill.color"
-                (click)="openActivity(skill.id, 15)"
-                [disabled]="store.busy()"
-                [attr.aria-label]="skill.name + ', Level ' + skill.level + ': Aktivität eintragen'"
-              >
-                <div class="row">
-                  <span class="skill-symbol" aria-hidden="true">{{ skill.symbol }}</span
-                  ><span class="skill-level">LV. {{ skill.level }}</span>
-                </div>
-                <h3>{{ skill.name }}</h3>
-                <p>
-                  {{ skill.family }} <span aria-hidden="true">·</span> {{ skill.xpPerMinute }} XP /
-                  min
-                </p>
-                <progress
-                  [value]="skill.xp"
-                  [max]="skill.required"
-                  [attr.aria-label]="skill.name + ': Skill-XP'"
-                ></progress>
-                <div class="row skill-footer">
-                  <span>{{ skill.xp }} / {{ skill.required }} XP</span
-                  ><span aria-hidden="true">↗</span>
-                </div>
+      <section class="next-step panel" aria-labelledby="next-title">
+        <div class="section-heading"><div><p class="eyebrow">DEIN ALLTAG WIRD ZUM ABENTEUER</p><h2 id="next-title">Dein nächster Schritt</h2></div><span class="section-symbol" aria-hidden="true">✧</span></div>
+        @if (adventure(); as today) {
+          <p class="section-intro">{{ today.restFriendly ? 'Heute darf es sanft sein. Ruhe ist genauso willkommen.' : 'Kleine Vorhaben, passend zu deinem Fokus.' }}</p>
+          <div class="recommendation-list">
+            @for (step of today.recommendations; track step.id) {
+              <button type="button" class="recommendation" [style.--skill-color]="step.color" [disabled]="store.busy()" (click)="openActivity(step.skillId, step.minutes)" [attr.aria-label]="step.skillName + ', ' + step.minutes + ' Minuten: Aktivität eintragen'">
+                <span class="recommendation-symbol" aria-hidden="true">{{ step.symbol }}</span>
+                <span class="recommendation-copy"><strong>{{ step.title }}</strong><span>{{ step.skillName }} · {{ step.minutes }} min</span><small class="reward-detail">{{ step.preview.bossDamage }} Boss-Schaden@if (step.preview.questXp) { · inkl. {{ step.preview.questXp }} Quest-XP }</small></span>
+                <span class="recommendation-reward"><strong>+{{ step.preview.totalXp }} XP</strong><span aria-hidden="true">↗</span></span>
               </button>
+            } @empty {
+              <div class="quiet-state"><span aria-hidden="true">☾</span><strong>Heute ist schon viel gewachsen.</strong><p>Du musst nichts mehr erreichen. Genieß deinen Moment.</p></div>
             }
           </div>
-        </section>
+          <p class="subtle-note">{{ today.recommendations.length ? 'Erst im echten Leben erleben. Danach hier eintragen. XP-Vorschau inklusive möglicher Quest-Boni.' : 'Weitere Aktivitäten kannst du jederzeit eintragen.' }}</p>
+        }
+      </section>
 
-        <section class="boss-panel panel" id="boss" aria-labelledby="boss-title">
-          <div class="boss-emblem" aria-hidden="true">♜<span>W</span></div>
-          <div class="boss-content">
-            <div class="row">
-              <span class="eyebrow">WEEKLY BOSS</span
-              ><span class="boss-period">{{ game.boss.weekLabel }}</span>
-            </div>
-            <h2 id="boss-title">{{ game.boss.name }}</h2>
-            <p>
-              {{
-                game.boss.hp === 0
-                  ? 'Besiegt. Deine kleinen Schritte haben Großes bewegt.'
-                  : 'Ein uralter Wächter. Eine Woche, um über dich hinauszuwachsen.'
-              }}
-            </p>
-            <div class="row boss-health">
-              <strong>{{ store.phase() }}</strong
-              ><span>{{ game.boss.hp | number }} / {{ game.boss.maxHp | number }} HP</span>
-            </div>
-            <progress
-              [value]="game.boss.hp"
-              [max]="game.boss.maxHp"
-              aria-label="Verbleibende Boss-HP"
-            ></progress>
-            <div class="boss-bottom">
-              <span>{{
-                game.boss.hp === 0
-                  ? 'Begegnung abgeschlossen'
-                  : 'Jede Aktivitäts-XP verursacht 2 Schaden.'
-              }}</span
-              ><span class="pill">{{ game.boss.hp === 0 ? '✓ Sieg' : 'Solo-Boss' }}</span>
-            </div>
+      <details class="daily-checkin panel">
+        <summary><span class="summary-icon" aria-hidden="true">☾</span><span><strong>Wie geht es dir heute?</strong><small>{{ care.checkIn() ? dailyMode() + ' · Tagesgefühl ändern' : 'Dein Tempo bestimmen · freiwillig' }}</small></span><span class="expand-icon" aria-hidden="true">＋</span></summary>
+        <app-daily-care-panel />
+      </details>
+
+      <section class="weekly-panel panel" aria-labelledby="week-title">
+        <div class="section-heading"><div><p class="eyebrow">KONTINUITÄT, KEIN PERFEKTIONISMUS</p><h2 id="week-title">Deine Woche</h2></div><span class="momentum-value" aria-label="Momentum">{{ game.momentum.value }}<small>%</small><span>Momentum</span></span></div>
+        <div class="rhythm" aria-label="Deine Aktivität in dieser Woche">
+          @for (day of game.momentum.rhythm; track $index) {
+            <div class="rhythm-day" [class.today]="day.status === 'today'"><span [class.done]="day.status === 'done'" [class.rest]="day.status === 'rest'" [attr.aria-label]="day.label + ': ' + (day.status === 'done' ? 'aktiv' : day.status === 'rest' ? 'kein Eintrag' : day.status === 'upcoming' ? 'kommender Tag' : 'heute')">{{ day.status === 'done' ? '✓' : day.status === 'rest' ? '☾' : '·' }}</span><small>{{ day.label }}</small></div>
+          }
+        </div>
+        @if (adventure(); as today) {
+          <div class="week-numbers"><span><strong>{{ today.week.activityXp | number }}</strong> Aktivitäts-XP</span><span><strong>{{ today.week.activeDays }}</strong> aktive Tage</span></div>
+          <div class="weekly-milestones">
+            @for (milestone of today.week.milestones; track milestone.id) {
+              <div class="weekly-milestone" [class.complete]="milestone.complete"><span class="milestone-check" aria-hidden="true">{{ milestone.complete ? '✓' : '◇' }}</span><div><div class="row"><strong>{{ milestone.title }}</strong><small>{{ milestone.progress }} / {{ milestone.target }}</small></div><progress [value]="milestone.progress" [max]="milestone.target" [attr.aria-label]="milestone.title"></progress><small class="milestone-description">{{ milestone.description }}</small></div></div>
+            }
           </div>
-        </section>
-      </div>
+          <p class="subtle-note">{{ today.week.label }} · Freiwillige Wochenziele, ohne zusätzliche XP. Pausen sind willkommen.</p>
+        }
+      </section>
+
+      <section class="boss-panel panel" id="boss" aria-labelledby="boss-title">
+        <div class="boss-heading"><span class="eyebrow">DEIN WOCHENBOSS</span><span class="pill">{{ game.boss.hp === 0 ? '✓ Besiegt' : store.phase() }}</span></div>
+        <div class="boss-art"><span class="boss-rune" aria-hidden="true"></span><img src="/art/bosses/mosswarden-v1.png" alt="Der Mooswächter: ein steinerner Waldhüter mit Geweih und leuchtendem Herz." width="1254" height="1254" loading="lazy" decoding="async" /></div>
+        <div class="boss-content"><p class="boss-location">DIE MOOSLICHTUNG</p><h2 id="boss-title">{{ game.boss.name }}</h2><p class="boss-description">{{ game.boss.hp === 0 ? 'Besiegt. Deine kleinen Schritte haben Großes bewegt.' : 'Ein uralter Wächter. Dein Fortschritt im Alltag schwächt ihn Stück für Stück.' }}</p>
+          <div class="row boss-health"><strong>{{ game.boss.hp === 0 ? 'Begegnung abgeschlossen' : 'Verbleibende Kraft' }}</strong><span>{{ game.boss.hp | number }} / {{ game.boss.maxHp | number }} HP</span></div>
+          <progress [value]="game.boss.hp" [max]="game.boss.maxHp" aria-label="Verbleibende Boss-HP"></progress>
+          <p class="boss-rule">{{ game.boss.weekLabel }} · 1 Aktivitäts-XP = 2 Schaden</p>
+          <a class="battle-link" routerLink="/battle"><span><strong>Die Mooslichtung betreten</strong><small>Automatischer Probekampf · ohne Belohnungen</small></span><span aria-hidden="true">↗</span></a>
+        </div>
+      </section>
+
+      <section class="quest-panel panel" id="quests" aria-labelledby="quests-title">
+        <div class="section-heading"><div><p class="eyebrow">HEUTE ZÄHLT</p><h2 id="quests-title">Deine Tagesquests</h2></div><span class="count-badge">{{ store.questsDone() }} / {{ game.quests.length }}</span></div>
+        @for (quest of game.quests; track quest.id) {
+          <div class="quest-row" [class.completed]="quest.claimed">
+            <span class="quest-symbol" [class.finished]="quest.claimed" aria-hidden="true">{{ quest.claimed ? '✓' : quest.skillId === 'meditation' ? '✧' : quest.skillId === 'programming' ? '⌘' : '↟' }}</span>
+            <div class="quest-content"><h3>{{ quest.title }}</h3><p>{{ quest.description }}</p><div class="quest-progress"><progress [value]="quest.progressMinutes" [max]="quest.targetMinutes" [attr.aria-label]="quest.title + ': Minuten'"></progress><span>{{ quest.progressMinutes }}/{{ quest.targetMinutes }} min</span></div></div>
+            <div class="quest-action"><span class="reward">+{{ quest.bonusXp }} XP</span><button class="text-button" [disabled]="quest.claimed || store.busy()" (click)="openActivity(quest.skillId, quest.targetMinutes - quest.progressMinutes)" [attr.aria-label]="quest.claimed ? quest.title + ' abgeschlossen' : quest.title + ': Aktivität eintragen'">{{ quest.claimed ? 'Erledigt ✓' : 'Eintragen ↗' }}</button></div>
+          </div>
+        }
+        <p class="section-foot">Quest-Boni erhältst du zusätzlich zu deinen Aktivitäts-XP.</p>
+      </section>
+
+      <section class="skills-section" id="skills" aria-labelledby="skills-title">
+        <div class="section-heading"><div><p class="eyebrow">WAS DICH WEITERBRINGT</p><h2 id="skills-title">{{ showAllSkills() ? 'Alle Skills' : 'Deine Fokus-Skills' }}</h2></div><button class="text-button" type="button" [attr.aria-expanded]="showAllSkills()" aria-controls="skill-list" (click)="showAllSkills.set(!showAllSkills())">{{ showAllSkills() ? 'Fokus anzeigen' : 'Alle ' + catalog.length + ' ansehen' }}</button></div>
+        <div class="skills-grid" id="skill-list">
+          @for (skill of visibleSkills(); track skill.id) {
+            <button class="skill-card panel" [style.--skill-color]="skill.color" (click)="openActivity(skill.id, 15)" [disabled]="store.busy()" [attr.aria-label]="skill.name + ', Level ' + skill.level + ': Aktivität eintragen'"><div class="row"><span class="skill-symbol" aria-hidden="true">{{ skill.symbol }}</span><span class="skill-level">LV. {{ skill.level }}</span></div><h3>{{ skill.name }}</h3><p>{{ skill.family }}</p><progress [value]="skill.xp" [max]="skill.required" [attr.aria-label]="skill.name + ': Skill-XP'"></progress><div class="row skill-footer"><span>{{ skill.xp }} / {{ skill.required }} XP</span><span aria-hidden="true">↗</span></div></button>
+          }
+        </div>
+      </section>
+
+      <details class="stats-panel panel">
+        <summary><span class="summary-icon" aria-hidden="true">◇</span><span><strong>Deine Attribute</strong><small>Spielwerte, die mit deinen Skills wachsen</small></span><span class="expand-icon" aria-hidden="true">＋</span></summary>
+        <div class="stats-grid">@for (attribute of store.attributes(); track attribute.id) { <div class="stat"><span class="stat-icon" aria-hidden="true">{{ attribute.symbol }}</span><span>{{ attribute.label }}</span><strong>{{ attribute.value }}</strong></div> }</div>
+      </details>
+
+      <details class="collection-panel panel"><summary><span class="summary-icon" aria-hidden="true">✦</span><span><strong>Auren & Sammlung</strong><small>{{ store.ownedAuras().length }} verdiente Auren · deinen Look verfeinern</small></span><span class="expand-icon" aria-hidden="true">＋</span></summary><app-aura-collection [selected]="game.character.appearance.aura" /></details>
     </div>
 
     @if (game.activities.length) {
-      <section class="activity-history panel" aria-labelledby="history-title">
-        <div class="section-heading">
-          <h2 id="history-title">Heute festgehalten</h2>
-          <span>{{ store.totalMinutes() }} Minuten</span>
-        </div>
-        <ul>
-          @for (activity of game.activities.slice(0, 5); track activity.requestId) {
-            <li>
-              <span
-                >{{ skillName(activity.skillId) }} <small>· {{ activity.minutes }} min</small></span
-              ><strong>+{{ activity.xp }} Aktivitäts-XP</strong>
-            </li>
-          }
-        </ul>
-        @if (game.activities.length > 5) {
-          <p class="subtle-note">Die letzten 5 von {{ game.activities.length }} Einträgen.</p>
-        }
-      </section>
+      <section class="activity-history panel" aria-labelledby="history-title"><div class="section-heading"><div><p class="eyebrow">JEDER SCHRITT BLEIBT</p><h2 id="history-title">Zuletzt erlebt</h2></div><span class="history-total">{{ store.totalMinutes() }} min</span></div><ul>@for (activity of game.activities.slice(0, 5); track activity.requestId) { <li><span><strong>{{ skillName(activity.skillId) }}</strong><small>{{ activity.minutes }} min · {{ displayDay(activity.dayKey) }}</small></span><span class="history-xp">+{{ activity.xp }} XP</span></li> }</ul>@if (game.activities.length > 5) { <p class="subtle-note">Die letzten 5 von {{ game.activities.length }} gespeicherten Einträgen.</p> }</section>
     }
-  } @else if (!store.error()) {
-    <div class="loading panel" role="status">Dein Abenteuer wird geladen …</div>
-  }
+  } @else if (!store.error()) { <div class="loading panel" role="status">Dein Abenteuer wird geladen …</div> }
 
-  <section class="experience-settings panel" aria-label="Erfolgserlebnis einstellen">
-    <div>
-      <strong>Dein Erfolgsmoment</strong>
-      <p>Ein kleines Feuerwerk und ein heller Klang für deine Meilensteine.</p>
-    </div>
-    <div class="experience-actions">
-      <button
-        class="secondary"
-        type="button"
-        [attr.aria-pressed]="feedback.soundEnabled()"
-        (click)="feedback.toggleSound()"
-      >
-        Erfolgsmusik: {{ feedback.soundEnabled() ? 'Ein' : 'Aus' }}
-      </button>
-      <button
-        class="secondary"
-        type="button"
-        [attr.aria-pressed]="feedback.effectsEnabled()"
-        (click)="feedback.toggleEffects()"
-      >
-        Feuerwerk: {{ feedback.effectsEnabled() ? 'Ein' : 'Aus' }}
-      </button>
-      <button
-        class="secondary"
-        type="button"
-        [attr.aria-pressed]="feedback.motionEnabled()"
-        (click)="feedback.toggleMotion()"
-      >
-        Charakterbewegung: {{ feedback.motionEnabled() ? 'Ein' : 'Aus' }}
-      </button>
-      <button class="text-button" type="button" (click)="feedback.preview()">
-        Effekt testen ✧
-      </button>
-    </div>
-  </section>
-  <footer>
-    <div>
-      <strong>EVERBLOOM · M0 / M1</strong>
-      <p>
-        Demo · Beispieltagesstand 08.09.2026 · Aktivitätsfortschritt wird beim Neuladen
-        zurückgesetzt. Dein gespeicherter Look bleibt auf diesem Gerät.
-      </p>
-    </div>
-    <button class="text-button" (click)="store.reset()" [disabled]="store.busy()">
-      Demo zurücksetzen ↺
-    </button>
-  </footer>
-  <button
-    class="mobile-activity-action primary"
-    type="button"
-    (click)="openActivity()"
-    [disabled]="store.busy() || !store.snapshot()"
-  >
-    <span aria-hidden="true">＋</span> Aktivität eintragen
-  </button>
+  <a class="membership-teaser panel" routerLink="/membership"><span class="membership-mark" aria-hidden="true">✧</span><span><span class="membership-label">EVERBLOOM MEMBER <span class="pill">Geplant</span></span><strong>Ein größeres Abenteuer.</strong><small>Mehr Raum für deine Entwicklung. Free bleibt spielbar.</small></span><span class="membership-price">3,99 €<small>/ Monat · geplant</small></span></a>
+
+  <details class="experience-settings panel"><summary><span class="summary-icon" aria-hidden="true">⚙</span><span><strong>Dein Spiel, dein Gefühl</strong><small>Erfolgsmomente, Bewegung & Einstellungen</small></span><span class="expand-icon" aria-hidden="true">＋</span></summary><div class="settings-content"><div class="settings-heading"><h2>Dein Erfolgsmoment</h2><p>Ein kleines Feuerwerk und ein heller Klang für deine Meilensteine.</p></div><div class="experience-actions"><button class="secondary" type="button" [attr.aria-pressed]="feedback.soundEnabled()" (click)="feedback.toggleSound()">Erfolgsmusik: {{ feedback.soundEnabled() ? 'Ein' : 'Aus' }}</button><button class="secondary" type="button" [attr.aria-pressed]="feedback.effectsEnabled()" (click)="feedback.toggleEffects()">Feuerwerk: {{ feedback.effectsEnabled() ? 'Ein' : 'Aus' }}</button><button class="secondary" type="button" [attr.aria-pressed]="feedback.motionEnabled()" (click)="feedback.toggleMotion()">Charakterbewegung: {{ feedback.motionEnabled() ? 'Ein' : 'Aus' }}</button><button class="text-button" type="button" (click)="feedback.preview()">Effekt testen ✧</button></div><app-journey-summary /><div class="reset-setting"><div><strong>Neu beginnen</strong><p>Deinen lokalen Fortschritt zurücksetzen.</p></div><button type="button" class="text-button" [disabled]="store.busy() || !store.snapshot()" (click)="openReset()">Spielstand zurücksetzen</button></div></div></details>
+  <footer><span><span aria-hidden="true">◇</span> {{ store.persistence().state === 'saved' ? 'Lokaler Spielstand · auf diesem Gerät' : 'Spielstand nur in dieser Sitzung' }}</span><a routerLink="/auth">Dein Konto ↗</a></footer>
+  <button class="mobile-activity-action primary" type="button" (click)="openActivity()" [disabled]="store.busy() || !store.snapshot()"><span aria-hidden="true">＋</span> Aktivität eintragen</button>
 </main>
 
 <dialog #activityDialog (close)="restoreFocus()" aria-labelledby="activity-title">
@@ -415,4 +182,18 @@
       </button>
     </div>
   </form>
+</dialog>
+
+<dialog #resetDialog (close)="restoreFocus()" aria-labelledby="reset-title">
+  <div class="dialog-heading"><span class="eyebrow">NEU BEGINNEN</span>
+    <button type="button" class="close-button" (click)="closeReset()" aria-label="Zurücksetzen schließen">×</button></div>
+  <h2 id="reset-title">Spielstand zurücksetzen?</h2>
+  <p>Deine gespeicherten Aktivitäten, Fortschritte und verdienten Auren werden gelöscht.
+    Du beginnst wieder mit den Beispiel-Startwerten. Dein Name, deine Figur und Interessen bleiben erhalten.
+    Eine verdiente, angelegte Aura wird entfernt.</p>
+  @if (store.error()) { <p class="error" role="alert">{{ store.error() }}</p> }
+  <div class="dialog-actions">
+    <button type="button" class="secondary" (click)="closeReset()" [disabled]="store.busy()">Abbrechen</button>
+    <button type="button" class="primary" (click)="confirmReset()" [disabled]="store.busy()">{{ store.busy() ? 'Wird zurückgesetzt …' : 'Spielstand löschen' }}</button>
+  </div>
 </dialog>

@@ -29,16 +29,16 @@ let nextAuraId = 0;
           </radialGradient>
           <linearGradient [id]="id + '-surface'" x1="0" y1="0" x2=".25" y2="1">
             <stop offset="0" stop-color="#ffffff" stop-opacity=".94" />
-            <stop offset=".2" [attr.stop-color]="resolvedColor()" stop-opacity=".94" />
-            <stop offset=".54" [attr.stop-color]="resolvedColor()" stop-opacity=".56" />
+            <stop offset=".2" [attr.stop-color]="spectralColors()[0]" stop-opacity=".94" />
+            <stop offset=".54" [attr.stop-color]="spectralColors()[1]" stop-opacity=".56" />
             <stop offset=".86" stop-color="#ffffff" stop-opacity=".88" />
-            <stop offset="1" [attr.stop-color]="resolvedColor()" stop-opacity=".9" />
+            <stop offset="1" [attr.stop-color]="spectralColors()[2]" stop-opacity=".9" />
           </linearGradient>
           <linearGradient [id]="id + '-edge'" x1="0" y1="0" x2=".2" y2="1">
             <stop offset="0" stop-color="#ffffff" />
-            <stop offset=".28" [attr.stop-color]="resolvedColor()" />
+            <stop offset=".28" [attr.stop-color]="spectralColors()[0]" />
             <stop offset=".55" stop-color="#ffffff" />
-            <stop offset=".76" [attr.stop-color]="resolvedColor()" />
+            <stop offset=".76" [attr.stop-color]="spectralColors()[2]" />
             <stop offset="1" stop-color="#ffffff" />
           </linearGradient>
           <radialGradient [id]="id + '-spark'">
@@ -102,6 +102,67 @@ let nextAuraId = 0;
                 d="M40 211Q26 183 41 156M202 229Q218 207 203 182M28 86l9-20 5 15M210 91l-8-25-7 18"
               />
             }
+            @case ('aurora') {
+              <g class="aurora-curtains soft-fill sway">
+                <path
+                  d="M29 280C9 237 53 210 29 166 10 132 16 105 44 75 65 51 94 53 111 26 105 64 72 79 59 111 43 151 77 171 55 209 42 234 48 260 65 282Z"
+                />
+                <path
+                  d="M211 281C232 240 187 217 211 174 230 142 224 115 197 85 176 62 153 54 143 31 143 63 171 82 181 117 195 156 164 180 187 217 200 240 191 263 177 283Z"
+                />
+                <path
+                  d="M45 237C17 209 27 184 43 164 53 194 75 184 73 157 99 198 59 213 71 250ZM194 247C222 218 213 194 195 172 188 201 165 196 168 169 140 210 181 225 168 258Z"
+                />
+              </g>
+              <path
+                class="trail core-flow"
+                d="M31 266C18 234 61 204 41 164S30 111 56 82M208 268C222 240 181 213 202 176S210 121 185 94M76 59Q95 48 103 32M164 64Q145 48 143 34"
+              />
+              <path
+                class="white-edge rise"
+                d="M32 132Q34 109 48 96M42 219Q51 202 49 187M207 144Q207 125 193 111M194 225Q185 212 186 198"
+              />
+            }
+            @case ('starlight') {
+              <g class="constellation-crown sway">
+                <ellipse class="trail" cx="120" cy="161" rx="99" ry="128" />
+                <path
+                  class="trail"
+                  d="m45 74 32-31 43-14 43 14 32 31 25 62-8 62-25 57-67 33-67-33-25-57-8-62Zm0 0-17 62 25 29-25 33 37 16-12 41M195 74l17 62-25 29 25 33-37 16 12 41M77 43l43 22 43-22"
+                />
+                <g class="constellation-stars soft-fill">
+                  <path
+                    d="m120 17 3 10 10 3-10 3-3 10-3-10-10-3 10-3ZM43 64l3 10 10 3-10 3-3 10-3-10-10-3 10-3ZM197 65l3 10 10 3-10 3-3 10-3-10-10-3 10-3ZM26 185l3 11 11 3-11 3-3 11-3-11-11-3 11-3ZM214 186l3 11 11 3-11 3-3 11-3-11-11-3 11-3ZM53 245l3 9 9 3-9 3-3 9-3-9-9-3 9-3ZM187 245l3 9 9 3-9 3-3 9-3-9-9-3 9-3Z"
+                  />
+                </g>
+                <g class="spark-core">
+                  <circle cx="77" cy="43" r="2" />
+                  <circle cx="163" cy="43" r="2" />
+                  <circle cx="28" cy="136" r="2.5" />
+                  <circle cx="212" cy="136" r="2.5" />
+                  <circle cx="65" cy="214" r="2" />
+                  <circle cx="175" cy="214" r="2" />
+                </g>
+              </g>
+            }
+            @case ('moss-spirit') {
+              <g class="moss-guardian soft-fill sway">
+                <path
+                  d="M62 282C28 266 16 235 26 204 38 167 28 144 42 111L69 98 81 119 64 154 60 197 42 229 51 259ZM178 282C212 266 224 235 214 204 202 167 212 144 198 111L171 98 159 119 176 154 180 197 198 229 189 259Z"
+                />
+                <path
+                  d="M90 85C72 61 76 44 63 31 82 33 92 44 94 59 102 42 94 26 105 15L120 27 135 15C146 26 138 42 146 59 148 44 158 33 177 31 164 44 168 61 150 85L120 103Z"
+                />
+                <path
+                  d="M39 149C11 150 8 126 23 113 29 129 45 129 39 149ZM34 203C8 196 11 173 28 166 28 183 43 188 34 203ZM43 251C17 257 8 237 19 223 30 237 46 232 43 251ZM201 149C229 150 232 126 217 113 211 129 195 129 201 149ZM206 203C232 196 229 173 212 166 212 183 197 188 206 203ZM197 251C223 257 232 237 221 223 210 237 194 232 197 251Z"
+                />
+              </g>
+              <path
+                class="trail core-flow"
+                d="M53 274C16 235 53 199 43 170Q38 144 53 125M187 274C224 235 187 199 197 170Q202 144 187 125M90 78 82 59M150 78l8-19"
+              />
+              <path class="moss-gaze white-edge" d="m103 62 8 4m26-4-8 4M115 84q5 4 10 0" />
+            }
             @case ('stars') {
               <path
                 class="trail sway"
@@ -152,8 +213,10 @@ let nextAuraId = 0;
                 class="trail core-flow"
                 d="M33 100 65 161 45 203M208 100l-32 61 19 42M39 222l26-23M202 222l-26-23"
               />
-              <path class="energy-core core-flow"
-                d="m24 254-13-37 10-32 11 27-5 19 14 32Zm194 2 12-39-12-31-9 28 5 19-14 32Z" />
+              <path
+                class="energy-core core-flow"
+                d="m24 254-13-37 10-32 11 27-5 19 14 32Zm194 2 12-39-12-31-9 28 5 19-14 32Z"
+              />
               @if (fierce()) {
                 <g class="fierce-eyes" data-fierce="true">
                   <path d="m51-19 48 12-13 11-26-9Zm138 0-48 12 13 11 26-9Z" />
@@ -181,8 +244,10 @@ let nextAuraId = 0;
                 class="trail sway"
                 d="M24 260 16 214 30 201 12 176 23 159M212 264l17-45-8-29 16-18-10-42M38 83l13-28-5-19M198 103l17-27-5-20"
               />
-              <path class="energy-core core-flow"
-                d="m26 279-18-44 15-14L7 194l14-24-9-29 23-35-13 51 10 22-12 22 19 23-14 22 15 34Zm188 1 17-43-13-18 15-24-13-27 6-35-19-30 8 53-10 26 12 18-13 25 13 23-16 33Z" />
+              <path
+                class="energy-core core-flow"
+                d="m26 279-18-44 15-14L7 194l14-24-9-29 23-35-13 51 10 22-12 22 19 23-14 22 15 34Zm188 1 17-43-13-18 15-24-13-27 6-35-19-30 8 53-10 26 12 18-13 25 13 23-16 33Z"
+              />
             }
             @case ('angel') {
               <g class="wings soft-fill sway">
@@ -194,8 +259,10 @@ let nextAuraId = 0;
                 class="trail"
                 d="M27 55Q48 101 76 125M22 111Q44 137 73 149M32 159l42 14M213 55Q192 101 164 125M218 111Q196 137 167 149M208 159l-42 14M99 20l21-10 21 10-21 9Z"
               />
-              <path class="white-edge core-flow"
-                d="M26 47Q31 87 58 115M15 99Q24 127 57 144M26 155l32 16M214 47Q209 87 182 115M225 99Q216 127 183 144M214 155l-32 16" />
+              <path
+                class="white-edge core-flow"
+                d="M26 47Q31 87 58 115M15 99Q24 127 57 144M26 155l32 16M214 47Q209 87 182 115M225 99Q216 127 183 144M214 155l-32 16"
+              />
             }
             @case ('blossom') {
               <path
@@ -218,24 +285,35 @@ let nextAuraId = 0;
                 class="trail rise"
                 d="M39 256C15 227 54 217 45 194M198 271C224 248 185 242 197 221M56 73l7-23 5 18M207 149l8-24 3 17"
               />
-              <path class="energy-core core-flow"
-                d="M43 274C13 243 18 213 27 198 24 223 47 226 38 246 55 226 50 194 60 174 72 215 48 242 63 271ZM189 280C218 258 232 234 216 207 217 231 199 233 204 250 185 236 199 204 185 193 184 224 172 246 181 271Z" />
+              <path
+                class="energy-core core-flow"
+                d="M43 274C13 243 18 213 27 198 24 223 47 226 38 246 55 226 50 194 60 174 72 215 48 242 63 271ZM189 280C218 258 232 234 216 207 217 231 199 233 204 250 185 236 199 204 185 193 184 224 172 246 181 271Z"
+              />
             }
             @case ('guardian') {
               <g class="guardian soft-fill sway">
-                <path class="guardian-shoulders"
-                  d="M82 84 58 50 29 36 5 49-18 84-8 124 21 145 31 191 18 236 38 263 58 248 62 203 51 147 76 125ZM158 84l24-34 29-14 24 13 23 35-10 40-29 21-10 46 13 45-20 27-20-15-4-45 11-56-25-22Z" />
                 <path
-                  d="m10 64 20-12 22 22-15 41-28-9Zm220 0-20-12-22 22 15 41 28-9ZM26 156l17 12 5 38-14 27-6-27Zm188 0-17 12-5 38 14 27 6-27Z" />
-                <path class="guardian-head" data-guardian-head="raised"
-                  d="m120-47 26 15 10 26-16 27-20 12-20-12L84-6l10-26Z" />
+                  class="guardian-shoulders"
+                  d="M82 84 58 50 29 36 5 49-18 84-8 124 21 145 31 191 18 236 38 263 58 248 62 203 51 147 76 125ZM158 84l24-34 29-14 24 13 23 35-10 40-29 21-10 46 13 45-20 27-20-15-4-45 11-56-25-22Z"
+                />
+                <path
+                  d="m10 64 20-12 22 22-15 41-28-9Zm220 0-20-12-22 22 15 41 28-9ZM26 156l17 12 5 38-14 27-6-27Zm188 0-17 12-5 38 14 27 6-27Z"
+                />
+                <path
+                  class="guardian-head"
+                  data-guardian-head="raised"
+                  d="m120-47 26 15 10 26-16 27-20 12-20-12L84-6l10-26Z"
+                />
               </g>
-              <path class="trail"
-                d="M95-27 103-6 120 9l17-15 8-21M11 69l15 31 17-17M229 69l-15 31-17-17M16 123l25 15 7 35M224 123l-25 15-7 35M33 183l5 28-9 21M207 183l-5 28 9 21" />
-              <path class="guardian-gaze white-edge"
-                d="m101-18 10 4m28-4-10 4M116 6h8" />
-              <path class="energy-core core-flow"
-                d="m3 124 12 15 8 38-10-12Zm234 0-12 15-8 38 10-12ZM35 232l9 11-7 12-10-10Zm170 0-9 11 7 12 10-10Z" />
+              <path
+                class="trail"
+                d="M95-27 103-6 120 9l17-15 8-21M11 69l15 31 17-17M229 69l-15 31-17-17M16 123l25 15 7 35M224 123l-25 15-7 35M33 183l5 28-9 21M207 183l-5 28 9 21"
+              />
+              <path class="guardian-gaze white-edge" d="m101-18 10 4m28-4-10 4M116 6h8" />
+              <path
+                class="energy-core core-flow"
+                d="m3 124 12 15 8 38-10-12Zm234 0-12 15-8 38 10-12ZM35 232l9 11-7 12-10-10Zm170 0-9 11 7 12 10-10Z"
+              />
             }
           }
         </g>
@@ -253,7 +331,7 @@ let nextAuraId = 0;
                 <circle class="spark-glow" r="10" [attr.fill]="paint('spark')" />
                 @if (effect.id === 'rose' || effect.id === 'blossom') {
                   <path d="M0 0C-10-2-8-11-2-9 0-16 11-10 8-4 12 2 5 7 0 0Z" />
-                } @else if (effect.id === 'sage') {
+                } @else if (effect.id === 'sage' || effect.id === 'moss-spirit') {
                   <path d="M0 5Q-9-1-2-9 8-5 0 5Z" />
                 } @else {
                   <path d="m0-6 1.6 4.4L6 0 1.6 1.6 0 6-1.6 1.6-6 0-1.6-1.6Z" />
@@ -283,58 +361,123 @@ let nextAuraId = 0;
       }
       .soft-fill {
         fill: var(--aura-surface);
-        fill-opacity: .64;
+        fill-opacity: 0.64;
         stroke: var(--aura-edge);
-        stroke-opacity: .92;
+        stroke-opacity: 0.92;
         stroke-width: 1.3;
         stroke-linejoin: round;
       }
-      .trail, .ground-ring {
+      .trail,
+      .ground-ring {
         fill: none;
         stroke: var(--aura-edge);
-        stroke-opacity: .92;
+        stroke-opacity: 0.92;
         stroke-width: 1.8;
         stroke-linecap: round;
         stroke-linejoin: round;
       }
-      .ground-ring { stroke-width: 1; stroke-opacity: .65; }
-      .rays { fill-opacity: .72; }
-      .wings { fill-opacity: .8; stroke-width: 1.5; }
-      .guardian { fill-opacity: .68; stroke-width: 1.7; }
+      .ground-ring {
+        stroke-width: 1;
+        stroke-opacity: 0.65;
+      }
+      .rays {
+        fill-opacity: 0.72;
+      }
+      .wings {
+        fill-opacity: 0.8;
+        stroke-width: 1.5;
+      }
+      .guardian {
+        fill-opacity: 0.68;
+        stroke-width: 1.7;
+      }
+      .aurora-curtains {
+        fill-opacity: 0.72;
+        stroke-width: 1;
+      }
+      .constellation-crown .trail {
+        stroke-width: 1;
+        stroke-opacity: 0.65;
+      }
+      .constellation-stars {
+        fill-opacity: 0.95;
+        stroke-width: 1.5;
+      }
+      .moss-guardian {
+        fill-opacity: 0.65;
+        stroke-width: 1.4;
+      }
+      .moss-gaze {
+        stroke-width: 2.5;
+      }
       [data-aura='fire'] .flames,
       [data-aura='energy'] .rays,
-      [data-aura='demonic'] .soft-fill { fill-opacity: .86; }
-      .guardian-head { fill-opacity: .94; }
+      [data-aura='demonic'] .soft-fill {
+        fill-opacity: 0.86;
+      }
+      .guardian-head {
+        fill-opacity: 0.94;
+      }
       .energy-core {
         fill: var(--aura-surface);
-        fill-opacity: .96;
+        fill-opacity: 0.96;
         stroke: #fff;
-        stroke-opacity: .74;
-        stroke-width: .9;
+        stroke-opacity: 0.74;
+        stroke-width: 0.9;
         stroke-linejoin: round;
       }
       .white-edge {
         fill: none;
         stroke: #fff;
-        stroke-opacity: .92;
+        stroke-opacity: 0.92;
         stroke-width: 2;
         stroke-linecap: round;
       }
-      .guardian-gaze { stroke-width: 2.7; }
-      .fierce-eyes { fill: #fff; stroke: currentColor; stroke-width: 2; }
-      .particle-drift { fill: var(--aura-edge); opacity: .9; }
-      .spark-core { fill: #fff; }
-      .spark-glow { opacity: .86; }
-      .sway, .rise, .core-flow { transform-origin: 120px 280px; }
-      .animated .sway { animation: aura-breathe 8s ease-in-out infinite; }
-      .animated .rise { animation: aura-rise 7s ease-in-out infinite; }
-      .animated .core-flow { animation: aura-core-flow 5.6s ease-in-out -2.2s infinite; }
+      .guardian-gaze {
+        stroke-width: 2.7;
+      }
+      .fierce-eyes {
+        fill: #fff;
+        stroke: currentColor;
+        stroke-width: 2;
+      }
+      .particle-drift {
+        fill: var(--aura-edge);
+        opacity: 0.9;
+      }
+      .spark-core {
+        fill: #fff;
+      }
+      .spark-glow {
+        opacity: 0.86;
+      }
+      .sway,
+      .rise,
+      .core-flow {
+        transform-origin: 120px 280px;
+      }
+      .animated .sway {
+        animation: aura-breathe 8s ease-in-out infinite;
+      }
+      .animated .rise {
+        animation: aura-rise 7s ease-in-out infinite;
+      }
+      .animated .core-flow {
+        animation: aura-core-flow 5.6s ease-in-out -2.2s infinite;
+      }
       .animated .particle-drift {
         animation: aura-drift var(--duration, 9s) ease-in-out var(--delay, 0s) infinite;
       }
       @keyframes aura-core-flow {
-        0%, 100% { transform: translateY(3px) scaleX(.98); opacity: .72; }
-        50% { transform: translateY(-8px) scaleX(1.02); opacity: 1; }
+        0%,
+        100% {
+          transform: translateY(3px) scaleX(0.98);
+          opacity: 0.72;
+        }
+        50% {
+          transform: translateY(-8px) scaleX(1.02);
+          opacity: 1;
+        }
       }
       @keyframes aura-breathe {
         0%,
@@ -395,6 +538,18 @@ export class CharacterAura {
     return typeof color === 'string' && /^#[\da-f]{6}$/i.test(color)
       ? color.toLowerCase()
       : (this.design()?.color ?? '#a78bfa');
+  });
+  readonly spectralColors = computed(() => {
+    switch (this.design()?.id) {
+      case 'aurora':
+        return ['#8ff2b8', '#39a6b5', '#b99af0'];
+      case 'starlight':
+        return ['#ffe5a1', '#b794ed', '#e8c678'];
+      case 'moss-spirit':
+        return ['#dcf4a3', '#699d76', '#badc84'];
+      default:
+        return [this.resolvedColor(), this.resolvedColor(), this.resolvedColor()];
+    }
   });
   paint(region: 'halo' | 'surface' | 'edge' | 'spark'): string {
     return `url(#${this.id}-${region})`;

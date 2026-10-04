@@ -80,6 +80,7 @@ export function createMockSnapshot(): GameSnapshot {
       hp: 1460,
     },
     activities: [],
+    unlockedAuras: [],
     momentum: {
       value: 76,
       lastRewardDay: '2026-09-07',

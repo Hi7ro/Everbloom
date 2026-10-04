@@ -10,7 +10,7 @@
 
   <section class="journey-progress" aria-label="Deine Reise einrichten">
     <div class="step-counter" aria-live="polite">
-      Schritt {{ step() }} von 3 <span>DEIN ANFANG</span>
+      Schritt {{ step() }} von 3 <span>DEIN PERSÖNLICHER WEG</span>
     </div>
     <ol>
       @for (label of ['Interessen', 'Skills', 'Deine Reise']; track $index) {
@@ -26,14 +26,17 @@
   </section>
 
   <div class="step-intro">
+    <p class="intro-eyebrow"><span aria-hidden="true">✧</span> EIN ABENTEUER, DAS ZU DIR PASST</p>
     <h1 id="step-heading" tabindex="-1">{{ stepTitle() }}</h1>
     <p>
       @if (step() === 1) {
-        Dein kleines Ich begleitet dich im echten Leben. Wähle, was dir gerade wichtig ist.
+        Dein Chibi wächst mit dem, was dir wichtig ist. Wähle die Bereiche, die gerade zu deinem
+        Leben passen.
       } @else if (step() === 2) {
-        Ein guter Anfang darf klein sein. Wähle 1–{{ maxSkills }} Skills für dein Dashboard.
+        Wähle 1–{{ maxSkills }} Skills, die du im Blick behalten möchtest. Du musst nicht alles auf
+        einmal machen.
       } @else {
-        Das ist dein Ausgangspunkt. Du kannst deine Auswahl jederzeit wieder ändern.
+        Dein Charakter, deine Ziele und Platz für Pausen. Du kannst deinen Fokus jederzeit ändern.
       }
     </p>
   </div>
@@ -47,7 +50,7 @@
       <fieldset class="choice-section" aria-describedby="interests-hint">
         <legend>Deine Interessen</legend>
         <p class="section-hint" id="interests-hint">
-          Mehrere passen zu dir? Wähle alle, die dich ansprechen.
+          Mehrfachauswahl möglich. Es gibt keine falsche Richtung.
         </p>
         <div class="interest-grid">
           @for (interest of interests; track interest.id) {
@@ -132,7 +135,7 @@
                 <span class="choice-copy"
                   ><strong>{{ skill.name }}</strong
                   ><span
-                    >{{ skill.xpPerMinute }} XP / min · bis {{ skill.dailyMinuteLimit }} min /
+                    >{{ skill.xpPerMinute }} XP / min · XP-Limit {{ skill.dailyMinuteLimit }} min /
                     Tag</span
                   ></span
                 >
@@ -142,7 +145,8 @@
         </fieldset>
       }
       <p class="quiet-note">
-        XP sind Spielwerte. Belohnt werden reale Aktivitäten innerhalb des täglichen XP-Limits.
+        Deine Auswahl ordnet dein Dashboard. Alle Skills bleiben verfügbar, auch wenn du sie hier
+        nicht auswählst. XP-Limits sind Spielregeln, keine Trainingsvorgaben.
       </p>
     } @else {
       @if (store.snapshot(); as game) {
@@ -218,8 +222,9 @@
         </section>
       </div>
       <p class="demo-note">
-        <strong>Dein aktueller Spielstand</strong>Look und Auswahl bleiben auf diesem Gerät.
-        Aktivitätsfortschritt ist noch eine Demo und startet beim Neuladen neu.
+        <strong>Dein Fortschritt bleibt bei dir</strong>Look und Auswahl bleiben auf diesem Gerät.
+        Aktivitäten und verdiente Auren bleiben ebenfalls in diesem Browser gespeichert, sofern der
+        Gerätespeicher verfügbar ist. Eine Cloud-Sicherung gibt es noch nicht.
       </p>
     }
     @if (formError()) {

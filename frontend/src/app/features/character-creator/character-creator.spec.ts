@@ -1,4 +1,4 @@
-import { signal } from '@angular/core';
+import { computed, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { CharacterAura } from '../../shared/character-aura';
@@ -7,6 +7,8 @@ import { BROWSER_STORAGE } from '../../data/browser-storage';
 import { ActivatedRoute, convertToParamMap, provideRouter, Router } from '@angular/router';
 import { createMockSnapshot } from '../../data/mock-data';
 import { GameSnapshot } from '../../domain/models';
+import { AURA_REWARDS, hasAuraAccess } from '../../domain/aura-rewards';
+import { ProgressPersistenceStatus } from '../../data/game-progress.storage';
 import { GameStore } from '../../state/game.store';
 import { JourneyStore } from '../../state/journey.store';
 import { CharacterCreator } from './character-creator';
@@ -15,9 +17,10 @@ describe('character creator flow', () => {
   const snapshot = signal<GameSnapshot | null>(null);
   const error = signal('');
   const busy = signal(false);
+  const persistence = signal<ProgressPersistenceStatus>({ state: 'saved', message: null });
   const configured = signal(true);
   const profileIsSaved = signal(false);
-  const routeSnapshot = { queryParamMap: convertToParamMap({}) };
+  const routeSnapshot = { queryParamMap: convertToParamMap({}), fragment: null as string | null };
   const updateCharacter = vi.fn().mockResolvedValue(true);
   const load = vi.fn(async () => snapshot.set(createMockSnapshot()));
 
@@ -25,9 +28,11 @@ describe('character creator flow', () => {
     snapshot.set(createMockSnapshot());
     error.set('');
     busy.set(false);
+    persistence.set({ state: 'saved', message: null });
     configured.set(true);
     profileIsSaved.set(false);
     routeSnapshot.queryParamMap = convertToParamMap({});
+    routeSnapshot.fragment = null;
     updateCharacter.mockReset().mockResolvedValue(true);
     load.mockClear();
     await TestBed.configureTestingModule({
@@ -46,6 +51,11 @@ describe('character creator flow', () => {
             updateCharacter,
             load,
             profileIsSaved,
+            persistence,
+            ownedAuras: computed(() =>
+              AURA_REWARDS.filter((aura) => snapshot()?.unlockedAuras.includes(aura.id)),
+            ),
+            canEquipAura: (id: string) => !!snapshot() && hasAuraAccess(snapshot()!, id),
             level: signal({ level: 12 }),
             avatarInterest: signal('adventurer'),
           },
@@ -53,6 +63,38 @@ describe('character creator flow', () => {
       ],
     }).compileComponents();
     vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
+  });
+
+  it('groups editing without losing unsaved choices and reveals invalid identity before saving', async () => {
+    const fixture = TestBed.createComponent(CharacterCreator);
+    await fixture.whenStable();
+    const root = fixture.nativeElement as HTMLElement;
+    const component = fixture.componentInstance;
+    expect(root.querySelector<HTMLElement>('#creator-stage-1')!.hidden).toBe(false);
+    root.querySelector<HTMLButtonElement>('[aria-controls="creator-stage-2"]')!.click();
+    await fixture.whenStable();
+    expect(root.querySelector<HTMLElement>('#creator-stage-1')!.hidden).toBe(true);
+    expect(root.querySelector<HTMLElement>('#creator-stage-2')!.hidden).toBe(false);
+    component.chooseModule('outfitSet', 'urban-ranger');
+    root.querySelector<HTMLButtonElement>('[aria-controls="creator-stage-3"]')!.click();
+    await fixture.whenStable();
+    expect(component.draft()!.appearance.outfitSet).toBe('urban-ranger');
+    component.setName('A');
+    await component.save();
+    await fixture.whenStable();
+    expect(root.querySelector<HTMLElement>('#creator-stage-1')!.hidden).toBe(false);
+    expect(updateCharacter).not.toHaveBeenCalled();
+    expect(root.querySelector('#profile-form-error')!.textContent).toContain('2–24');
+  });
+
+  it('opens the aura group for the existing collection deep link', async () => {
+    routeSnapshot.fragment = 'aura-rewards';
+    const fixture = TestBed.createComponent(CharacterCreator);
+    await fixture.whenStable();
+    const root = fixture.nativeElement as HTMLElement;
+    expect(root.querySelector<HTMLElement>('#creator-stage-3')!.hidden).toBe(false);
+    expect(root.querySelector<HTMLElement>('#creator-stage-1')!.hidden).toBe(true);
+    expect(updateCharacter).not.toHaveBeenCalled();
   });
 
   it('previews independent module and color edits, saves a normalized profile and returns to the dashboard', async () => {
@@ -446,6 +488,79 @@ describe('character creator flow', () => {
     await fixture.componentInstance.save();
     expect(TestBed.inject(Router).navigateByUrl).toHaveBeenCalledTimes(2);
     expect(TestBed.inject(Router).navigateByUrl).toHaveBeenLastCalledWith('/onboarding');
+  });
+
+  it('keeps locked collection rewards and design previews out of the saved aura selection', async () => {
+    const fixture = TestBed.createComponent(CharacterCreator);
+    await fixture.whenStable();
+    const component = fixture.componentInstance;
+    const before = structuredClone(component.draft());
+    const game = structuredClone(snapshot());
+    const root = fixture.nativeElement as HTMLElement;
+    for (const id of ['aurora', 'starlight', 'moss-spirit', 'demonic', 'guardian', 'unknown']) {
+      component.chooseAura(id);
+      expect(component.draft()).toEqual(before);
+    }
+    for (const button of root.querySelectorAll<HTMLButtonElement>('app-aura-collection button')) {
+      expect(button.disabled).toBe(true);
+      button.click();
+    }
+    expect(component.draft()).toEqual(before);
+    expect(snapshot()).toEqual(game);
+    expect(updateCharacter).not.toHaveBeenCalled();
+  });
+
+  it('selects an owned aura only in the draft and saves it without awarding XP', async () => {
+    snapshot.update((current) => ({ ...current!, unlockedAuras: ['moss-spirit'] }));
+    const fixture = TestBed.createComponent(CharacterCreator);
+    await fixture.whenStable();
+    const component = fixture.componentInstance;
+    const before = structuredClone(snapshot());
+    const root = fixture.nativeElement as HTMLElement;
+    const button = root.querySelector<HTMLButtonElement>('[aria-label="Moosseele auswählen"]')!;
+    expect(button.disabled).toBe(false);
+    button.click();
+    await fixture.whenStable();
+    expect(component.draft()!.appearance.aura).toBe('moss-spirit');
+    expect(button.getAttribute('aria-pressed')).toBe('true');
+    expect(snapshot()).toEqual(before);
+    component.chooseModule('outfitSet', 'urban-ranger');
+    expect(component.draft()!.appearance.aura).toBe('moss-spirit');
+    await component.save();
+    expect(updateCharacter).toHaveBeenCalledExactlyOnceWith(
+      expect.objectContaining({
+        appearance: expect.objectContaining({ aura: 'moss-spirit', outfitSet: 'urban-ranger' }),
+      }),
+    );
+    expect(snapshot()!.character.totalXp).toBe(before!.character.totalXp);
+    expect(snapshot()!.unlockedAuras).toEqual(['moss-spirit']);
+  });
+
+  it('shows a persistence warning alongside a failed save and retains the editable draft', async () => {
+    persistence.set({
+      state: 'session',
+      message: 'Neue Fortschritte bleiben nur in dieser Sitzung.',
+    });
+    updateCharacter.mockImplementationOnce(async () => {
+      error.set('Diese Aura ist nicht verfügbar.');
+      return false;
+    });
+    const fixture = TestBed.createComponent(CharacterCreator);
+    await fixture.whenStable();
+    const component = fixture.componentInstance;
+    component.setName('Ari Moon');
+    const draft = structuredClone(component.draft());
+    await component.save();
+    await fixture.whenStable();
+    const root = fixture.nativeElement as HTMLElement;
+    expect(root.querySelector('app-progress-storage-note [role="status"]')?.textContent).toContain(
+      'nur in dieser Sitzung',
+    );
+    expect(root.querySelector('app-progress-storage-note .warning')).not.toBeNull();
+    expect(root.textContent).toContain('Diese Aura ist nicht verfügbar.');
+    expect(root.textContent).toContain('Deine Auswahl bleibt erhalten');
+    expect(component.draft()).toEqual(draft);
+    expect(TestBed.inject(Router).navigateByUrl).not.toHaveBeenCalled();
   });
 
   it('ignores any other return destination', async () => {

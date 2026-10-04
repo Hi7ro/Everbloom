@@ -1,0 +1,106 @@
+<main id="main-content" class="battle-page">
+  <header class="page-top">
+    <a routerLink="/dashboard" class="back-link">← Zurück zu deinem Tag</a>
+    <span class="chapter">EVERBLOOM / BEGEGNUNGEN</span>
+  </header>
+  <div class="heading">
+    <div><p class="eyebrow">DEIN FORTSCHRITT WIRD LEBENDIG</p><h1>Die Mooslichtung</h1></div>
+    <span class="practice-badge"><span></span> Probekampf</span>
+  </div>
+  <p class="intro">Ein alter Wächter. Dein nächster Schritt. Dein Charakter kämpft automatisch mit der Stärke, die du im Alltag aufbaust.</p>
+
+  @if (battle.replay(); as replay) {
+    <div class="battle-layout">
+      <section class="arena-card" aria-label="Kampfbühne">
+        <div class="combatants">
+          <div class="fighter hero">
+            <div class="fighter-heading"><span>DEIN CHARAKTER</span><span>LVL {{ replay.hero.stats.level }}</span></div>
+            <h2>{{ replay.hero.name }}</h2>
+            <progress [value]="battle.health().heroHp" [max]="replay.hero.stats.maxHp" [attr.aria-label]="replay.hero.name + ': Lebenspunkte'"></progress>
+            <div class="health"><span>{{ battle.health().heroHp }} / {{ replay.hero.stats.maxHp }} HP</span><span>ANG {{ replay.hero.stats.attack }}</span></div>
+          </div>
+          <span class="versus" aria-hidden="true">VS</span>
+          <div class="fighter boss">
+            <div class="fighter-heading"><span>WALDWÄCHTER</span><span>LVL {{ replay.boss.stats.level }}</span></div>
+            <h2>{{ replay.boss.name }}</h2>
+            <progress [value]="battle.health().bossHp" [max]="replay.boss.stats.maxHp" aria-label="Mooswächter: Lebenspunkte"></progress>
+            <div class="health"><span>{{ battle.health().bossHp }} / {{ replay.boss.stats.maxHp }} HP</span><span>ANG {{ replay.boss.stats.attack }}</span></div>
+          </div>
+        </div>
+        @if (battle.appearance(); as appearance) {
+          <app-battle-arena [appearance]="appearance" [motion]="feedback.motionEnabled() && (battle.playing() || battle.cursor() === 0)"
+            [heroPose]="heroPose()" [bossPose]="bossPose()" />
+        }
+        <div class="round-strip">
+          <span>{{ battle.current() ? 'Runde ' + battle.current()!.round : 'Bereit zur Begegnung' }}</span>
+          <span>{{ battle.current() ? phaseLabels[battle.current()!.bossPhase] : 'Erwachen' }}</span>
+        </div>
+        <fieldset class="tactics" [disabled]="battle.playing() || battle.cursor() > 0">
+          <legend>Dein Kampfstil <span>Wähle vor dem Kampf. Dein Chibi übernimmt die Züge.</span></legend>
+          <div class="tactic-options">
+            @for (tactic of tactics; track tactic.id) {
+              <button type="button" [class.selected]="selectedTactic() === tactic.id" [attr.aria-pressed]="selectedTactic() === tactic.id"
+                [attr.aria-label]="tactic.name + ': ' + tactic.description" (click)="chooseTactic(tactic.id)">
+                <span class="tactic-symbol" aria-hidden="true">{{ tactic.symbol }}</span><strong>{{ tactic.name }}</strong>
+              </button>
+            }
+          </div>
+          <p>{{ tactics[selectedTactic() === 'power' ? 1 : selectedTactic() === 'guard' ? 2 : 0].description }}</p>
+        </fieldset>
+        <div class="turn-announcement" role="status" aria-live="polite" aria-atomic="true">
+          @if (battle.complete()) { <strong>{{ resultTitle() }}</strong> }
+          @else if (battle.current(); as turn) {
+            <strong>{{ turn.actor === 'hero' ? replay.hero.name : replay.boss.name }}</strong>
+            <span>{{ turn.label }} · {{ turn.healing ? '+' + turn.healing + ' HP' : turn.damage + ' Schaden' }}{{ turn.critical ? ' · Kritischer Treffer' : '' }}</span>
+          } @else { <strong>Deine Erfahrung bestimmt den Kampf.</strong><span>Starte, lehn dich zurück und beobachte deinen Chibi.</span> }
+        </div>
+        <div class="controls">
+          @if (battle.playing()) { <button class="primary" (click)="battle.pause()">Ⅱ Pausieren</button> }
+          @else { <button class="primary" (click)="battle.play()">{{ battle.complete() ? '↻ Erneut ansehen' : battle.cursor() ? '▶ Fortsetzen' : '▶ Kampf starten' }}</button> }
+          <button class="secondary speed" (click)="battle.toggleSpeed()" [attr.aria-label]="'Kampfgeschwindigkeit ' + battle.speed() + '-fach. Umschalten.'">{{ battle.speed() }}×</button>
+          <button class="secondary" (click)="battle.skip()" [disabled]="battle.complete()">Zum Ergebnis</button>
+        </div>
+        <div class="quiet-controls">
+          <button class="text-button" (click)="feedback.toggleMotion()" [attr.aria-pressed]="feedback.motionEnabled()">Bewegung {{ feedback.motionEnabled() ? 'an' : 'aus' }}</button>
+          <button class="text-button" (click)="battle.step()" [disabled]="battle.complete()">Einzelner Zug →</button>
+        </div>
+      </section>
+
+      <aside class="battle-notes">
+        @if (battle.complete()) {
+          <section class="result-card" role="status">
+            <span class="eyebrow">BEGEGNUNG ABGESCHLOSSEN</span>
+            <h2>{{ replay.outcome === 'victory' ? 'Gut gewachsen.' : replay.outcome === 'defeat' ? 'Deine Reise geht weiter.' : 'Bis zum nächsten Mal.' }}</h2>
+            <p>{{ replay.roundCount }} Runden. {{ replay.outcome === 'victory' ? 'Dein Fortschritt zeigt Wirkung.' : 'Du verlierst keine XP, Level oder Ausrüstung.' }}</p>
+            <button class="secondary" (click)="newBattle()">Mit aktuellen Werten vorbereiten</button>
+          </section>
+        }
+        <section class="info-card">
+          <span class="eyebrow">DEINE KAMPFKRAFT</span><h2>Was du tust, zählt.</h2>
+          <div class="stat-grid">
+            <div><span>Level</span><strong>{{ replay.hero.stats.level }}</strong></div>
+            <div><span>Angriff</span><strong>{{ replay.hero.stats.attack }}</strong></div>
+            <div><span>Verteidigung</span><strong>{{ replay.hero.stats.defense }}</strong></div>
+          </div>
+          <p>Deine gesammelten Charakter-XP, Skills und Attribute bestimmen die Kampfwerte. Auch Lernen und Erholung tragen dazu bei.</p>
+          <p class="practice-note">Dies ist ein Probekampf ohne Belohnungen. Deine XP, Ausrüstung und der Wochenboss bleiben unverändert.</p>
+        </section>
+        <section class="log-card" aria-label="Kampfverlauf">
+          <div class="log-heading"><h2>Kampfverlauf</h2><span>{{ battle.cursor() }} Züge</span></div>
+          @if (battle.recentTurns().length) {
+            <ol>
+              @for (turn of battle.recentTurns(); track turn.index) {
+                <li [class.hero-turn]="turn.actor === 'hero'"><span class="round-number">{{ turn.round }}</span>
+                  <div><strong>{{ turn.actor === 'hero' ? replay.hero.name : replay.boss.name }}</strong><span>{{ turn.label }}</span></div>
+                  <b [class.healing]="turn.healing > 0">{{ turn.healing ? '+' + turn.healing : '−' + turn.damage }}<small>HP</small></b>
+                </li>
+              }
+            </ol>
+          } @else { <p class="empty-log">Der Wald hält den Atem an. Hier erscheinen die letzten sechs Züge.</p> }
+        </section>
+      </aside>
+    </div>
+  } @else if (game.error()) {
+    <div class="info-card" role="alert"><p>{{ game.error() }}</p><button class="primary" (click)="game.load()">Erneut laden</button></div>
+  } @else { <p role="status">Dein Charakter wird vorbereitet …</p> }
+</main>

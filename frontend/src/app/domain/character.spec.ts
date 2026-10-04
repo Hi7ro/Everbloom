@@ -336,7 +336,7 @@ describe('character profile validation', () => {
     ).toThrow('gültige Farbe');
   });
 
-  it('keeps planned aura rewards unavailable to the current creator and profile boundary', () => {
+  it('accepts earned aura IDs at the profile boundary while keeping the four starter options', () => {
     expect(AURA_PROGRESSION_PLAN.map((aura) => aura.unlock)).toEqual([
       { kind: 'level', level: 20 },
       { kind: 'level', level: 40 },
@@ -346,12 +346,12 @@ describe('character profile validation', () => {
       expect(CHARACTER_OPTIONS.aura.some((available) => String(available.id) === aura.id)).toBe(
         false,
       );
-      expect(() =>
+      expect(
         normalizeCharacterProfile({
           ...profile,
           appearance: { ...profile.appearance, aura: aura.id },
-        }),
-      ).toThrow('nicht verfügbar');
+        }).appearance.aura,
+      ).toBe(aura.id);
     }
   });
 });

@@ -30,6 +30,28 @@ export const AURA_DESIGNS = [
     previewOnly: false,
   },
   {
+    id: 'aurora',
+    label: 'Nordlicht',
+    description: 'Grüne, petrolfarbene und violette Lichtbänder tanzen wie ein Nordlicht um dich.',
+    color: '#8ee7cb',
+    previewOnly: false,
+  },
+  {
+    id: 'starlight',
+    label: 'Sternenkranz',
+    description:
+      'Ein goldener Sternenkranz mit violetten Konstellationen zeichnet deine Reise nach.',
+    color: '#e8c678',
+    previewOnly: false,
+  },
+  {
+    id: 'moss-spirit',
+    label: 'Moosseele',
+    description: 'Leuchtende Blattranken und ein sanfter Waldgeist schützen deine Figur.',
+    color: '#a8d985',
+    previewOnly: false,
+  },
+  {
     id: 'stars',
     label: 'Sternenspuren',
     description: 'Lange Sternspuren und funkelnde Lichtsplitter rahmen die Figur ein.',

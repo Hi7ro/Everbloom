@@ -86,6 +86,8 @@ export interface GameSnapshot {
   quests: Quest[];
   boss: WeeklyBoss;
   activities: Activity[];
+  /** Cosmetics earned by accepted activity transactions; starter auras are implicit. */
+  unlockedAuras: string[];
   momentum: { value: number; lastRewardDay: string | null; rhythm: RhythmDay[] };
 }
 export interface Reward {

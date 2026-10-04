@@ -67,7 +67,7 @@ export const CHARACTER_RIGS = {
       "neckX": 1233,
       "neckY": 650
     },
-    "maskWidth": 1667,
+    "maskWidth": 1668,
     "maskHeight": 943
   },
   "ember-striker": {
@@ -307,8 +307,8 @@ export const CHARACTER_RIGS = {
       "neckX": 1284,
       "neckY": 676
     },
-    "maskWidth": 1666,
-    "maskHeight": 944
+    "maskWidth": 1667,
+    "maskHeight": 943
   },
   "sky-ranger": {
     "id": "sky-ranger",
@@ -444,6 +444,6 @@ export const CHARACTER_RIGS = {
       "neckY": 634
     },
     "maskWidth": 1667,
-    "maskHeight": 943
+    "maskHeight": 944
   }
 };

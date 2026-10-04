@@ -17,11 +17,14 @@ import { CharacterPortrait } from '../../shared/character-portrait';
 import { ProgressFeedback } from '../../state/progress-feedback';
 import { DailyCareStore } from '../../state/daily-care.store';
 import { DailyCarePanel } from '../../shared/daily-care-panel';
+import { AuraCollection } from '../../shared/aura-collection';
+import { ProgressStorageNote } from '../../shared/progress-storage-note';
 import { JourneySummary } from '../../shared/journey-summary';
+import { buildDailyAdventure } from '../../domain/daily-adventure';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [DecimalPipe, FormsModule, CharacterPortrait, RouterLink, DailyCarePanel, JourneySummary],
+  imports: [DecimalPipe, FormsModule, CharacterPortrait, RouterLink, DailyCarePanel, JourneySummary, AuraCollection, ProgressStorageNote],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,6 +36,15 @@ export class Dashboard implements OnInit {
   readonly showAllSkills = signal(false);
   readonly visibleSkills = computed(() => this.showAllSkills() ? this.store.skills() : this.store.focusSkills());
   readonly care = inject(DailyCareStore);
+  readonly adventure = computed(() => {
+    const snapshot = this.store.snapshot();
+    return snapshot ? buildDailyAdventure(snapshot,
+      this.store.focusSkills().map(skill => skill.id), this.care.checkIn()?.mode ?? 'balanced') : null;
+  });
+  readonly dailyMode = computed(() => {
+    const labels = { balanced: 'Dein Tempo', focus: 'Fokus', recovery: 'Erholung', rest: 'Ruhetag' };
+    return labels[this.care.checkIn()?.mode ?? 'balanced'];
+  });
   readonly avatarInterest = computed(() => this.care.avatarInterest(this.store.avatarInterest()));
   readonly avatarMessage = computed(() => {
     const messages: Record<string, string> = {
@@ -47,6 +59,7 @@ export class Dashboard implements OnInit {
     );
   });
   readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('activityDialog');
+  readonly resetDialog = viewChild.required<ElementRef<HTMLDialogElement>>('resetDialog');
   readonly selectedSkill = signal('calisthenics');
   readonly minutes = signal<number | null>(20);
   readonly formError = signal('');
@@ -54,6 +67,7 @@ export class Dashboard implements OnInit {
 
   ngOnInit() {
     if (!this.store.snapshot()) void this.store.load();
+    else void this.store.refresh();
   }
 
   openActivity(skillId?: string, minutes = 20) {
@@ -70,6 +84,13 @@ export class Dashboard implements OnInit {
   restoreFocus() {
     this.trigger?.focus();
   }
+  openReset() {
+    this.trigger = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    this.resetDialog().nativeElement.showModal();
+  }
+  closeReset() { this.resetDialog().nativeElement.close(); }
+  async confirmReset() { if (await this.store.reset()) this.closeReset(); }
+  displayDay(dayKey: string) { return dayKey.slice(8,10) + '.' + dayKey.slice(5,7) + '.' + dayKey.slice(0,4); }
   skillName(id: string) {
     return this.catalog.find((s) => s.id === id)?.name ?? id;
   }

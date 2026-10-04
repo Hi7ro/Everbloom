@@ -1,4 +1,5 @@
 import { Appearance, CharacterArtwork, CharacterPresentation, CharacterProfile } from './models';
+import { AURA_REWARDS, AuraReward, isKnownAura } from './aura-rewards';
 import {
   ILLUSTRATED_CHARACTERS,
   ILLUSTRATED_COLOR_PALETTES,
@@ -63,24 +64,10 @@ export const CHARACTER_OPTIONS = {
   ],
 } as const;
 
-export interface AuraProgressionPlanEntry {
-  readonly id: string;
-  readonly label: string;
-  readonly unlock:
-    | { readonly kind: 'level'; readonly level: number }
-    | { readonly kind: 'boss-drop'; readonly bossId: string; readonly bossName: string };
-}
+export type AuraProgressionPlanEntry = AuraReward;
 
-/** Future content only. These are not selectable auras or implemented rewards. */
-export const AURA_PROGRESSION_PLAN = [
-  { id: 'aurora', label: 'Nordlicht', unlock: { kind: 'level', level: 20 } },
-  { id: 'starlight', label: 'Sternenkranz', unlock: { kind: 'level', level: 40 } },
-  {
-    id: 'moss-spirit',
-    label: 'Moosseele',
-    unlock: { kind: 'boss-drop', bossId: 'mosswarden', bossName: 'Der Mooswächter' },
-  },
-] as const satisfies readonly AuraProgressionPlanEntry[];
+/** Implemented rewards; ownership is checked separately from profile normalization. */
+export const AURA_PROGRESSION_PLAN = AURA_REWARDS;
 
 export const CHARACTER_COLOR_PALETTES: Record<CharacterColor, readonly string[]> = {
   skinColor: ['#f6dec8', '#e8c3a2', '#c48e69', '#996442', '#68442f', '#422b23'],
@@ -172,7 +159,10 @@ export function normalizeCharacterProfile(profile: unknown): CharacterProfile {
   for (const slot of slots) {
     const id = source[slot];
     const options = slot === 'hair' ? CHARACTER_HAIRSTYLES[presentation] : CHARACTER_OPTIONS[slot];
-    const known = options.some((option) => option.id === id);
+    const known =
+      slot === 'aura' && typeof id === 'string'
+        ? isKnownAura(id)
+        : options.some((option) => option.id === id);
     // Existing demo profiles used this outfit before the creator exposed the style families.
     if (typeof id !== 'string' || (!known && !(slot === 'outfit' && id === 'wanderer'))) {
       throw new Error('Diese Charakteroption ist nicht verfügbar. Bitte wähle erneut.');

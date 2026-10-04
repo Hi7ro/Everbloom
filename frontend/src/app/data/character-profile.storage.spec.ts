@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { BROWSER_STORAGE } from './browser-storage';
+import { GAME_DAY_CLOCK } from './game-clock';
+import { GAME_PROGRESS_KEY } from './game-progress.storage';
 import {
   CharacterProfileStorage,
   CHARACTER_PROFILE_KEY,
@@ -17,6 +19,7 @@ describe('device-local character profiles', () => {
     entries = new Map();
     TestBed.configureTestingModule({
       providers: [
+        { provide: GAME_DAY_CLOCK, useValue: () => '2026-09-08' },
         {
           provide: BROWSER_STORAGE,
           useValue: {
@@ -29,7 +32,7 @@ describe('device-local character profiles', () => {
       ],
     });
   });
-  it('restores a female v2 profile while keeping XP, quests and boss progress in memory only', async () => {
+  it('restores a female profile separately from the replayed activity journal', async () => {
     const repository = TestBed.runInInjectionContext(() => new MockGameRepository());
     const initial = await repository.load();
     const profile: CharacterProfile = {
@@ -57,12 +60,14 @@ describe('device-local character profiles', () => {
     expect(restored.character).toMatchObject({
       ...normalizeCharacterProfile(profile),
       createdByPlayer: true,
-      totalXp: initial.character.totalXp,
+      totalXp: initial.character.totalXp + 60,
     });
-    expect(restored.activities).toEqual([]);
-    expect(restored.skills).toEqual(initial.skills);
-    expect(restored.quests).toEqual(initial.quests);
-    expect(restored.boss).toEqual(initial.boss);
+    expect(restored.activities).toHaveLength(1);
+    expect(restored.skills.find((skill) => skill.skillId === 'meditation')!.totalXp).toBe(
+      initial.skills.find((skill) => skill.skillId === 'meditation')!.totalXp + 30,
+    );
+    expect(restored.quests.find((quest) => quest.id === 'q-mind')!.claimed).toBe(true);
+    expect(restored.boss.hp).toBe(initial.boss.hp - 60);
     expect((await repository.resetDemo()).character).toMatchObject(
       normalizeCharacterProfile(profile),
     );
@@ -115,7 +120,8 @@ describe('device-local character profiles', () => {
     expect(saved.snapshot.boss).toEqual(earned.boss);
     expect(TestBed.inject(CharacterProfileStorage).read()).toEqual(profile);
     expect(JSON.parse(entries.get(CHARACTER_PROFILE_KEY)!)).toEqual({ version: 2, profile });
-    expect(entries.size).toBe(1);
+    expect(entries.size).toBe(2);
+    expect(entries.has(GAME_PROGRESS_KEY)).toBe(true);
     expect(entries.get(CHARACTER_PROFILE_KEY)).not.toContain('totalXp');
   });
 

@@ -3,6 +3,41 @@ import { recordActivity } from './progression';
 import { detectMilestones } from './milestones';
 
 describe('meaningful progress milestones', () => {
+  it('celebrates an earned aura once alongside the actual boss victory', () => {
+    const before = createMockSnapshot();
+    before.boss.hp = 8;
+    const command = { requestId: 'moss-reward', skillId: 'calisthenics', minutes: 1 };
+    const after = recordActivity(before, command).snapshot;
+    const unlocks = detectMilestones(before, after).filter((event) => event.kind === 'aura-unlock');
+    expect(unlocks).toEqual([
+      {
+        kind: 'aura-unlock',
+        title: 'Neue Aura freigeschaltet!',
+        detail: 'Moosseele gehört jetzt dir. Du kannst sie bei deinem Charakter anlegen.',
+      },
+    ]);
+    expect(detectMilestones(after, recordActivity(after, command).snapshot)).toEqual([]);
+  });
+  it('does not celebrate collection-only edits, unknown IDs or already owned auras', () => {
+    const before = createMockSnapshot();
+    const loaded = structuredClone(before);
+    loaded.unlockedAuras = ['aurora'];
+    expect(detectMilestones(before, loaded)).toEqual([]);
+    const after = recordActivity(before, {
+      requestId: 'one',
+      skillId: 'meditation',
+      minutes: 1,
+    }).snapshot;
+    after.unlockedAuras = ['guardian'];
+    expect(detectMilestones(before, after).some((event) => event.kind === 'aura-unlock')).toBe(
+      false,
+    );
+    before.unlockedAuras = ['aurora'];
+    after.unlockedAuras = ['aurora'];
+    expect(detectMilestones(before, after).some((event) => event.kind === 'aura-unlock')).toBe(
+      false,
+    );
+  });
   it('never celebrates an unchanged or merely loaded snapshot', () => {
     const state = createMockSnapshot();
     expect(detectMilestones(state, structuredClone(state))).toEqual([]);

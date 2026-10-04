@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { BROWSER_STORAGE } from '../../data/browser-storage';
+import { GAME_DAY_CLOCK } from '../../data/game-clock';
+import { GAME_PROGRESS_KEY } from '../../data/game-progress.storage';
 import { GAME_REPOSITORY } from '../../data/game.repository';
 import { JOURNEY_PREFERENCES_KEY } from '../../data/journey-preferences.storage';
 import { MockGameRepository } from '../../data/mock-game.repository';
@@ -16,7 +18,9 @@ describe('mobile journey onboarding', () => {
   let storage: { getItem: ReturnType<typeof vi.fn>; setItem: ReturnType<typeof vi.fn> };
 
   beforeEach(async () => {
-    entries = new Map();
+    entries = new Map([
+      [GAME_PROGRESS_KEY, JSON.stringify({ version: 1, startDay: '2026-09-08', entries: [] })],
+    ]);
     storage = {
       getItem: vi.fn((key: string) => entries.get(key) ?? null),
       setItem: vi.fn((key: string, value: string) => entries.set(key, value)),
@@ -25,6 +29,7 @@ describe('mobile journey onboarding', () => {
       imports: [Onboarding],
       providers: [
         provideRouter([]),
+        { provide: GAME_DAY_CLOCK, useValue: () => '2026-09-08' },
         { provide: BROWSER_STORAGE, useValue: storage },
         { provide: GAME_REPOSITORY, useClass: MockGameRepository },
       ],
@@ -83,7 +88,7 @@ describe('mobile journey onboarding', () => {
       before!.character.name,
     );
     expect(fixture.nativeElement.querySelector('app-character-portrait')).not.toBeNull();
-    expect(fixture.nativeElement.textContent).toContain('Aktivitätsfortschritt ist noch eine Demo');
+    expect(fixture.nativeElement.textContent).toContain('Aktivitäten und verdiente Auren bleiben ebenfalls in diesem Browser gespeichert');
     expect(storage.setItem).not.toHaveBeenCalled();
     button(fixture, 'Meine Reise starten ↗').click();
     await fixture.whenStable();

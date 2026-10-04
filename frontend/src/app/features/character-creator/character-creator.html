@@ -7,17 +7,25 @@
 </header>
 <main id="main" tabindex="-1">
   <div class="page-heading">
-    <p class="eyebrow">YOU ARE THE CHARACTER</p>
+    <p class="eyebrow">DEIN KLEINES ICH</p>
     <h1>
       {{ store.profileIsSaved() ? 'Dein Look. Deine Geschichte.' : 'Deine Reise hat ein Gesicht.' }}
     </h1>
-    <p>Wähle deine Figur und kombiniere Frisur, Kleidung und Farben ganz nach deinem Geschmack.</p>
+    <p>Ein Look, der sich nach dir anfühlt. Alles lässt sich später wieder ändern.</p>
   </div>
+  @if (store.snapshot() && store.persistence().state !== 'saved') {
+    <app-progress-storage-note />
+  }
   @if (draft(); as profile) {
     <div class="creator-grid">
       <aside class="preview" aria-label="Live-Vorschau deines Charakters">
         <div class="avatar-stage">
-          <div class="portrait-frame" [class.tall-aura-preview]="previewAura() === 'guardian' || (previewAura() === 'demonic' && previewFierce())">
+          <div
+            class="portrait-frame"
+            [class.tall-aura-preview]="
+              previewAura() === 'guardian' || (previewAura() === 'demonic' && previewFierce())
+            "
+          >
             @if (previewAura(); as aura) {
               <app-character-aura
                 class="aura-tryout"
@@ -36,7 +44,7 @@
           </div>
         </div>
         <div class="preview-caption">
-          <span class="eyebrow">DEINE VORSCHAU</span>
+          <span class="eyebrow">DEIN BEGLEITER</span>
           <h2>{{ profile.name.trim() || 'Dein Name' }}</h2>
           <p>{{ selectedIllustration()?.name }}</p>
           @if (previewAura()) {
@@ -53,9 +61,26 @@
         </div>
       </aside>
       <form class="editor" (ngSubmit)="save()" aria-describedby="profile-storage-note" novalidate>
-        <section class="editor-section">
+        <nav class="creator-stages" aria-label="Bereiche der Charaktergestaltung">
+          @for (item of stages; track item.id) {
+            <button
+              type="button"
+              [attr.aria-pressed]="stage() === item.id"
+              [attr.aria-controls]="'creator-stage-' + item.id"
+              [disabled]="store.busy()"
+              (click)="selectStage(item.id)"
+            >
+              <span class="stage-number" aria-hidden="true">{{ item.id }}</span>
+              <span
+                ><strong>{{ item.label }}</strong
+                ><small>{{ item.detail }}</small></span
+              >
+            </button>
+          }
+        </nav>
+        <section class="editor-section" id="creator-stage-1" [hidden]="stage() !== 1">
           <p class="eyebrow">01 · DEINE FIGUR</p>
-          <h2>Das bist du.</h2>
+          <h2 tabindex="-1">Deine Geschichte beginnt hier.</h2>
           <label class="field-label" for="character-name">Charaktername</label>
           <input
             id="character-name"
@@ -94,9 +119,7 @@
                 </label>
               }
             </div>
-            <p class="hint">
-              Deine Darstellung, dein Stil. Beide starten mit denselben Fähigkeiten.
-            </p>
+            <p class="hint">Wähle deine Silhouette. Deine Fähigkeiten bleiben dieselben.</p>
           </fieldset>
           <fieldset [disabled]="store.busy()" aria-describedby="illustration-description">
             <legend>Deine Vorlage <span class="catalog-count">6 Looks</span></legend>
@@ -132,9 +155,9 @@
             </p>
           </fieldset>
         </section>
-        <section class="editor-section">
+        <section class="editor-section" id="creator-stage-2" [hidden]="stage() !== 2">
           <p class="eyebrow">02 · DEIN STIL</p>
-          <h2>Mach die Figur zu deiner.</h2>
+          <h2 tabindex="-1">Die Details machen dich aus.</h2>
           <fieldset class="hair-field" [disabled]="store.busy()">
             <legend>Frisur <span class="catalog-count">6 Varianten</span></legend>
             <div class="choice-grid module-choices">
@@ -165,8 +188,7 @@
               }
             </div>
             <p id="outfit-note" class="hint">
-              Kleidung wählst du als vollständiges Set. Waffen und Accessoires gehören derzeit dazu;
-              einzelne Ausrüstungsslots folgen später.
+              Ein vollständiges Set mit passender Ausrüstung und Accessoires.
             </p>
           </fieldset>
           @for (group of colorGroups; track group.slot) {
@@ -201,9 +223,9 @@
             </fieldset>
           }
         </section>
-        <section class="editor-section">
+        <section class="editor-section" id="creator-stage-3" [hidden]="stage() !== 3">
           <p class="eyebrow">03 · DEINE AURA</p>
-          <h2>Ein Hauch Magie.</h2>
+          <h2 tabindex="-1">Ein Hauch Magie.</h2>
           <fieldset [disabled]="store.busy()">
             <legend>Aura</legend>
             <div class="choice-grid aura-choices">
@@ -224,26 +246,19 @@
               }
             </div>
           </fieldset>
-          <div class="future-auras">
-            <h3>Magie für deine weitere Reise</h3>
-            <p class="hint">Diese Auren sind geplant und noch nicht freischaltbar.</p>
-            <ul>
-              @for (aura of auraProgression; track aura.id) {
-                <li>
-                  <strong>{{ aura.label }}</strong
-                  ><span>
-                    @if (aura.unlock.kind === 'level') {
-                      Ab Level {{ aura.unlock.level }}
-                    } @else {
-                      Bossbelohnung: {{ aura.unlock.bossName }}
-                    }
-                  </span>
-                </li>
-              }
-            </ul>
+          <div id="aura-rewards" class="aura-rewards">
+            <app-aura-collection
+              [selected]="profile.appearance.aura"
+              [editable]="true"
+              (picked)="chooseAura($event)"
+            />
           </div>
         </section>
-        <section class="editor-section aura-lab" aria-label="Künftige Auren als Vorschau">
+        <section
+          class="editor-section aura-lab"
+          [hidden]="stage() !== 3"
+          aria-label="Künftige Auren als Vorschau"
+        >
           <details (toggle)="onAuraPreviewToggle($event)">
             <summary>Künftige Auren ausprobieren</summary>
             <p id="aura-preview-note" class="preview-notice">
@@ -304,10 +319,25 @@
           </details>
         </section>
         <div class="save-section">
+          @if (stage() < 3) {
+            <button
+              class="stage-next"
+              type="button"
+              [disabled]="store.busy()"
+              (click)="selectStage(stage() === 1 ? 2 : 3)"
+            >
+              <span>{{ stage() === 1 ? 'Weiter zu deinem Stil' : 'Weiter zu deiner Aura' }}</span>
+              <span aria-hidden="true">→</span>
+            </button>
+          }
           <p id="profile-storage-note" class="hint">
-            Dein Profil wird vorerst nur in diesem Browser gespeichert. Deinen Look kannst du später
-            jederzeit ändern. Beim Gestalten bleibt dein Fortschritt unverändert. Demo-XP werden
-            beim Neuladen zurückgesetzt.
+            @if (store.persistence().state === 'saved') {
+              <span class="local-save-status"
+                ><span aria-hidden="true">✓</span> Aktivitäten lokal gespeichert</span
+              >
+            }
+            Dein Look bleibt auf diesem Gerät. Gestalten verändert keine XP oder Fähigkeiten. Eine
+            Cloud-Sicherung ist noch nicht verfügbar.
           </p>
           <p id="profile-form-error" class="error" role="alert">{{ formError() }}</p>
           @if (store.error()) {

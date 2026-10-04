@@ -1,6 +1,6 @@
 # Art Direction · Everbloom
 
-Stand: 08.09.2026. Verbindlicher Qualitätsbrief für Figuren, Garderobe und VFX. Die bestätigte Bildrichtung („in die Richtung perfekt“) und der anschließende Wunsch nach der **exakten Vorlage** bleiben maßgeblich. Neue Varianten erweitern diese Richtung; sie ersetzen die archivierte Originalzeichnung nicht. Produktregeln und Roadmap stehen im [Master Prompt](MASTER_PROMPT.md), tatsächliche Prüfungen in [VALIDATION](VALIDATION.md).
+Stand: 04.10.2026. Verbindlicher Qualitätsbrief für Figuren, Garderobe und VFX. Die bestätigte Bildrichtung („in die Richtung perfekt“) und der anschließende Wunsch nach der **exakten Vorlage** bleiben maßgeblich. Neue Varianten erweitern diese Richtung; sie ersetzen die archivierte Originalzeichnung nicht. Produktregeln und Roadmap stehen im [Master Prompt](MASTER_PROMPT.md), tatsächliche Prüfungen in [VALIDATION](VALIDATION.md).
 
 ![Freigegebene Anime-Chibi-Stilreferenz](art/chibi-style-reference.png)
 
@@ -51,9 +51,29 @@ Die Komposition trennt Körper, Gesicht/Basiskopf und Haare über semantische Ma
 
 Ruhige Atmung bewegt das Original geschlossen. Bei modularen Figuren sind Körperdehnung und Kopfbewegung zeitlich gekoppelt, ergänzt durch ein langsames Gesamt-Idle. „Bewegung aus“ und `prefers-reduced-motion` halten Avatar und Aura statisch. Interessenbezogene Gesten, präzise Gesichtsausdrücke und eigenständige Ausrüstungsanimationen bleiben weitere Arbeit.
 
+## Animations- und Bossproduktion
+
+Die neue Szene wird mit PixiJS umgesetzt. Die vorhandene Kopf-/Körperkomposition bleibt ein
+Illustrationsadapter, kein vollständiges Skelett. Der Nutzer besitzt keine Spine-Lizenz; aktuell
+werden weder Spine-Runtime noch Spine-Exporte ausgeliefert. Ein späterer Spine-Produktionsweg
+setzt geklärte Nutzung und passende Assetlieferungen voraus.
+
+Der [Animation Guide](ANIMATION_PIPELINE.md) definiert den nächsten Produktionsauftrag: zuerst
+ein männlicher und ein weiblicher Referenz-Chibi mit zwei Haar-/Outfitvarianten sowie ein
+Mooswächter-Boss, alle mit Idle, Angriff, Treffer, Sieg und Niederlage. Gemeinsame Aktionsnamen
+erlauben unterschiedliche Skelette; Bosse dürfen eigene nichtmenschliche Körperformen haben.
+Mooswächter: schwere Stein-/Rindenformen, Moos, Wurzelarme und smaragdener Kern. Die erste eigene Illustration `art/bosses/mosswarden-v1.png` ist vorerst ein einzelner
+Sprite, kein mehrteiliges Boss-Rig. Figuren, Gegner, Bühne und VFX bleiben eigene IP.
+
+Der Kampf zeigt beide Figuren einander gegenüber, leicht von der Seite. Waffen, Hände, Haare
+und Kleidung sollen später zusammenhängend reagieren. Dafür braucht es echte getrennte Teile,
+verdeckte Anschlussflächen und fünf abgenommene Clips, keine reine Vergrößerung des Gesamtbilds.
+Die bestätigte Originalzeichnung bleibt archiviert und Referenz für Stil/Material; riggbare
+Neuzeichnungen werden nicht als pixelidentisches Original ausgegeben.
+
 ## Garderobe und Produktionsvertrag
 
-Das Zielsystem unterstützt vollständige Sets und separat gefertigte Slots: **Kopf, Gesicht, Haare, Torso, Arme, Beine, Schuhe, Haupthand, Nebenhand, Rücken, Accessoire, Aura und Companion**. Jeder Slot benötigt passende Vorder-/Hinterteile, Abdeckung und Anker. Aktuell sind nur vollständiges Outfitset, Frisur, Farben und Starter-Aura wählbar; Einzelwaffen, Rüstungsslots, Inventar, Dropvergabe und Besitzprüfung fehlen.
+Das Zielsystem unterstützt vollständige Sets und separat gefertigte Slots: **Kopf, Gesicht, Haare, Torso, Arme, Beine, Schuhe, Haupthand, Nebenhand, Rücken, Accessoire, Aura und Companion**. Jeder Slot benötigt passende Vorder-/Hinterteile, Abdeckung und Anker. Aktuell sind vollständiges Outfitset, Frisur, Farben sowie Starter- und verdiente Auren wählbar. Drei Aura-Belohnungen haben eine lokale Vergabe/Besitzprüfung; Einzelwaffen, Rüstungsslots und Iteminventar fehlen.
 
 Für jedes neue Asset gelten diese Abnahmeanforderungen:
 
@@ -85,13 +105,18 @@ Diese zehn Namen und IDs gelten gemeinsam für Creator und weitere Ausarbeitung:
 
 Die vom Nutzer genannten Saijajin-/Naruto-Susano-Vorbilder dienen nur als Genre-Inspiration für aufsteigende Energie und eine beschützende Erscheinung. Keine konkreten Designs, Körperformen, Symbole, Attacken, Namen oder Audiodateien dieser Franchises übernehmen. Effekte sind kosmetisch und bewerten weder Psyche noch Gesundheit.
 
-`CharacterAura` implementiert diese zehn erweiterten Entwürfe als SVG/CSS-Vorschau im Creator. Sie sind noch nicht freigeschaltet, werden nicht gespeichert und erzeugen keine Besitzrechte, XP oder Stats. Daneben existieren drei speicherbare Starter-Zuordnungen: `sage` → Waldlicht, `rose` → Blütenzauber, `void` → Leere, zusätzlich „Keine“. Die Figur wird bei der erweiterten Vorschau ohne ihre Starter-Aura gezeigt, damit sich beide Effekte nicht überlagern. Diese Vorlagen sind noch keine vollständige Produktionsbibliothek gerasterter VFX.
+`CharacterAura` implementiert diese zehn erweiterten Entwürfe als SVG/CSS-Vorschau im Creator. Sie sind noch nicht freigeschaltet, werden nicht gespeichert und erzeugen keine Besitzrechte, XP oder Stats. Daneben existieren drei speicherbare Starter-Zuordnungen: `sage` → Waldlicht, `rose` → Blütenzauber, `void` → Leere, zusätzlich „Keine“. Die Figur wird bei der erweiterten Vorschau ohne ihre angelegte Aura gezeigt, damit sich beide Effekte nicht überlagern. Diese Vorlagen sind noch keine vollständige Produktionsbibliothek gerasterter VFX.
 
 „Bedrohlicher Blick“ ergänzt derzeit leuchtende Augen in der rückwärtigen Dämonenschattenform. Die echten Avataraugen bleiben unverändert. Künftig sind Gesichtsausdruck und Irisleuchten eigenständige, unabhängig schaltbare Parameter; sie brauchen Masken/Anker am Gesicht und dürfen die ausgewählte Augenfarbe nicht stillschweigend überschreiben.
 
-Bestehender Freischaltungsplan: **Nordlicht ab Level 20, Sternenkranz ab Level 40, Moosseele als Bossdrop des Mooswächters**. Noch keine automatische Freischaltung, Dropchance oder Loot-Persistenz. Ein Preview oder Demo-Sieg erfüllt keinen Besitznachweis. Animationen bleiben langsam, mit ruhigen Phasen; Bewegung aus und reduzierte Bewegung gelten konsequent. Keine schnellen Vollbildblitze oder dauerhaft hektischen Partikel.
+Drei weitere Aura-Designs sind inzwischen erspielbar und anlegbar: **Nordlicht (`aurora`) beim belohnten Übertritt zu Level 20** zeigt grün/petrol/violette Lichtbänder; **Sternenkranz (`starlight`) bei Level 40** bildet gold/violette Konstellationen; **Moosseele (`moss-spirit`) beim belohnten Mooswächter-Sieg** zeigt Blattranken und einen Waldgeist. Alle verwenden instanzlokale SVG-Gradienten und CSS ohne zusätzliche Rasterbilder. Der automatische Grant ist einmalig, ohne Zufallschance oder manuelles Claim; Besitz wird beim lokalen Journal-Replay wiederhergestellt. Die Sammlung und der Creator prüfen Besitz vor dem Anlegen. Eine Vorschau vergibt weiterhin nichts. Das sind lokale Prototyprechte, kein servergeprüfter Nachweis; die zehn erweiterten Entwürfe bleiben Vorschauen. Animationen bleiben langsam, mit ruhigen Phasen; Bewegung aus und reduzierte Bewegung gelten konsequent. Keine schnellen Vollbildblitze oder dauerhaft hektischen Partikel.
 
 ## Wiederverwendbarer Produktionsprompt
+
+Der folgende Prompt dient Illustrationen und bestehenden Maskenvarianten. Für neue animierbare
+Figuren und Bosse zusätzlich den Liefervertrag in [ANIMATION_PIPELINE.md](ANIMATION_PIPELINE.md)
+verwenden: getrennte Gelenkteile, Rigquelle, Clips und versionierte Textur-/Atlasdaten. Ein flaches
+Modulsheet und eine Labelmaske allein erfüllen diesen neuen Animationsauftrag nicht.
 
 Vor Verwendung die Felder ausfüllen und die passende Original-/Modulreferenz tatsächlich anhängen. Für ein neues Asset wird ausschließlich der benannte Slot verändert. Bestehende Originaldateien bleiben archiviert; Generation und Maskenprüfung sind getrennte Schritte. Das folgende Template beschreibt den Zielvertrag, keine Garantie pixelgenauer Generatorausgabe.
 

@@ -1,4 +1,5 @@
 import { BALANCE, SKILLS } from './catalog';
+import { grantActivityAuras } from './aura-rewards';
 import { ActivityCommand, ActivityResult, GameSnapshot, SkillDefinition } from './models';
 
 /** Total XP is canonical; this also handles rewards spanning several levels. */
@@ -65,25 +66,27 @@ export function recordActivity(
   });
   const damage = Math.min(state.boss.hp, activityXp * BALANCE.damagePerXp);
   const earnsMomentum = activityXp > 0 && state.momentum.lastRewardDay !== state.dayKey;
-  return {
-    snapshot: {
-      ...state,
-      character: { ...state.character, totalXp: state.character.totalXp + activityXp + questXp },
-      skills: state.skills.map((s) =>
-        s.skillId === skill.id ? { ...s, totalXp: s.totalXp + activityXp } : s,
-      ),
-      quests,
-      boss: { ...state.boss, hp: state.boss.hp - damage },
-      activities: [
-        { ...command, dayKey: state.dayKey, rewardedMinutes, xp: activityXp },
-        ...state.activities,
-      ],
-      momentum: {
-        ...state.momentum,
-        value: Math.min(100, state.momentum.value + (earnsMomentum ? BALANCE.dailyMomentum : 0)),
-        lastRewardDay: activityXp > 0 ? state.dayKey : state.momentum.lastRewardDay,
-      },
+  const snapshot: GameSnapshot = {
+    ...state,
+    character: { ...state.character, totalXp: state.character.totalXp + activityXp + questXp },
+    skills: state.skills.map((s) =>
+      s.skillId === skill.id ? { ...s, totalXp: s.totalXp + activityXp } : s,
+    ),
+    quests,
+    boss: { ...state.boss, hp: state.boss.hp - damage },
+    activities: [
+      { ...command, dayKey: state.dayKey, rewardedMinutes, xp: activityXp },
+      ...state.activities,
+    ],
+    momentum: {
+      ...state.momentum,
+      value: Math.min(100, state.momentum.value + (earnsMomentum ? BALANCE.dailyMomentum : 0)),
+      lastRewardDay: activityXp > 0 ? state.dayKey : state.momentum.lastRewardDay,
     },
+  };
+  snapshot.unlockedAuras = grantActivityAuras(state, snapshot, activityXp);
+  return {
+    snapshot,
     reward: { activityXp, questXp, damage, rewardedMinutes, duplicate: false },
   };
 }

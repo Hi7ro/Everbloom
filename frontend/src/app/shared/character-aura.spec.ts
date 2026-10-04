@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { AURA_DESIGNS, ADVANCED_AURA_DESIGNS } from '../domain/aura-designs';
+import { AURA_REWARDS } from '../domain/aura-rewards';
 import { normalizeCharacterProfile, CHARACTER_OPTIONS } from '../domain/character';
 import { createMockSnapshot } from '../data/mock-data';
 import { CharacterAura } from './character-aura';
@@ -26,7 +27,7 @@ describe('decorative character auras', () => {
 
   it('provides distinct authored silhouettes and a bounded particle count for every design', () => {
     const outlines = new Set<string>();
-    expect(AURA_DESIGNS).toHaveLength(13);
+    expect(AURA_DESIGNS).toHaveLength(16);
     for (const design of AURA_DESIGNS) {
       const fixture = render(design.id);
       const root = fixture.nativeElement as HTMLElement;
@@ -44,7 +45,27 @@ describe('decorative character auras', () => {
       expect(root.querySelectorAll('.particle').length).toBeLessThanOrEqual(24);
       expect(root.querySelectorAll('filter, image, animate, animateTransform')).toHaveLength(0);
     }
-    expect(outlines.size).toBe(13);
+    expect(outlines.size).toBe(16);
+  });
+
+  it('gives each earned aura its own equipped design and multicolor light palette', () => {
+    const forms = {
+      aurora: '.aurora-curtains',
+      starlight: '.constellation-crown',
+      'moss-spirit': '.moss-guardian',
+    };
+    for (const reward of AURA_REWARDS) {
+      const design = AURA_DESIGNS.find((entry) => entry.id === reward.id);
+      expect(design).toMatchObject({ label: reward.label, previewOnly: false });
+      const fixture = render(reward.id, false);
+      const root = fixture.nativeElement as HTMLElement;
+      expect(root.querySelector('svg')?.getAttribute('data-aura')).toBe(reward.id);
+      expect(root.querySelector(forms[reward.id])).not.toBeNull();
+      expect(new Set(fixture.componentInstance.spectralColors()).size).toBe(3);
+      expect(root.querySelector('svg')?.classList.contains('animated')).toBe(false);
+      expect(root.querySelectorAll('filter, image')).toHaveLength(0);
+    }
+    expect(ADVANCED_AURA_DESIGNS).toHaveLength(10);
   });
 
   it('keeps gradient references local to each aura instance without blur filters or external assets', () => {

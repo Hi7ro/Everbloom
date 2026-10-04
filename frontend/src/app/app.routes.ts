@@ -3,6 +3,21 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
   {
+    path: 'membership',
+    title: 'Mehr Abenteuer · Everbloom Membership',
+    loadComponent: () => import('./features/membership/membership.page').then((m) => m.MembershipPage),
+  },
+  {
+    path: 'battle',
+    title: 'Die Mooslichtung · Everbloom',
+    loadComponent: () => import('./features/battle/battle.page').then((m) => m.BattlePage),
+  },
+  {
+    path: 'auth',
+    title: 'Anmelden · Everbloom',
+    loadComponent: () => import('./features/auth/auth.page').then((m) => m.AuthPage),
+  },
+  {
     path: 'dashboard',
     title: 'Dein Charakter · Everbloom',
     loadComponent: () => import('./features/dashboard/dashboard').then((m) => m.Dashboard),

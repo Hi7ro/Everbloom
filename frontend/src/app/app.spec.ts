@@ -4,6 +4,7 @@ import { provideRouter, Router } from '@angular/router';
 import { routes } from './app.routes';
 import { GAME_REPOSITORY } from './data/game.repository';
 import { MockGameRepository } from './data/mock-game.repository';
+import { provideHttpClient } from '@angular/common/http';
 
 describe('App', () => {
   beforeEach(async () => {
@@ -11,6 +12,7 @@ describe('App', () => {
       imports: [App],
       providers: [
         provideRouter(routes),
+        provideHttpClient(),
         { provide: GAME_REPOSITORY, useClass: MockGameRepository },
       ],
     }).compileComponents();
@@ -29,7 +31,7 @@ describe('App', () => {
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(router.url).toBe('/dashboard');
-    expect(compiled.querySelector('h1')?.textContent).toContain('Wachse über dich hinaus');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Ein neuer Schritt');
     await router.navigateByUrl('/unknown');
     expect(router.url).toBe('/dashboard');
   });

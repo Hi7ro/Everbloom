@@ -1,6 +1,6 @@
-# Game Design · V0.3
+# Game Design · V0.4
 
-Stand: 2026-09-08. **Verbindliche Produktrichtung, vorläufiges Balancing.**
+Stand: 2026-10-04. **Verbindliche Produktrichtung, vorläufiges Balancing.**
 
 ## Vision und Core Loop
 
@@ -29,8 +29,23 @@ Die illustrierten Figuren zeigen derzeit ruhige Atmung/Idle; eine kurze Reaktion
 zur letzten belohnten Aktivität oder zum freiwilligen Tages-Check-in. Ausgearbeitete Gesten und
 Gesichtsausdrücke sind noch nicht für alle Figuren vorhanden. Vier Tagesmodi und drei
 Energieangaben sind lokal gespeichert; Auslassen bleibt folgenlos. Der Check-in ändert keine XP,
-Quests, Bosswerte oder Momentum. Reichere Avatarreaktionen sind M2. Backend, Authentifizierung und Persistenz
+Quests, Bosswerte oder Momentum. Reichere Avatarreaktionen sind M2. Backend, Authentifizierung und Serverpersistenz
 bleiben eigenständige Bestandteile des bestehenden M1b-Plans.
+
+## Einstieg und Accountbindung der Produktfassung
+
+Ein Account ist zwingende Voraussetzung für einen eigenen Charakter. Der produktive Ablauf lautet
+**registrieren oder anmelden → gültige Session → Charakter erstellen → Interessen-/Fokus-Onboarding
+→ Dashboard**. Wer sich mit einem Account ohne Charakter anmeldet, beginnt im Creator. Charakter,
+Fortschritt und verdiente Belohnungen sind an diesen Account gebunden und bleiben bei einem Wechsel
+von den Daten anderer Accounts getrennt.
+
+Die heutige lokale Erstellung ohne Login dient ausschließlich dem Entwicklungsprototyp. Sie ist
+kein Accountsystem und kein erlaubter produktiver Gastmodus. Frontend-Routenschutz und geschützte
+Create-API werden im Auth-/Backend-Slice umgesetzt; der Server bestimmt den Besitzer anhand der
+Session. Ohne gültige Anmeldung darf kein Charakter angelegt werden. Auth-Anbieter und Verfahren
+sind noch nicht festgelegt. Eine öffentliche reine Stilvorschau ohne gespeicherten Charakter wäre
+allenfalls eine spätere Option, kein beschlossenes Gastspiel.
 
 ## Identität und Art Direction
 
@@ -52,7 +67,7 @@ High Fantasy mit warmen Naturakzenten, gut lesbaren Daten und sparsamem Effektge
 
 Unter `/character/create` gibt es ausschließlich illustrierte Figuren. Der frühere Vektor-Editor
 ist aus der Benutzeroberfläche entfernt. Name, Darstellung, Vorlage, Frisur, vollständiges Outfitset,
-Haut-/Augen-/Haarfarbe und Starter-Aura sind mit direkter Vorschau wählbar. Jede Farbgruppe bietet
+Haut-/Augen-/Haarfarbe und verfügbare Auren sind mit direkter Vorschau wählbar. Jede Farbgruppe bietet
 „Original“ plus sechs Farben. Der Vorlagenwechsel setzt eigene Modul-/Farbwerte auf diese Vorlage
 zurück; Darstellung und Anpassung verändern keine Spielprogression.
 
@@ -69,9 +84,11 @@ modulare Bildvarianten; diese sind keine pixelidentische Zerlegung der Originale
 und zwei Basiskopf-Rigs unterstützen getrennte Körper-, Gesicht-/Basiskopf- und Haarmasken.
 
 Name und Auswahlwerte werden validiert. Profil-Schema 2 speichert nur Name/Aussehen; Interessen
-werden separat gespeichert, XP bleiben flüchtig. Frühere Profile werden über den bestehenden
+werden separat gespeichert. Aktivitätsjournal und daraus rekonstruierte XP/Belohnungen bleiben
+lokal in diesem Browser erhalten. Frühere Profile werden über den bestehenden
 Migrations-/Normalisierungspfad gelesen; alte technische Felder sind keine weiter angebotenen
-Editor-Modi. Der Demo-Reset erhält das Profil. Gesperrter Speicher wird als Sitzungsfallback erklärt.
+Editor-Modi. Ein bestätigter Reset erhält das übrige Profil, entfernt aber verdiente Auren. Gesperrter Speicher
+wird als Sitzungsfallback erklärt.
 
 Ruhige Ganzkörperatmung ist vorhanden: Originale bewegen sich geschlossen, modulare Körper-/Kopfteile
 atmen gekoppelt. Bewegung lässt sich abschalten und respektiert reduzierte Bewegung. Interessen-
@@ -88,7 +105,7 @@ Programming. Änderungen beeinflussen Auswahl und Darstellung, niemals XP oder R
 
 Die Präferenzen werden getrennt als `everbloom.journey.v1` lokal gespeichert. Überspringen und spätere
 Änderung bleiben möglich; ein Abstecher zum Creator erhält den laufenden Onboarding-Entwurf in der
-Sitzung. Das ist noch kein synchronisiertes Accountprofil oder dauerhafter Fortschrittsstand.
+Sitzung. Das ist noch kein synchronisiertes Accountprofil; Fortschritt wird separat lokal gespeichert.
 
 ### Equipment-Ziel
 
@@ -119,7 +136,8 @@ testbare Kalibrierungswerte, keine finalen Versprechen.
 
 Ein Eintrag wird atomar verbucht. Wiederholung derselben Request-ID gibt keine zweite Belohnung.
 Aktivitäten bleiben auch über dem Reward-Limit im Verlauf, Questfortschritt zählt nur belohnte Minuten.
-Loot und Boss-Siegbonus kommen später; die Demo zeigt beim Sieg den besiegten Zustand.
+Der erste belohnte Mooswächter-Sieg vergibt einmalig die kosmetische Aura Moosseele. Ein zusätzlicher
+Boss-XP-Bonus und Item-Loot sind noch nicht implementiert.
 
 Calisthenics gibt weiterhin 4 XP pro belohnter Minute. Das tägliche Reward-Limit beträgt jetzt
 90 Minuten und gilt über alle Einträge desselben Tages hinweg. XP-Raten aller Skills, Questboni
@@ -141,10 +159,33 @@ Ein bereits fast voller Balken darf durch eine einzelne Aktivität weiterhin ein
 überschüssige XP bleiben erhalten. Die Zeitbeispiele dienen ausschließlich dem Spielbalancing
 und sind keine Trainingsvorgabe. Weitere Spieltests sollen die langfristige Progression kalibrieren.
 
-Die Demo-Gesamt-XP und Basisattribute sind an die neue Kurve angepasst, sodass die vorhandenen
-Charakter-/Skill-Level und sichtbaren Attribute erhalten bleiben. Es existieren keine echten oder
-persistierten Fortschrittsstände; eine XP-Datenmigration ist daher nicht erforderlich. Die separate
-lokale Speicherung von Name/Aussehen ändert diese Aussage nicht.
+Die Beispiel-Gesamt-XP und Basisattribute erhalten weiterhin die bisherigen Charakter-/Skill-Level
+und sichtbaren Attribute. Ein frischer lokaler Spielstand startet deshalb bei Charakter-Level 12
+mit 25.926 Gesamt-XP und Boss-HP 1.460/2.400. Das ist ein klar benannter Beispielstart; ein echtes
+Level-1-Onboarding ist noch offen. Neue Einträge sind jetzt lokal persistent. Balanceänderungen
+müssen deshalb künftig eine versionierte Replay-/Migrationsstrategie berücksichtigen.
+
+### Lokale Tage, Wochen und Verlauf
+
+Die Tagesgrenze ist das lokale Gerätedatum. Beim Laden, Wiederaufnehmen und vor Einträgen wird die
+Periode geprüft. Am neuen Tag beginnen die drei Tagesquests mit 0 Minuten/ungeclaimt; die täglichen
+Skilllimits gelten für den neuen Day-Key. In einer neuen Montag–Sonntag-Woche beginnt derselbe Boss
+mit voller HP. Übersprungene Tage erzeugen keine XP, Claims, Drops oder Strafen. XP, alte Aktivitäten
+und verdiente Auren bleiben erhalten. Der Rhythmus zeigt die aktuelle Woche anhand belohnter Tage;
+vergangene Tage ohne belohnte Aktivität sind als Ruhe markiert. Das ist keine validierte Streak-
+oder Rest-Day-Planung. Weekly Quests sind weiterhin Zukunftsinhalt.
+
+Das Browser-Journal speichert akzeptierte Commands und ihren Tag, keine frei übernehmbaren XP-/HP-
+oder Besitzwerte. Beim Laden wird der Verlauf aus dem Beispielstart nachgerechnet, ohne erneut
+Erfolge abzuspielen. Höchstens 10.000 Einträge und 2 MiB; neue Einträge jenseits dieser Grenze werden
+vor der Buchung abgelehnt. Bei Speicherproblemen bleibt gegebenenfalls nur ein gekennzeichneter
+Sitzungsstand. Beschädigte oder fremde Speicherstände werden bis zum bewussten Reset erhalten.
+Ungültige oder rückwärts gestellte Uhrzeit sperrt neue Einträge. Das ist kein Schutz gegen alle
+Manipulationen einer Client-Uhr und keine Cloud-Sicherung oder servergeprüfte Aktivitätsmessung.
+
+„Spielstand zurücksetzen“ verlangt eine Bestätigung und ersetzt Journal/Fortschritt durch den
+Beispielstart für heute. Verdiente Auren gehen dabei verloren, eine angelegte Belohnungsaura wird
+entfernt. Name, übrige Figur, Interessen und getrennte Einstellungen bleiben erhalten.
 
 ## Skills und Subskills
 
@@ -192,8 +233,9 @@ Erholung ist eine vollwertige Aktivitätsfamilie. Ein geplanter Ruhetag schützt
 ein freiwilliger Cheat Day pausiert Ziele. Ungeplante Pausen kosten mögliche Tagesbelohnungen,
 niemals bereits verdiente XP oder Level. Spätere Momentum-Abnahme bei Inaktivität ist reversibel.
 Ein schwieriger Tag kann durch Erholung zum Recovery Day werden. Die freiwillige Tagesmoduswahl
-mit lokalem Datumswechsel ist vorhanden; ihre vollständigen Recovery-/Rest-/Cheat-Day-Regeln und
-automatische Spielperioden sind **noch nicht Teil der Demo**. Der Wochenrhythmus ist ein Mock-Snapshot.
+mit lokalem Datumswechsel ist vorhanden; ihre vollständigen Recovery-/Rest-/Cheat-Day-Regeln sind
+**noch nicht umgesetzt**. Lokale Tages-/Wochenwechsel und ein Rhythmus aus belohnten Tagen sind
+vorhanden, erzeugen aber noch keine frequenzabhängige Streak oder geplante Ruhetagsberechtigung.
 
 Streaks richten sich später nach Zielrhythmus (z. B. dreimal pro Woche statt jeden Tag).
 Kein Anreiz, Erholung zugunsten eines täglichen Sport-Streaks auszulassen. Cold Exposure bekommt
@@ -207,9 +249,114 @@ Phasen geben Feedback, erzwingen keine gefährlicheren Aktivitäten. Loot: Equip
 Seltenheit unabhängig von Stil. Achievements für echte Meilensteine (z. B. erster Boss, 100 Einträge),
 Titles als sichtbare Identität. Inventar, Drop-Tabellen und Claims folgen nach der Basisprogression.
 
-### Aura-Vorschau und geplanter Fortschritt
+### Tagesvorschläge und freiwillige Wochenziele
 
-`CharacterAura` stellt drei Starter-Effekte sowie zehn erweiterte Entwürfe im Creator dar:
+Das Dashboard ergänzt den bestehenden Aktivitätsfluss um höchstens drei konkrete nächste Schritte.
+Bekannte Fokus-Skills erscheinen in der gewählten Reihenfolge. Jeder Vorschlag enthält 5–20 ganze
+Minuten, begrenzt auf die verbleibenden belohnten Minuten des Skills an diesem Tag. Unter fünf
+verbleibenden Minuten gibt es keinen Vorschlag; der normale manuelle Eintrag bleibt erreichbar.
+Vollständig abgeschlossene Tagesquests werden nicht als neue Aufgabe wieder vorgeschlagen. Noch
+offene Quests können die vorgeschlagene Dauer auf ihre verbleibenden Minuten verkürzen.
+
+Die Modi Erholung und Ruhetag bevorzugen Recovery, Meditation und Breathwork, sofern diese Skills
+im Spielstand vorhanden sind. Im Ruhetag werden höchstens fünf Minuten vorgeschlagen. Das sind
+freiwillige Spielvorschläge und keine gesundheitlichen Empfehlungen; eine Pause ohne Eintrag bleibt
+gleichwertig und folgenlos. Andere Aktivitäten und bereits verdiente Skills/XP werden nicht gesperrt.
+
+Die Belohnungsvorschau ruft dieselbe reine `recordActivity`-Regel wie ein späterer akzeptierter Eintrag
+auf: Aktivitäts-XP, tatsächlich ausgelöster Questbonus, Gesamt-XP und auf Rest-HP begrenzter
+Wochenboss-Schaden. Sie simuliert den jetzigen Snapshot, reserviert nichts und speichert nichts.
+Auswählen öffnet ausschließlich das vorausgefüllte Aktivitätsformular. Erst nach realer Tätigkeit und
+bewusstem Bestätigen entsteht ein Eintrag. Mehrere Karten sind jeweils unabhängige Vorschauen, kein
+gemeinsam vorab zugesagtes Rewardpaket.
+
+Die Wochenübersicht wird aus gültigen belohnten Aktivitäten der aktuellen Montag–Sonntag-Woche bis
+einschließlich heute abgeleitet. Zukunft, andere Wochen, unbekannte Skills und unbelohnte Einträge
+zählen nicht. Wiederholungen am gleichen Tag beziehungsweise im gleichen Bereich erhöhen die
+entsprechende Anzahl nicht mehrfach.
+
+| Freiwilliges Wochenziel | Voraussetzung | Zusätzliche Belohnung |
+|---|---|---|
+| Dein eigener Rhythmus | Aktivitäten an drei verschiedenen Tagen | Keine |
+| Mehr als eine Seite | Aktivitäten aus zwei verschiedenen Skill-Familien | Keine |
+| Raum zum Auftanken | An einem Tag Recovery, Meditation oder Breathwork protokolliert | Keine |
+
+Die Ziele zeigen vorhandenen Fortschritt und erzeugen keine weiteren XP, Claims, Coins oder
+Achievements. Ein freiwilliger Check-in allein wird nicht als Aktivität umgedeutet. „Aktivitäts-XP
+diese Woche“ summiert ausschließlich die bekannten `Activity.xp`; historische Questboni sind im
+aktuellen Snapshot nicht vollständig verfügbar und werden nicht erfunden. Der volle Alltag-/Avatar-
+Fortschrittsloop, diese Vorschläge, Wochenziele und alle drei Übungstaktiken gehören zum Free-Kern.
+
+### Automatische Begegnungen und separate Kampfübung
+
+Die akzeptierte Richtung ergänzt den sichtbaren Fortschritt um seitliche, automatisch
+ablaufende RPG-Begegnungen: Held links, Boss rechts, abwechselnde Angriffe, HP und ein lesbarer
+Verlauf. AdventureQuest ist nur eine Präsentationsreferenz; Everbloom verwendet eigene Figuren,
+Bühnen, Regeln und Sounds. Charakterlevel und erworbene Skill-Erfahrung beeinflussen die
+Kampfstärke. Die Darstellung nutzt PixiJS; geriggte Figuren/Bosse folgen dem
+[Animationsvertrag](ANIMATION_PIPELINE.md). Aktuell gibt es keine Spine-Runtime.
+
+Der erste umgesetzte Ablauf unter `/battle` ist eine lokale Kampfübung gegen den Mooswächter.
+Ein beim Start eingefrorener Spielstand erzeugt einen deterministischen Zugverlauf. Wiederholung
+desselben Starts ergibt dasselbe Ergebnis. Es gibt keine aktiven Kampftasten für zusätzliche
+Schadensboni. Die Zahlen sind eine eigenständige vorläufige Kampfbalance, keine Umrechnung der
+bisherigen 2.400 Wochenboss-HP. Die Kampfübung speichert und belohnt nichts: kein XP-Farming,
+kein Questfortschritt, kein Aura-Grant und keine Veränderung des angeschlagenen Wochenbosses.
+Eine Niederlage kostet keine bestehenden XP oder Level.
+
+Die vorläufige **Kampfbalance V0.1** steht in `domain/auto-battle.ts`. Level wird aus Charakter-XP
+berechnet; Attribute sind Basiswerte plus ein Punkt je 1.000 XP ihrer Skills. Alle sechs Familien
+tragen bei, auch Wissen und Erholung. Aussehen, Fokusauswahl und Membership geben keinen Kampfbonus.
+
+| Wert | Kampfübungs-Regel |
+|---|---|
+| Held-HP | `120 + 14 × Level + 3 × Endurance + 2 × Recovery` |
+| Angriff | Abgerundet: `12 + 3 × Level + 0,7 × Strength + 0,7 × Knowledge + 0,3 × Focus` |
+| Verteidigung | Abgerundet: `3 + 0,8 × Level + 0,25 × (Endurance + Mindfulness + Recovery)` |
+| Fokusschlag | Jeder `5 − floor((Focus + Mindfulness) / 50)`-te Heldenzug, begrenzt auf jeden 3.–5. Zug; 1,5-facher Angriff vor Verteidigung |
+| Übungs-Mooswächter | Level 12, 560 HP, Angriff 52, Verteidigung 20; unabhängig vom Wochenbosszustand |
+| Bossphasen | Nach dem Heldenzug: über 60 % HP Faktor 1, über 25 % Faktor 1,15, sonst Faktor 1,4 |
+| Schwerer Bossschlag | In jeder dritten Runde zusätzlich Faktor 1,2; keine zufällige Chance |
+| Schaden | `max(1, floor(Angriff × Faktoren) − Verteidigung)`, höchstens verbleibende HP |
+| Zugfolge und Ende | Held zuerst, dann lebender Boss; bei 0 HP sofort Ende, sonst nach standardmäßig 20 Runden unentschieden |
+
+Optionale Test-/Simulationslimits erlauben höchstens 30 Runden. Defensive Zahlengrenzen (u. a.
+10 Millionen Eingangs-XP, 1.000 Attributpunkte) sind technische Prototypgrenzen, keine beschlossenen
+Maximallevel. Die Formeln werden erst nach Spieltests produktiv übernommen. Wiederholungen würfeln
+keine Chance neu und ersetzen keine reale Aktivität.
+
+Vor der Übung wird eine von drei vorläufigen Taktiken gewählt. Sie verändern ausschließlich die
+Angriffs-/Verteidigungswerte dieser Begegnung; Basisattribute und gespeicherter Fortschritt bleiben
+unverändert. Änderungen nach Beginn sind gesperrt. Ein neu vorbereiteter Kampf kann eine andere
+Taktik erhalten; „erneut ansehen“ spielt den bestehenden Verlauf mit derselben Taktik ab.
+
+| Taktik | Angriff / Verteidigung | Besonderheit |
+|---|---|---|
+| Balance (`balanced`) | Unveränderte Basiswerte | Bisheriger Verlauf bleibt unverändert |
+| Offensiv (`power`) | `floor(Angriff × 1,2)` / `floor(Verteidigung × 0,75)` | Mehr Schaden bei geringerem Schutz |
+| Ausdauer (`guard`) | `floor(Angriff × 0,85)` / `floor(Verteidigung × 1,25)` | Automatischer Erholungszug unter den folgenden Bedingungen |
+
+Ausdauer ersetzt in jeder dritten Runde den eigenen Angriff durch „Neue Kraft“, falls die Helden-HP
+zu Beginn des Zugs unter 60 % des Maximums liegen. Heilung ist
+`floor(0,12 × Max-HP + 0,5 × Recovery + 0,25 × Mindfulness)`, mindestens ein Punkt und höchstens die
+fehlenden HP. Dieser Zug verursacht null Schaden und ist kein Fokusschlag; der lebende Boss greift
+danach normal an. Heilung betrifft nur virtuelle Kampf-HP und ist keine Aussage über reale Erholung.
+Fokusschläge folgen weiter dem Rundenrhythmus und werden durch einen Erholungszug nicht nachgeholt.
+Unbekannte Taktikwerte fallen auf Balance zurück. Der Demo-Basiskampf bleibt bei Balance mit
+396 HP, Angriff 104 und Verteidigung 27 unverändert; Offensiv ergibt 124/20, Ausdauer 88/33.
+Diese Regeln sind testbare Entwürfe, keine behauptete endgültige Wettbewerbsbalance.
+
+Das Produktionsziel verbindet künftig **akzeptierte reale Aktivität → serverautorisierte
+Begegnung → einmaliges Ergebnis/Reward**. Welche Aktivität eine Begegnung auslöst, welche
+Schwierigkeit/Skillgewichtung gilt und wie Phasen und Belohnungen verteilt sind, muss vor der
+Anbindung mit Beispielen entschieden werden. Ein wiederholt abgespielter Kampf darf nie ein
+zweites Ergebnis verbuchen. Dafür werden Regelversion, Begegnungs-ID, atomare Vergabe und ein
+Migrationspfad für bestehende Journale benötigt. Bis dahin bleiben die bisherigen Aktivitäts-,
+Wochenboss- und Aura-Regeln vollständig unverändert.
+
+### Erspielbare Auren und ungespeicherte Vorschau
+
+`CharacterAura` stellt drei Starter-Effekte, drei verdiente Auren sowie zehn weitere Entwürfe dar:
 Sterne, mystische Zeichen, innere Energie/Chakra, Dämonenschatten, Licht, Energieströme, Engelsflügel,
 Kirschblüten, Feuer und Geistwächter. Die eigene Namens- und Formensprache steht im
 [Art Guide](ART_DIRECTION.md#aura-richtung-und-aktueller-vorschauumfang). Die erweiterten Entwürfe
@@ -219,19 +366,32 @@ Gesichtsausdruck und Irisleuchten werden später separat gestaltet. Auren sind r
 Chakra ist ein Fantasy-Motiv ohne gesundheitliche Bedeutung. Ganzkörper-VFX mit Boden-, Rücken-
 und Vorderpartikeln sind das Ausbauziel, keine bereits vollständige Produktions-VFX-Bibliothek.
 
-Die vier Starter-Auren bleiben verfügbar: Ohne Aura, Waldlicht, Blütenzauber und Leere.
-`AURA_PROGRESSION_PLAN` beschreibt drei spätere kosmetische Ziele: **Nordlicht ab Charakterlevel 20**,
-**Sternenkranz ab Charakterlevel 40** und **Moosseele als Bossdrop des Mooswächters**. Eine Dropchance
-ist nicht festgelegt. Diese Ziele erscheinen im Creator ausdrücklich als geplant und sind noch
-nicht freischaltbar oder ausrüstbar. Ein Preview-Level darf keine Aura gewähren. Es existieren noch
-keine persistierten Besitzrechte, Loot-Vergabe oder Claims. Die spätere Freischaltung benötigt einen
-geprüften Besitz-/Reward-Pfad in M2; die aktuellen Level-/XP-Regeln bleiben unverändert.
+Die vier Starter-Optionen bleiben verfügbar: Ohne Aura, Waldlicht, Blütenzauber und Leere.
+`AURA_REWARDS` (auch als `AURA_PROGRESSION_PLAN` exportiert) enthält drei implementierte Belohnungen:
+
+| Aura | Einmaliger Auslöser | Eigener Effekt |
+|---|---|---|
+| Nordlicht · `aurora` | Belohnte Aktivität erreicht von unten Charakterlevel 20, einschließlich Quest-XP | Grün/petrol/violette Lichtbänder |
+| Sternenkranz · `starlight` | Belohnte Aktivität erreicht von unten Charakterlevel 40 | Gold/violette Konstellationen |
+| Moosseele · `moss-spirit` | Belohnte Aktivität besiegt den lebenden Mooswächter | Leuchtende Blattranken und Waldgeist |
+
+Die Belohnung wird automatisch atomar mit dem Aktivitätsergebnis vergeben; keine Zufallschance
+oder zusätzlicher Claim. Jede Aura wird nur einmal gesammelt, selbst wenn mehrere Wochenbosse
+besiegt werden. Mehrere gleichzeitig erfüllte Bedingungen sind möglich. Duplicate-Requests,
+Einträge ohne Aktivitäts-XP, schon besiegte Bosse und reine Vorschauen vergeben nichts. Level-Auren
+werden beim echten Schwellenübertritt verdient, nicht beim bloßen Laden eines hohen Levels.
+
+`unlockedAuras` gehört zum Snapshot und wird beim Journal-Replay wiederhergestellt. Dashboard und
+Creator zeigen die Sammlung; nur Starter und verdiente IDs sind anlegbar. Die Profilnormalisierung
+kennt die drei IDs, der Repository-Pfad prüft zusätzlich Besitz. Zehn weitere Entwürfe bleiben ohne
+Besitzrechte. Es handelt sich um lokale Prototyprechte, keinen vertrauenswürdigen Servernachweis.
+Serververgabe und ein allgemeines Item-/Inventarsystem bleiben offen; Balance V0.2 ist unverändert.
 
 ## Erfolgsmomente
 
 Nach einem akzeptierten Aktivitätseintrag werden alter und neuer Zustand verglichen. Auslöser:
 Charakter-Levelaufstieg, Skill-Levelaufstieg, erster belohnter Eintrag des Tages, Abschluss aller
-Daily Quests oder Sieg über den Wochenboss. Einzelne Questabschlüsse erhalten normales Fortschritts-
+Daily Quests, Sieg über den Wochenboss oder eine neu verdiente Aura. Einzelne Questabschlüsse erhalten normales Fortschritts-
 feedback, aber keinen eigenen Jingle. Die Erfolgskarte bündelt gleichzeitig erreichte Meilensteine
 für ungefähr sechs Sekunden; ein kleines CSS-Feuerwerk und ein eigener Jingle aus
 vier aufeinanderfolgenden Tönen begleiten sie. Es werden keine RuneScape-Sounds oder fremden
@@ -253,6 +413,12 @@ Skills/Subskills, Questreihen, Bosse, Progressionspfade und Cosmetics. Vorläufi
 Kein bezahlter Zwang zur Erholung, keine verlorenen verdienten Inhalte bei Kündigung;
 genaue Nutzbarkeit von Member-Inhalten nach Ablauf ist vor M3 festzulegen.
 Geplanter monatlicher Endkundenpreis: **3,99 € pro Monat**. Ein Jahrespreis ist nicht festgelegt.
+**4,99 € pro Monat** ist ein zusätzlich zu prüfender Preiskandidat aus der Produktüberarbeitung,
+keine beschlossene Preisänderung. Vor einer Entscheidung stehen wiederkehrender Mehrwert,
+Inhaltspflege, Nutzung und Zahlungsbereitschaft; professionelles Design allein belegt keine Nachfrage.
+Der gesamte grundlegende Spielkreislauf bleibt Free. Membership erweitert Inhalte und Gestaltung,
+nicht die Möglichkeit, reale Aktivitäten zu protokollieren, sich zu erholen oder den eigenen Fortschritt
+zu behalten. Beide Preisideen sind noch keine aktiv kaufbaren Store-Produkte.
 Regionale Store-Preisstufen, Steuern und Nettoerlös werden vor der Billing-Implementierung geprüft.
 Das ist ein beschlossenes Preisziel, noch kein registriertes Store-Produkt. Entitlements werden
 nicht im UI erfunden. Demo ist Free, ohne Checkout oder XP-Vorteil.
@@ -274,6 +440,9 @@ Parties, Guilds und Raids folgen erst nach stabilem Solo-Spiel. Keine Social-Pla
 ## Offene Entscheidungen
 
 - Finales XP-Balancing, Tageslimits, Skillgewichtung und Maximallevel durch Spieltests.
-- Momentum-Abnahme, Zeitzonenwechsel, Recovery-/Cheat-Day-Kontingente und Streak-Regeln vor Persistenz.
+- Momentum-Abnahme, Zeitzonenwechsel, Recovery-/Cheat-Day-Kontingente und Streak-Regeln vor serverseitiger Persistenz.
 - Membership-Inhaltsgrenzen, Kündigungsregeln, regionale Preisumsetzung und Store-Abrechnung vor M3.
-- Asset-Pipeline, Barrierefreiheit der Effekte und verbindliche eigene Welt vor breiter Content-Produktion.
+- Professionelle Rig-/Bossassets nach festgelegter [Animation Pipeline](ANIMATION_PIPELINE.md),
+  mobile Budgets und gegebenenfalls Spine-Nutzungsrechte vor breiter Content-Produktion.
+- Produktive Begegnungsauslöser, Kampfgewichtung, Schwierigkeit, Rewards und versionierte
+  Ablösung/Verknüpfung des bisherigen Wochenboss-Schadens vor serverseitiger Kampfanbindung.

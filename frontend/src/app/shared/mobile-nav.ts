@@ -35,7 +35,7 @@ import { IsActiveMatchOptions, RouterLink, RouterLinkActive } from '@angular/rou
       }
       .nav-items {
         display: grid;
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-columns: repeat(5, minmax(0, 1fr));
         width: min(100%, 720px);
         min-height: var(--mobile-nav-height, 68px);
         margin: auto;
@@ -76,6 +76,7 @@ export class MobileNav {
     { label: 'Heute', route: '/dashboard', fragment: undefined, icon: 'M3 10.5 12 3l9 7.5M5.5 9v11h5v-6h3v6h5V9' },
     { label: 'Quests', route: '/dashboard', fragment: 'quests', icon: 'M8 4H5.5v17h13V4H16M9 3h6v4H9zM8.5 12l2 2 5-5M9 18h6' },
     { label: 'Skills', route: '/dashboard', fragment: 'skills', icon: 'M12 21v-9M12 16C5 16 3 10 4 6c5 0 8 3 8 8M12 12c0-5 3-8 8-9 1 6-2 10-8 11' },
+    { label: 'Abenteuer', route: '/battle', fragment: undefined, icon: 'm4 3 16 17M20 3 4 20M4 3l1 5 3-3-4-2ZM20 3l-1 5-3-3 4-2ZM3 17l4 4M17 21l4-4' },
     { label: 'Charakter', route: '/character/create', fragment: undefined, icon: 'M16 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0M4.5 21v-2a7.5 7.5 0 0 1 15 0v2M5 21h14' },
   ];
 }

@@ -1,0 +1,47 @@
+<main class="membership-page" id="main-content">
+  <header><a routerLink="/dashboard" class="back-link">← Zurück zu deinem Abenteuer</a><span class="wordmark">everbloom<span>+</span></span></header>
+  <section class="membership-hero" aria-labelledby="membership-title">
+    <div class="hero-copy">
+      <span class="soon-label">MEMBERSHIP · IN ENTWICKLUNG</span>
+      <h1 id="membership-title">Dein Alltag.<br>Ein größeres <em>Abenteuer.</em></h1>
+      <p>Mehr Geschichten erleben. Neue Seiten an dir entdecken. Und einen Charakter gestalten, der sich ganz nach dir anfühlt.</p>
+      <div class="price"><strong>{{ price }}</strong><span>pro Monat<br><small>geplanter Preis</small></span></div>
+      <a routerLink="/dashboard" class="primary">Kostenlos weiterspielen <span>↗</span></a>
+      <p class="availability">Membership ist noch nicht buchbar. Hier siehst du die geplante Erweiterung.</p>
+    </div>
+    <div class="hero-art" aria-label="Zwei der kostenlosen Everbloom-Startlooks">
+      <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
+      <span class="art-spark spark-one" aria-hidden="true">✧</span><span class="art-spark spark-two" aria-hidden="true">✦</span>
+      @for (appearance of portraits; track appearance.illustration) { <app-character-portrait [appearance]="appearance" [animated]="false" /> }
+      <span class="art-caption">Deine Startlooks bleiben kostenlos.</span>
+    </div>
+  </section>
+
+  <section class="promise" aria-label="Das kostenlose Grundspiel bleibt vollständig spielbar">
+    <span class="promise-symbol" aria-hidden="true">∞</span><div><h2>Deine Entwicklung braucht kein Abo.</h2><p>Charakter, Fortschritt, wiederkehrende Ziele und Erholung gehören zum Grundspiel. Membership erweitert deine Welt.</p></div>
+  </section>
+
+  <section class="chapters" aria-label="Geplante Membership-Inhalte">
+    @for (chapter of chapters; track chapter.number) {
+      <article><div class="chapter-top"><span>{{ chapter.number }}</span><span class="planned">Geplant</span></div><span class="chapter-symbol" aria-hidden="true">{{ chapter.symbol }}</span><h2>{{ chapter.name }}</h2><p>{{ chapter.detail }}</p></article>
+    }
+  </section>
+
+  <section class="comparison" aria-labelledby="comparison-title">
+    <p class="eyebrow">WÄHLE DEIN TEMPO</p><h2 id="comparison-title">Eine Reise. Mehr Möglichkeiten.</h2>
+    <p class="comparison-note">Produktplan für das Grundspiel und seine Erweiterung. Der aktuelle Prototyp enthält noch nicht alle geplanten Funktionen.</p>
+    <div class="comparison-table" role="table" aria-label="Geplanter Vergleich Free und Membership">
+      <div class="comparison-row table-head" role="row"><span role="columnheader">Dein Erlebnis</span><strong role="columnheader">Free</strong><strong role="columnheader">Membership</strong></div>
+      @for (row of comparison; track row[0]) { <div class="comparison-row" role="row"><span role="rowheader">{{ row[0] }}</span><span role="cell">{{ row[1] }}</span><span role="cell">{{ row[2] }}</span></div> }
+    </div>
+  </section>
+
+  <section class="questions" aria-labelledby="questions-title">
+    <h2 id="questions-title">Gut zu wissen</h2>
+    <details><summary>Werde ich ohne Abo ausgebremst?</summary><p>Free soll dauerhaft sinnvoll spielbar bleiben. Du entwickelst deinen Charakter, sammelst XP und verdienst Auren. Die Erweiterung ist für zusätzliche Inhalte gedacht.</p></details>
+    <details><summary>Verschwinden meine Level, wenn ich kündige?</summary><p>Verdiente XP und Level bleiben erhalten. Die genaue Nutzung zusätzlicher Member-Inhalte nach Abo-Ende wird vor dem Kaufstart transparent festgelegt.</p></details>
+    <details><summary>Gibt es einen XP-Vorteil?</summary><p>Ein moderater Bonus von 10 % auf Charakter-Aktivitäts-XP ist vorgesehen. Er ist noch nicht aktiv und gilt nicht automatisch für Skill-XP, Questboni oder Boss-Schaden.</p></details>
+    <details><summary>Was kann ich heute schon spielen?</summary><p>Im lokalen Prototyp kannst du deinen Chibi gestalten, Aktivitäten erfassen, Fortschritt und Aura-Belohnungen sammeln und den automatischen Probekampf ausprobieren. Cloud-Spielstand und Membership-Käufe folgen später.</p></details>
+  </section>
+  <footer><h2>Dein nächstes Kapitel beginnt bei dir.</h2><a routerLink="/dashboard" class="primary">Zurück zu deinem Charakter →</a><p>Kein Abo nötig. Kleine Schritte zählen.</p></footer>
+</main>

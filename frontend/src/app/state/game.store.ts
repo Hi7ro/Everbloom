@@ -4,6 +4,9 @@ import { ATTRIBUTES, BALANCE, SKILLS } from '../domain/catalog';
 import { CharacterProfile, GameSnapshot } from '../domain/models';
 import { bossPhase, levelProgress } from '../domain/progression';
 import { detectMilestones } from '../domain/milestones';
+import { GAME_DAY_CLOCK } from '../data/game-clock';
+import { ProgressPersistenceStatus } from '../data/game-progress.storage';
+import { AURA_REWARDS, hasAuraAccess } from '../domain/aura-rewards';
 import { ProgressFeedback } from './progress-feedback';
 import { JourneyStore } from './journey.store';
 
@@ -12,6 +15,9 @@ export class GameStore {
   private readonly repository = inject(GAME_REPOSITORY);
   private readonly journey = inject(JourneyStore);
   private readonly feedback = inject(ProgressFeedback);
+  private readonly today = inject(GAME_DAY_CLOCK);
+  private readonly persistenceState = signal<ProgressPersistenceStatus>({ state: 'session', message: null });
+  readonly persistence = this.persistenceState.asReadonly();
   private readonly snapshotState = signal<GameSnapshot | null>(null);
   private readonly busyState = signal(false);
   private readonly errorState = signal('');
@@ -63,6 +69,16 @@ export class GameStore {
     const boss = this.snapshot()?.boss;
     return boss ? bossPhase(boss.hp, boss.maxHp) : '';
   });
+  readonly ownedAuras = computed(() => AURA_REWARDS.filter(aura =>
+    this.snapshot()?.unlockedAuras.includes(aura.id),
+  ));
+  canEquipAura(id: string): boolean {
+    const snapshot = this.snapshot();
+    return !!snapshot && hasAuraAccess(snapshot, id);
+  }
+  readonly todayMinutes = computed(() => this.snapshot()?.activities
+    .filter(activity => activity.dayKey === this.snapshot()?.dayKey)
+    .reduce((sum, activity) => sum + activity.minutes, 0) ?? 0);
   readonly totalMinutes = computed(
     () => this.snapshot()?.activities.reduce((sum, a) => sum + a.minutes, 0) ?? 0,
   );
@@ -71,11 +87,23 @@ export class GameStore {
       this.snapshotState.set(await this.repository.load());
     });
   }
+  async refresh() {
+    // Resume after midnight without resetting rewards while the app stays open.
+    if (!this.snapshot() || this.busy()) return;
+    let shouldRefresh = true;
+    try {
+      shouldRefresh = this.snapshot()!.dayKey !== this.today() || this.persistence().state === 'clock';
+    } catch {
+      // The repository preserves the last valid day and reports a clock warning.
+    }
+    if (shouldRefresh) await this.load();
+  }
   async record(skillId: string, minutes: number): Promise<boolean> {
     this.feedback.prepareAudio();
     return this.execute(async () => {
-      const before = this.snapshot();
-      if (!before) throw new Error('Bitte zuerst deinen Charakter laden.');
+      if (!this.snapshot()) throw new Error('Bitte zuerst deinen Charakter laden.');
+      const before = await this.repository.load();
+      this.snapshotState.set(before);
       const result = await this.repository.record({
         requestId: crypto.randomUUID(),
         skillId,
@@ -86,7 +114,7 @@ export class GameStore {
       if (!r.duplicate) this.feedback.celebrate(detectMilestones(before, result.snapshot));
       this.messageState.set(
         r.activityXp > 0
-          ? 'Aktivität gespeichert. +' +
+          ? 'Aktivität erfasst. +' +
               (r.activityXp + r.questXp) +
               ' XP' +
               (r.questXp ? ', davon ' + r.questXp + ' Quest-XP' : '') +
@@ -96,7 +124,7 @@ export class GameStore {
               (r.rewardedMinutes < minutes
                 ? ' Tageslimit erreicht; zusätzliche Minuten wurden ohne XP erfasst.'
                 : '')
-          : 'Aktivität gespeichert. Dein XP-Tageslimit für diesen Skill ist erreicht.',
+          : 'Aktivität erfasst. Dein XP-Tageslimit für diesen Skill ist erreicht.',
       );
     });
   }
@@ -112,11 +140,11 @@ export class GameStore {
     });
   }
   async reset() {
-    await this.execute(async () => {
+    return this.execute(async () => {
       this.snapshotState.set(await this.repository.resetDemo());
       this.feedback.dismiss();
       this.messageState.set(
-        'Der Demo-Fortschritt wurde zurückgesetzt. Dein Charakter-Look bleibt erhalten.',
+        'Der lokale Spielstand wurde auf den Beispielstart zurückgesetzt. Verdiente Auren sind wieder gesperrt; dein übriger Look bleibt erhalten.',
       );
     });
   }
@@ -134,6 +162,7 @@ export class GameStore {
       );
       return false;
     } finally {
+      this.persistenceState.set(this.repository.progressPersistence?.() ?? { state: 'session', message: 'Fortschritt bleibt nur für diese Sitzung erhalten.' });
       this.busyState.set(false);
     }
   }

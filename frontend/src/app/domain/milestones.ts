@@ -1,9 +1,16 @@
 import { BALANCE, SKILLS } from './catalog';
+import { AURA_REWARDS } from './aura-rewards';
 import { GameSnapshot } from './models';
 import { levelProgress } from './progression';
 
 export interface Milestone {
-  kind: 'character-level' | 'skill-level' | 'first-activity' | 'daily-quests' | 'boss-victory';
+  kind:
+    | 'character-level'
+    | 'skill-level'
+    | 'first-activity'
+    | 'daily-quests'
+    | 'boss-victory'
+    | 'aura-unlock';
   title: string;
   detail: string;
 }
@@ -62,5 +69,22 @@ export function detectMilestones(before: GameSnapshot, after: GameSnapshot): Mil
       title: 'Dein erster Schritt heute!',
       detail: 'Eine reale Aktivität. Ein Stück weiter.',
     });
+  // Reward IDs alone are not a gameplay event (e.g. loading a saved collection).
+  const newRewardedActivity = after.activities.some(
+    (activity) =>
+      activity.xp > 0 &&
+      !before.activities.some((previous) => previous.requestId === activity.requestId),
+  );
+  if (newRewardedActivity) {
+    for (const aura of AURA_REWARDS) {
+      if (!before.unlockedAuras.includes(aura.id) && after.unlockedAuras.includes(aura.id)) {
+        milestones.push({
+          kind: 'aura-unlock',
+          title: 'Neue Aura freigeschaltet!',
+          detail: aura.label + ' gehört jetzt dir. Du kannst sie bei deinem Charakter anlegen.',
+        });
+      }
+    }
+  }
   return milestones;
 }

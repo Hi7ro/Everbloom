@@ -1,0 +1,81 @@
+:host { display:block; }
+.battle-page { max-width:1160px; margin:auto; padding:26px 28px 52px; }
+.page-top { display:flex; align-items:center; justify-content:space-between; gap:16px; margin-bottom:36px; }
+.back-link { display:inline-flex; align-items:center; min-height:44px; color:#c0ceb4; font-size:13px; }
+.chapter { color:#879a8c; letter-spacing:2px; font-size:10px; }
+.heading { display:flex; justify-content:space-between; align-items:center; gap:14px; }
+.heading .eyebrow { font-size:10px; color:#b8cca7; }
+h1 { font-family:Georgia,serif; font-size:clamp(30px,5vw,44px); font-weight:400; letter-spacing:-1px; margin:9px 0; }
+.intro { color:#a8b7a6; line-height:1.7; max-width:650px; margin:8px 0 28px; font-size:14px; }
+.practice-badge { display:flex; align-items:center; gap:8px; border:1px solid #99b79140; background:#87a5780d; padding:8px 12px; border-radius:24px; font-size:12px; color:#c7d8b9; white-space:nowrap; }
+.practice-badge > span { width:6px; height:6px; border-radius:50%; background:#a9c28c; }
+.battle-layout { display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:22px; align-items:start; }
+.tactics { border:0; margin:20px 18px 0; padding:0; min-width:0; }
+.tactics legend { font-size:14px; font-weight:600; margin-bottom:12px; }
+.tactics legend span { display:block; font-size:12px; font-weight:400; color:var(--muted); margin-top:5px; }
+.tactic-options { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:9px; }
+.tactic-options button { min-height:54px; border:1px solid var(--line-bright); border-radius:13px; background:#1c2823; color:#aebeac; display:flex; align-items:center; justify-content:center; gap:9px; padding:8px; }
+.tactic-options button.selected { color:#e4dfc2; border-color:#bca774; background:linear-gradient(130deg,#423c29,#23332a); }
+.tactic-symbol { font-size:22px; color:#d1be91; }
+.tactic-options strong { font-size:13px; font-weight:500; }
+.tactics p { font-size:12px; color:#a8b9a3; line-height:1.6; margin:10px 0 0; }
+.healing { color:#bbd599; }
+.arena-card { border:1px solid #99b79135; border-radius:18px; overflow:hidden; background:#19261e; }
+.combatants { display:grid; grid-template-columns:1fr 22px 1fr; gap:12px; padding:22px 22px 18px; }
+.fighter { min-width:0; }
+.fighter-heading { display:flex; justify-content:space-between; gap:4px; font-size:9px; letter-spacing:.6px; color:#9db598; }
+.fighter h2 { margin:8px 0 13px; font:400 21px Georgia,serif; overflow-wrap:anywhere; }
+.fighter progress { height:7px; }
+.boss progress { --bar:#cfaa72; }
+.health { display:flex; justify-content:space-between; gap:5px; color:#a2b29e; margin-top:8px; font-size:10px; }
+.versus { align-self:center; font:italic 12px Georgia,serif; color:#79907b; }
+.round-strip { display:flex; justify-content:space-between; gap:8px; border-top:1px solid #9ab58c20; padding:13px 22px; background:#14231d; color:#b4c5a8; font-size:12px; }
+.turn-announcement { min-height:86px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:7px; padding:16px 20px; text-align:center; }
+.turn-announcement strong { font-weight:500; font-size:14px; }
+.turn-announcement span { color:#adbaa6; font-size:12px; }
+.controls { display:grid; grid-template-columns:minmax(0,1fr) 48px auto; gap:8px; padding:0 18px; }
+.controls button { padding:11px 12px; min-height:48px; font-size:13px; border-radius:9px; }
+.quiet-controls { display:flex; justify-content:space-between; padding:5px 20px 8px; }
+.quiet-controls button { font-size:12px; min-height:44px; }
+.battle-notes { display:grid; gap:18px; }
+.info-card,.log-card,.result-card { padding:22px; border:1px solid #90a68425; border-radius:16px; background:#19241d; }
+.info-card h2,.result-card h2 { font:400 24px Georgia,serif; margin:10px 0 18px; }
+.info-card p,.result-card p { font-size:13px; line-height:1.7; color:#abb8a4; }
+.stat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin:20px 0; }
+.stat-grid div { display:flex; flex-direction:column; gap:7px; }
+.stat-grid span { color:#91a48a; font-size:11px; }
+.stat-grid strong { font-weight:400; font-size:25px; color:#d2e2bf; }
+.info-card .practice-note { border-top:1px solid #99b79125; padding-top:14px; margin-bottom:0; font-size:12px; color:#bcc8b3; }
+.result-card { border-color:#bfd19a66; background:linear-gradient(140deg,#2f4329,#1d2c21); }
+.result-card button { width:100%; font-size:12px; }
+.log-heading { display:flex; justify-content:space-between; align-items:center; }
+.log-heading h2 { margin:0; font-size:14px; font-weight:500; }
+.log-heading > span { font-size:11px; color:#92a18b; }
+ol { list-style:none; padding:0; margin:16px 0 0; }
+li { display:grid; grid-template-columns:22px 1fr auto; align-items:center; gap:9px; padding:13px 0; border-top:1px solid #99b79120; }
+.round-number { width:22px; height:22px; display:grid; place-items:center; border-radius:50%; background:#cfa46d12; color:#bb9d74; font-size:10px; }
+li.hero-turn .round-number { background:#a9c68d18; color:#bdd5a4; }
+li div { display:flex; flex-direction:column; gap:4px; }
+li strong { font-size:12px; font-weight:500; overflow-wrap:anywhere; }
+li div span { font-size:11px; color:#94a58f; }
+li b { font-size:14px; color:#e3cda8; font-weight:500; }
+li small { display:block; font-size:9px; text-align:right; color:#a69b86; font-weight:400; margin-top:3px; }
+.empty-log { font:italic 15px/1.8 Georgia,serif; color:#879a82; margin:22px 0 10px; }
+@media(max-width:950px) { .battle-layout { grid-template-columns:1fr; } .battle-notes { grid-template-columns:1fr 1fr; } .result-card { grid-column:1/-1; } }
+@media(max-width:599px) {
+  .battle-page { padding:12px 14px 28px; }
+  .page-top { margin-bottom:20px; }
+  .chapter { display:none; }
+  .heading { align-items:end; flex-wrap:wrap; }
+  .practice-badge { padding:6px 9px; margin-bottom:10px; font-size:10px; }
+  .intro { margin:8px 0 22px; font-size:13px; }
+  .heading .eyebrow { font-size:9px; letter-spacing:1px; }
+  .combatants { padding:18px 14px 15px; gap:7px; grid-template-columns:1fr 18px 1fr; }
+  .fighter h2 { font-size:18px; }
+  .fighter-heading { font-size:10px; letter-spacing:.3px; flex-wrap:wrap; }
+  .health { font-size:11px; flex-wrap:wrap; }
+  .battle-notes { grid-template-columns:1fr; }
+  .controls { padding:0 12px; gap:6px; grid-template-columns:minmax(0,1fr) 44px auto; }
+  .controls button { font-size:12px; padding:10px 8px; }
+  .round-strip { padding:12px 16px; }
+}
