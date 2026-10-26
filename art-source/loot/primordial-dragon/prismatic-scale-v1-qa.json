@@ -1,0 +1,21 @@
+{
+  "id": "prismatic-scale",
+  "type": "outfit",
+  "boss": "primordial-dragon",
+  "generator": "built-in image_gen",
+  "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-417f941f-3e1d-415f-81a1-09dc3c5bfd85.png",
+  "master": "art-source/loot/primordial-dragon/prismatic-scale-v1.png",
+  "runtime": "frontend/public/art/loot/prismatic-scale-v1.webp",
+  "prompt": "art-source/loot/primordial-dragon/prismatic-scale-v1-prompt.txt",
+  "width": 480,
+  "height": 480,
+  "bytes": 82594,
+  "alphaRange": [
+    0,
+    254
+  ],
+  "transparentPercent": 51.18,
+  "centralSlotTransparentPercent": null,
+  "sha256": "ab92b018069e9473bbd9173685777bd255c6c8ff362b6453fd226e9faf052805",
+  "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+}

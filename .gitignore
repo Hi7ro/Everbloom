@@ -5,3 +5,6 @@ coverage/
 .DS_Store
 .env
 *.log
+
+# Local beta credentials, runtime accounts and test evidence with tokens
+.local/

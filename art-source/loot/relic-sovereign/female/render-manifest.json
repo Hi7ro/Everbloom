@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-05",
+  "source": "Built-in image_gen; separate render for each item; mechanical WebP resize only.",
+  "items": [
+    {
+      "id": "relic-crown",
+      "presentation": "female",
+      "type": "hair",
+      "boss": "relic-sovereign",
+      "generator": "built-in image_gen",
+      "reference": "/Users/xv7ro/dev/personal/everbloom/frontend/public/art/loot/relic-crown-v1.webp",
+      "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-256ac929-d0a8-4b57-ad39-0f0a0b6688f8.png",
+      "master": "art-source/loot/relic-sovereign/female/relic-crown-female-v1.png",
+      "runtime": "frontend/public/art/loot/relic-crown-female-v1.webp",
+      "prompt": "art-source/loot/relic-sovereign/female/relic-crown-female-v1-prompt.txt",
+      "width": 480,
+      "height": 480,
+      "bytes": 74320,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 57.0,
+      "sha256": "bebc0549f5fc39f4a98ae746f74fcc121874cb025ed1922b151cf99e93f7d41a",
+      "visualReview": "Inspected generated artwork: distinct female silhouette, matching boss material/palette, single isolated hair/crown or fully clothed outfit with no face/skin/mannequin/background/text. Entire item visible; a few ornament tips have tighter margins than requested. Collection illustration only, not a calibrated avatar rig."
+    },
+    {
+      "id": "sovereign-regalia",
+      "presentation": "female",
+      "type": "outfit",
+      "boss": "relic-sovereign",
+      "generator": "built-in image_gen",
+      "reference": "/Users/xv7ro/dev/personal/everbloom/frontend/public/art/loot/sovereign-regalia-v1.webp",
+      "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-ba1b2e0e-9307-4792-85ad-e22550f0f0c8.png",
+      "master": "art-source/loot/relic-sovereign/female/sovereign-regalia-female-v1.png",
+      "runtime": "frontend/public/art/loot/sovereign-regalia-female-v1.webp",
+      "prompt": "art-source/loot/relic-sovereign/female/sovereign-regalia-female-v1-prompt.txt",
+      "width": 480,
+      "height": 480,
+      "bytes": 74144,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 51.45,
+      "sha256": "0399b11b31ba8ea21c6579aa075c6cb5c414cb4de462a035b104c7b8f9c15d73",
+      "visualReview": "Inspected generated artwork: distinct female silhouette, matching boss material/palette, single isolated hair/crown or fully clothed outfit with no face/skin/mannequin/background/text. Entire item visible; a few ornament tips have tighter margins than requested. Collection illustration only, not a calibrated avatar rig."
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "id": "ember-striker",
+  "presentation": "male",
+  "reviewedAt": "2026-10-05T20:52:54.730046+00:00",
+  "generator": "Built-in image_gen; existing generation preserved during this read-only pixel review",
+  "prompt": "body-v2.prompt.txt",
+  "master": "body-master.png",
+  "output": "frontend/public/art/characters/ember-striker-body-v2.webp",
+  "processing": "Existing generated PNG and current runtime WebP inspected without any new rendering or pixel edits. Runtime dimensions and alpha verified; original encoder parameters were not reconstructed.",
+  "sourceQa": {
+    "width": 1024,
+    "height": 1536,
+    "hasAlpha": true,
+    "bytes": 2087126,
+    "sha256": "588f5e5f138b587ed84ee021d09615b67fce963c87b921d74235cbcd188a3b4a",
+    "alphaRange": [
+      0,
+      254
+    ],
+    "transparentPixels": 829894,
+    "partialAlphaPixels": 742970,
+    "solidEdgePixels": 0,
+    "contentBoundsAlphaOver128": {
+      "left": 99,
+      "top": 128,
+      "rightExclusive": 978,
+      "bottomExclusive": 1437
+    },
+    "clearMarginsAlphaOver128": {
+      "left": 99,
+      "top": 128,
+      "right": 46,
+      "bottom": 99
+    }
+  },
+  "outputQa": {
+    "width": 600,
+    "height": 900,
+    "hasAlpha": true,
+    "bytes": 119418,
+    "sha256": "293adc821789c57a5feafc97607ea2502d9f5b94f59ac169d9647b270ec3d300",
+    "alphaRange": [
+      0,
+      254
+    ],
+    "transparentPixels": 283698,
+    "partialAlphaPixels": 256302,
+    "solidEdgePixels": 0,
+    "contentBoundsAlphaOver128": {
+      "left": 58,
+      "top": 75,
+      "rightExclusive": 573,
+      "bottomExclusive": 842
+    },
+    "clearMarginsAlphaOver128": {
+      "left": 58,
+      "top": 75,
+      "right": 27,
+      "bottom": 58
+    }
+  },
+  "anchors": "body-v2.anchors.json",
+  "visualReview": "Inspected final runtime image individually: complete fully clothed body only, no head/hair/visible skin, gloves cover fingers, distinct outfit material and silhouette, feet/cape in frame. This is an isolated body review, not acceptance of every head/collar combination.",
+  "composedAvatarValidation": "Pending separate root visual/regression acceptance; see docs/VALIDATION.md.",
+  "generationHistory": {
+    "priorMaster": "body-before-gloves.png",
+    "correctionPrompt": "body-gloves.prompt.txt",
+    "currentMaster": "body-master.png",
+    "correctionScope": "Generated edit covers exposed finger/thumb skin with matching black gloves; current runtime inspected with closed gloves.",
+    "priorMasterSha256": "19a29246b421b35cedcd1d074e00d0de12e039d4dfcd24f5157cd1f5f5ea5318"
+  }
+}

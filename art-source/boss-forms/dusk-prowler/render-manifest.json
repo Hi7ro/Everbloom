@@ -1,0 +1,101 @@
+{
+  "date": "2026-10-05",
+  "assets": [
+    {
+      "id": "dusk-prowler",
+      "difficulty": "normal",
+      "master": "art-source/boss-forms/dusk-prowler/normal.png",
+      "runtime": "frontend/public/art/bosses/dusk-prowler-normal-v1.webp",
+      "prompt": "art-source/boss-forms/dusk-prowler/prompts.json",
+      "generator": "built-in image_gen",
+      "width": 900,
+      "height": 900,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentPercent": 61.59,
+      "solidBounds": [
+        82,
+        111,
+        819,
+        793
+      ],
+      "export": "774px image with 63px fully transparent border, WebP quality85 alpha100",
+      "runtimeBytes": 171494,
+      "runtimeSha256": "88f0bc23cbad3df98eb4db7ba0a733f70ac6b54432757f01765b91c69b237b32"
+    },
+    {
+      "id": "dusk-prowler",
+      "difficulty": "hard",
+      "master": "art-source/boss-forms/dusk-prowler/hard.png",
+      "runtime": "frontend/public/art/bosses/dusk-prowler-hard-v1.webp",
+      "prompt": "art-source/boss-forms/dusk-prowler/prompts.json",
+      "generator": "built-in image_gen",
+      "width": 900,
+      "height": 900,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentPercent": 55.23,
+      "solidBounds": [
+        70,
+        99,
+        831,
+        816
+      ],
+      "export": "774px image with 63px fully transparent border, WebP quality85 alpha100",
+      "runtimeBytes": 227914,
+      "runtimeSha256": "35b31aa16e724acc9212c180b3d0da89b7f782d11ef5963401b3d5c69bc8c6ee"
+    },
+    {
+      "id": "dusk-prowler",
+      "difficulty": "epic",
+      "master": "art-source/boss-forms/dusk-prowler/epic.png",
+      "runtime": "frontend/public/art/bosses/dusk-prowler-epic-v1.webp",
+      "prompt": "art-source/boss-forms/dusk-prowler/prompts.json",
+      "generator": "built-in image_gen",
+      "width": 900,
+      "height": 900,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentPercent": 50.08,
+      "solidBounds": [
+        72,
+        75,
+        832,
+        821
+      ],
+      "export": "774px image with 63px fully transparent border, WebP quality85 alpha100",
+      "runtimeBytes": 283354,
+      "runtimeSha256": "6a9db94109a4f79ceabb0650b527aae98cb3cea09982fb7d3ba2e574bdbe42e2"
+    },
+    {
+      "id": "dusk-prowler",
+      "difficulty": "ultimate",
+      "master": "art-source/boss-forms/dusk-prowler/ultimate.png",
+      "runtime": "frontend/public/art/bosses/dusk-prowler-ultimate-v1.webp",
+      "prompt": "art-source/boss-forms/dusk-prowler/prompts.json",
+      "generator": "built-in image_gen",
+      "width": 900,
+      "height": 900,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentPercent": 49.1,
+      "solidBounds": [
+        64,
+        85,
+        836,
+        825
+      ],
+      "export": "774px image with 63px fully transparent border, WebP quality85 alpha100",
+      "runtimeBytes": 267810,
+      "runtimeSha256": "9bf3e2f0b221641d74ae628d5b452e54ff9dcc091d141b39469f20ffc61236d5"
+    }
+  ]
+}

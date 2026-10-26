@@ -1,0 +1,38 @@
+{
+  "width": 600,
+  "height": 900,
+  "neckX": 326,
+  "neckY": 115,
+  "footY": 847,
+  "collarFront": [
+    {
+      "x": 276,
+      "y": 90
+    },
+    {
+      "x": 307,
+      "y": 109
+    },
+    {
+      "x": 326,
+      "y": 115
+    },
+    {
+      "x": 370,
+      "y": 113
+    },
+    {
+      "x": 391,
+      "y": 190
+    },
+    {
+      "x": 267,
+      "y": 190
+    }
+  ],
+  "id": "frost-scholar",
+  "coordinateSpace": "Current runtime WebP source pixels",
+  "authority": "frontend/src/app/domain/character-outfits.ts",
+  "neckAnchor": "Front collar rim where it meets selected head jaw; renderer handles nine portrait-unit inset when source has painted neck.",
+  "note": "Snapshot of current runtime registration. Composed avatar visual validation is separate."
+}

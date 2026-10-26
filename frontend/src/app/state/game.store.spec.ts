@@ -7,6 +7,7 @@ import { BROWSER_STORAGE } from '../data/browser-storage';
 import { JourneyStore } from './journey.store';
 import { GAME_DAY_CLOCK } from '../data/game-clock';
 import { GAME_PROGRESS_KEY } from '../data/game-progress.storage';
+import { RewardNotifications } from './reward-notifications';
 
 describe('GameStore with repository boundary', () => {
   let day = '2026-09-08';
@@ -242,6 +243,7 @@ describe('GameStore with repository boundary', () => {
     const store = TestBed.inject(GameStore);
     const feedback = TestBed.inject(ProgressFeedback);
     const celebrate = vi.spyOn(feedback, 'celebrate');
+    const notifications = TestBed.inject(RewardNotifications);
     await store.load();
     expect(store.ownedAuras()).toEqual([]);
     expect(store.canEquipAura('moss-spirit')).toBe(false);
@@ -255,6 +257,8 @@ describe('GameStore with repository boundary', () => {
     expect(store.ownedAuras().map((aura) => aura.id)).toEqual(['moss-spirit']);
     expect(store.canEquipAura('moss-spirit')).toBe(true);
     expect(store.canEquipAura('aurora')).toBe(false);
+    expect(notifications.current()?.name).toBe('Moosseele');
+    notifications.dismiss();
     expect(celebrate).toHaveBeenCalledExactlyOnceWith(
       expect.arrayContaining([
         expect.objectContaining({
@@ -288,6 +292,7 @@ describe('GameStore with repository boundary', () => {
         .filter((milestone) => milestone.kind === 'aura-unlock'),
     ).toEqual([]);
     expect(store.snapshot()!.unlockedAuras).toEqual(['moss-spirit']);
+    expect(notifications.current()).toBeNull();
   });
 
   it('rejects an unearned aura without changing identity, XP or ownership', async () => {

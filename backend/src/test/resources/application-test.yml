@@ -4,10 +4,13 @@ spring:
   sql:
     init:
       mode: always
+      schema-locations: classpath:schema.sql,classpath:game-test-schema.sql,classpath:db/migration/V5__billing.sql
   datasource:
-    url: jdbc:h2:mem:everbloom;MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DATABASE_TO_LOWER=TRUE
+    url: jdbc:h2:mem:everbloom-${random.uuid};MODE=PostgreSQL;DB_CLOSE_DELAY=-1;DATABASE_TO_LOWER=TRUE
     username: sa
     password:
+  mail:
+    test-connection: false
 server:
   servlet:
     session:
@@ -15,5 +18,10 @@ server:
         secure: false
 app:
   auth:
+    public-base-url: http://127.0.0.1:4201
     login-limit: 1000
     register-limit: 1000
+    request-limit: 1000
+    ip-limit: 1000
+  mail:
+    mode: outbox

@@ -9,6 +9,12 @@ import { JourneyStore } from '../../state/journey.store';
 import { BROWSER_STORAGE } from '../../data/browser-storage';
 import { provideRouter } from '@angular/router';
 import { GAME_DAY_CLOCK } from '../../data/game-clock';
+import { createMockSnapshot } from '../../data/mock-data';
+import { SKILLS } from '../../domain/catalog';
+import { ACCOUNT_MODE } from '../../data/account-mode';
+import { MembershipStore } from '../../state/membership.store';
+import { AuthStore } from '../../state/auth.store';
+import { signal } from '@angular/core';
 
 describe('Dashboard activity flow', () => {
   let day = '2026-09-08';
@@ -18,11 +24,107 @@ describe('Dashboard activity flow', () => {
       imports: [Dashboard],
       providers: [
         provideRouter([]),
+        { provide: MembershipStore, useValue: { load: vi.fn().mockResolvedValue(true), bonusPercent: () => 0, active: () => false, advancedBosses: signal(false) } },
         { provide: GAME_DAY_CLOCK, useValue: () => day },
         { provide: GAME_REPOSITORY, useClass: MockGameRepository },
         { provide: BROWSER_STORAGE, useValue: null },
       ],
     }).compileComponents();
+  });
+  it('renders the right symbol and activity choice for every supported quest skill', async () => {
+    const snapshot = createMockSnapshot();
+    snapshot.quests = SKILLS.map((skill) => ({
+      id: `daily:${snapshot.dayKey}:${skill.id}`,
+      title: `Zeit für ${skill.name}`,
+      description: `5 Minuten ${skill.name}`,
+      skillId: skill.id,
+      targetMinutes: 5,
+      progressMinutes: 0,
+      bonusXp: 40,
+      claimed: false,
+    }));
+    vi.spyOn(TestBed.inject(GAME_REPOSITORY), 'load').mockResolvedValue(snapshot);
+    const fixture = TestBed.createComponent(Dashboard);
+    await fixture.whenStable();
+    const root = fixture.nativeElement as HTMLElement;
+    const dialog = root.querySelector('dialog')!;
+    dialog.showModal = vi.fn();
+    const rows = root.querySelectorAll('.quest-row');
+    expect(rows).toHaveLength(SKILLS.length);
+    SKILLS.forEach((skill, index) => {
+      expect(rows[index].querySelector('.quest-symbol')?.textContent?.trim()).toBe(skill.symbol);
+      expect(rows[index].querySelector('h3')?.textContent).toBe(`Zeit für ${skill.name}`);
+      rows[index].querySelector<HTMLButtonElement>('button')!.click();
+      expect(fixture.componentInstance.selectedSkill()).toBe(skill.id);
+      expect(fixture.componentInstance.minutes()).toBe(5);
+    });
+    expect(root.querySelector('#quests')?.textContent).toContain('Beispielquests');
+    expect(root.querySelector('#quests a[href="/onboarding"]')).toBeNull();
+  });
+
+  it.each([1, 2, 3])('shows a server board with %i quests and explains the free focus rules', async (count) => {
+    TestBed.overrideProvider(ACCOUNT_MODE, { useValue: true });
+    TestBed.overrideProvider(AuthStore, { useValue: { epoch: signal(1), user: signal({ id: 'quest-owner' }) } });
+    TestBed.overrideProvider(JourneyStore, { useValue: { activeSkillIds: () => ['reading'], configured: () => false } });
+    const snapshot = createMockSnapshot();
+    snapshot.quests = snapshot.quests.slice(0, count);
+    snapshot.quests[0].claimed = true;
+    vi.spyOn(TestBed.inject(GAME_REPOSITORY), 'load').mockResolvedValue(snapshot);
+    const fixture = TestBed.createComponent(Dashboard);
+    await fixture.whenStable();
+    const root = fixture.nativeElement as HTMLElement;
+    expect(root.querySelector('#quests .count-badge')?.textContent?.trim()).toBe(`1 / ${count}`);
+    expect(root.querySelector('#quests .quest-symbol')?.textContent?.trim()).toBe('✓');
+    const guidance = root.querySelector('#quests .section-foot')?.textContent;
+    expect(guidance).toContain('kostenlose Quests');
+    expect(guidance).toContain('ab morgen');
+    expect(guidance).not.toContain('Beispielquests');
+    expect(root.querySelector('#quests a')?.getAttribute('href')).toBe('/onboarding');
+  });
+
+  it('counts earned boss auras without inflating the separate activity collection and links to the full boss collection', async () => {
+    const snapshot = createMockSnapshot();
+    snapshot.unlockedAuras = ['guardian', 'aurora', 'guardian', 'sage', 'unknown'];
+    snapshot.bossProgress = { clearedEncounterIds: ['mosswarden:ultimate'], unlockedCosmetics: ['ancient-guardian'] };
+    vi.spyOn(TestBed.inject(GAME_REPOSITORY), 'load').mockResolvedValue(snapshot);
+    const fixture = TestBed.createComponent(Dashboard);
+    await fixture.whenStable();
+    const root = fixture.nativeElement as HTMLElement;
+    expect(root.querySelector('.collection-panel summary')?.textContent).toContain('2 verdiente Auren');
+    expect(root.querySelector('app-aura-collection .count')?.textContent).toContain('1 / 5');
+    expect(root.querySelector('.boss-collection-link')?.getAttribute('href')).toBe('/character/create#boss-loot');
+    expect(root.querySelector('.battle-link')?.textContent).toContain('10 Bosse von Level 10 bis 100');
+    expect(root.querySelector('.battle-link')?.textContent).not.toContain('ohne Belohnungen');
+  });
+
+  it('connects the horizon to confirmed Plus access and removes its entry promise when that access ends', async () => {
+    TestBed.overrideProvider(ACCOUNT_MODE, { useValue: true });
+    TestBed.overrideProvider(AuthStore, { useValue: { epoch: signal(1), user: signal({ id: 'horizon-owner' }) } });
+    TestBed.overrideProvider(JourneyStore, { useValue: { activeSkillIds: () => ['reading'], configured: () => false } });
+    const plusAccess = signal(false);
+    TestBed.overrideProvider(MembershipStore, { useValue: { load: vi.fn().mockResolvedValue(true),
+      bonusPercent: () => 0, active: () => false, advancedBosses: plusAccess } });
+    const snapshot = createMockSnapshot();
+    snapshot.character.totalXp = 413000;
+    snapshot.bossProgress = { clearedEncounterIds: ['mosswarden:normal', 'emberwyrm:normal',
+      'dusk-prowler:normal', 'frost-titan:normal', 'cloud-sovereign:normal'], unlockedCosmetics: [] };
+    vi.spyOn(TestBed.inject(GAME_REPOSITORY), 'load').mockResolvedValue(snapshot);
+    const fixture = TestBed.createComponent(Dashboard);
+    await fixture.whenStable();
+    const horizon = fixture.nativeElement.querySelector('app-progression-horizon') as HTMLElement;
+    expect(horizon.textContent).toContain('Die Blutmondregentin');
+    expect(horizon.textContent).not.toContain('jetzt antreten');
+    expect(horizon.querySelector('a')!.getAttribute('href')).toBe('/membership');
+    plusAccess.set(true);
+    await fixture.whenStable();
+    expect(horizon.textContent).toContain('jetzt antreten');
+    expect(horizon.querySelector('a')!.getAttribute('href')).toBe('/battle');
+    plusAccess.set(false);
+    await fixture.whenStable();
+    expect(horizon.textContent).not.toContain('jetzt antreten');
+    expect(horizon.querySelector('a')!.getAttribute('href')).toBe('/membership');
+    expect(fixture.componentInstance.store.snapshot()!.character.totalXp).toBe(413000);
+    expect(fixture.componentInstance.store.snapshot()!.bossProgress!.unlockedCosmetics).toEqual([]);
   });
   it('connects the actual form to XP, quests and boss state', async () => {
     const fixture = TestBed.createComponent(Dashboard);
@@ -54,10 +156,10 @@ describe('Dashboard activity flow', () => {
       root
         .querySelector('app-character-portrait .illustrated-portrait')
         ?.getAttribute('data-gesture'),
-    ).toBe('idle');
+    ).toBe('breathe');
     expect(
-      root.querySelector('app-character-portrait .original-figure image')?.getAttribute('href'),
-    ).toBe('/art/characters/emerald-knight-original.png');
+      root.querySelector('app-character-portrait [data-layer="outfit"] image')?.getAttribute('href'),
+    ).toBe('/art/characters/emerald-knight-body-v2.webp');
     expect(dialog.close).toHaveBeenCalledOnce();
   });
   it('keeps invalid input in the form and does not award XP', async () => {
@@ -113,19 +215,20 @@ describe('Dashboard activity flow', () => {
     const portrait = fixture.debugElement.query(By.directive(CharacterPortrait))
       .componentInstance as CharacterPortrait;
     const outfit = root.querySelector('[data-layer="outfit"] image');
-    const hair = root.querySelector('[data-layer="hair"] image');
+    const head = root.querySelector('[data-layer="head"] image');
     const care = TestBed.inject(DailyCareStore);
     care.save('rest', 'low');
     await fixture.whenStable();
     expect(portrait.interest()).toBe('recovery');
-    expect(root.querySelector('.illustrated-portrait')?.getAttribute('data-gesture')).toBe('idle');
+    expect(root.querySelector('.illustrated-portrait')?.getAttribute('data-gesture')).toBe('breathe');
     expect(root.querySelector('.illustrated-portrait')?.getAttribute('data-renderer')).toBe(
       'layered',
     );
     expect(root.querySelector('[data-layer="outfit"] image')).toBe(outfit);
-    expect(root.querySelector('[data-layer="hair"] image')).toBe(hair);
-    expect(outfit?.getAttribute('href')).toBe('/art/characters/urban-ranger-sheet.png');
-    expect(hair?.getAttribute('href')).toBe('/art/characters/frost-scholar-sheet.png');
+    expect(root.querySelector('[data-layer="head"] image')).toBe(head);
+    expect(root.querySelector('[data-layer="hair"], [data-layer="face"], [data-layer="scalp"]')).toBeNull();
+    expect(outfit?.getAttribute('href')).toBe('/art/characters/urban-ranger-body-v2.webp');
+    expect(head?.getAttribute('href')).toBe('/art/characters/frost-scholar-sheet.png');
     expect(root.querySelector('app-chibi')).toBeNull();
     expect(fixture.nativeElement.querySelector('.avatar-message').textContent).toContain(
       'Heute hat Ruhe Platz',
@@ -261,7 +364,7 @@ describe('Dashboard activity flow', () => {
     expect(component.store.snapshot()!.activities).toEqual([]);
     expect(component.store.snapshot()!.unlockedAuras).toEqual([]);
     expect(component.store.snapshot()!.boss.hp).toBe(1460);
-    expect(root.querySelector('app-aura-collection .count')?.textContent).toContain('0 / 3');
+    expect(root.querySelector('app-aura-collection .count')?.textContent).toContain('0 / 5');
     expect(root.querySelector('.feedback')?.textContent).toContain('zurückgesetzt');
   });
 

@@ -1,5 +1,7 @@
 import { DOCUMENT } from '@angular/common';
-import { inject, Injectable, InjectionToken, OnDestroy, signal } from '@angular/core';
+import { effect, inject, Injectable, InjectionToken, OnDestroy, signal } from '@angular/core';
+import { ACCOUNT_MODE } from '../data/account-mode';
+import { AuthStore } from './auth.store';
 import { BROWSER_STORAGE } from '../data/browser-storage';
 import {
   DailyCareMode,
@@ -21,7 +23,9 @@ export const DAY_CLOCK = new InjectionToken<() => string>('DAY_CLOCK', {
 /** Voluntary daily preference only. Never reads or writes game progression. */
 @Injectable({ providedIn: 'root' })
 export class DailyCareStore implements OnDestroy {
-  private readonly storage = inject(BROWSER_STORAGE);
+  readonly accountMode = inject(ACCOUNT_MODE);
+  private readonly auth = this.accountMode ? inject(AuthStore) : null;
+  private readonly storage = this.accountMode ? null : inject(BROWSER_STORAGE);
   private readonly clock = inject(DAY_CLOCK);
   private readonly document = inject(DOCUMENT);
   private readonly dayState = signal('');
@@ -42,6 +46,14 @@ export class DailyCareStore implements OnDestroy {
   };
 
   constructor() {
+    if (this.auth)
+      effect(() => {
+        this.auth!.epoch();
+        this.checkInState.set(null);
+        this.skippedState.set(false);
+        this.memoryOverride = false;
+        this.messageState.set('Dein Tagesgefühl bleibt nur für diese Sitzung auf diesem Gerät.');
+      });
     this.refresh();
     this.document.defaultView?.addEventListener('focus', this.onFocus);
     this.document.addEventListener('visibilitychange', this.onVisibility);

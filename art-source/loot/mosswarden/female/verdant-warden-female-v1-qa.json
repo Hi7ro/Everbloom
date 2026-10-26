@@ -1,0 +1,22 @@
+{
+  "id": "verdant-warden",
+  "presentation": "female",
+  "type": "outfit",
+  "boss": "mosswarden",
+  "generator": "built-in image_gen",
+  "reference": "/Users/xv7ro/dev/personal/everbloom/frontend/public/art/loot/verdant-warden-v1.webp",
+  "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-4bb836ae-d343-4ccf-8278-5144fe98d756.png",
+  "master": "art-source/loot/mosswarden/female/verdant-warden-female-v1.png",
+  "runtime": "frontend/public/art/loot/verdant-warden-female-v1.webp",
+  "prompt": "art-source/loot/mosswarden/female/verdant-warden-female-v1-prompt.txt",
+  "width": 480,
+  "height": 480,
+  "bytes": 50540,
+  "alphaRange": [
+    0,
+    254
+  ],
+  "transparentPercent": 65.47,
+  "sha256": "577a48b7d3b6208246ee9e504706891b7c393a10115868ad7da5e63e2dae1169",
+  "visualReview": "Inspected generated artwork: distinct female silhouette, matching boss material/palette, single isolated hair/crown or fully clothed outfit with no face/skin/mannequin/background/text. Entire item visible; a few ornament tips have tighter margins than requested. Collection illustration only, not a calibrated avatar rig."
+}

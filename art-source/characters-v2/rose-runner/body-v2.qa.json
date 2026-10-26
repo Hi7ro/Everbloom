@@ -1,0 +1,69 @@
+{
+  "id": "rose-runner",
+  "generatedAt": "2026-10-05",
+  "generator": "Built-in image_gen",
+  "reference": "frontend/public/art/characters/rose-runner-sheet.png",
+  "prompt": "body-v2.prompt.txt",
+  "master": "body-master.png",
+  "output": "frontend/public/art/characters/rose-runner-body-v2.webp",
+  "processing": "Unmodified generated PNG master; mechanical proportional fit to588x756 centered on transparent700x900; WebP quality88 alpha100. No masks, retouching or recoloring.",
+  "resize": {
+    "width": 540,
+    "height": 756,
+    "offsetX": 80,
+    "offsetY": 72
+  },
+  "sourceQa": {
+    "width": 1060,
+    "height": 1484,
+    "hasAlpha": true,
+    "bytes": 1347349,
+    "sha256": "93bfdde3a16b376ad99327aca03e32bf3b395ca3a997115413551dbfae67d30d",
+    "transparentPixels": 945118,
+    "partialAlphaPixels": 627183,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 89,
+      "top": 19,
+      "right": 1013,
+      "bottom": 1435
+    },
+    "clearMargins": {
+      "left": 89,
+      "top": 19,
+      "right": 46,
+      "bottom": 48
+    }
+  },
+  "outputQa": {
+    "width": 700,
+    "height": 900,
+    "hasAlpha": true,
+    "bytes": 77738,
+    "sha256": "85d89d8ceb7a36e869d58c932f53f6d4d23ecc984b0a91b27f8d402c87c05c14",
+    "transparentPixels": 466477,
+    "partialAlphaPixels": 161579,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 125,
+      "top": 127,
+      "right": 552,
+      "bottom": 803
+    },
+    "clearMargins": {
+      "left": 125,
+      "top": 127,
+      "right": 147,
+      "bottom": 96
+    }
+  },
+  "visualReview": "Body only, fully covered limbs, complete shoes, no head/hair/skin, right-facing three-quarter; six distinct outfit identities. Reviewed together at280x360 on dark background. Collar and foot anchors calibrated against final export.",
+  "anchors": "body-v2.anchors.json",
+  "collarCalibration": {
+    "date": "2026-10-05",
+    "authority": "frontend/src/app/domain/character-outfits.ts",
+    "anchors": "body-v2.anchors.json",
+    "previousAnchors": "body-v2.anchors-before-collar-calibration.json",
+    "scope": "Metadata-only alignment with current runtime collar polygon and registration; no image or code changes."
+  }
+}

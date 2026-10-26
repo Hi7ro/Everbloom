@@ -17,7 +17,7 @@ export interface GameProgressJournal {
 }
 export interface ProgressPersistenceStatus {
   readonly state:
-    'saved' | 'session' | 'unavailable' | 'corrupt' | 'unsupported' | 'limit' | 'clock';
+    'saved' | 'server' | 'session' | 'unavailable' | 'corrupt' | 'unsupported' | 'limit' | 'clock';
   readonly message: string | null;
 }
 

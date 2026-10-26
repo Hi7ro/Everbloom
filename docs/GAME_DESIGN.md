@@ -1,6 +1,9 @@
-# Game Design · V0.4
+# Game Design · V0.5
 
-Stand: 2026-10-04. **Verbindliche Produktrichtung, vorläufiges Balancing.**
+Stand: 2026-10-05. **Verbindliche Produktrichtung, vorläufiges Balancing.**
+
+**Herovera** ist seit dem 8. Oktober 2026 der gewählte öffentliche App-Name. Everbloom bleibt
+in internen technischen Kennungen erhalten. Marken-/Domainprüfung und Store-Registrierung sind offen.
 
 ## Vision und Core Loop
 
@@ -28,9 +31,8 @@ Stimmungsdiagnose. Ein umfassendes Bedürfnisse-/Mood-System ist noch nicht impl
 Die illustrierten Figuren zeigen derzeit ruhige Atmung/Idle; eine kurze Reaktionszeile passt
 zur letzten belohnten Aktivität oder zum freiwilligen Tages-Check-in. Ausgearbeitete Gesten und
 Gesichtsausdrücke sind noch nicht für alle Figuren vorhanden. Vier Tagesmodi und drei
-Energieangaben sind lokal gespeichert; Auslassen bleibt folgenlos. Der Check-in ändert keine XP,
-Quests, Bosswerte oder Momentum. Reichere Avatarreaktionen sind M2. Backend, Authentifizierung und Serverpersistenz
-bleiben eigenständige Bestandteile des bestehenden M1b-Plans.
+Energieangaben bleiben im Kontomodus nur für die Sitzung auf dem Gerät; Auslassen bleibt folgenlos. Der Check-in ändert keine XP,
+Quests, Bosswerte oder Momentum. Reichere Avatarreaktionen sind M2. Backend, Authentifizierung und Serverpersistenz sind in der lokalen M1b-Beta angebunden.
 
 ## Einstieg und Accountbindung der Produktfassung
 
@@ -40,12 +42,12 @@ Ein Account ist zwingende Voraussetzung für einen eigenen Charakter. Der produk
 Fortschritt und verdiente Belohnungen sind an diesen Account gebunden und bleiben bei einem Wechsel
 von den Daten anderer Accounts getrennt.
 
-Die heutige lokale Erstellung ohne Login dient ausschließlich dem Entwicklungsprototyp. Sie ist
-kein Accountsystem und kein erlaubter produktiver Gastmodus. Frontend-Routenschutz und geschützte
-Create-API werden im Auth-/Backend-Slice umgesetzt; der Server bestimmt den Besitzer anhand der
-Session. Ohne gültige Anmeldung darf kein Charakter angelegt werden. Auth-Anbieter und Verfahren
-sind noch nicht festgelegt. Eine öffentliche reine Stilvorschau ohne gespeicherten Charakter wäre
-allenfalls eine spätere Option, kein beschlossenes Gastspiel.
+Die lokale Beta implementiert diesen Ablauf mit E-Mail/Passwort, bestätigter E-Mail-Adresse,
+persistenter HttpOnly-Session und einer geschützten Game-API. Der Server bestimmt den Besitzer;
+Clientwerte können keine fremde Figur lesen oder verändern. Neue Accounts starten mit Level 1
+und 0 XP, ohne den früheren Level-12-Demoseed. Die öffentliche Vorschau `/demo` bleibt isoliert.
+Native Projekte sind angelegt; Store-Builds und Live-Betrieb sind noch nicht abgenommen.
+Details und Freigabeschritte: `BETA_RELEASE.md`.
 
 ## Identität und Art Direction
 
@@ -77,11 +79,22 @@ zurück; Darstellung und Anpassung verändern keine Spielprogression.
 | Weiblich | Nachtklinge, Sternenweberin, Morgenhüterin, Rosenläuferin, Leerenweberin, Himmelsjägerin |
 
 Frisur und Outfit sind unabhängig innerhalb der passenden Darstellung kombinierbar. Die konkrete
-Garderobe steht im [Art Guide](ART_DIRECTION.md#aktueller-bild--und-creator-stand). Smaragdwächter,
-Urbaner Abenteurer, Nachtklinge und Sternenweberin verwenden ohne Modul-/Farb-Overrides ihre vier
-unveränderten Original-PNGs mit separater Hintergrundmaske. Anpassungen nutzen neu erstellte
-modulare Bildvarianten; diese sind keine pixelidentische Zerlegung der Originale. Zwölf Figuren-Rigs
-und zwei Basiskopf-Rigs unterstützen getrennte Körper-, Gesicht-/Basiskopf- und Haarmasken.
+Garderobe steht im [Art Guide](ART_DIRECTION.md#aktueller-bild--und-creator-stand).
+Die vier ursprünglichen PNGs bleiben unverändert als Stilreferenz archiviert. Der aktuelle
+Charakterausbau stellt alle zwölf Vorlagen auf denselben Layer-Renderer um: zwölf separat
+gerenderte, vollständig bekleidete Körper-Sprites mit eigenen Outfitankern werden mit den
+jeweils einem vollständigen gemalten Kopf aus der gewählten Frisurenvariante kombiniert. Dadurch wechselt eine Farb- oder Frisurwahl
+nicht mehr zwischen Original-Gesamtbild und einer anderen Komposition. Die neuen Teile sind
+keine pixelidentische Zerlegung der vier Originalzeichnungen. Die abschließende Sichtprüfung
+aller Kragen, Haare und Kombinationen auf Handy/Tablet ist noch offen.
+
+Die Frisurenwahl entscheidet über **einen vollständigen gemalten Kopf** einschließlich
+zusammengehöriger Haare, Gesicht, Ohren, Kiefer und Augen. Kleidung bleibt unabhängig.
+Die Laufzeit verwendet weder ein fremdes Vorlagengesicht noch eine zusätzliche Stirnfüllung.
+Ohne explizite Augenfarbe gilt die gemalte Augenfarbe des gewählten Kopfes; eine gesetzte
+Augenfarbe bleibt erhalten. Haut-, Augen- und Haartönung verwenden Regionen desselben Bildes.
+Ein eigener Gesichtswechsel unabhängig von der Frisur ist im aktuellen Renderer nicht vorhanden.
+Getrennte Gesicht-/Haarteile bleiben ein späterer Produktionsweg mit exakt passenden Layern.
 
 Name und Auswahlwerte werden validiert. Profil-Schema 2 speichert nur Name/Aussehen; Interessen
 werden separat gespeichert. Aktivitätsjournal und daraus rekonstruierte XP/Belohnungen bleiben
@@ -90,10 +103,10 @@ Migrations-/Normalisierungspfad gelesen; alte technische Felder sind keine weite
 Editor-Modi. Ein bestätigter Reset erhält das übrige Profil, entfernt aber verdiente Auren. Gesperrter Speicher
 wird als Sitzungsfallback erklärt.
 
-Ruhige Ganzkörperatmung ist vorhanden: Originale bewegen sich geschlossen, modulare Körper-/Kopfteile
-atmen gekoppelt. Bewegung lässt sich abschalten und respektiert reduzierte Bewegung. Interessen-
-bezogene Gesten, Gesichtsmimik und visuelle Entwicklung in den vorläufigen Levelbereichen 1–9,
-10–24 und 25+ bleiben die weitere Richtung, ohne Stats oder Stilfreischaltungen zu verändern.
+Ruhige Ganzkörperatmung koppelt Körper-/Kopfteile. Bewegung lässt sich abschalten und
+respektiert reduzierte Bewegung. SVG-Porträts führen zurückhaltende interessenbezogene Gesten
+aus; Pixi nutzt Atmung und Kampfreaktionen. Gesichtsmimik und professionell geriggte
+Körperanimationen bleiben weitere Arbeit, ohne Stats oder Stilfreischaltungen zu verändern.
 
 ### Onboarding und Fokus
 
@@ -101,11 +114,13 @@ bezogene Gesten, Gesichtsmimik und visuelle Entwicklung in den vorläufigen Leve
 stehen zur Wahl: Bewegung, Kampfsport, Ruhe & Erholung, Wissen & Lernen, Kreativität, Beruf & Projekte
 und Alltag. Mindestens ein Interesse, eine dazugehörige primäre Richtung und 1–6 aktive Skills aus
 dem 14er-Katalog werden validiert. Die Startauswahl umfasst Calisthenics, Running, Meditation und
-Programming. Änderungen beeinflussen Auswahl und Darstellung, niemals XP oder Rewards.
+Programming. Änderungen vergeben selbst keine XP oder Rewards; sie beeinflussen Darstellung,
+Vorschläge und den nächsten noch unberührten persönlichen Tagesquestplan.
 
-Die Präferenzen werden getrennt als `everbloom.journey.v1` lokal gespeichert. Überspringen und spätere
+Im Account werden Präferenzen über die Journey-API serverseitig gespeichert, getrennt vom Profil.
+Nur der historische lokale Testadapter verwendet `everbloom.journey.v1`. Überspringen und spätere
 Änderung bleiben möglich; ein Abstecher zum Creator erhält den laufenden Onboarding-Entwurf in der
-Sitzung. Das ist noch kein synchronisiertes Accountprofil; Fortschritt wird separat lokal gespeichert.
+Sitzung. Ein bereits begonnener Tagesquestplan bleibt bei einer Fokusänderung erhalten.
 
 ### Equipment-Ziel
 
@@ -136,15 +151,18 @@ testbare Kalibrierungswerte, keine finalen Versprechen.
 
 Ein Eintrag wird atomar verbucht. Wiederholung derselben Request-ID gibt keine zweite Belohnung.
 Aktivitäten bleiben auch über dem Reward-Limit im Verlauf, Questfortschritt zählt nur belohnte Minuten.
-Der erste belohnte Mooswächter-Sieg vergibt einmalig die kosmetische Aura Moosseele. Ein zusätzlicher
-Boss-XP-Bonus und Item-Loot sind noch nicht implementiert.
+Der erste belohnte Wochenboss-Sieg über den Mooswächter vergibt einmalig die kosmetische Aura
+Moosseele. Dieser Wochenboss gibt keinen zusätzlichen XP-Bonus; die getrennten Kampagnenbegegnungen
+vergeben ihre festen kosmetischen Erstabschluss-Belohnungen.
 
 Calisthenics gibt weiterhin 4 XP pro belohnter Minute. Das tägliche Reward-Limit beträgt jetzt
-90 Minuten und gilt über alle Einträge desselben Tages hinweg. XP-Raten aller Skills, Questboni
-und der Faktor von 2 Boss-Schaden pro Aktivitäts-XP bleiben unverändert. Daraus entstehen mit
+90 Minuten und gilt über alle Einträge desselben Tages hinweg. XP-Raten aller Skills
+und der Faktor von 2 Boss-Schaden pro Aktivitäts-XP bleiben unverändert. Neue persönliche
+Tagesquests erhalten einen beim Erstellen festgelegten, levelabhängigen Bonus gemäß der Regel
+unten; bereits begonnene und klassische Beispielquests behalten ihre gespeicherten Boni. Daraus entstehen mit
 Calisthenics höchstens `90 × 4 × 2 = 720` Boss-Schaden pro Tag, begrenzt auf die verbleibenden HP.
 
-Die folgende Kalibrierung verwendet jeweils 60 bzw. 90 vollständig belohnte Calisthenics-Minuten:
+Die folgende historische Kalibrierung des klassischen Beispielboards verwendet jeweils 60 bzw. 90 vollständig belohnte Calisthenics-Minuten:
 240 bzw. 360 Aktivitäts-XP und einmalig 50 zusätzliche Charakter-XP aus der Tagesquest. Jeder
 Prozentwert bezieht sich auf die **gesamte XP-Spanne eines Levels**, nicht auf den noch fehlenden
 Teil des Balkens. Der Questbonus zählt nur für den Charakter.
@@ -155,6 +173,12 @@ Teil des Balkens. Der Questbonus zählt nur für den Charakter.
 | Charakter 12 / Skill 9 (Demo) | 8,5 % / 12,1 % | 10,9 % / 16,4 % |
 | Charakter 25 / Skill 25 | 4,8 % / 6,8 % | 5,2 % / 7,8 % |
 
+Bei einem auf **Level 1 erstellten persönlichen Board** ergeben dieselben Calisthenics-Einträge
+mit einer offenen Calisthenics-Quest **280 / 400 Charakter-XP** (240 / 360 Aktivitäts-XP + 40 Quest-XP).
+Später gilt `240 / 360 + gespeicherter Questbonus`: Ein auf Level 20 erstellter Plan gibt zum Beispiel
+340 / 460 Charakter-XP. Ohne passende offene Quest gibt es keinen Questbonus. Skill-XP und
+Boss-Schaden ändern sich nicht.
+
 Ein bereits fast voller Balken darf durch eine einzelne Aktivität weiterhin ein Level erreichen;
 überschüssige XP bleiben erhalten. Die Zeitbeispiele dienen ausschließlich dem Spielbalancing
 und sind keine Trainingsvorgabe. Weitere Spieltests sollen die langfristige Progression kalibrieren.
@@ -162,10 +186,72 @@ und sind keine Trainingsvorgabe. Weitere Spieltests sollen die langfristige Prog
 Die Beispiel-Gesamt-XP und Basisattribute erhalten weiterhin die bisherigen Charakter-/Skill-Level
 und sichtbaren Attribute. Ein frischer lokaler Spielstand startet deshalb bei Charakter-Level 12
 mit 25.926 Gesamt-XP und Boss-HP 1.460/2.400. Das ist ein klar benannter Beispielstart; ein echtes
-Level-1-Onboarding ist noch offen. Neue Einträge sind jetzt lokal persistent. Balanceänderungen
-müssen deshalb künftig eine versionierte Replay-/Migrationsstrategie berücksichtigen.
+Level-1-Konto startet dagegen bei 0 XP mit serverseitigem Onboarding. Der alte lokale Testadapter
+rekonstruiert Einträge weiterhin mit den klassischen Questregeln. Balanceänderungen dürfen dessen
+Journal nicht nachträglich anders auswerten.
 
-### Lokale Tage, Wochen und Verlauf
+### Persönliche Tagesquests im Account
+
+Aus den im Fokus gewählten Skills entstehen höchstens drei verschiedene Tagesquests. Bei ein
+oder zwei Skills gibt es entsprechend weniger Quests; es werden keine fremden Interessen ergänzt.
+Ab vier ausgewählten Skills rotiert der Ausschnitt deterministisch pro Servertag. Ein Neustart
+oder erneutes Laden würfelt keine anderen Aufgaben aus.
+
+| Skill | Zielminuten |
+| --- | ---: |
+| Calisthenics / Weightlifting / Healthy Cooking | 20 |
+| Running / Swimming / Boxing / BJJ / Reading | 15 |
+| Meditation / Recovery / Languages / Instrument üben | 10 |
+| Programming | 30 |
+| Breathwork | 5 |
+
+Der Bonus einer persönlichen Quest wächst mit dem Charakterlevel beim Erstellen des Tagesplans:
+`max(40, round((1200 + 200 × (Level − 1)) × 0,02 / 5) × 5)` Charakter-XP. Gerundet wird auf den
+nächstgelegenen Fünferschritt. Es zählt die gesamte aktuelle Levelspanne, nicht der noch fehlende Balken.
+
+| Level beim Erstellen | Bonus je Quest | Maximaler Bonus bei drei Quests |
+| --- | ---: | ---: |
+| 1 | 40 XP | 120 XP |
+| 10 | 60 XP | 180 XP |
+| 20 | 100 XP | 300 XP |
+| 50 | 220 XP | 660 XP |
+
+`bonusXp` wird mit der Quest gespeichert. Ein Levelaufstieg während des Tages erhöht laufende oder
+abgeschlossene Questboni nicht nachträglich; der nächste neu erzeugte Plan verwendet das dann
+aktuelle Level. Weniger als drei ausgewählte Skills ergeben entsprechend weniger Boni. Diese XP
+zählen nur für den Charakter, nicht für Skills oder Wochenboss-Schaden. Die Minuten bleiben
+optionale Spielziele, keine Trainings- oder Gesundheitsvorgaben. Belohnte Minuten, Tageslimits,
+Questfortschritt und Idempotenz bleiben serverseitig kontrolliert.
+
+Beim ersten Onboarding oder vor jeder Aktivität des laufenden Tages darf eine Fokusänderung
+das noch unberührte Board ersetzen. Sobald eine Aktivität vorhanden ist — auch ohne XP — oder
+eine Quest Fortschritt/Abschluss hat, bleibt das gesamte Board bis morgen erhalten. Dadurch
+lassen sich durch Fokuswechsel keine zusätzlichen Bonusquests erzeugen. Am nächsten Servertag
+wird das Board aus der dann gespeicherten Auswahl gebildet. Frühere XP werden nicht neu berechnet.
+
+Das öffentliche Beispiel und der lokale Replay-Testadapter behalten ihr klassisches Board mit
+50/30/40 Bonus-XP. Sie haben keine historischen Questplan-Ereignisse und geben keine Accountrechte.
+Die Produktableitung aus elf passenden Apps und Spielen sowie weitere priorisierte Ideen stehen in
+[COMPETITOR_RESEARCH.md](COMPETITOR_RESEARCH.md). Eigene Routinen, Fokustimer und erzählte Kapitel
+bleiben geplante Erweiterungen.
+
+### Sichtbarer Ausblick: Am Horizont
+
+Das Account-Dashboard zeigt die aktuelle bereits entdeckte, noch unbesiegte Storybegegnung auf
+Normal: Mindestlevel, empfohlenes Level, fehlende Charakter-XP und die konkrete Kosmetik beim
+ersten Sieg. Ein erreichtes Mindestlevel öffnet die Begegnung, garantiert aber keinen Sieg.
+Daneben steht die nächste noch nicht erhaltene Level-Aura mit einer künftig erreichbaren Schwelle.
+Bereits überschrittene Schwellen ohne gespeicherten Besitz werden nicht als nachträgliche Belohnung
+versprochen. Erhaltene Kosmetik wird nicht erneut angeboten; spätere Bossidentitäten bleiben verborgen.
+
+Dieser Ausblick verändert keinen Spielstand und vergibt weder XP noch Claims. Nach allen passenden
+Zielen verschwindet er. Die öffentliche Demo zeigt ihn nicht, da Probekämpfe dort keine Bossbeute geben.
+
+### Perioden und historischer lokaler Verlauf
+
+Im Account-Spiel bestimmt Spring Boot den Tag in `Europe/Vienna`; Tagesquests folgen dem
+persönlichen Plan oben. Die folgenden Regeln zum Gerätedatum und Journal gelten nur für den
+isolierten lokalen Testadapter, nicht für die aktive Online-Kontofassung.
 
 Die Tagesgrenze ist das lokale Gerätedatum. Beim Laden, Wiederaufnehmen und vor Einträgen wird die
 Periode geprüft. Am neuen Tag beginnen die drei Tagesquests mit 0 Minuten/ungeclaimt; die täglichen
@@ -286,12 +372,14 @@ Achievements. Ein freiwilliger Check-in allein wird nicht als Aktivität umgedeu
 diese Woche“ summiert ausschließlich die bekannten `Activity.xp`; historische Questboni sind im
 aktuellen Snapshot nicht vollständig verfügbar und werden nicht erfunden. Der volle Alltag-/Avatar-
 Fortschrittsloop, diese Vorschläge, Wochenziele und alle drei Übungstaktiken gehören zum Free-Kern.
+Die Taktikwahl erweitert nicht den Bosszugang: Live-Free-Probekämpfe bleiben auf die fünf
+Normal-Bosse bis Basislevel 50 begrenzt.
 
 ### Automatische Begegnungen und separate Kampfübung
 
 Die akzeptierte Richtung ergänzt den sichtbaren Fortschritt um seitliche, automatisch
 ablaufende RPG-Begegnungen: Held links, Boss rechts, abwechselnde Angriffe, HP und ein lesbarer
-Verlauf. AdventureQuest ist nur eine Präsentationsreferenz; Everbloom verwendet eigene Figuren,
+Verlauf. AdventureQuest ist nur eine Präsentationsreferenz; Herovera verwendet eigene Figuren,
 Bühnen, Regeln und Sounds. Charakterlevel und erworbene Skill-Erfahrung beeinflussen die
 Kampfstärke. Die Darstellung nutzt PixiJS; geriggte Figuren/Bosse folgen dem
 [Animationsvertrag](ANIMATION_PIPELINE.md). Aktuell gibt es keine Spine-Runtime.
@@ -354,38 +442,41 @@ zweites Ergebnis verbuchen. Dafür werden Regelversion, Begegnungs-ID, atomare V
 Migrationspfad für bestehende Journale benötigt. Bis dahin bleiben die bisherigen Aktivitäts-,
 Wochenboss- und Aura-Regeln vollständig unverändert.
 
-### Erspielbare Auren und ungespeicherte Vorschau
+### Erspielbare Auren mit festem Design
 
-`CharacterAura` stellt drei Starter-Effekte, drei verdiente Auren sowie zehn weitere Entwürfe dar:
-Sterne, mystische Zeichen, innere Energie/Chakra, Dämonenschatten, Licht, Energieströme, Engelsflügel,
-Kirschblüten, Feuer und Geistwächter. Die eigene Namens- und Formensprache steht im
-[Art Guide](ART_DIRECTION.md#aura-richtung-und-aktueller-vorschauumfang). Die erweiterten Entwürfe
-sind ausdrücklich nur Vorschau, mit sechs Farben und ohne Speicherung/Freischaltung. Der optionale
-bedrohliche Blick sitzt derzeit im Schatten hinter der Figur, nicht in ihren echten Augen.
-Gesichtsausdruck und Irisleuchten werden später separat gestaltet. Auren sind rein kosmetisch;
-Chakra ist ein Fantasy-Motiv ohne gesundheitliche Bedeutung. Ganzkörper-VFX mit Boden-, Rücken-
-und Vorderpartikeln sind das Ausbauziel, keine bereits vollständige Produktions-VFX-Bibliothek.
+`CharacterAura` stellt Waldlicht, fünf Aktivitätsbelohnungen und zwanzig Boss-Auren dar.
+Insgesamt 26 eigenständige transparente Bilder werden auf Dashboard, im Creator und im Kampf
+gleich ausgerüstet angezeigt. Dämmerungs-/Blutmondvarianten haben eigene neue Bilder statt
+Tönungsaliasen. Die zehn Bossfamilien vergeben ihre Auren bei epischen und ultimativen Erst-Siegen.
+Gesicht und Körper bleiben durch eine offene Bildmitte erkennbar. Alle Effekte sind kosmetisch;
+Chakra bezeichnet ein Fantasy-Motiv ohne gesundheitliche Bedeutung.
 
-Die vier Starter-Optionen bleiben verfügbar: Ohne Aura, Waldlicht, Blütenzauber und Leere.
-`AURA_REWARDS` (auch als `AURA_PROGRESSION_PLAN` exportiert) enthält drei implementierte Belohnungen:
+**Nur Ohne Aura und Waldlicht sind Starter.** Freie Aura-Farben und das bisherige Aura-Labor
+sind entfernt. Jede neue Palette gehört zu einem eigenständig freigeschalteten Design.
+Gesichtsausdruck und Irisleuchten sind spätere Erweiterungen. Alte gültige Rosenlicht-/
+Schattenflamme-Ausrüstung oder verdiente Rechte bleiben durch eine enge Bestandsmigration erhalten.
+
+`AURA_REWARDS` enthält fünf Aktivitätsbelohnungen:
 
 | Aura | Einmaliger Auslöser | Eigener Effekt |
 |---|---|---|
+| Rosenlicht · `rose` | Belohnte Aktivität erreicht von unten Charakterlevel 5 | Rosa Blüten und Licht |
+| Schattenflamme · `void` | Belohnte Aktivität erreicht von unten Charakterlevel 10 | Violette Flammenschweife |
 | Nordlicht · `aurora` | Belohnte Aktivität erreicht von unten Charakterlevel 20, einschließlich Quest-XP | Grün/petrol/violette Lichtbänder |
 | Sternenkranz · `starlight` | Belohnte Aktivität erreicht von unten Charakterlevel 40 | Gold/violette Konstellationen |
 | Moosseele · `moss-spirit` | Belohnte Aktivität besiegt den lebenden Mooswächter | Leuchtende Blattranken und Waldgeist |
 
-Die Belohnung wird automatisch atomar mit dem Aktivitätsergebnis vergeben; keine Zufallschance
-oder zusätzlicher Claim. Jede Aura wird nur einmal gesammelt, selbst wenn mehrere Wochenbosse
-besiegt werden. Mehrere gleichzeitig erfüllte Bedingungen sind möglich. Duplicate-Requests,
-Einträge ohne Aktivitäts-XP, schon besiegte Bosse und reine Vorschauen vergeben nichts. Level-Auren
-werden beim echten Schwellenübertritt verdient, nicht beim bloßen Laden eines hohen Levels.
+Diese Grants erfolgen automatisch atomar mit dem Aktivitätsergebnis; keine Zufallschance oder
+zusätzlicher Claim. Jede Aura wird nur einmal gesammelt. Mehrere gleichzeitig erfüllte
+Bedingungen sind möglich. Duplicate-Requests, Einträge ohne Aktivitäts-XP und bereits besiegte
+Wochenbosse vergeben nichts. Level-Auren werden beim echten Schwellenübertritt verdient,
+nicht beim bloßen Laden eines hohen Levels.
 
-`unlockedAuras` gehört zum Snapshot und wird beim Journal-Replay wiederhergestellt. Dashboard und
-Creator zeigen die Sammlung; nur Starter und verdiente IDs sind anlegbar. Die Profilnormalisierung
-kennt die drei IDs, der Repository-Pfad prüft zusätzlich Besitz. Zehn weitere Entwürfe bleiben ohne
-Besitzrechte. Es handelt sich um lokale Prototyprechte, keinen vertrauenswürdigen Servernachweis.
-Serververgabe und ein allgemeines Item-/Inventarsystem bleiben offen; Balance V0.2 ist unverändert.
+`unlockedAuras` gehört zum servergespeicherten Account-Snapshot. Dashboard und Creator zeigen die
+Sammlung; nur Starter und verdiente IDs sind anlegbar. Server und Profilnormalisierung kennen die
+fünf Aktivitäts- und zwanzig Boss-Auren; der Server prüft den tatsächlichen Besitz. Der lokale
+Demo-Adapter verwendet weiterhin sein Aktivitätsjournal und erzeugt keine Account-Belohnungen.
+Ein allgemeines Iteminventar bleibt offen; die Boss-Sammlung ist bereits serverautorisiert.
 
 ## Erfolgsmomente
 
@@ -393,8 +484,9 @@ Nach einem akzeptierten Aktivitätseintrag werden alter und neuer Zustand vergli
 Charakter-Levelaufstieg, Skill-Levelaufstieg, erster belohnter Eintrag des Tages, Abschluss aller
 Daily Quests, Sieg über den Wochenboss oder eine neu verdiente Aura. Einzelne Questabschlüsse erhalten normales Fortschritts-
 feedback, aber keinen eigenen Jingle. Die Erfolgskarte bündelt gleichzeitig erreichte Meilensteine
-für ungefähr sechs Sekunden; ein kleines CSS-Feuerwerk und ein eigener Jingle aus
-vier aufeinanderfolgenden Tönen begleiten sie. Es werden keine RuneScape-Sounds oder fremden
+für ungefähr sechs Sekunden; ein kleines CSS-Feuerwerk und eigene kurze Web-Audio-Motive für
+Quest, Level, Boss-Sieg und Loot begleiten sie. Das priorisierte Ereignis bestimmt den Klang.
+Es werden keine RuneScape-Sounds oder fremden
 Assets verwendet. Mehrere übersprungene Level erzeugen einen zusammengefassten Übergang.
 
 Ton, Feuerwerk und Charakterbewegung werden separat gesteuert und lokal gespeichert. Reduzierte
@@ -406,22 +498,27 @@ Diese Rückmeldung ist noch kein persistiertes Achievement-/Inventarsystem.
 
 ## Free und Membership
 
-Free bleibt dauerhaft spielbar: sinnvoller Skillmix, wiederkehrende Daily/Weekly Quests,
-persönliche Bosse und permanente Progression. Membership erweitert das Spiel um zusätzliche
-Skills/Subskills, Questreihen, Bosse, Progressionspfade und Cosmetics. Vorläufiger Kandidat:
-10 % mehr **Charakter-Aktivitäts-XP**, keine Veränderung dokumentierter realer Leistungen.
-Kein bezahlter Zwang zur Erholung, keine verlorenen verdienten Inhalte bei Kündigung;
-genaue Nutzbarkeit von Member-Inhalten nach Ablauf ist vor M3 festzulegen.
-Geplanter monatlicher Endkundenpreis: **3,99 € pro Monat**. Ein Jahrespreis ist nicht festgelegt.
-**4,99 € pro Monat** ist ein zusätzlich zu prüfender Preiskandidat aus der Produktüberarbeitung,
-keine beschlossene Preisänderung. Vor einer Entscheidung stehen wiederkehrender Mehrwert,
-Inhaltspflege, Nutzung und Zahlungsbereitschaft; professionelles Design allein belegt keine Nachfrage.
-Der gesamte grundlegende Spielkreislauf bleibt Free. Membership erweitert Inhalte und Gestaltung,
-nicht die Möglichkeit, reale Aktivitäten zu protokollieren, sich zu erholen oder den eigenen Fortschritt
-zu behalten. Beide Preisideen sind noch keine aktiv kaufbaren Store-Produkte.
-Regionale Store-Preisstufen, Steuern und Nettoerlös werden vor der Billing-Implementierung geprüft.
-Das ist ein beschlossenes Preisziel, noch kein registriertes Store-Produkt. Entitlements werden
-nicht im UI erfunden. Demo ist Free, ohne Checkout oder XP-Vorteil.
+Der V1-Vertrag ist implementiert: Free enthält den grundlegenden Aktivitäts-/Avatar-/Skill-/
+Questkreislauf, Erholung, permanente Progression und **fünf Normal-Bosse bis einschließlich
+Wolkenkönig auf Basislevel 50**. Skills, XP und Charakterlevel haben keine neue Abo-Grenze.
+Aktives Plus öffnet **35 weitere Begegnungen**: alle Modi der Bosse auf Basislevel 60–100
+und Hard/Episch/Ultimate der ersten fünf Bosse. Bestehende Entdeckungs- und Levelvoraussetzungen
+bleiben bestehen. Derselbe Zugang gilt für Probekämpfe; Wiedergabe ist kein Umgehungsweg. Dazu kommen **10 % Charakter-Aktivitäts-XP**
+(`floor(Aktivitäts-XP / 10)`), keine zusätzlichen Skill-XP, Questboni oder direkten Kampfboni.
+Dokumentierte reale Leistungen und Tageslimits ändern sich nicht.
+
+Nach Abo-Ende bleiben verdiente XP, Level und Cosmetics im bestehenden Konto; erworbene Looks
+bleiben ausrüstbar. Nur der Zugang zu Plus-Kämpfen und der XP-Zuschlag enden.
+Kontolöschung ist davon getrennt und kündigt kein Store-Abo. Kein bezahlter Erholungszwang.
+Neue Skills/Subskills, Questreihen und Story-Kapitel sind spätere Ziele und kein V1-Kaufversprechen.
+
+Preisziel: **3,99 € pro Monat**; der tatsächliche lokalisierte Preis stammt aus dem Store.
+Kein beschlossener Jahresplan oder Probezeitraum. Der frühere 4,99-€-Kandidat ist keine
+Preisänderung. Der ausdrücklich lokale Standard `EVERBLOOM_BILLING_MODE=preview` bleibt eine
+gekennzeichnete kostenlose Testvorschau aller Modi, ohne Käufe und Bonus; kein gekauftes Plus. In `live` prüft der Server die Plus-Berechtigung über
+RevenueCat. Store-Produkte, reale Kauf-/Restore-Abnahmen und öffentlicher Betrieb stehen aus.
+Verbindliche Details: [MONETIZATION.md](MONETIZATION.md), Freigabe: [RELEASE_V1.md](RELEASE_V1.md).
+Eigene Bild-/Klangrichtung: [VISUAL_AUDIO_DIRECTION.md](VISUAL_AUDIO_DIRECTION.md).
 
 ## Finale UI-Sprachen
 
@@ -441,8 +538,74 @@ Parties, Guilds und Raids folgen erst nach stabilem Solo-Spiel. Keine Social-Pla
 
 - Finales XP-Balancing, Tageslimits, Skillgewichtung und Maximallevel durch Spieltests.
 - Momentum-Abnahme, Zeitzonenwechsel, Recovery-/Cheat-Day-Kontingente und Streak-Regeln vor serverseitiger Persistenz.
-- Membership-Inhaltsgrenzen, Kündigungsregeln, regionale Preisumsetzung und Store-Abrechnung vor M3.
+- Regionale Store-Preisumsetzung, tatsächliche Provider-Verbindung, Kauf-/Restore-/Ablaufabnahmen
+  und Support bei gelöschtem Kaufkonto vor Verkaufsfreigabe; V1-Inhaltsgrenzen sind festgelegt.
 - Professionelle Rig-/Bossassets nach festgelegter [Animation Pipeline](ANIMATION_PIPELINE.md),
   mobile Budgets und gegebenenfalls Spine-Nutzungsrechte vor breiter Content-Produktion.
 - Produktive Begegnungsauslöser, Kampfgewichtung, Schwierigkeit, Rewards und versionierte
   Ablösung/Verknüpfung des bisherigen Wochenboss-Schadens vor serverseitiger Kampfanbindung.
+
+
+## Bosskampagne: zehn Begegnungen und vier Modi
+
+Aktueller Katalog vom 5. Oktober 2026, strikt nacheinander entdeckt:
+
+| Basislevel | Boss | Rolle |
+| --- | --- | --- |
+| 10 | Mooswächter | Einstieg: Wurzelhiebe und Rindenschild |
+| 20 | Glutwyrm | Angekündigte Aufladung und Feueratem |
+| 30 | Dämmerungsbestie | Gepanzerter Schattenpanther: Runenschutz und zweifache Schattenraserei |
+| 40 | Frosttitan | Zweifacher Gletscherpanzer und angekündigter Eisbrecher |
+| 50 | Wolkenkönig | Anspruchsvolles Kapitel-1-Finale mit Stabkombo, Wolkenschild und Sonnenschlag |
+| 60 | Blutmondregentin | Eigene Hochelfen-Gegnerin: Rubinklinge, Blutmondsiegel und angekündigte Mondfinsternis |
+| 70 | Sternensouverän | Spätere Herausforderung mit Sternensiegel und Sternenbruch |
+| 80 | Nharok, der Weltenverschlinger | Leerenleviathan: Gravitationssog dämpft zwei Treffer und kündigt den Ereignishorizont an |
+| 90 | Vaelthar, der Urdrache | Kosmischer Drache: Mehrfachtreffer, Prismenaufladung und angekündigter kosmischer Atem |
+| 100 | Aureon, König der Relikte | Reliktsalven, Königsaegis und angekündigter Reliktregen; zunehmender Rundendruck |
+
+Hard beginnt bei **+5** (empfohlen +10), Episch bei **+15** (empfohlen +20), Ultimate bei
+**+30** gegenüber dem Basislevel. Für den Wolkenkönig bleiben Mindestlevel **50 / 55 / 65 / 80**
+und Empfehlungen **55 / 65 / 75 / 85** erhalten. Entwickelte Skills können Normal bereits auf
+Level 50 ermöglichen; eine Levelgrenze ist keine Siegsgarantie. Nach dem Kapitel-1-Finale folgen
+Blutmondregentin 60, Sternensouverän 70, Nharok 80, Vaelthar 90 und Aureon 100.
+Aureons Mindestlevel sind **100 / 105 / 115 / 130**, Empfehlungen **100 / 110 / 120 / 130**.
+Ab Runde 6 steigt sein Angriffsdruck um vier Prozentpunkte je Runde, höchstens 28 %;
+der Reliktregen behält die bei seiner schadensfreien Aufladung angekündigte Stärke.
+Die Blutmondregentin hat Mindestlevel **60 / 65 / 75 / 90** und Empfehlungen **60 / 70 / 80 / 90**.
+Ihre Mondfinsternis heilt einen begrenzten Anteil des tatsächlich verursachten Schadens;
+Runen-/Siegelaufbau und Treffer bleiben klar getrennt.
+
+Vorbereitung und Ausführung bleiben unterscheidbar; Schilde reduzieren kommende Angriffe,
+Heilrunden verbrauchen sie nicht. Fest bleibende Bosswerte lassen höhere Spielerlevel stärker
+wirken. Neue Konten sehen nur den ersten Boss; ein bestätigter Sieg in einem beliebigen Modus
+enthüllt den nächsten Gegner. Der Server prüft die Entdeckung; künftige Bossnamen und Beute
+bleiben in der UI verborgen.
+
+**Free umfasst die fünf Normal-Bosse auf Basislevel 10/20/30/40/50 einschließlich Wolkenkönig.**
+Bosse auf Basislevel 60–100 erfordern in jedem Modus Plus; Hard/Episch/Ultimate der ersten
+fünf Bosse ebenfalls. Damit bestehen **fünf Free- und 35 Plus-Begegnungen, 40 insgesamt**.
+Skills, Aktivitäten, XP und Charakterlevel erhalten dadurch keine Abo-bedingte Obergrenze.
+Im konfigurierten `live`-Modus gilt dieselbe Grenze auch für Probekämpfe; Wiedergabesteuerung
+darf sie nicht umgehen. Der ausdrücklich lokale Billing-Modus `preview` ist eine gekennzeichnete
+Testvorschau mit allen Modi, kein gekauftes Plus. Er vergibt keinen Kauf oder XP-Zuschlag.
+
+**40 einmalige Erst-Sieg-Belohnungen** umfassen zehn Haar-Editionen, zehn
+Outfitsets und zwanzig Auren. Jede Bossfamilie besitzt eine Grundform und drei eigenständig
+illustrierte Steigerungen für Hard, Episch und Ultimate. Der Ausbau umfasst 30 höhere Formen
+und fünf neue Grundformen (Dämmerungsbestie, Blutmondregentin, Nharok, Vaelthar, Aureon),
+insgesamt **35 neue Bossbilder**. Hinzu kommen **20 neue Loot-Illustrationen** für diese fünf
+Familien: je ein Haar-/Kronenbild, ein Outfitbild und zwei eigenständige, ausrüstbare Auren.
+Sammlungsbilder sind keine automatisch neu geriggten Haar- oder Körpermodule.
+
+Ein Bossabschluss verleiht weiterhin genau **eine Belohnungsfamilie**. Haar und Outfit besitzen
+je eine männliche und weibliche Darstellung; Sammlungsbild und passende Modulzuordnung folgen
+der aktuellen Charakterdarstellung. Ein Wechsel der Darstellung erfordert keinen zweiten Drop
+und vergibt keine doppelte Belohnung. Das sind weiterhin **40 Besitz-IDs**, nicht 60.
+Die zwanzig Aura-Belohnungen bleiben für beide Darstellungen gemeinsam. Farben und Aura-Besitz
+ändern sich durch diese Varianten nicht.
+
+Der Server entscheidet Kampf und Besitz; Vorschauen und Wiederholungen gewähren keine
+zusätzliche Beute oder Charakter-XP. Verbindliche Regeln und Grenzen stehen in
+[BOSS_ENCOUNTERS.md](BOSS_ENCOUNTERS.md). Die konkreten Bild- und Klangvorgaben stehen in
+[VISUAL_AUDIO_DIRECTION.md](VISUAL_AUDIO_DIRECTION.md). Datierte ältere Abnahmen beschreiben
+jeweils ihren damaligen Katalog; aktuelle Nachweise stehen in [VALIDATION.md](VALIDATION.md).

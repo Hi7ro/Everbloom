@@ -1,0 +1,86 @@
+{
+  "date": "2026-10-05",
+  "assets": [
+    {
+      "id": "mosswarden",
+      "difficulty": "hard",
+      "generator": "built-in image_gen",
+      "master": "art-source/boss-forms/mosswarden/mosswarden-hard-v1.png",
+      "runtime": "frontend/public/art/bosses/mosswarden-hard-v1.webp",
+      "prompt": "art-source/boss-forms/mosswarden/mosswarden-hard-v1-framing-prompt.txt",
+      "generatedOriginal": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-f59eae14-91d8-4e24-9b38-040554842592.png",
+      "runtimeBytes": 193116,
+      "masterBytes": 1733186,
+      "width": 900,
+      "height": 900,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 59.72,
+      "solidBounds": [
+        138,
+        65,
+        777,
+        857
+      ],
+      "runtimeSha256": "03e9261906166106b3429511623e6c595fa770159434a261e78ed80ee276f131",
+      "visualReview": "Full body, face turned left, complete extremities, differentiated mode silhouette. First tightly framed drafts rejected; framed retry selected."
+    },
+    {
+      "id": "mosswarden",
+      "difficulty": "epic",
+      "generator": "built-in image_gen",
+      "master": "art-source/boss-forms/mosswarden/mosswarden-epic-v1.png",
+      "runtime": "frontend/public/art/bosses/mosswarden-epic-v1.webp",
+      "prompt": "art-source/boss-forms/mosswarden/mosswarden-epic-v1-framing-prompt.txt",
+      "generatedOriginal": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-46f6119f-322c-4b26-8109-7321f2f7f7c1.png",
+      "runtimeBytes": 242000,
+      "masterBytes": 1915061,
+      "width": 900,
+      "height": 900,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 55.35,
+      "solidBounds": [
+        114,
+        46,
+        815,
+        866
+      ],
+      "runtimeSha256": "9ab88562d02b4c2e4e2c3d0bb1e2c3db715f78410b39293bf0d3b82893bdf8e8",
+      "visualReview": "Full body, face turned left, complete extremities, differentiated mode silhouette. First tightly framed drafts rejected; framed retry selected."
+    },
+    {
+      "id": "mosswarden",
+      "difficulty": "ultimate",
+      "generator": "built-in image_gen",
+      "master": "art-source/boss-forms/mosswarden/mosswarden-ultimate-v1.png",
+      "runtime": "frontend/public/art/bosses/mosswarden-ultimate-v1.webp",
+      "prompt": "art-source/boss-forms/mosswarden/mosswarden-ultimate-v1-framing-prompt.txt",
+      "generatedOriginal": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-59d9fe03-c803-4578-9677-cb1031e70a0d.png",
+      "runtimeBytes": 237846,
+      "masterBytes": 2010610,
+      "width": 900,
+      "height": 900,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 52.91,
+      "solidBounds": [
+        102,
+        88,
+        821,
+        842
+      ],
+      "runtimeSha256": "1b666382a69ec2a05f9fe51237865d89a38a7d002cada7f6376ef1cf0507f5fb",
+      "visualReview": "Full body, face turned left, complete extremities, differentiated mode silhouette. First tightly framed drafts rejected; framed retry selected."
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+**
+!frontend/
+!frontend/**
+!deploy/
+!deploy/Caddyfile
+frontend/node_modules
+frontend/dist
+frontend/.angular
+frontend/.env
+frontend/.env.*
+frontend/ios
+frontend/android
+frontend/coverage
+frontend/*.log

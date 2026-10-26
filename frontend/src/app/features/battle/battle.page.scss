@@ -25,11 +25,19 @@ h1 { font-family:Georgia,serif; font-size:clamp(30px,5vw,44px); font-weight:400;
 .fighter { min-width:0; }
 .fighter-heading { display:flex; justify-content:space-between; gap:4px; font-size:9px; letter-spacing:.6px; color:#9db598; }
 .fighter h2 { margin:8px 0 13px; font:400 21px Georgia,serif; overflow-wrap:anywhere; }
+.fighter.boss h2 { hyphens:auto; }
 .fighter progress { height:7px; }
 .boss progress { --bar:#cfaa72; }
 .health { display:flex; justify-content:space-between; gap:5px; color:#a2b29e; margin-top:8px; font-size:10px; }
 .versus { align-self:center; font:italic 12px Georgia,serif; color:#79907b; }
-.round-strip { display:flex; justify-content:space-between; gap:8px; border-top:1px solid #9ab58c20; padding:13px 22px; background:#14231d; color:#b4c5a8; font-size:12px; }
+.round-strip { border-top:1px solid #9ab58c20; padding:13px 22px; background:#14231d; color:#b4c5a8; font-size:12px; }
+.round-meta { display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+.round-strip.charging { background:#352b1c; border-color:#d7af644f; color:#efd598; }
+.charge-cue { display:flex; align-items:center; gap:10px; margin:12px 0 0; padding-top:10px; border-top:1px solid #d7af6433; }
+.charge-cue > span:first-child { font-size:20px; }
+.charge-cue strong, .charge-cue small { display:block; line-height:1.6; }
+.charge-cue strong { font-size:12px; font-weight:600; }.charge-cue small { color:#d8c7a0; font-size:11px; }
+.turn-announcement .charge-status { color:#e8c78b; }
 .turn-announcement { min-height:86px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:7px; padding:16px 20px; text-align:center; }
 .turn-announcement strong { font-weight:500; font-size:14px; }
 .turn-announcement span { color:#adbaa6; font-size:12px; }
@@ -78,4 +86,59 @@ li small { display:block; font-size:9px; text-align:right; color:#a69b86; font-w
   .controls { padding:0 12px; gap:6px; grid-template-columns:minmax(0,1fr) 44px auto; }
   .controls button { font-size:12px; padding:10px 8px; }
   .round-strip { padding:12px 16px; }
+}
+.result-card > .primary { width:100%; margin-bottom:12px; }
+.boss-picker { display:flex; overflow-x:auto; gap:12px; margin:16px 0 22px; padding:2px 2px 12px; scroll-snap-type:x proximity; scrollbar-width:thin; scrollbar-color:#687960 #14221a; }
+.discovery-note { border-left:2px solid #a6bd80; padding:8px 14px; color:#bdcbae; font-size:12px; line-height:1.65; margin:0 0 28px; }
+.boss-choice { flex:0 0 180px; scroll-snap-align:start; }
+.picker-hint { margin:20px 0 0; color:#aabca5; font-size:11px; }
+.picker-hint span { display:inline; }
+.boss-choice { position:relative; display:flex; flex-direction:column; align-items:center; min-width:0; padding:12px 12px 20px; border:1px solid #91a99830; border-radius:18px; color:#e4e3d6; background:radial-gradient(ellipse at 50% 30%,color-mix(in srgb,var(--choice-color) 16%,transparent),transparent 75%),#15211e; text-align:center; overflow:hidden; }
+.boss-choice.selected { border-color:var(--choice-color); box-shadow:inset 0 0 22px color-mix(in srgb,var(--choice-color) 8%,transparent); }
+.boss-choice img { width:100%; height:180px; object-fit:contain; filter:drop-shadow(0 9px 13px #0005); }
+.boss-choice-level { margin-top:4px; color:var(--choice-color); font-size:11px; }
+.boss-choice strong { margin:8px 0 6px; font:400 22px Georgia,serif; overflow-wrap:anywhere; hyphens:auto; }
+.boss-choice > span:last-child { color:#adbaae; font-size:11px; }
+.encounter-heading h2 { font:400 30px Georgia,serif; margin:8px 0; }
+.encounter-heading p:not(.eyebrow) { max-width:650px; color:#a8b7a6; line-height:1.6; font-size:13px; }
+.encounter-heading .eyebrow { color:var(--boss-color); }
+.boss-guide { margin:18px 0; border:1px solid #9ab38d35; border-radius:14px; background:#19271f; }
+.boss-guide summary { display:grid; grid-template-columns:1fr auto; align-items:center; min-height:60px; gap:3px 12px; padding:12px 16px; cursor:pointer; list-style:none; }
+.boss-guide summary::-webkit-details-marker { display:none; }.boss-guide summary::after { content:'＋'; grid-column:2; grid-row:1/3; color:var(--boss-color); font-size:22px; }
+.boss-guide[open] summary::after { content:'−'; }.boss-guide summary > span { font-size:13px; font-weight:600; color:#d5dfc6; }.boss-guide summary > small { grid-column:1; color:#a5b69b; font-size:11px; }
+.boss-guide summary:focus-visible { outline:2px solid var(--boss-color); outline-offset:3px; border-radius:14px; }
+.guide-content { padding:0 16px 16px; }.mechanics-list { margin:0; padding:0; list-style:none; }
+.mechanics-list li { display:grid; grid-template-columns:24px minmax(0,1fr); gap:12px; padding:13px 0; }
+.mechanic-number { font-size:11px; color:var(--boss-color); align-self:start; padding-top:3px; }.mechanics-list p { margin:0; color:#c2cfb9; font-size:12px; line-height:1.65; }
+.tactic-tip { border-left:2px solid #b8c791; background:#9fb88b08; padding:12px 14px; margin-top:4px; }.tactic-tip strong { font-size:12px; color:#d3debe; }.tactic-tip p { color:#aebfa2; font-size:12px; line-height:1.7; margin:8px 0 0; }.tactic-tip b { font-weight:600; color:#d3debe; }
+.difficulty-picker { min-width:0; border:0; padding:0; margin:24px 0 14px; }
+.difficulty-picker legend { font-size:13px; margin-bottom:12px; }
+.difficulty-options { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; }
+.difficulty-options button { display:flex; flex-direction:column; gap:7px; min-width:0; min-height:92px; border:1px solid #91a99840; background:#19251f; color:#d5dccd; padding:14px 10px; border-radius:12px; text-align:left; }
+.difficulty-options .selected { border-color:var(--boss-color); background:color-mix(in srgb,var(--boss-color) 10%,#19251f); }
+.difficulty-options strong { font-size:14px; font-weight:500; }
+.difficulty-options span { font-size:11px; color:#bbc6b7; }
+.difficulty-options small { font-size:10px; color:#96a391; line-height:1.4; }
+.encounter-summary { display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; color:#aab8a3; font-size:11px; padding:4px 0 18px; }
+.boss progress { --bar:var(--boss-color); }
+.challenge-entry { margin:18px 18px 0; border:1px solid #9bb58b30; padding:14px; border-radius:12px; background:#0d1c1650; }
+.challenge-entry p { margin:8px 0 0; color:#b2c0a8; font-size:12px; line-height:1.6; }
+.challenge-entry .lock-note { margin:0; }
+.challenge-button { width:100%; min-height:48px; }
+.challenge-entry .battle-error { color:#f0b9a4; }
+.loot-card { --rarity:#92bfe3; border:1px solid color-mix(in srgb,var(--rarity) 35%,transparent); border-radius:16px; padding:22px; background:radial-gradient(ellipse at 50% 10%,color-mix(in srgb,var(--rarity) 12%,transparent),transparent 70%),#19241d; }
+.loot-card[data-rarity=epic] { --rarity:#bc9de4; }.loot-card[data-rarity=legendary] { --rarity:#e8c583; }.loot-card[data-rarity=mythic] { --rarity:#ed9fae; }
+.loot-type { color:var(--rarity); font-size:11px; }.loot-card h2 { margin:8px 0; font:400 24px Georgia,serif; }
+.loot-card p { color:#b1bdaa; line-height:1.7; font-size:13px; }.loot-state { display:block; margin:16px 0; color:var(--rarity); font-size:12px; }
+.loot-card .fine-print { font-size:11px; margin-bottom:0; color:#95a590; }.earned-reward { border-top:1px solid #c1d39f40; border-bottom:1px solid #c1d39f40; padding:16px 0; margin:16px 0; }.earned-reward > span { display:block; color:#d8c699; font-size:10px; letter-spacing:1px; }.earned-reward strong { display:block; margin-top:8px; font:400 24px Georgia,serif; }.earned-reward a { display:inline-flex; align-items:center; min-height:44px; color:#d1deb7; font-size:13px; }
+@media(max-width:599px) {
+  .boss-picker { gap:8px; margin:20px 0 26px; }.boss-choice { padding:6px 5px 12px; border-radius:12px; }.boss-choice img { height:110px; }.boss-choice strong { font-family:inherit; font-weight:500; font-size:13px; line-height:1.4; margin:5px 0; }.boss-choice > span:last-child { display:none; }.boss-choice-level { font-size:10px; }.difficulty-options { grid-template-columns:repeat(2,minmax(0,1fr)); }.difficulty-options button { min-height:94px; padding:12px; }.encounter-summary { font-size:11px; }.encounter-heading h2 { font-size:26px; }.challenge-entry { margin:16px 12px 0; }.loot-card { padding:20px; }
+}
+
+.loot-card app-boss-loot-art { max-width:220px; margin:12px auto; }
+.earned-reward app-boss-loot-art { max-width:180px; margin:auto; }
+@media(max-width:699px) {
+  .boss-picker { gap:10px; margin:12px -2px 22px; }
+  .boss-choice { flex-basis:138px; }
+  .boss-choice img { height:136px; }
 }

@@ -1,0 +1,69 @@
+{
+  "id": "void-sorceress",
+  "generatedAt": "2026-10-05",
+  "generator": "Built-in image_gen",
+  "reference": "frontend/public/art/characters/void-sorceress-sheet.png",
+  "prompt": "body-v2.prompt.txt",
+  "master": "body-master.png",
+  "output": "frontend/public/art/characters/void-sorceress-body-v2.webp",
+  "processing": "Unmodified generated PNG master; mechanical proportional fit to588x756 centered on transparent700x900; WebP quality88 alpha100. No masks, retouching or recoloring.",
+  "resize": {
+    "width": 535,
+    "height": 756,
+    "offsetX": 82,
+    "offsetY": 72
+  },
+  "sourceQa": {
+    "width": 1055,
+    "height": 1491,
+    "hasAlpha": true,
+    "bytes": 1355217,
+    "sha256": "41b39841da7b60dde30d1f3c527bc36fd3d7cf87bb423b954b6a7a0d5b67364d",
+    "transparentPixels": 919739,
+    "partialAlphaPixels": 652258,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 115,
+      "top": 48,
+      "right": 985,
+      "bottom": 1433
+    },
+    "clearMargins": {
+      "left": 115,
+      "top": 48,
+      "right": 69,
+      "bottom": 57
+    }
+  },
+  "outputQa": {
+    "width": 700,
+    "height": 900,
+    "hasAlpha": true,
+    "bytes": 74386,
+    "sha256": "7b22c24826fc36e98766fe4ef4da9e2a514fd8315f8ae2bfcc29e887aba47812",
+    "transparentPixels": 461377,
+    "partialAlphaPixels": 166796,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 166,
+      "top": 101,
+      "right": 566,
+      "bottom": 799
+    },
+    "clearMargins": {
+      "left": 166,
+      "top": 101,
+      "right": 133,
+      "bottom": 100
+    }
+  },
+  "visualReview": "Body only, fully covered limbs, complete shoes, no head/hair/skin, right-facing three-quarter; six distinct outfit identities. Reviewed together at280x360 on dark background. Collar and foot anchors calibrated against final export.",
+  "anchors": "body-v2.anchors.json",
+  "collarCalibration": {
+    "date": "2026-10-05",
+    "authority": "frontend/src/app/domain/character-outfits.ts",
+    "anchors": "body-v2.anchors.json",
+    "previousAnchors": "body-v2.anchors-before-collar-calibration.json",
+    "scope": "Metadata-only alignment with current runtime collar polygon and registration; no image or code changes."
+  }
+}

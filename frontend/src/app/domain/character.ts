@@ -1,5 +1,6 @@
-import { Appearance, CharacterArtwork, CharacterPresentation, CharacterProfile } from './models';
-import { AURA_REWARDS, AuraReward, isKnownAura } from './aura-rewards';
+import { Appearance, CharacterPresentation, CharacterProfile } from './models';
+import { isKnownAura } from './aura-rewards';
+import { BOSS_COSMETICS } from './boss-loot';
 import {
   ILLUSTRATED_CHARACTERS,
   ILLUSTRATED_COLOR_PALETTES,
@@ -8,11 +9,6 @@ import {
 
 export type CharacterSlot = 'body' | 'hair' | 'outfit' | 'aura';
 export type CharacterColor = 'skinColor' | 'hairColor' | 'outfitColor';
-
-/** Legacy custom profiles now use the illustrated renderer for both presentations. */
-export function resolveCharacterArtwork(_appearance: Appearance): CharacterArtwork {
-  return 'original';
-}
 
 export const CHARACTER_PRESENTATIONS = [
   { id: 'male', label: 'Männlich' },
@@ -59,21 +55,8 @@ export const CHARACTER_OPTIONS = {
   aura: [
     { id: 'none', label: 'Ohne Aura' },
     { id: 'sage', label: 'Waldlicht' },
-    { id: 'rose', label: 'Blütenzauber' },
-    { id: 'void', label: 'Leere' },
   ],
 } as const;
-
-export type AuraProgressionPlanEntry = AuraReward;
-
-/** Implemented rewards; ownership is checked separately from profile normalization. */
-export const AURA_PROGRESSION_PLAN = AURA_REWARDS;
-
-export const CHARACTER_COLOR_PALETTES: Record<CharacterColor, readonly string[]> = {
-  skinColor: ['#f6dec8', '#e8c3a2', '#c48e69', '#996442', '#68442f', '#422b23'],
-  hairColor: ['#2d2627', '#5c4934', '#b99a67', '#b9a9cc', '#dfbfc3', '#d4dfd5'],
-  outfitColor: ['#718967', '#e0b7c5', '#aab7cd', '#9279b0', '#4f5065', '#292f35'],
-};
 
 const slots: readonly CharacterSlot[] = ['body', 'hair', 'outfit', 'aura'];
 const colors: readonly CharacterColor[] = ['skinColor', 'hairColor', 'outfitColor'];
@@ -130,6 +113,15 @@ export function normalizeCharacterProfile(profile: unknown): CharacterProfile {
     throw new Error('Bitte eine verfügbare Charakterdarstellung wählen.');
   }
   const appearance = { presentation, artwork: 'original' } as Appearance;
+  for (const slot of ['cosmeticHair', 'cosmeticOutfit'] as const) {
+    const value = source[slot];
+    if (value === undefined) continue;
+    const kind = slot === 'cosmeticHair' ? 'hair' : 'outfit';
+    if (!BOSS_COSMETICS.some(item => item.id === value && item.slot === kind)) {
+      throw new Error('Diese Bossbelohnung ist nicht verfügbar.');
+    }
+    appearance[slot] = value as string;
+  }
   const artwork = source['artwork'];
   if (artwork !== undefined && artwork !== 'original' && artwork !== 'custom') {
     throw new Error('Bitte einen verfügbaren Look wählen.');

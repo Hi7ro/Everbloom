@@ -1,0 +1,21 @@
+{
+  "id": "ruby-orbit",
+  "type": "aura",
+  "boss": "bloodmoon-regent",
+  "generator": "built-in image_gen",
+  "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-2f73481a-7547-42b7-aeeb-a64c1ad4ac95.png",
+  "master": "art-source/loot/bloodmoon-regent/ruby-orbit-v1.png",
+  "runtime": "frontend/public/art/loot/ruby-orbit-v1.webp",
+  "prompt": "art-source/loot/bloodmoon-regent/ruby-orbit-v1-prompt.txt",
+  "width": 600,
+  "height": 750,
+  "bytes": 142426,
+  "alphaRange": [
+    0,
+    254
+  ],
+  "transparentPercent": 66.62,
+  "centralSlotTransparentPercent": 94.86,
+  "sha256": "6b41f51103fa6038146838b7d4e83d0cf68bfd68038376459833fbc87ee26e77",
+  "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+}

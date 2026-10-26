@@ -1,0 +1,90 @@
+{
+  "date": "2026-10-05",
+  "source": "Built-in image_gen; one original render per loot item; mechanical WebP resizing only.",
+  "items": [
+    {
+      "id": "abyss-orbit",
+      "type": "aura",
+      "boss": "void-devourer",
+      "generator": "built-in image_gen",
+      "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-b939d53b-6a68-49e1-9784-50a43afbf3fb.png",
+      "master": "art-source/loot/void-devourer/abyss-orbit-v1.png",
+      "runtime": "frontend/public/art/loot/abyss-orbit-v1.webp",
+      "prompt": "art-source/loot/void-devourer/abyss-orbit-v1-prompt.txt",
+      "width": 600,
+      "height": 750,
+      "bytes": 155534,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 63.32,
+      "centralSlotTransparentPercent": 95.93,
+      "sha256": "095b4624ce05a7d3bbeafd305119b0118ae5267402a81c13b7a6e45e7c1f86b3",
+      "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+    },
+    {
+      "id": "void-crown",
+      "type": "hair",
+      "boss": "void-devourer",
+      "generator": "built-in image_gen",
+      "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-d2fab9f9-d090-4268-b5f7-a56a42ed301c.png",
+      "master": "art-source/loot/void-devourer/void-crown-v1.png",
+      "runtime": "frontend/public/art/loot/void-crown-v1.webp",
+      "prompt": "art-source/loot/void-devourer/void-crown-v1-prompt.txt",
+      "width": 480,
+      "height": 480,
+      "bytes": 68064,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 58.8,
+      "centralSlotTransparentPercent": null,
+      "sha256": "40a36edca921c7c1e651452071bd403c17e262d0a414710e469ad007828fb030",
+      "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+    },
+    {
+      "id": "voidbound-regalia",
+      "type": "outfit",
+      "boss": "void-devourer",
+      "generator": "built-in image_gen",
+      "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-bdc0e2bf-1f3f-478e-a66d-db401b52ace2.png",
+      "master": "art-source/loot/void-devourer/voidbound-regalia-v1.png",
+      "runtime": "frontend/public/art/loot/voidbound-regalia-v1.webp",
+      "prompt": "art-source/loot/void-devourer/voidbound-regalia-v1-prompt.txt",
+      "width": 480,
+      "height": 480,
+      "bytes": 78318,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 56.49,
+      "centralSlotTransparentPercent": null,
+      "sha256": "3dd60232431b13e408fe5b1b3b9a10a31039014613bb3d6df9b370dbb1a82c0a",
+      "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+    },
+    {
+      "id": "world-devourer",
+      "type": "aura",
+      "boss": "void-devourer",
+      "generator": "built-in image_gen",
+      "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-e56690da-50fa-48e6-abf3-638d33fde49a.png",
+      "master": "art-source/loot/void-devourer/world-devourer-v1.png",
+      "runtime": "frontend/public/art/loot/world-devourer-v1.webp",
+      "prompt": "art-source/loot/void-devourer/world-devourer-v1-prompt.txt",
+      "width": 600,
+      "height": 750,
+      "bytes": 168688,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 59.8,
+      "centralSlotTransparentPercent": 99.88,
+      "sha256": "a75f31e1c74d974ef139442e8ad7a5c2757ceb7b3874c554357f27f57bf423c0",
+      "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+Use case: precise-object-edit.
+Edit target: the supplied original primordial-dragon boss sprite. Keep its exact dragon identity, four legs plus two wings, head, midnight-blue/platinum colors, chest star core, anatomy, painted anime fantasy rendering and LEFT-facing pose.
+Only fix composition/framing: the left wing's very top tip and tiny outer edges touch the image boundary. Zoom out substantially and complete any trimmed wingtip contour. Put the ENTIRE existing silhouette, including all wingtip blades, horns, four feet and curled tail, within the central 80 percent of a square transparent canvas. Leave at least 10 percent totally empty transparent space on all four sides; no anatomy or painted highlights may touch the edge. Keep both wings broad and majestic but wholly visible.
+Preserve transparency: genuine transparent alpha background, no floor, shadow plane, environment, text or new objects. One complete isolated boss.

@@ -1,0 +1,21 @@
+{
+  "id": "regent-regalia",
+  "type": "outfit",
+  "boss": "bloodmoon-regent",
+  "generator": "built-in image_gen",
+  "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-4df06a74-295a-4765-b6c2-1273f37e3faf.png",
+  "master": "art-source/loot/bloodmoon-regent/regent-regalia-v1.png",
+  "runtime": "frontend/public/art/loot/regent-regalia-v1.webp",
+  "prompt": "art-source/loot/bloodmoon-regent/regent-regalia-v1-prompt.txt",
+  "width": 480,
+  "height": 480,
+  "bytes": 65206,
+  "alphaRange": [
+    0,
+    254
+  ],
+  "transparentPercent": 61.09,
+  "centralSlotTransparentPercent": null,
+  "sha256": "e7fd07e64d6a7eb4047271bb280fe11db5b6bf7467a9387cc008ddb56b4c5dc9",
+  "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+}

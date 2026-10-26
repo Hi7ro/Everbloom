@@ -26,13 +26,32 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "public",
+                "ignore": [
+                  "art/characters/*-rig.json",
+                  "art/characters/*-original.png",
+                  "art/characters/*-mask.png",
+                  "art/characters/face-male.png",
+                  "art/characters/face-male-layers.png",
+                  "art/characters/face-female.png",
+                  "art/characters/face-female-layers.png"
+                ]
               }
             ],
-            "styles": ["src/styles.scss"]
+            "styles": [
+              "src/styles.scss"
+            ]
           },
           "configurations": {
             "production": {
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                },
+                "fonts": true
+              },
               "budgets": [
                 {
                   "type": "initial",
@@ -65,7 +84,10 @@
               "buildTarget": "everbloom:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "proxyConfig": "proxy.conf.json"
+          }
         },
         "test": {
           "builder": "@angular/build:unit-test"

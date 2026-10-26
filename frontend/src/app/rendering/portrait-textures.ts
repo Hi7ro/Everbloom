@@ -1,9 +1,10 @@
+import { BossDifficulty, BossId } from '../domain/boss-catalog';
+import { BOSS_VISUALS, bossVisual } from './boss-visuals';
 import { Container, Sprite, Texture } from 'pixi.js';
 import { Appearance } from '../domain/models';
-import { resolveCharacterIllustration } from '../domain/character-illustrations';
-import { portraitLayers, PortraitLayer, REGION_ALPHA, usesExactIllustration } from '../domain/character-rig';
+import { portraitLayers, PortraitLayer } from '../domain/character-rig';
 import { ActorAdapter, createLayeredActor } from './actor-adapter';
-import { portraitTransform, tintChannel } from './portrait-pixels';
+import { createRegionAlpha, portraitTransform, tintChannel } from './portrait-pixels';
 
 const RASTER_SCALE = 2;
 
@@ -61,15 +62,18 @@ function bitmapLoader(signal?: AbortSignal) {
   };
 }
 
-function maskedLayer(source: ImageBitmap, mask: ImageBitmap, layer: PortraitLayer): HTMLCanvasElement {
+function maskedLayer(source: ImageBitmap, mask: ImageBitmap | undefined,
+  layer: Pick<PortraitLayer, 'width' | 'height' | 'region' | 'clipX' | 'clipWidth' | 'tint' | 'eyeRegions'>,
+): HTMLCanvasElement {
   const surface = canvas(layer.width, layer.height);
   const ctx = context(surface);
-  ctx.drawImage(mask, 0, 0, layer.width, layer.height);
-  const region = ctx.getImageData(0, 0, layer.width, layer.height).data;
+  if (mask) ctx.drawImage(mask, 0, 0, layer.width, layer.height);
+  const region = mask ? ctx.getImageData(0, 0, layer.width, layer.height).data : undefined;
   ctx.clearRect(0, 0, layer.width, layer.height);
   ctx.drawImage(source, 0, 0, layer.width, layer.height);
+  if (!mask && !layer.tint && !layer.eyeRegions) return surface; // Full-alpha body needs no pixel readback.
   const pixels = ctx.getImageData(0, 0, layer.width, layer.height);
-  const [r, g, b, , offset] = REGION_ALPHA[layer.region].split(' ').map(Number);
+  const regionAlpha = createRegionAlpha(layer.region);
   const tint = layer.tint ? [0, 1, 2].map(channel => {
     const color = Number.parseInt(layer.tint!.slice(channel * 2 + 1, channel * 2 + 3), 16) / 255;
     return Array.from({ length: 256 }, (_, light) => tintChannel(light / 255, color, layer.region === 'eyes'));
@@ -83,7 +87,7 @@ function maskedLayer(source: ImageBitmap, mask: ImageBitmap, layer: PortraitLaye
       }
       const alpha = layer.eyeRegions
         ? (layer.eyeRegions.some(eye => ((x - eye.cx) / eye.rx) ** 2 + ((y - eye.cy) / eye.ry) ** 2 <= 1) ? 1 : 0)
-        : Math.max(0, Math.min(1, (region[i] * r + region[i + 1] * g + region[i + 2] * b) / 255 + offset));
+        : region ? regionAlpha(region[i], region[i + 1], region[i + 2]) : 1;
       pixels.data[i + 3] *= alpha;
       if (tint && alpha > 0) {
         const light = Math.round(pixels.data[i] * .2126 + pixels.data[i + 1] * .7152 + pixels.data[i + 2] * .0722);
@@ -101,88 +105,59 @@ function maskedLayer(source: ImageBitmap, mask: ImageBitmap, layer: PortraitLaye
 export async function createHeroActor(appearance: Appearance, signal?: AbortSignal): Promise<ActorAdapter> {
   const loader = bitmapLoader(signal);
   const bodyCanvas = canvas(240 * RASTER_SCALE, 300 * RASTER_SCALE);
-  const headCanvas = canvas(240 * RASTER_SCALE, 300 * RASTER_SCALE);
   const bodyContext = context(bodyCanvas);
-  const headContext = context(headCanvas);
   bodyContext.scale(RASTER_SCALE, RASTER_SCALE);
-  headContext.scale(RASTER_SCALE, RASTER_SCALE);
-  let hasHead = false;
   try {
-    if (usesExactIllustration(appearance)) {
-      const preset = resolveCharacterIllustration(appearance);
-      const [source, mask] = await Promise.all([loader.load(preset.imagePath), loader.load(preset.maskPath)]);
+    const layers = portraitLayers(appearance);
+    if (!layers.length) throw new Error('Character modules are unavailable');
+    for (const layer of layers) {
+      const [source, mask] = await Promise.all([loader.load(layer.image), layer.mask ? loader.load(layer.mask) : undefined]);
       checkSignal(signal);
-      const surface = canvas(source.width, source.height);
-      const ctx = context(surface);
-      ctx.drawImage(mask, 0, 0, source.width, source.height);
-      const alpha = ctx.getImageData(0, 0, source.width, source.height).data;
-      ctx.clearRect(0, 0, source.width, source.height);
-      ctx.drawImage(source, 0, 0);
-      const pixels = ctx.getImageData(0, 0, source.width, source.height);
-      for (let i = 0; i < pixels.data.length; i += 4) {
-        pixels.data[i + 3] *= (alpha[i] * .2126 + alpha[i + 1] * .7152 + alpha[i + 2] * .0722) / 255;
+      const surface = maskedLayer(source, mask, layer);
+      // Preserve the SVG painter order, including the collar over the neck. One shared
+      // breathing surface keeps their attachment closed throughout the animation.
+      bodyContext.save();
+      bodyContext.transform(...portraitTransform(layer.transform));
+      if (layer.sourceClip?.length) {
+        bodyContext.beginPath();
+        bodyContext.moveTo(layer.sourceClip[0].x, layer.sourceClip[0].y);
+        for (const point of layer.sourceClip.slice(1)) bodyContext.lineTo(point.x, point.y);
+        bodyContext.closePath();
+        bodyContext.clip();
       }
-      ctx.putImageData(pixels, 0, 0);
-      bodyContext.drawImage(surface, 1, 22, 1224 * .195, 1285 * .195);
+      bodyContext.drawImage(surface, 0, 0);
+      bodyContext.restore();
       surface.width = surface.height = 1;
-    } else {
-      const layers = portraitLayers(appearance);
-      if (!layers.length) throw new Error('Character modules are unavailable');
-      for (const layer of layers) {
-        const [source, mask] = await Promise.all([loader.load(layer.image), loader.load(layer.mask)]);
-        checkSignal(signal);
-        const surface = maskedLayer(source, mask, layer);
-        const ctx = layer.group === 'head' ? headContext : bodyContext;
-        if (layer.group === 'head') hasHead = true;
-        ctx.save();
-        if (layer.key.startsWith('scalp')) {
-          ctx.beginPath();
-          ctx.rect(0, -50, 240, 202);
-          ctx.clip();
-        }
-        ctx.transform(...portraitTransform(layer.transform));
-        ctx.drawImage(surface, 0, 0);
-        ctx.restore();
-        surface.width = surface.height = 1;
-      }
     }
   } finally {
     loader.dispose();
   }
   checkSignal(signal);
   const view = new Container();
-  const textures: Texture[] = [];
-  const addPart = (surface: HTMLCanvasElement) => {
-    const texture = Texture.from(surface);
-    textures.push(texture);
-    const part = new Sprite(texture);
-    part.width = 240;
-    part.height = 300;
-    part.pivot.set(texture.width / 2, texture.height * 280 / 300);
-    // Separate scale-normalized container keeps breathing independent of texture resolution.
-    const group = new Container();
-    group.addChild(part);
-    view.addChild(group);
-    return group;
-  };
-  const body = addPart(bodyCanvas);
-  const head = hasHead ? addPart(headCanvas) : undefined;
+  const texture = Texture.from(bodyCanvas);
+  const sprite = new Sprite(texture);
+  sprite.width = 240;
+  sprite.height = 300;
+  sprite.pivot.set(texture.width / 2, texture.height * 280 / 300);
+  // One composite preserves collar/neck attachment; its container owns the breathing scale.
+  const body = new Container();
+  body.addChild(sprite);
+  view.addChild(body);
   return createLayeredActor({
-    view, body, head, facing: 1,
+    view, body, facing: 1,
     dispose: () => {
-      textures.forEach(texture => texture.destroy(true));
+      texture.destroy(true);
       bodyCanvas.width = bodyCanvas.height = 1;
-      headCanvas.width = headCanvas.height = 1;
     },
   });
 }
 
 /** Boss art can later be replaced by a skeletal adapter with the same pose contract. */
-export async function createMosswardenActor(signal?: AbortSignal): Promise<ActorAdapter> {
+export async function createBossActor(bossId: BossId, signal?: AbortSignal, difficulty: BossDifficulty = 'normal'): Promise<ActorAdapter> {
   const loader = bitmapLoader(signal);
   const surface = canvas(720, 720);
   try {
-    const bitmap = await loader.load('/art/bosses/mosswarden-v1.png');
+    const bitmap = await loader.load(bossVisual(bossId, difficulty).image);
     checkSignal(signal);
     const scale = Math.min(720 / bitmap.width, 720 / bitmap.height);
     context(surface).drawImage(bitmap, (720 - bitmap.width * scale) / 2,
@@ -201,7 +176,8 @@ export async function createMosswardenActor(signal?: AbortSignal): Promise<Actor
   body.addChild(sprite);
   view.addChild(body);
   return createLayeredActor({
-    view, body, facing: -1,
+    view, body, facing: -1, attackStyle: BOSS_VISUALS[bossId].attack, attackColor: BOSS_VISUALS[bossId].glow,
+    attackTier: bossId === 'mosswarden' ? 1 : bossId === 'emberwyrm' ? 2 : 3,
     dispose: () => {
       texture.destroy(true);
       surface.width = surface.height = 1;

@@ -1,0 +1,22 @@
+{
+  "id": "astral-crown",
+  "presentation": "female",
+  "type": "hair",
+  "boss": "astral-sovereign",
+  "generator": "built-in image_gen",
+  "reference": "/Users/xv7ro/dev/personal/everbloom/frontend/public/art/loot/astral-crown-v1.webp",
+  "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-07a61a93-f705-45ce-8654-3ff7d2fb1f7f.png",
+  "master": "art-source/loot/astral-sovereign/female/astral-crown-female-v1.png",
+  "runtime": "frontend/public/art/loot/astral-crown-female-v1.webp",
+  "prompt": "art-source/loot/astral-sovereign/female/astral-crown-female-v1-prompt.txt",
+  "width": 480,
+  "height": 480,
+  "bytes": 74152,
+  "alphaRange": [
+    0,
+    254
+  ],
+  "transparentPercent": 52.0,
+  "sha256": "17272718d64a70a3ad39dcf72f598695ae2a4fc43e4acc721b7e36efd207769b",
+  "visualReview": "Inspected generated artwork: distinct female silhouette, matching boss material/palette, single isolated hair/crown or fully clothed outfit with no face/skin/mannequin/background/text. Entire item visible; a few ornament tips have tighter margins than requested. Collection illustration only, not a calibrated avatar rig."
+}

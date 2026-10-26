@@ -1,6 +1,6 @@
 # App Store Readiness & Reichweite · V0.2
 
-Stand: 08.09.2026. Verbindlicher Produkt-/Release-Plan; die App ist noch keine einreichbare Store-Version.
+Produktstand aktualisiert: 08.10.2026. Verbindlicher Produkt-/Release-Plan; die App ist noch keine einreichbare Store-Version.
 Die konkreten Store-, SDK- und Kontoanforderungen werden beim nativen Scaffold und vor Einreichung
 erneut anhand der offiziellen Quellen geprüft.
 
@@ -30,6 +30,10 @@ Architekturentscheidung auf Basis der [Google-Hinweise zu JavaScript-SEO](https:
 
 ## Store-Auftritt vorbereiten
 
+Das konkrete deutsche Textpaket mit geprüften Feldlängen, Screenshot-Motiven und Review-Anleitung
+steht in [STORE_LISTING_DE.md](STORE_LISTING_DE.md). Es ist lokal vorbereitet; öffentliche URLs,
+funktionierende Review-Zugänge und die Freigabe des nativen Release-Kandidaten stehen noch aus.
+
 | Inhalt | Apple | Google Play |
 |---|---|---|
 | Name | Bis 30 Zeichen | Bis 30 Zeichen |
@@ -43,22 +47,24 @@ Grundlagen: [Apple Product Page](https://developer.apple.com/app-store/product-p
 [Google Play Listing](https://support.google.com/googleplay/android-developer/answer/9859152?hl=en).
 Nicht automatisch dieselben Texte in beide Stores kopieren.
 
-„Everbloom“ bleibt Arbeitstitel. Name, Domain, Store-Verfügbarkeit und Markenlage vor Branding und
-Registrierung prüfen. Suchbegriffe wie „Habit RPG“, „Gewohnheiten“, „reales Leben“, „Quests“ sind
+„Herovera“ ist der gewählte App-Name. Domain, Store-Verfügbarkeit und Markenlage vor
+Registrierung gesondert prüfen. Suchbegriffe wie „Habit RPG“, „Gewohnheiten“, „reales Leben“, „Quests“ sind
 Recherchehypothesen, kein bereits validiertes Keyword-Set. Solo-Leveling-/FFXIV-Namen oder fremde
 Figuren gehören nicht ins Listing. Kategorie und Altersfreigabe anhand der tatsächlichen Funktionen
 wählen; Trainingsbezug und Health-Erklärungen vor Einreichung prüfen.
 
 Geplante Screenshot-Geschichte: (1) dein Charakter, (2) eine reale Aktivität gibt Fortschritt,
-(3) eigene Skills, (4) Daily Quests und Erholung, (5) Wochenboss. Spätere Member-Screens klar
-kennzeichnen. Kein Screenshot darf noch fehlende Features als verfügbar verkaufen.
+(3) persönliche Quests und Skills, (4) Charaktergestaltung, (5) erster Kampagnenboss,
+(6) ein klar als optionales Plus gekennzeichnetes späteres Kapitel. Die konkreten Motive und
+Bildtexte stehen im Textpaket. Kein Screenshot darf noch fehlende Features als verfügbar verkaufen.
 
 ## Beschlossenes Membership-Preisziel
 
 Geplant sind **3,99 € pro Monat** als monatlicher Endkundenpreis; ein Jahrespreis wurde nicht
-festgelegt. Free bleibt dauerhaft spielbar. Membership-Inhalte und der vorläufige Kandidat von
-+10 % Charakter-Aktivitäts-XP stehen im Game Design. Käufe, Entitlements und Bonus sind im
-Web-Prototyp noch nicht implementiert; es ist kein Store-Produkt registriert.
+festgelegt. Free bleibt dauerhaft spielbar und umfasst die fünf Normal-Bosse bis Level 50. Plus ergänzt
+35 Bossbegegnungen sowie +10 % Charakter-Aktivitäts-XP. Kauf-/Restore-Anbindung, serverseitige
+Entitlements und Bonus sind implementiert. Store-Produkte sind noch nicht nachgewiesen; echte
+Käufe und die externe Provider-Einrichtung bleiben offen. Maßgeblich ist MONETIZATION.md.
 
 Vor M3 regionale Store-Preisstufen, Steuern, Plattformabzüge und Nettoerlös prüfen. Im produktiven
 Checkout den vom jeweiligen Store gelieferten lokalisierten Preis verwenden. Der Zielpreis allein
@@ -91,10 +97,10 @@ ersetzt weder die Store-Konfiguration noch Kaufprüfung, Restore oder Kündigung
 
 Bereits im Web-Slice umgesetzt: responsive Layouts, semantische Controls, Fehler-/Statusmeldungen,
 reduzierte Bewegung, deutsche Zahlen, Safe-Area-Grundlage und vergrößerte mobile Formfelder.
-Der Creator speichert lokal ausschließlich Name/Aussehen; Ton-, Feuerwerk- und Bewegungspräferenzen
-liegen getrennt davon. Der erste Backend-Auth-Slice bietet inzwischen Accounts und Sessions, die
-Web-Demo nutzt ihn noch nicht für den lokalen Spielstand. Es gibt kein Tracking- oder Health-SDK.
-Serverpersistenz für Charakter und Fortschritt sowie Gerätewechsel sind dadurch noch nicht gelöst.
+Charakter und Fortschritt werden im bestätigten Konto serverseitig gespeichert. Ton-, Feuerwerk-
+und Bewegungspräferenzen liegen getrennt davon auf dem Gerät. Die öffentliche Demo bleibt isoliert.
+Es gibt kein Tracking- oder Health-SDK. Account-/Serverregeln sind lokal geprüft; der Nachweis
+des Gerätewechsels über ein öffentliches Backend steht weiterhin aus.
 
 Der Chibi verwendet modulare SVG-Grafik mit räumlicher Wirkung und optionalem Idle. Kurzes
 Feuerwerk und ein eigener Web-Audio-Jingle begleiten ausgewählte Meilensteine. Separate Controls
@@ -115,8 +121,8 @@ Defs brauchen pro Chibi-Instanz eindeutige IDs; Idle/Effekte sollen auf mobilen 
 bleiben. Lade-, Fehler-, Offline- und Resume-Verhalten gehören zum Kernflow. Der lokale Memory-
 Mock ist kein Beleg für funktionierende Netzwerkwiederaufnahme oder Offline-Synchronisation.
 
-Native Haptik, Lifecycle-/Audio-Unterbrechungen und Store-Billing werden erst über kleine
-Plattformadapter ergänzt und auf echten Geräten geprüft. Haptik bleibt optional. Browserprüfungen
+Lifecycle- und Store-Billing-Adapter sind vorhanden; Kauf-, Audio-Unterbrechungs- und
+Wiederaufnahmeverhalten sind noch auf echten Geräten zu prüfen. Native Haptik bleibt eine Erweiterung. Haptik bleibt optional. Browserprüfungen
 ersetzen keine native Abnahme und erfüllen allein keine der folgenden Store-Gates.
 
 ## Verbindliche Store-Gates vor Release

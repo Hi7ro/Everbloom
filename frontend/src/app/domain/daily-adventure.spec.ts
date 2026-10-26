@@ -112,6 +112,7 @@ describe('daily adventure suggestions', () => {
     snapshot.boss.hp = 0;
     expect(buildDailyAdventure(snapshot, ['calisthenics']).recommendations[0].preview).toEqual({
       activityXp: 80,
+      membershipXp: 0,
       questXp: 50,
       totalXp: 130,
       bossDamage: 0,

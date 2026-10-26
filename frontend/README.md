@@ -1,4 +1,4 @@
-# Everbloom · Angular Frontend
+# Herovera · Angular Frontend
 
 Lokaler M0/M1-Slice. Umfang und Spielregeln stehen in [Product Requirements](../docs/PRODUCT_REQUIREMENTS.md),
 [Master Prompt](../docs/MASTER_PROMPT.md) und [Art Direction](../docs/ART_DIRECTION.md).

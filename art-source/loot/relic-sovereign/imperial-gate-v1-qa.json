@@ -1,0 +1,21 @@
+{
+  "id": "imperial-gate",
+  "type": "aura",
+  "boss": "relic-sovereign",
+  "generator": "built-in image_gen",
+  "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-55adf2a7-2632-4c81-a499-02781ea6c2cf.png",
+  "master": "art-source/loot/relic-sovereign/imperial-gate-v1.png",
+  "runtime": "frontend/public/art/loot/imperial-gate-v1.webp",
+  "prompt": "art-source/loot/relic-sovereign/imperial-gate-v1-prompt.txt",
+  "width": 600,
+  "height": 750,
+  "bytes": 216016,
+  "alphaRange": [
+    0,
+    254
+  ],
+  "transparentPercent": 48.0,
+  "centralSlotTransparentPercent": 91.39,
+  "sha256": "cb7dc65d6895d71f2df8ae5b212990937f25cdeee7b3a5bb51731e84c69485ef",
+  "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+}

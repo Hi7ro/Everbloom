@@ -1,0 +1,49 @@
+{
+  "id": "dawn-priestess",
+  "neckX": 361,
+  "neckY": 140,
+  "footY": 792,
+  "collarFront": [
+    {
+      "x": 315,
+      "y": 123
+    },
+    {
+      "x": 332,
+      "y": 132
+    },
+    {
+      "x": 359,
+      "y": 139
+    },
+    {
+      "x": 384,
+      "y": 144
+    },
+    {
+      "x": 399,
+      "y": 137
+    },
+    {
+      "x": 397,
+      "y": 226
+    },
+    {
+      "x": 358,
+      "y": 226
+    },
+    {
+      "x": 317,
+      "y": 202
+    }
+  ],
+  "width": 700,
+  "height": 900,
+  "coordinateSpace": "Current runtime WebP source pixels",
+  "neckAnchor": "Current front collar rim where it meets selected complete head; renderer applies nine portrait-unit inset when source contains a painted neck.",
+  "footAnchor": "Lowest opaque sole pixel, alpha>128. Ignores tiny alpha noise outside artwork.",
+  "collarFrontNote": "Calibrated front-collar overlay copied from current runtime registry; original image pixels remain unchanged.",
+  "authority": "frontend/src/app/domain/character-outfits.ts",
+  "collarCalibration": "2026-10-05",
+  "previousCalibrationReference": "body-v2.anchors-before-collar-calibration.json"
+}

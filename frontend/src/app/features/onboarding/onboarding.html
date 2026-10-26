@@ -1,10 +1,16 @@
 <main class="onboarding-shell" id="onboarding-main">
   <header class="journey-header">
-    <a class="brand" routerLink="/dashboard" aria-label="Everbloom Dashboard"
-      >everbloom<span>.</span></a
+    <a class="brand" routerLink="/dashboard" aria-label="Herovera Dashboard"
+      >herovera<span>.</span></a
     >
     <button class="text-button leave-button" type="button" (click)="cancel()">
-      {{ journey.configured() ? 'Abbrechen' : 'Überspringen' }}
+      {{
+        journey.configured()
+          ? 'Abbrechen'
+          : store.accountMode
+            ? 'Mit Standardfokus starten'
+            : 'Überspringen'
+      }}
     </button>
   </header>
 
@@ -145,8 +151,15 @@
         </fieldset>
       }
       <p class="quiet-note">
-        Deine Auswahl ordnet dein Dashboard. Alle Skills bleiben verfügbar, auch wenn du sie hier
-        nicht auswählst. XP-Limits sind Spielregeln, keine Trainingsvorgaben.
+        @if (store.accountMode) {
+          Deine Auswahl bestimmt deine kostenlosen Tagesquests: bis zu drei Fokus-Skills pro Tag,
+          bei mehr Skills wechseln sie täglich. Nach deinem ersten Eintrag gelten Änderungen an den
+          Tagesquests ab morgen. Die Quest-Boni wachsen mit deinem Charakterlevel; für den heutigen
+          Plan bleiben sie fest.
+        } @else {
+          Deine Auswahl ordnet dein Dashboard. Die Beispielquests der Demo bleiben unverändert.
+        }
+        Alle Skills bleiben verfügbar. XP-Limits sind Spielregeln, keine Trainingsvorgaben.
       </p>
     } @else {
       @if (store.snapshot(); as game) {
@@ -222,9 +235,14 @@
         </section>
       </div>
       <p class="demo-note">
-        <strong>Dein Fortschritt bleibt bei dir</strong>Look und Auswahl bleiben auf diesem Gerät.
-        Aktivitäten und verdiente Auren bleiben ebenfalls in diesem Browser gespeichert, sofern der
-        Gerätespeicher verfügbar ist. Eine Cloud-Sicherung gibt es noch nicht.
+        @if (store.accountMode) {
+          <strong>Dein Fortschritt bleibt bei dir</strong>Dein Look und deine Auswahl werden in
+          deinem Konto gespeichert. Zum Spielen brauchst du eine Internetverbindung.
+        } @else {
+          <strong>Dein Fortschritt bleibt bei dir</strong>Look und Auswahl bleiben auf diesem Gerät.
+          Aktivitäten und verdiente Auren bleiben ebenfalls in diesem Browser gespeichert, sofern
+          der Gerätespeicher verfügbar ist. Eine Cloud-Sicherung gibt es noch nicht.
+        }
       </p>
     }
     @if (formError()) {

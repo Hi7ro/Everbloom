@@ -1,0 +1,90 @@
+{
+  "date": "2026-10-05",
+  "source": "Built-in image_gen; one original render per loot item; mechanical WebP resizing only.",
+  "items": [
+    {
+      "id": "bloodmoon-crown",
+      "type": "hair",
+      "boss": "bloodmoon-regent",
+      "generator": "built-in image_gen",
+      "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-c5aa2c8b-deda-4e49-b817-42e407f41737.png",
+      "master": "art-source/loot/bloodmoon-regent/bloodmoon-crown-v1.png",
+      "runtime": "frontend/public/art/loot/bloodmoon-crown-v1.webp",
+      "prompt": "art-source/loot/bloodmoon-regent/bloodmoon-crown-v1-prompt.txt",
+      "width": 480,
+      "height": 480,
+      "bytes": 84630,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 54.23,
+      "centralSlotTransparentPercent": null,
+      "sha256": "f5314fdc102be78645ce2295ef3862743efc889c9aa4023a4062fa961af62bcf",
+      "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+    },
+    {
+      "id": "crimson-corona",
+      "type": "aura",
+      "boss": "bloodmoon-regent",
+      "generator": "built-in image_gen",
+      "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-1d0b7bc3-3a79-4d19-90ed-174d9d31c4c8.png",
+      "master": "art-source/loot/bloodmoon-regent/crimson-corona-v1.png",
+      "runtime": "frontend/public/art/loot/crimson-corona-v1.webp",
+      "prompt": "art-source/loot/bloodmoon-regent/crimson-corona-v1-prompt.txt",
+      "width": 600,
+      "height": 750,
+      "bytes": 148382,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 64.25,
+      "centralSlotTransparentPercent": 98.89,
+      "sha256": "7b1305ca50ffcafde8a1fda2d6bc94585105721079af2ed1f04438802d0643b7",
+      "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+    },
+    {
+      "id": "regent-regalia",
+      "type": "outfit",
+      "boss": "bloodmoon-regent",
+      "generator": "built-in image_gen",
+      "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-4df06a74-295a-4765-b6c2-1273f37e3faf.png",
+      "master": "art-source/loot/bloodmoon-regent/regent-regalia-v1.png",
+      "runtime": "frontend/public/art/loot/regent-regalia-v1.webp",
+      "prompt": "art-source/loot/bloodmoon-regent/regent-regalia-v1-prompt.txt",
+      "width": 480,
+      "height": 480,
+      "bytes": 65206,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 61.09,
+      "centralSlotTransparentPercent": null,
+      "sha256": "e7fd07e64d6a7eb4047271bb280fe11db5b6bf7467a9387cc008ddb56b4c5dc9",
+      "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+    },
+    {
+      "id": "ruby-orbit",
+      "type": "aura",
+      "boss": "bloodmoon-regent",
+      "generator": "built-in image_gen",
+      "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-2f73481a-7547-42b7-aeeb-a64c1ad4ac95.png",
+      "master": "art-source/loot/bloodmoon-regent/ruby-orbit-v1.png",
+      "runtime": "frontend/public/art/loot/ruby-orbit-v1.webp",
+      "prompt": "art-source/loot/bloodmoon-regent/ruby-orbit-v1-prompt.txt",
+      "width": 600,
+      "height": 750,
+      "bytes": 142426,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 66.62,
+      "centralSlotTransparentPercent": 94.86,
+      "sha256": "6b41f51103fa6038146838b7d4e83d0cf68bfd68038376459833fbc87ee26e77",
+      "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+    }
+  ]
+}

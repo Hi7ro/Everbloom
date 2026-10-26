@@ -1,0 +1,7 @@
+Use case: stylized-concept.
+Asset type: premium original-IP anime fantasy RPG loot illustration, a single isolated item for mobile use.
+Input image 1: the boss reference; inherit its materials, visual family and color palette, NOT its body. Input image 2: reference for existing loot painterly rendering quality and asset framing.
+Style: sophisticated dimensional hand-painted anime-fantasy illustration, refined material shading, delicate metalwork, clean readable edges and jewel highlights. Match our existing art, not simple flat vector, not screenshot, not a sheet.
+Subject: A premium anime hairstyle of layered icy platinum-white locks with deep midnight-blue underlayers, swept back like elegant dragon crests. A very slender polished platinum circlet has two small backward horn-like tips and a luminous pale blue diamond. Refined silver mane, no face or skin, no dragon head. Cool sophisticated heroic style.
+Composition: One floating hairstyle with its integrated ornamental circlet. Hair only: no skin, head, neck, ears, eyes, face, mannequin or bust. Empty transparent face opening. Three-quarter view. Square composition. DISTANT ITEM VIEW, entire hairstyle including every tip within central 65% of canvas; wide visible transparent margins on every side, do not zoom/crop.
+Background: genuine alpha transparency, no checkerboard, background color, scenery, floor, item shadow, border, text, watermark, logo or labels. Single requested asset only. All extremities drawn completely; no cropped weapon or wing tips.

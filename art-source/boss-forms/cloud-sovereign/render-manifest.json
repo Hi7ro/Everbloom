@@ -1,0 +1,77 @@
+{
+  "date": "2026-10-05",
+  "assets": [
+    {
+      "id": "cloud-sovereign",
+      "difficulty": "hard",
+      "master": "art-source/boss-forms/cloud-sovereign/hard.png",
+      "runtime": "frontend/public/art/bosses/cloud-sovereign-hard-v1.webp",
+      "prompt": "art-source/boss-forms/cloud-sovereign/prompts.json",
+      "generator": "built-in image_gen",
+      "width": 900,
+      "height": 900,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentPercent": 51.42,
+      "solidBounds": [
+        70,
+        65,
+        832,
+        831
+      ],
+      "export": "774px image with 63px fully transparent border, WebP quality85 alpha100",
+      "runtimeBytes": 279774,
+      "runtimeSha256": "d136d5ebb0a4c1d42a22a38055ce193d586ed8f686be7d4b3740345a443c42d9"
+    },
+    {
+      "id": "cloud-sovereign",
+      "difficulty": "epic",
+      "master": "art-source/boss-forms/cloud-sovereign/epic.png",
+      "runtime": "frontend/public/art/bosses/cloud-sovereign-epic-v1.webp",
+      "prompt": "art-source/boss-forms/cloud-sovereign/prompts.json",
+      "generator": "built-in image_gen",
+      "width": 900,
+      "height": 900,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentPercent": 49.33,
+      "solidBounds": [
+        67,
+        67,
+        834,
+        825
+      ],
+      "export": "774px image with 63px fully transparent border, WebP quality85 alpha100",
+      "runtimeBytes": 296004,
+      "runtimeSha256": "5fca44e8a4bf96067b62cff419f58f7848ee644776f84c023f3edb80a991ff7f"
+    },
+    {
+      "id": "cloud-sovereign",
+      "difficulty": "ultimate",
+      "master": "art-source/boss-forms/cloud-sovereign/ultimate.png",
+      "runtime": "frontend/public/art/bosses/cloud-sovereign-ultimate-v1.webp",
+      "prompt": "art-source/boss-forms/cloud-sovereign/prompts.json",
+      "generator": "built-in image_gen",
+      "width": 900,
+      "height": 900,
+      "alphaRange": [
+        0,
+        255
+      ],
+      "transparentPercent": 47.32,
+      "solidBounds": [
+        69,
+        65,
+        829,
+        832
+      ],
+      "export": "774px image with 63px fully transparent border, WebP quality85 alpha100",
+      "runtimeBytes": 324846,
+      "runtimeSha256": "098ffd7156b869257f95b074509f13f93c6bf3969e3d717b56725f2cbf8875f7"
+    }
+  ]
+}

@@ -1,34 +1,60 @@
 {
   "name": "everbloom",
-  "version": "0.0.0",
+  "version": "0.2.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "art:sync-rigs": "node scripts/sync-character-rigs.mjs"
+    "test:ci": "ng test --watch=false",
+    "art:sync-rigs": "node scripts/sync-character-rigs.mjs",
+    "native:sync": "npm run build && node scripts/configure-native.mjs && cap sync",
+    "native:sync:demo": "npm run build && cap sync",
+    "native:ios": "cap open ios",
+    "native:android": "cap open android",
+    "native:doctor": "cap doctor"
   },
   "private": true,
   "packageManager": "npm@10.8.2",
+  "engines": {
+    "node": "^22.12.0 || >=24.0.0"
+  },
   "dependencies": {
-    "@angular/common": "^21.2.0",
-    "@angular/compiler": "^21.2.0",
-    "@angular/core": "^21.2.0",
-    "@angular/forms": "^21.2.0",
-    "@angular/platform-browser": "^21.2.0",
-    "@angular/router": "^21.2.0",
+    "@angular/common": "21.2.24",
+    "@angular/compiler": "21.2.24",
+    "@angular/core": "21.2.24",
+    "@angular/forms": "21.2.24",
+    "@angular/platform-browser": "21.2.24",
+    "@angular/router": "21.2.24",
+    "@capacitor/android": "8.5.2",
+    "@capacitor/app": "8.1.2",
+    "@capacitor/browser": "8.0.5",
+    "@capacitor/core": "8.5.2",
+    "@capacitor/filesystem": "8.1.4",
+    "@capacitor/ios": "8.5.2",
+    "@capacitor/share": "8.0.3",
+    "@revenuecat/purchases-capacitor": "13.7.0",
     "pixi.js": "8.22.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
-    "@angular/build": "^21.2.23",
-    "@angular/cli": "^21.2.23",
-    "@angular/compiler-cli": "^21.2.0",
+    "@angular/build": "21.2.24",
+    "@angular/cli": "21.2.24",
+    "@angular/compiler-cli": "21.2.24",
+    "@capacitor/cli": "8.5.2",
     "jsdom": "^28.0.0",
     "prettier": "^3.8.1",
     "typescript": "~5.9.2",
     "vitest": "^4.0.8"
+  },
+  "overrides": {
+    "@angular/build": {
+      "piscina": "5.3.2"
+    },
+    "xcode": {
+      "uuid": "11.1.1"
+    }
   }
 }

@@ -1,0 +1,59 @@
+{
+  "bossId": "primordial-dragon",
+  "difficulty": "ultimate",
+  "generatedAt": "2026-10-05",
+  "generator": "Built-in image_gen",
+  "references": [
+    "art-source/boss-forms/primordial-dragon/normal-v1.master.png"
+  ],
+  "prompt": "ultimate-v1.prompt.txt",
+  "master": "ultimate-v1.master.png",
+  "output": "frontend/public/art/bosses/primordial-dragon-ultimate-v1.webp",
+  "processing": "Unmodified generated PNG copied as master; mechanical resize to774x774, padded63px transparent on each side; WebP quality85 alphaQuality100.",
+  "masterQa": {
+    "width": 1254,
+    "height": 1254,
+    "hasAlpha": true,
+    "format": "png",
+    "bytes": 2754046,
+    "sha256": "d776be83b34d7122464b9523bb2af98597e7094c8bcdc61e16e3c928763c1538",
+    "transparentPixels": 578874,
+    "partialAlphaPixels": 993228,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 19,
+      "top": 43,
+      "right": 1253,
+      "bottom": 1236
+    },
+    "clearMargins": {
+      "left": 19,
+      "top": 43,
+      "right": 0,
+      "bottom": 17
+    }
+  },
+  "outputQa": {
+    "width": 900,
+    "height": 900,
+    "hasAlpha": true,
+    "format": "webp",
+    "bytes": 287622,
+    "sha256": "33d52c200fafe5e1b63520480e8975caa6a9beec1d24db1c4f67a165f0a6e5e2",
+    "transparentPixels": 433781,
+    "partialAlphaPixels": 374912,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 75,
+      "top": 89,
+      "right": 836,
+      "bottom": 826
+    },
+    "clearMargins": {
+      "left": 75,
+      "top": 89,
+      "right": 63,
+      "bottom": 73
+    }
+  }
+}

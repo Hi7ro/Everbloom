@@ -1,0 +1,21 @@
+{
+  "id": "wyrm-crown",
+  "type": "hair",
+  "boss": "primordial-dragon",
+  "generator": "built-in image_gen",
+  "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-89b462e8-3a73-4618-9826-c23763607386.png",
+  "master": "art-source/loot/primordial-dragon/wyrm-crown-v1.png",
+  "runtime": "frontend/public/art/loot/wyrm-crown-v1.webp",
+  "prompt": "art-source/loot/primordial-dragon/wyrm-crown-v1-prompt.txt",
+  "width": 480,
+  "height": 480,
+  "bytes": 63816,
+  "alphaRange": [
+    0,
+    254
+  ],
+  "transparentPercent": 61.91,
+  "centralSlotTransparentPercent": null,
+  "sha256": "33ef95051e1e957a3bcc02e00c2dbfd861f205cbf38c0977ccbc2ba2572ceb85",
+  "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+}

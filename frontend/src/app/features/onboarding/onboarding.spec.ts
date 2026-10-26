@@ -12,6 +12,13 @@ import { GameStore } from '../../state/game.store';
 import { JourneyStore } from '../../state/journey.store';
 import { ProgressFeedback } from '../../state/progress-feedback';
 import { Onboarding } from './onboarding';
+import { Component, inject, signal } from '@angular/core';
+import { RouterTestingHarness } from '@angular/router/testing';
+import { ACCOUNT_MODE } from '../../data/account-mode';
+import { ApiClient } from '../../data/api-client';
+import { createMockSnapshot } from '../../data/mock-data';
+import { AuthStore } from '../../state/auth.store';
+import { gameGuard } from '../../state/auth.guard';
 
 describe('mobile journey onboarding', () => {
   let entries: Map<string, string>;
@@ -79,6 +86,9 @@ describe('mobile journey onboarding', () => {
     expect(fixture.componentInstance.step()).toBe(2);
     expect(fixture.nativeElement.querySelectorAll('input[name="skills"]')).toHaveLength(
       SKILLS.length,
+    );
+    expect(fixture.nativeElement.querySelector('.quiet-note').textContent).toContain(
+      'Die Beispielquests der Demo bleiben unverändert',
     );
     input(fixture, 'skills', 'running').click();
     await fixture.whenStable();
@@ -263,5 +273,132 @@ describe('mobile journey onboarding', () => {
     await fixture.whenStable();
     expect(TestBed.inject(JourneyStore).preferences()).toEqual(preferences);
     expect(storage.setItem).not.toHaveBeenCalled();
+  });
+});
+
+@Component({
+  template: '@for (quest of store.snapshot()?.quests ?? []; track quest.id) { <p>{{ quest.title }}</p> }',
+})
+class QuestDestination {
+  readonly store = inject(GameStore);
+}
+
+@Component({ template: 'Bitte erneut verbinden.' })
+class ConnectionDestination {}
+
+describe('account focus changes and the next dashboard board', () => {
+  const preferences = {
+    interestIds: ['knowledge'],
+    primaryInterestId: 'knowledge',
+    activeSkillIds: ['reading'],
+  };
+  let snapshot: ReturnType<typeof createMockSnapshot>;
+  let load: ReturnType<typeof vi.fn>;
+  let put: ReturnType<typeof vi.fn>;
+  let ensureSession: ReturnType<typeof vi.fn>;
+
+  beforeEach(async () => {
+    snapshot = createMockSnapshot();
+    snapshot.character.createdByPlayer = true;
+    load = vi.fn(async () => structuredClone(snapshot));
+    put = vi.fn(async () => {
+      snapshot.quests = [{
+        id: 'daily:2026-09-08:reading',
+        title: 'Eine neue Seite entdecken',
+        description: '15 Minuten Reading',
+        skillId: 'reading',
+        targetMinutes: 15,
+        progressMinutes: 0,
+        bonusXp: 40,
+        claimed: false,
+      }];
+      return preferences;
+    });
+    ensureSession = vi.fn().mockResolvedValue(true);
+    await TestBed.configureTestingModule({
+      imports: [Onboarding],
+      providers: [
+        provideRouter([
+          { path: 'onboarding', component: Onboarding },
+          { path: 'dashboard', component: QuestDestination, canActivate: [gameGuard], data: { needsCharacter: true, needsJourney: true } },
+          { path: 'connection', component: ConnectionDestination },
+          { path: 'auth', component: ConnectionDestination },
+        ]),
+        { provide: ACCOUNT_MODE, useValue: true },
+        { provide: BROWSER_STORAGE, useValue: null },
+        { provide: GAME_DAY_CLOCK, useValue: () => '2026-09-08' },
+        { provide: GAME_REPOSITORY, useValue: { load } },
+        { provide: ApiClient, useValue: { put, get: vi.fn().mockResolvedValue(preferences) } },
+        { provide: AuthStore, useValue: {
+          epoch: signal(1),
+          user: signal({ id: 'focus-owner' }),
+          ensureSession,
+          owned: <T>(request: (headers: Record<string, string>) => Promise<T>) => request({}),
+        } },
+      ],
+    }).compileComponents();
+  });
+
+  async function review() {
+    const harness = await RouterTestingHarness.create();
+    const page = await harness.navigateByUrl('/onboarding', Onboarding);
+    await harness.fixture.whenStable();
+    page.draft.set(preferences);
+    page.step.set(3);
+    harness.detectChanges();
+    return { harness, page };
+  }
+
+  it('finishes saving the focus before the dashboard guard loads and displays the new server quests', async () => {
+    const { harness, page } = await review();
+    expect(TestBed.inject(GameStore).snapshot()?.quests[0].skillId).toBe('calisthenics');
+    await page.finish();
+    await harness.fixture.whenStable();
+    harness.detectChanges();
+    expect(put).toHaveBeenCalledWith('/api/game/journey', preferences, {});
+    expect(load).toHaveBeenCalledTimes(2);
+    expect(TestBed.inject(Router).url).toBe('/dashboard');
+    expect(harness.routeNativeElement?.textContent).toContain('Eine neue Seite entdecken');
+    expect(harness.routeNativeElement?.textContent).not.toContain('Werde ein Stück stärker');
+    expect(TestBed.inject(GameStore).snapshot()?.character.totalXp).toBe(25926);
+  });
+
+  it('explains daily rotation and next-day changes in the account skill choice', async () => {
+    const { harness, page } = await review();
+    page.step.set(2);
+    harness.detectChanges();
+    const text = harness.routeNativeElement?.querySelector('.quiet-note')?.textContent;
+    expect(text).toContain('kostenlosen Tagesquests');
+    expect(text).toContain('wechseln sie täglich');
+    expect(text).toContain('ab morgen');
+    expect(text).not.toContain('Beispielquests');
+  });
+
+  it('keeps failed preference writes on the review screen without loading a replacement board', async () => {
+    const { harness, page } = await review();
+    put.mockRejectedValueOnce(new Error('Deine Auswahl konnte nicht gespeichert werden.'));
+    await page.finish();
+    harness.detectChanges();
+    expect(TestBed.inject(Router).url).toBe('/onboarding');
+    expect(load).toHaveBeenCalledOnce();
+    expect(page.saving()).toBe(false);
+    expect(harness.routeNativeElement?.querySelector('[role="alert"]')?.textContent).toContain('nicht gespeichert');
+  });
+
+  it('uses connection recovery if the saved focus cannot yet be followed by a fresh board', async () => {
+    const { page } = await review();
+    load.mockRejectedValueOnce(new Error('Verbindung unterbrochen.'));
+    await page.finish();
+    expect(TestBed.inject(JourneyStore).preferences()).toEqual(preferences);
+    expect(TestBed.inject(Router).url).toBe('/connection?returnTo=%2Fdashboard');
+    expect(TestBed.inject(GameStore).snapshot()?.quests[0].skillId).toBe('calisthenics');
+  });
+
+  it('honors an expired session before requesting the next dashboard board', async () => {
+    const { page } = await review();
+    ensureSession.mockResolvedValueOnce(false);
+    await page.finish();
+    expect(TestBed.inject(Router).url).toBe('/auth?returnTo=%2Fdashboard');
+    expect(load).toHaveBeenCalledOnce();
   });
 });

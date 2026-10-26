@@ -1,0 +1,5235 @@
+[
+  {
+    "name": "first",
+    "before": {
+      "dayKey": "2026-10-04",
+      "character": {
+        "id": "demo-player",
+        "createdByPlayer": false,
+        "name": "Ari",
+        "title": "Wanderer des Morgenlichts",
+        "totalXp": 0,
+        "attributes": {
+          "strength": 23,
+          "endurance": 16,
+          "focus": 22,
+          "knowledge": 21,
+          "mindfulness": 12,
+          "recovery": 18
+        },
+        "appearance": {
+          "presentation": "male",
+          "body": "base",
+          "hair": "m-spiky",
+          "outfit": "wanderer",
+          "aura": "sage",
+          "skinColor": "#e6b995",
+          "hairColor": "#d9cbb4",
+          "outfitColor": "#729e8e"
+        }
+      },
+      "skills": [
+        {
+          "skillId": "calisthenics",
+          "totalXp": 0
+        },
+        {
+          "skillId": "running",
+          "totalXp": 0
+        },
+        {
+          "skillId": "meditation",
+          "totalXp": 0
+        },
+        {
+          "skillId": "programming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "weightlifting",
+          "totalXp": 0
+        },
+        {
+          "skillId": "swimming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "boxing",
+          "totalXp": 0
+        },
+        {
+          "skillId": "bjj",
+          "totalXp": 0
+        },
+        {
+          "skillId": "breathwork",
+          "totalXp": 0
+        },
+        {
+          "skillId": "recovery",
+          "totalXp": 0
+        },
+        {
+          "skillId": "reading",
+          "totalXp": 0
+        },
+        {
+          "skillId": "languages",
+          "totalXp": 0
+        },
+        {
+          "skillId": "healthy-cooking",
+          "totalXp": 0
+        },
+        {
+          "skillId": "music",
+          "totalXp": 0
+        }
+      ],
+      "quests": [
+        {
+          "id": "q-move",
+          "title": "Werde ein Stück stärker",
+          "description": "20 Minuten Calisthenics",
+          "skillId": "calisthenics",
+          "targetMinutes": 20,
+          "progressMinutes": 0,
+          "bonusXp": 50,
+          "claimed": false
+        },
+        {
+          "id": "q-mind",
+          "title": "Finde deine innere Ruhe",
+          "description": "10 Minuten Meditation",
+          "skillId": "meditation",
+          "targetMinutes": 10,
+          "progressMinutes": 0,
+          "bonusXp": 30,
+          "claimed": false
+        },
+        {
+          "id": "q-learn",
+          "title": "Baue an deiner Zukunft",
+          "description": "30 Minuten Programming",
+          "skillId": "programming",
+          "targetMinutes": 30,
+          "progressMinutes": 0,
+          "bonusXp": 40,
+          "claimed": false
+        }
+      ],
+      "boss": {
+        "id": "mosswarden",
+        "name": "Der Mooswächter",
+        "weekLabel": "28. September – 04. Oktober",
+        "maxHp": 2400,
+        "hp": 2400
+      },
+      "activities": [],
+      "unlockedAuras": [],
+      "momentum": {
+        "value": 0,
+        "lastRewardDay": null,
+        "rhythm": [
+          {
+            "label": "Mo",
+            "status": "rest"
+          },
+          {
+            "label": "Di",
+            "status": "rest"
+          },
+          {
+            "label": "Mi",
+            "status": "rest"
+          },
+          {
+            "label": "Do",
+            "status": "rest"
+          },
+          {
+            "label": "Fr",
+            "status": "rest"
+          },
+          {
+            "label": "Sa",
+            "status": "rest"
+          },
+          {
+            "label": "So",
+            "status": "today"
+          }
+        ]
+      }
+    },
+    "command": {
+      "requestId": "first",
+      "skillId": "calisthenics",
+      "minutes": 60
+    },
+    "snapshot": {
+      "dayKey": "2026-10-04",
+      "character": {
+        "id": "demo-player",
+        "createdByPlayer": false,
+        "name": "Ari",
+        "title": "Wanderer des Morgenlichts",
+        "totalXp": 290,
+        "attributes": {
+          "strength": 23,
+          "endurance": 16,
+          "focus": 22,
+          "knowledge": 21,
+          "mindfulness": 12,
+          "recovery": 18
+        },
+        "appearance": {
+          "presentation": "male",
+          "body": "base",
+          "hair": "m-spiky",
+          "outfit": "wanderer",
+          "aura": "sage",
+          "skinColor": "#e6b995",
+          "hairColor": "#d9cbb4",
+          "outfitColor": "#729e8e"
+        }
+      },
+      "skills": [
+        {
+          "skillId": "calisthenics",
+          "totalXp": 240
+        },
+        {
+          "skillId": "running",
+          "totalXp": 0
+        },
+        {
+          "skillId": "meditation",
+          "totalXp": 0
+        },
+        {
+          "skillId": "programming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "weightlifting",
+          "totalXp": 0
+        },
+        {
+          "skillId": "swimming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "boxing",
+          "totalXp": 0
+        },
+        {
+          "skillId": "bjj",
+          "totalXp": 0
+        },
+        {
+          "skillId": "breathwork",
+          "totalXp": 0
+        },
+        {
+          "skillId": "recovery",
+          "totalXp": 0
+        },
+        {
+          "skillId": "reading",
+          "totalXp": 0
+        },
+        {
+          "skillId": "languages",
+          "totalXp": 0
+        },
+        {
+          "skillId": "healthy-cooking",
+          "totalXp": 0
+        },
+        {
+          "skillId": "music",
+          "totalXp": 0
+        }
+      ],
+      "quests": [
+        {
+          "id": "q-move",
+          "title": "Werde ein Stück stärker",
+          "description": "20 Minuten Calisthenics",
+          "skillId": "calisthenics",
+          "targetMinutes": 20,
+          "progressMinutes": 20,
+          "bonusXp": 50,
+          "claimed": true
+        },
+        {
+          "id": "q-mind",
+          "title": "Finde deine innere Ruhe",
+          "description": "10 Minuten Meditation",
+          "skillId": "meditation",
+          "targetMinutes": 10,
+          "progressMinutes": 0,
+          "bonusXp": 30,
+          "claimed": false
+        },
+        {
+          "id": "q-learn",
+          "title": "Baue an deiner Zukunft",
+          "description": "30 Minuten Programming",
+          "skillId": "programming",
+          "targetMinutes": 30,
+          "progressMinutes": 0,
+          "bonusXp": 40,
+          "claimed": false
+        }
+      ],
+      "boss": {
+        "id": "mosswarden",
+        "name": "Der Mooswächter",
+        "weekLabel": "28. September – 04. Oktober",
+        "maxHp": 2400,
+        "hp": 1920
+      },
+      "activities": [
+        {
+          "requestId": "first",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 60,
+          "xp": 240
+        }
+      ],
+      "unlockedAuras": [],
+      "momentum": {
+        "value": 5,
+        "lastRewardDay": "2026-10-04",
+        "rhythm": [
+          {
+            "label": "Mo",
+            "status": "rest"
+          },
+          {
+            "label": "Di",
+            "status": "rest"
+          },
+          {
+            "label": "Mi",
+            "status": "rest"
+          },
+          {
+            "label": "Do",
+            "status": "rest"
+          },
+          {
+            "label": "Fr",
+            "status": "rest"
+          },
+          {
+            "label": "Sa",
+            "status": "rest"
+          },
+          {
+            "label": "So",
+            "status": "today"
+          }
+        ]
+      }
+    },
+    "reward": {
+      "activityXp": 240,
+      "questXp": 50,
+      "damage": 480,
+      "rewardedMinutes": 60,
+      "duplicate": false
+    }
+  },
+  {
+    "name": "daily-cap",
+    "before": {
+      "dayKey": "2026-10-04",
+      "character": {
+        "id": "demo-player",
+        "createdByPlayer": false,
+        "name": "Ari",
+        "title": "Wanderer des Morgenlichts",
+        "totalXp": 290,
+        "attributes": {
+          "strength": 23,
+          "endurance": 16,
+          "focus": 22,
+          "knowledge": 21,
+          "mindfulness": 12,
+          "recovery": 18
+        },
+        "appearance": {
+          "presentation": "male",
+          "body": "base",
+          "hair": "m-spiky",
+          "outfit": "wanderer",
+          "aura": "sage",
+          "skinColor": "#e6b995",
+          "hairColor": "#d9cbb4",
+          "outfitColor": "#729e8e"
+        }
+      },
+      "skills": [
+        {
+          "skillId": "calisthenics",
+          "totalXp": 240
+        },
+        {
+          "skillId": "running",
+          "totalXp": 0
+        },
+        {
+          "skillId": "meditation",
+          "totalXp": 0
+        },
+        {
+          "skillId": "programming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "weightlifting",
+          "totalXp": 0
+        },
+        {
+          "skillId": "swimming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "boxing",
+          "totalXp": 0
+        },
+        {
+          "skillId": "bjj",
+          "totalXp": 0
+        },
+        {
+          "skillId": "breathwork",
+          "totalXp": 0
+        },
+        {
+          "skillId": "recovery",
+          "totalXp": 0
+        },
+        {
+          "skillId": "reading",
+          "totalXp": 0
+        },
+        {
+          "skillId": "languages",
+          "totalXp": 0
+        },
+        {
+          "skillId": "healthy-cooking",
+          "totalXp": 0
+        },
+        {
+          "skillId": "music",
+          "totalXp": 0
+        }
+      ],
+      "quests": [
+        {
+          "id": "q-move",
+          "title": "Werde ein Stück stärker",
+          "description": "20 Minuten Calisthenics",
+          "skillId": "calisthenics",
+          "targetMinutes": 20,
+          "progressMinutes": 20,
+          "bonusXp": 50,
+          "claimed": true
+        },
+        {
+          "id": "q-mind",
+          "title": "Finde deine innere Ruhe",
+          "description": "10 Minuten Meditation",
+          "skillId": "meditation",
+          "targetMinutes": 10,
+          "progressMinutes": 0,
+          "bonusXp": 30,
+          "claimed": false
+        },
+        {
+          "id": "q-learn",
+          "title": "Baue an deiner Zukunft",
+          "description": "30 Minuten Programming",
+          "skillId": "programming",
+          "targetMinutes": 30,
+          "progressMinutes": 0,
+          "bonusXp": 40,
+          "claimed": false
+        }
+      ],
+      "boss": {
+        "id": "mosswarden",
+        "name": "Der Mooswächter",
+        "weekLabel": "28. September – 04. Oktober",
+        "maxHp": 2400,
+        "hp": 1920
+      },
+      "activities": [
+        {
+          "requestId": "first",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 60,
+          "xp": 240
+        }
+      ],
+      "unlockedAuras": [],
+      "momentum": {
+        "value": 5,
+        "lastRewardDay": "2026-10-04",
+        "rhythm": [
+          {
+            "label": "Mo",
+            "status": "rest"
+          },
+          {
+            "label": "Di",
+            "status": "rest"
+          },
+          {
+            "label": "Mi",
+            "status": "rest"
+          },
+          {
+            "label": "Do",
+            "status": "rest"
+          },
+          {
+            "label": "Fr",
+            "status": "rest"
+          },
+          {
+            "label": "Sa",
+            "status": "rest"
+          },
+          {
+            "label": "So",
+            "status": "today"
+          }
+        ]
+      }
+    },
+    "command": {
+      "requestId": "daily-cap",
+      "skillId": "calisthenics",
+      "minutes": 60
+    },
+    "snapshot": {
+      "dayKey": "2026-10-04",
+      "character": {
+        "id": "demo-player",
+        "createdByPlayer": false,
+        "name": "Ari",
+        "title": "Wanderer des Morgenlichts",
+        "totalXp": 410,
+        "attributes": {
+          "strength": 23,
+          "endurance": 16,
+          "focus": 22,
+          "knowledge": 21,
+          "mindfulness": 12,
+          "recovery": 18
+        },
+        "appearance": {
+          "presentation": "male",
+          "body": "base",
+          "hair": "m-spiky",
+          "outfit": "wanderer",
+          "aura": "sage",
+          "skinColor": "#e6b995",
+          "hairColor": "#d9cbb4",
+          "outfitColor": "#729e8e"
+        }
+      },
+      "skills": [
+        {
+          "skillId": "calisthenics",
+          "totalXp": 360
+        },
+        {
+          "skillId": "running",
+          "totalXp": 0
+        },
+        {
+          "skillId": "meditation",
+          "totalXp": 0
+        },
+        {
+          "skillId": "programming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "weightlifting",
+          "totalXp": 0
+        },
+        {
+          "skillId": "swimming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "boxing",
+          "totalXp": 0
+        },
+        {
+          "skillId": "bjj",
+          "totalXp": 0
+        },
+        {
+          "skillId": "breathwork",
+          "totalXp": 0
+        },
+        {
+          "skillId": "recovery",
+          "totalXp": 0
+        },
+        {
+          "skillId": "reading",
+          "totalXp": 0
+        },
+        {
+          "skillId": "languages",
+          "totalXp": 0
+        },
+        {
+          "skillId": "healthy-cooking",
+          "totalXp": 0
+        },
+        {
+          "skillId": "music",
+          "totalXp": 0
+        }
+      ],
+      "quests": [
+        {
+          "id": "q-move",
+          "title": "Werde ein Stück stärker",
+          "description": "20 Minuten Calisthenics",
+          "skillId": "calisthenics",
+          "targetMinutes": 20,
+          "progressMinutes": 20,
+          "bonusXp": 50,
+          "claimed": true
+        },
+        {
+          "id": "q-mind",
+          "title": "Finde deine innere Ruhe",
+          "description": "10 Minuten Meditation",
+          "skillId": "meditation",
+          "targetMinutes": 10,
+          "progressMinutes": 0,
+          "bonusXp": 30,
+          "claimed": false
+        },
+        {
+          "id": "q-learn",
+          "title": "Baue an deiner Zukunft",
+          "description": "30 Minuten Programming",
+          "skillId": "programming",
+          "targetMinutes": 30,
+          "progressMinutes": 0,
+          "bonusXp": 40,
+          "claimed": false
+        }
+      ],
+      "boss": {
+        "id": "mosswarden",
+        "name": "Der Mooswächter",
+        "weekLabel": "28. September – 04. Oktober",
+        "maxHp": 2400,
+        "hp": 1680
+      },
+      "activities": [
+        {
+          "requestId": "daily-cap",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 120
+        },
+        {
+          "requestId": "first",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 60,
+          "xp": 240
+        }
+      ],
+      "unlockedAuras": [],
+      "momentum": {
+        "value": 5,
+        "lastRewardDay": "2026-10-04",
+        "rhythm": [
+          {
+            "label": "Mo",
+            "status": "rest"
+          },
+          {
+            "label": "Di",
+            "status": "rest"
+          },
+          {
+            "label": "Mi",
+            "status": "rest"
+          },
+          {
+            "label": "Do",
+            "status": "rest"
+          },
+          {
+            "label": "Fr",
+            "status": "rest"
+          },
+          {
+            "label": "Sa",
+            "status": "rest"
+          },
+          {
+            "label": "So",
+            "status": "today"
+          }
+        ]
+      }
+    },
+    "reward": {
+      "activityXp": 120,
+      "questXp": 0,
+      "damage": 240,
+      "rewardedMinutes": 30,
+      "duplicate": false
+    }
+  },
+  {
+    "name": "over-cap",
+    "before": {
+      "dayKey": "2026-10-04",
+      "character": {
+        "id": "demo-player",
+        "createdByPlayer": false,
+        "name": "Ari",
+        "title": "Wanderer des Morgenlichts",
+        "totalXp": 410,
+        "attributes": {
+          "strength": 23,
+          "endurance": 16,
+          "focus": 22,
+          "knowledge": 21,
+          "mindfulness": 12,
+          "recovery": 18
+        },
+        "appearance": {
+          "presentation": "male",
+          "body": "base",
+          "hair": "m-spiky",
+          "outfit": "wanderer",
+          "aura": "sage",
+          "skinColor": "#e6b995",
+          "hairColor": "#d9cbb4",
+          "outfitColor": "#729e8e"
+        }
+      },
+      "skills": [
+        {
+          "skillId": "calisthenics",
+          "totalXp": 360
+        },
+        {
+          "skillId": "running",
+          "totalXp": 0
+        },
+        {
+          "skillId": "meditation",
+          "totalXp": 0
+        },
+        {
+          "skillId": "programming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "weightlifting",
+          "totalXp": 0
+        },
+        {
+          "skillId": "swimming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "boxing",
+          "totalXp": 0
+        },
+        {
+          "skillId": "bjj",
+          "totalXp": 0
+        },
+        {
+          "skillId": "breathwork",
+          "totalXp": 0
+        },
+        {
+          "skillId": "recovery",
+          "totalXp": 0
+        },
+        {
+          "skillId": "reading",
+          "totalXp": 0
+        },
+        {
+          "skillId": "languages",
+          "totalXp": 0
+        },
+        {
+          "skillId": "healthy-cooking",
+          "totalXp": 0
+        },
+        {
+          "skillId": "music",
+          "totalXp": 0
+        }
+      ],
+      "quests": [
+        {
+          "id": "q-move",
+          "title": "Werde ein Stück stärker",
+          "description": "20 Minuten Calisthenics",
+          "skillId": "calisthenics",
+          "targetMinutes": 20,
+          "progressMinutes": 20,
+          "bonusXp": 50,
+          "claimed": true
+        },
+        {
+          "id": "q-mind",
+          "title": "Finde deine innere Ruhe",
+          "description": "10 Minuten Meditation",
+          "skillId": "meditation",
+          "targetMinutes": 10,
+          "progressMinutes": 0,
+          "bonusXp": 30,
+          "claimed": false
+        },
+        {
+          "id": "q-learn",
+          "title": "Baue an deiner Zukunft",
+          "description": "30 Minuten Programming",
+          "skillId": "programming",
+          "targetMinutes": 30,
+          "progressMinutes": 0,
+          "bonusXp": 40,
+          "claimed": false
+        }
+      ],
+      "boss": {
+        "id": "mosswarden",
+        "name": "Der Mooswächter",
+        "weekLabel": "28. September – 04. Oktober",
+        "maxHp": 2400,
+        "hp": 1680
+      },
+      "activities": [
+        {
+          "requestId": "daily-cap",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 120
+        },
+        {
+          "requestId": "first",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 60,
+          "xp": 240
+        }
+      ],
+      "unlockedAuras": [],
+      "momentum": {
+        "value": 5,
+        "lastRewardDay": "2026-10-04",
+        "rhythm": [
+          {
+            "label": "Mo",
+            "status": "rest"
+          },
+          {
+            "label": "Di",
+            "status": "rest"
+          },
+          {
+            "label": "Mi",
+            "status": "rest"
+          },
+          {
+            "label": "Do",
+            "status": "rest"
+          },
+          {
+            "label": "Fr",
+            "status": "rest"
+          },
+          {
+            "label": "Sa",
+            "status": "rest"
+          },
+          {
+            "label": "So",
+            "status": "today"
+          }
+        ]
+      }
+    },
+    "command": {
+      "requestId": "over-cap",
+      "skillId": "calisthenics",
+      "minutes": 90
+    },
+    "snapshot": {
+      "dayKey": "2026-10-04",
+      "character": {
+        "id": "demo-player",
+        "createdByPlayer": false,
+        "name": "Ari",
+        "title": "Wanderer des Morgenlichts",
+        "totalXp": 410,
+        "attributes": {
+          "strength": 23,
+          "endurance": 16,
+          "focus": 22,
+          "knowledge": 21,
+          "mindfulness": 12,
+          "recovery": 18
+        },
+        "appearance": {
+          "presentation": "male",
+          "body": "base",
+          "hair": "m-spiky",
+          "outfit": "wanderer",
+          "aura": "sage",
+          "skinColor": "#e6b995",
+          "hairColor": "#d9cbb4",
+          "outfitColor": "#729e8e"
+        }
+      },
+      "skills": [
+        {
+          "skillId": "calisthenics",
+          "totalXp": 360
+        },
+        {
+          "skillId": "running",
+          "totalXp": 0
+        },
+        {
+          "skillId": "meditation",
+          "totalXp": 0
+        },
+        {
+          "skillId": "programming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "weightlifting",
+          "totalXp": 0
+        },
+        {
+          "skillId": "swimming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "boxing",
+          "totalXp": 0
+        },
+        {
+          "skillId": "bjj",
+          "totalXp": 0
+        },
+        {
+          "skillId": "breathwork",
+          "totalXp": 0
+        },
+        {
+          "skillId": "recovery",
+          "totalXp": 0
+        },
+        {
+          "skillId": "reading",
+          "totalXp": 0
+        },
+        {
+          "skillId": "languages",
+          "totalXp": 0
+        },
+        {
+          "skillId": "healthy-cooking",
+          "totalXp": 0
+        },
+        {
+          "skillId": "music",
+          "totalXp": 0
+        }
+      ],
+      "quests": [
+        {
+          "id": "q-move",
+          "title": "Werde ein Stück stärker",
+          "description": "20 Minuten Calisthenics",
+          "skillId": "calisthenics",
+          "targetMinutes": 20,
+          "progressMinutes": 20,
+          "bonusXp": 50,
+          "claimed": true
+        },
+        {
+          "id": "q-mind",
+          "title": "Finde deine innere Ruhe",
+          "description": "10 Minuten Meditation",
+          "skillId": "meditation",
+          "targetMinutes": 10,
+          "progressMinutes": 0,
+          "bonusXp": 30,
+          "claimed": false
+        },
+        {
+          "id": "q-learn",
+          "title": "Baue an deiner Zukunft",
+          "description": "30 Minuten Programming",
+          "skillId": "programming",
+          "targetMinutes": 30,
+          "progressMinutes": 0,
+          "bonusXp": 40,
+          "claimed": false
+        }
+      ],
+      "boss": {
+        "id": "mosswarden",
+        "name": "Der Mooswächter",
+        "weekLabel": "28. September – 04. Oktober",
+        "maxHp": 2400,
+        "hp": 1680
+      },
+      "activities": [
+        {
+          "requestId": "over-cap",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 0,
+          "xp": 0
+        },
+        {
+          "requestId": "daily-cap",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 120
+        },
+        {
+          "requestId": "first",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 60,
+          "xp": 240
+        }
+      ],
+      "unlockedAuras": [],
+      "momentum": {
+        "value": 5,
+        "lastRewardDay": "2026-10-04",
+        "rhythm": [
+          {
+            "label": "Mo",
+            "status": "rest"
+          },
+          {
+            "label": "Di",
+            "status": "rest"
+          },
+          {
+            "label": "Mi",
+            "status": "rest"
+          },
+          {
+            "label": "Do",
+            "status": "rest"
+          },
+          {
+            "label": "Fr",
+            "status": "rest"
+          },
+          {
+            "label": "Sa",
+            "status": "rest"
+          },
+          {
+            "label": "So",
+            "status": "today"
+          }
+        ]
+      }
+    },
+    "reward": {
+      "activityXp": 0,
+      "questXp": 0,
+      "damage": 0,
+      "rewardedMinutes": 0,
+      "duplicate": false
+    }
+  },
+  {
+    "name": "quest-meditation",
+    "before": {
+      "dayKey": "2026-10-04",
+      "character": {
+        "id": "demo-player",
+        "createdByPlayer": false,
+        "name": "Ari",
+        "title": "Wanderer des Morgenlichts",
+        "totalXp": 410,
+        "attributes": {
+          "strength": 23,
+          "endurance": 16,
+          "focus": 22,
+          "knowledge": 21,
+          "mindfulness": 12,
+          "recovery": 18
+        },
+        "appearance": {
+          "presentation": "male",
+          "body": "base",
+          "hair": "m-spiky",
+          "outfit": "wanderer",
+          "aura": "sage",
+          "skinColor": "#e6b995",
+          "hairColor": "#d9cbb4",
+          "outfitColor": "#729e8e"
+        }
+      },
+      "skills": [
+        {
+          "skillId": "calisthenics",
+          "totalXp": 360
+        },
+        {
+          "skillId": "running",
+          "totalXp": 0
+        },
+        {
+          "skillId": "meditation",
+          "totalXp": 0
+        },
+        {
+          "skillId": "programming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "weightlifting",
+          "totalXp": 0
+        },
+        {
+          "skillId": "swimming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "boxing",
+          "totalXp": 0
+        },
+        {
+          "skillId": "bjj",
+          "totalXp": 0
+        },
+        {
+          "skillId": "breathwork",
+          "totalXp": 0
+        },
+        {
+          "skillId": "recovery",
+          "totalXp": 0
+        },
+        {
+          "skillId": "reading",
+          "totalXp": 0
+        },
+        {
+          "skillId": "languages",
+          "totalXp": 0
+        },
+        {
+          "skillId": "healthy-cooking",
+          "totalXp": 0
+        },
+        {
+          "skillId": "music",
+          "totalXp": 0
+        }
+      ],
+      "quests": [
+        {
+          "id": "q-move",
+          "title": "Werde ein Stück stärker",
+          "description": "20 Minuten Calisthenics",
+          "skillId": "calisthenics",
+          "targetMinutes": 20,
+          "progressMinutes": 20,
+          "bonusXp": 50,
+          "claimed": true
+        },
+        {
+          "id": "q-mind",
+          "title": "Finde deine innere Ruhe",
+          "description": "10 Minuten Meditation",
+          "skillId": "meditation",
+          "targetMinutes": 10,
+          "progressMinutes": 0,
+          "bonusXp": 30,
+          "claimed": false
+        },
+        {
+          "id": "q-learn",
+          "title": "Baue an deiner Zukunft",
+          "description": "30 Minuten Programming",
+          "skillId": "programming",
+          "targetMinutes": 30,
+          "progressMinutes": 0,
+          "bonusXp": 40,
+          "claimed": false
+        }
+      ],
+      "boss": {
+        "id": "mosswarden",
+        "name": "Der Mooswächter",
+        "weekLabel": "28. September – 04. Oktober",
+        "maxHp": 2400,
+        "hp": 1680
+      },
+      "activities": [
+        {
+          "requestId": "over-cap",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 0,
+          "xp": 0
+        },
+        {
+          "requestId": "daily-cap",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 120
+        },
+        {
+          "requestId": "first",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 60,
+          "xp": 240
+        }
+      ],
+      "unlockedAuras": [],
+      "momentum": {
+        "value": 5,
+        "lastRewardDay": "2026-10-04",
+        "rhythm": [
+          {
+            "label": "Mo",
+            "status": "rest"
+          },
+          {
+            "label": "Di",
+            "status": "rest"
+          },
+          {
+            "label": "Mi",
+            "status": "rest"
+          },
+          {
+            "label": "Do",
+            "status": "rest"
+          },
+          {
+            "label": "Fr",
+            "status": "rest"
+          },
+          {
+            "label": "Sa",
+            "status": "rest"
+          },
+          {
+            "label": "So",
+            "status": "today"
+          }
+        ]
+      }
+    },
+    "command": {
+      "requestId": "quest-meditation",
+      "skillId": "meditation",
+      "minutes": 10
+    },
+    "snapshot": {
+      "dayKey": "2026-10-04",
+      "character": {
+        "id": "demo-player",
+        "createdByPlayer": false,
+        "name": "Ari",
+        "title": "Wanderer des Morgenlichts",
+        "totalXp": 470,
+        "attributes": {
+          "strength": 23,
+          "endurance": 16,
+          "focus": 22,
+          "knowledge": 21,
+          "mindfulness": 12,
+          "recovery": 18
+        },
+        "appearance": {
+          "presentation": "male",
+          "body": "base",
+          "hair": "m-spiky",
+          "outfit": "wanderer",
+          "aura": "sage",
+          "skinColor": "#e6b995",
+          "hairColor": "#d9cbb4",
+          "outfitColor": "#729e8e"
+        }
+      },
+      "skills": [
+        {
+          "skillId": "calisthenics",
+          "totalXp": 360
+        },
+        {
+          "skillId": "running",
+          "totalXp": 0
+        },
+        {
+          "skillId": "meditation",
+          "totalXp": 30
+        },
+        {
+          "skillId": "programming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "weightlifting",
+          "totalXp": 0
+        },
+        {
+          "skillId": "swimming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "boxing",
+          "totalXp": 0
+        },
+        {
+          "skillId": "bjj",
+          "totalXp": 0
+        },
+        {
+          "skillId": "breathwork",
+          "totalXp": 0
+        },
+        {
+          "skillId": "recovery",
+          "totalXp": 0
+        },
+        {
+          "skillId": "reading",
+          "totalXp": 0
+        },
+        {
+          "skillId": "languages",
+          "totalXp": 0
+        },
+        {
+          "skillId": "healthy-cooking",
+          "totalXp": 0
+        },
+        {
+          "skillId": "music",
+          "totalXp": 0
+        }
+      ],
+      "quests": [
+        {
+          "id": "q-move",
+          "title": "Werde ein Stück stärker",
+          "description": "20 Minuten Calisthenics",
+          "skillId": "calisthenics",
+          "targetMinutes": 20,
+          "progressMinutes": 20,
+          "bonusXp": 50,
+          "claimed": true
+        },
+        {
+          "id": "q-mind",
+          "title": "Finde deine innere Ruhe",
+          "description": "10 Minuten Meditation",
+          "skillId": "meditation",
+          "targetMinutes": 10,
+          "progressMinutes": 10,
+          "bonusXp": 30,
+          "claimed": true
+        },
+        {
+          "id": "q-learn",
+          "title": "Baue an deiner Zukunft",
+          "description": "30 Minuten Programming",
+          "skillId": "programming",
+          "targetMinutes": 30,
+          "progressMinutes": 0,
+          "bonusXp": 40,
+          "claimed": false
+        }
+      ],
+      "boss": {
+        "id": "mosswarden",
+        "name": "Der Mooswächter",
+        "weekLabel": "28. September – 04. Oktober",
+        "maxHp": 2400,
+        "hp": 1620
+      },
+      "activities": [
+        {
+          "requestId": "quest-meditation",
+          "skillId": "meditation",
+          "minutes": 10,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 10,
+          "xp": 30
+        },
+        {
+          "requestId": "over-cap",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 0,
+          "xp": 0
+        },
+        {
+          "requestId": "daily-cap",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 120
+        },
+        {
+          "requestId": "first",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 60,
+          "xp": 240
+        }
+      ],
+      "unlockedAuras": [],
+      "momentum": {
+        "value": 5,
+        "lastRewardDay": "2026-10-04",
+        "rhythm": [
+          {
+            "label": "Mo",
+            "status": "rest"
+          },
+          {
+            "label": "Di",
+            "status": "rest"
+          },
+          {
+            "label": "Mi",
+            "status": "rest"
+          },
+          {
+            "label": "Do",
+            "status": "rest"
+          },
+          {
+            "label": "Fr",
+            "status": "rest"
+          },
+          {
+            "label": "Sa",
+            "status": "rest"
+          },
+          {
+            "label": "So",
+            "status": "today"
+          }
+        ]
+      }
+    },
+    "reward": {
+      "activityXp": 30,
+      "questXp": 30,
+      "damage": 60,
+      "rewardedMinutes": 10,
+      "duplicate": false
+    }
+  },
+  {
+    "name": "quest-programming",
+    "before": {
+      "dayKey": "2026-10-04",
+      "character": {
+        "id": "demo-player",
+        "createdByPlayer": false,
+        "name": "Ari",
+        "title": "Wanderer des Morgenlichts",
+        "totalXp": 470,
+        "attributes": {
+          "strength": 23,
+          "endurance": 16,
+          "focus": 22,
+          "knowledge": 21,
+          "mindfulness": 12,
+          "recovery": 18
+        },
+        "appearance": {
+          "presentation": "male",
+          "body": "base",
+          "hair": "m-spiky",
+          "outfit": "wanderer",
+          "aura": "sage",
+          "skinColor": "#e6b995",
+          "hairColor": "#d9cbb4",
+          "outfitColor": "#729e8e"
+        }
+      },
+      "skills": [
+        {
+          "skillId": "calisthenics",
+          "totalXp": 360
+        },
+        {
+          "skillId": "running",
+          "totalXp": 0
+        },
+        {
+          "skillId": "meditation",
+          "totalXp": 30
+        },
+        {
+          "skillId": "programming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "weightlifting",
+          "totalXp": 0
+        },
+        {
+          "skillId": "swimming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "boxing",
+          "totalXp": 0
+        },
+        {
+          "skillId": "bjj",
+          "totalXp": 0
+        },
+        {
+          "skillId": "breathwork",
+          "totalXp": 0
+        },
+        {
+          "skillId": "recovery",
+          "totalXp": 0
+        },
+        {
+          "skillId": "reading",
+          "totalXp": 0
+        },
+        {
+          "skillId": "languages",
+          "totalXp": 0
+        },
+        {
+          "skillId": "healthy-cooking",
+          "totalXp": 0
+        },
+        {
+          "skillId": "music",
+          "totalXp": 0
+        }
+      ],
+      "quests": [
+        {
+          "id": "q-move",
+          "title": "Werde ein Stück stärker",
+          "description": "20 Minuten Calisthenics",
+          "skillId": "calisthenics",
+          "targetMinutes": 20,
+          "progressMinutes": 20,
+          "bonusXp": 50,
+          "claimed": true
+        },
+        {
+          "id": "q-mind",
+          "title": "Finde deine innere Ruhe",
+          "description": "10 Minuten Meditation",
+          "skillId": "meditation",
+          "targetMinutes": 10,
+          "progressMinutes": 10,
+          "bonusXp": 30,
+          "claimed": true
+        },
+        {
+          "id": "q-learn",
+          "title": "Baue an deiner Zukunft",
+          "description": "30 Minuten Programming",
+          "skillId": "programming",
+          "targetMinutes": 30,
+          "progressMinutes": 0,
+          "bonusXp": 40,
+          "claimed": false
+        }
+      ],
+      "boss": {
+        "id": "mosswarden",
+        "name": "Der Mooswächter",
+        "weekLabel": "28. September – 04. Oktober",
+        "maxHp": 2400,
+        "hp": 1620
+      },
+      "activities": [
+        {
+          "requestId": "quest-meditation",
+          "skillId": "meditation",
+          "minutes": 10,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 10,
+          "xp": 30
+        },
+        {
+          "requestId": "over-cap",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 0,
+          "xp": 0
+        },
+        {
+          "requestId": "daily-cap",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 120
+        },
+        {
+          "requestId": "first",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 60,
+          "xp": 240
+        }
+      ],
+      "unlockedAuras": [],
+      "momentum": {
+        "value": 5,
+        "lastRewardDay": "2026-10-04",
+        "rhythm": [
+          {
+            "label": "Mo",
+            "status": "rest"
+          },
+          {
+            "label": "Di",
+            "status": "rest"
+          },
+          {
+            "label": "Mi",
+            "status": "rest"
+          },
+          {
+            "label": "Do",
+            "status": "rest"
+          },
+          {
+            "label": "Fr",
+            "status": "rest"
+          },
+          {
+            "label": "Sa",
+            "status": "rest"
+          },
+          {
+            "label": "So",
+            "status": "today"
+          }
+        ]
+      }
+    },
+    "command": {
+      "requestId": "quest-programming",
+      "skillId": "programming",
+      "minutes": 30
+    },
+    "snapshot": {
+      "dayKey": "2026-10-04",
+      "character": {
+        "id": "demo-player",
+        "createdByPlayer": false,
+        "name": "Ari",
+        "title": "Wanderer des Morgenlichts",
+        "totalXp": 570,
+        "attributes": {
+          "strength": 23,
+          "endurance": 16,
+          "focus": 22,
+          "knowledge": 21,
+          "mindfulness": 12,
+          "recovery": 18
+        },
+        "appearance": {
+          "presentation": "male",
+          "body": "base",
+          "hair": "m-spiky",
+          "outfit": "wanderer",
+          "aura": "sage",
+          "skinColor": "#e6b995",
+          "hairColor": "#d9cbb4",
+          "outfitColor": "#729e8e"
+        }
+      },
+      "skills": [
+        {
+          "skillId": "calisthenics",
+          "totalXp": 360
+        },
+        {
+          "skillId": "running",
+          "totalXp": 0
+        },
+        {
+          "skillId": "meditation",
+          "totalXp": 30
+        },
+        {
+          "skillId": "programming",
+          "totalXp": 60
+        },
+        {
+          "skillId": "weightlifting",
+          "totalXp": 0
+        },
+        {
+          "skillId": "swimming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "boxing",
+          "totalXp": 0
+        },
+        {
+          "skillId": "bjj",
+          "totalXp": 0
+        },
+        {
+          "skillId": "breathwork",
+          "totalXp": 0
+        },
+        {
+          "skillId": "recovery",
+          "totalXp": 0
+        },
+        {
+          "skillId": "reading",
+          "totalXp": 0
+        },
+        {
+          "skillId": "languages",
+          "totalXp": 0
+        },
+        {
+          "skillId": "healthy-cooking",
+          "totalXp": 0
+        },
+        {
+          "skillId": "music",
+          "totalXp": 0
+        }
+      ],
+      "quests": [
+        {
+          "id": "q-move",
+          "title": "Werde ein Stück stärker",
+          "description": "20 Minuten Calisthenics",
+          "skillId": "calisthenics",
+          "targetMinutes": 20,
+          "progressMinutes": 20,
+          "bonusXp": 50,
+          "claimed": true
+        },
+        {
+          "id": "q-mind",
+          "title": "Finde deine innere Ruhe",
+          "description": "10 Minuten Meditation",
+          "skillId": "meditation",
+          "targetMinutes": 10,
+          "progressMinutes": 10,
+          "bonusXp": 30,
+          "claimed": true
+        },
+        {
+          "id": "q-learn",
+          "title": "Baue an deiner Zukunft",
+          "description": "30 Minuten Programming",
+          "skillId": "programming",
+          "targetMinutes": 30,
+          "progressMinutes": 30,
+          "bonusXp": 40,
+          "claimed": true
+        }
+      ],
+      "boss": {
+        "id": "mosswarden",
+        "name": "Der Mooswächter",
+        "weekLabel": "28. September – 04. Oktober",
+        "maxHp": 2400,
+        "hp": 1500
+      },
+      "activities": [
+        {
+          "requestId": "quest-programming",
+          "skillId": "programming",
+          "minutes": 30,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 60
+        },
+        {
+          "requestId": "quest-meditation",
+          "skillId": "meditation",
+          "minutes": 10,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 10,
+          "xp": 30
+        },
+        {
+          "requestId": "over-cap",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 0,
+          "xp": 0
+        },
+        {
+          "requestId": "daily-cap",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 120
+        },
+        {
+          "requestId": "first",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 60,
+          "xp": 240
+        }
+      ],
+      "unlockedAuras": [],
+      "momentum": {
+        "value": 5,
+        "lastRewardDay": "2026-10-04",
+        "rhythm": [
+          {
+            "label": "Mo",
+            "status": "rest"
+          },
+          {
+            "label": "Di",
+            "status": "rest"
+          },
+          {
+            "label": "Mi",
+            "status": "rest"
+          },
+          {
+            "label": "Do",
+            "status": "rest"
+          },
+          {
+            "label": "Fr",
+            "status": "rest"
+          },
+          {
+            "label": "Sa",
+            "status": "rest"
+          },
+          {
+            "label": "So",
+            "status": "today"
+          }
+        ]
+      }
+    },
+    "reward": {
+      "activityXp": 60,
+      "questXp": 40,
+      "damage": 120,
+      "rewardedMinutes": 30,
+      "duplicate": false
+    }
+  },
+  {
+    "name": "new-week",
+    "before": {
+      "dayKey": "2026-10-05",
+      "character": {
+        "id": "demo-player",
+        "createdByPlayer": false,
+        "name": "Ari",
+        "title": "Wanderer des Morgenlichts",
+        "totalXp": 570,
+        "attributes": {
+          "strength": 23,
+          "endurance": 16,
+          "focus": 22,
+          "knowledge": 21,
+          "mindfulness": 12,
+          "recovery": 18
+        },
+        "appearance": {
+          "presentation": "male",
+          "body": "base",
+          "hair": "m-spiky",
+          "outfit": "wanderer",
+          "aura": "sage",
+          "skinColor": "#e6b995",
+          "hairColor": "#d9cbb4",
+          "outfitColor": "#729e8e"
+        }
+      },
+      "skills": [
+        {
+          "skillId": "calisthenics",
+          "totalXp": 360
+        },
+        {
+          "skillId": "running",
+          "totalXp": 0
+        },
+        {
+          "skillId": "meditation",
+          "totalXp": 30
+        },
+        {
+          "skillId": "programming",
+          "totalXp": 60
+        },
+        {
+          "skillId": "weightlifting",
+          "totalXp": 0
+        },
+        {
+          "skillId": "swimming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "boxing",
+          "totalXp": 0
+        },
+        {
+          "skillId": "bjj",
+          "totalXp": 0
+        },
+        {
+          "skillId": "breathwork",
+          "totalXp": 0
+        },
+        {
+          "skillId": "recovery",
+          "totalXp": 0
+        },
+        {
+          "skillId": "reading",
+          "totalXp": 0
+        },
+        {
+          "skillId": "languages",
+          "totalXp": 0
+        },
+        {
+          "skillId": "healthy-cooking",
+          "totalXp": 0
+        },
+        {
+          "skillId": "music",
+          "totalXp": 0
+        }
+      ],
+      "quests": [
+        {
+          "id": "q-move",
+          "title": "Werde ein Stück stärker",
+          "description": "20 Minuten Calisthenics",
+          "skillId": "calisthenics",
+          "targetMinutes": 20,
+          "progressMinutes": 0,
+          "bonusXp": 50,
+          "claimed": false
+        },
+        {
+          "id": "q-mind",
+          "title": "Finde deine innere Ruhe",
+          "description": "10 Minuten Meditation",
+          "skillId": "meditation",
+          "targetMinutes": 10,
+          "progressMinutes": 0,
+          "bonusXp": 30,
+          "claimed": false
+        },
+        {
+          "id": "q-learn",
+          "title": "Baue an deiner Zukunft",
+          "description": "30 Minuten Programming",
+          "skillId": "programming",
+          "targetMinutes": 30,
+          "progressMinutes": 0,
+          "bonusXp": 40,
+          "claimed": false
+        }
+      ],
+      "boss": {
+        "id": "mosswarden",
+        "name": "Der Mooswächter",
+        "weekLabel": "05. – 11. Oktober",
+        "maxHp": 2400,
+        "hp": 2400
+      },
+      "activities": [
+        {
+          "requestId": "quest-programming",
+          "skillId": "programming",
+          "minutes": 30,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 60
+        },
+        {
+          "requestId": "quest-meditation",
+          "skillId": "meditation",
+          "minutes": 10,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 10,
+          "xp": 30
+        },
+        {
+          "requestId": "over-cap",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 0,
+          "xp": 0
+        },
+        {
+          "requestId": "daily-cap",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 120
+        },
+        {
+          "requestId": "first",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 60,
+          "xp": 240
+        }
+      ],
+      "unlockedAuras": [],
+      "momentum": {
+        "value": 5,
+        "lastRewardDay": "2026-10-04",
+        "rhythm": [
+          {
+            "label": "Mo",
+            "status": "today"
+          },
+          {
+            "label": "Di",
+            "status": "upcoming"
+          },
+          {
+            "label": "Mi",
+            "status": "upcoming"
+          },
+          {
+            "label": "Do",
+            "status": "upcoming"
+          },
+          {
+            "label": "Fr",
+            "status": "upcoming"
+          },
+          {
+            "label": "Sa",
+            "status": "upcoming"
+          },
+          {
+            "label": "So",
+            "status": "upcoming"
+          }
+        ]
+      }
+    },
+    "command": {
+      "requestId": "new-week",
+      "skillId": "calisthenics",
+      "minutes": 90
+    },
+    "snapshot": {
+      "dayKey": "2026-10-05",
+      "character": {
+        "id": "demo-player",
+        "createdByPlayer": false,
+        "name": "Ari",
+        "title": "Wanderer des Morgenlichts",
+        "totalXp": 980,
+        "attributes": {
+          "strength": 23,
+          "endurance": 16,
+          "focus": 22,
+          "knowledge": 21,
+          "mindfulness": 12,
+          "recovery": 18
+        },
+        "appearance": {
+          "presentation": "male",
+          "body": "base",
+          "hair": "m-spiky",
+          "outfit": "wanderer",
+          "aura": "sage",
+          "skinColor": "#e6b995",
+          "hairColor": "#d9cbb4",
+          "outfitColor": "#729e8e"
+        }
+      },
+      "skills": [
+        {
+          "skillId": "calisthenics",
+          "totalXp": 720
+        },
+        {
+          "skillId": "running",
+          "totalXp": 0
+        },
+        {
+          "skillId": "meditation",
+          "totalXp": 30
+        },
+        {
+          "skillId": "programming",
+          "totalXp": 60
+        },
+        {
+          "skillId": "weightlifting",
+          "totalXp": 0
+        },
+        {
+          "skillId": "swimming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "boxing",
+          "totalXp": 0
+        },
+        {
+          "skillId": "bjj",
+          "totalXp": 0
+        },
+        {
+          "skillId": "breathwork",
+          "totalXp": 0
+        },
+        {
+          "skillId": "recovery",
+          "totalXp": 0
+        },
+        {
+          "skillId": "reading",
+          "totalXp": 0
+        },
+        {
+          "skillId": "languages",
+          "totalXp": 0
+        },
+        {
+          "skillId": "healthy-cooking",
+          "totalXp": 0
+        },
+        {
+          "skillId": "music",
+          "totalXp": 0
+        }
+      ],
+      "quests": [
+        {
+          "id": "q-move",
+          "title": "Werde ein Stück stärker",
+          "description": "20 Minuten Calisthenics",
+          "skillId": "calisthenics",
+          "targetMinutes": 20,
+          "progressMinutes": 20,
+          "bonusXp": 50,
+          "claimed": true
+        },
+        {
+          "id": "q-mind",
+          "title": "Finde deine innere Ruhe",
+          "description": "10 Minuten Meditation",
+          "skillId": "meditation",
+          "targetMinutes": 10,
+          "progressMinutes": 0,
+          "bonusXp": 30,
+          "claimed": false
+        },
+        {
+          "id": "q-learn",
+          "title": "Baue an deiner Zukunft",
+          "description": "30 Minuten Programming",
+          "skillId": "programming",
+          "targetMinutes": 30,
+          "progressMinutes": 0,
+          "bonusXp": 40,
+          "claimed": false
+        }
+      ],
+      "boss": {
+        "id": "mosswarden",
+        "name": "Der Mooswächter",
+        "weekLabel": "05. – 11. Oktober",
+        "maxHp": 2400,
+        "hp": 1680
+      },
+      "activities": [
+        {
+          "requestId": "new-week",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 90,
+          "xp": 360
+        },
+        {
+          "requestId": "quest-programming",
+          "skillId": "programming",
+          "minutes": 30,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 60
+        },
+        {
+          "requestId": "quest-meditation",
+          "skillId": "meditation",
+          "minutes": 10,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 10,
+          "xp": 30
+        },
+        {
+          "requestId": "over-cap",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 0,
+          "xp": 0
+        },
+        {
+          "requestId": "daily-cap",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 120
+        },
+        {
+          "requestId": "first",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 60,
+          "xp": 240
+        }
+      ],
+      "unlockedAuras": [],
+      "momentum": {
+        "value": 10,
+        "lastRewardDay": "2026-10-05",
+        "rhythm": [
+          {
+            "label": "Mo",
+            "status": "today"
+          },
+          {
+            "label": "Di",
+            "status": "upcoming"
+          },
+          {
+            "label": "Mi",
+            "status": "upcoming"
+          },
+          {
+            "label": "Do",
+            "status": "upcoming"
+          },
+          {
+            "label": "Fr",
+            "status": "upcoming"
+          },
+          {
+            "label": "Sa",
+            "status": "upcoming"
+          },
+          {
+            "label": "So",
+            "status": "upcoming"
+          }
+        ]
+      }
+    },
+    "reward": {
+      "activityXp": 360,
+      "questXp": 50,
+      "damage": 720,
+      "rewardedMinutes": 90,
+      "duplicate": false
+    }
+  },
+  {
+    "name": "boss-progress",
+    "before": {
+      "dayKey": "2026-10-05",
+      "character": {
+        "id": "demo-player",
+        "createdByPlayer": false,
+        "name": "Ari",
+        "title": "Wanderer des Morgenlichts",
+        "totalXp": 980,
+        "attributes": {
+          "strength": 23,
+          "endurance": 16,
+          "focus": 22,
+          "knowledge": 21,
+          "mindfulness": 12,
+          "recovery": 18
+        },
+        "appearance": {
+          "presentation": "male",
+          "body": "base",
+          "hair": "m-spiky",
+          "outfit": "wanderer",
+          "aura": "sage",
+          "skinColor": "#e6b995",
+          "hairColor": "#d9cbb4",
+          "outfitColor": "#729e8e"
+        }
+      },
+      "skills": [
+        {
+          "skillId": "calisthenics",
+          "totalXp": 720
+        },
+        {
+          "skillId": "running",
+          "totalXp": 0
+        },
+        {
+          "skillId": "meditation",
+          "totalXp": 30
+        },
+        {
+          "skillId": "programming",
+          "totalXp": 60
+        },
+        {
+          "skillId": "weightlifting",
+          "totalXp": 0
+        },
+        {
+          "skillId": "swimming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "boxing",
+          "totalXp": 0
+        },
+        {
+          "skillId": "bjj",
+          "totalXp": 0
+        },
+        {
+          "skillId": "breathwork",
+          "totalXp": 0
+        },
+        {
+          "skillId": "recovery",
+          "totalXp": 0
+        },
+        {
+          "skillId": "reading",
+          "totalXp": 0
+        },
+        {
+          "skillId": "languages",
+          "totalXp": 0
+        },
+        {
+          "skillId": "healthy-cooking",
+          "totalXp": 0
+        },
+        {
+          "skillId": "music",
+          "totalXp": 0
+        }
+      ],
+      "quests": [
+        {
+          "id": "q-move",
+          "title": "Werde ein Stück stärker",
+          "description": "20 Minuten Calisthenics",
+          "skillId": "calisthenics",
+          "targetMinutes": 20,
+          "progressMinutes": 20,
+          "bonusXp": 50,
+          "claimed": true
+        },
+        {
+          "id": "q-mind",
+          "title": "Finde deine innere Ruhe",
+          "description": "10 Minuten Meditation",
+          "skillId": "meditation",
+          "targetMinutes": 10,
+          "progressMinutes": 0,
+          "bonusXp": 30,
+          "claimed": false
+        },
+        {
+          "id": "q-learn",
+          "title": "Baue an deiner Zukunft",
+          "description": "30 Minuten Programming",
+          "skillId": "programming",
+          "targetMinutes": 30,
+          "progressMinutes": 0,
+          "bonusXp": 40,
+          "claimed": false
+        }
+      ],
+      "boss": {
+        "id": "mosswarden",
+        "name": "Der Mooswächter",
+        "weekLabel": "05. – 11. Oktober",
+        "maxHp": 2400,
+        "hp": 1680
+      },
+      "activities": [
+        {
+          "requestId": "new-week",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 90,
+          "xp": 360
+        },
+        {
+          "requestId": "quest-programming",
+          "skillId": "programming",
+          "minutes": 30,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 60
+        },
+        {
+          "requestId": "quest-meditation",
+          "skillId": "meditation",
+          "minutes": 10,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 10,
+          "xp": 30
+        },
+        {
+          "requestId": "over-cap",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 0,
+          "xp": 0
+        },
+        {
+          "requestId": "daily-cap",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 120
+        },
+        {
+          "requestId": "first",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 60,
+          "xp": 240
+        }
+      ],
+      "unlockedAuras": [],
+      "momentum": {
+        "value": 10,
+        "lastRewardDay": "2026-10-05",
+        "rhythm": [
+          {
+            "label": "Mo",
+            "status": "today"
+          },
+          {
+            "label": "Di",
+            "status": "upcoming"
+          },
+          {
+            "label": "Mi",
+            "status": "upcoming"
+          },
+          {
+            "label": "Do",
+            "status": "upcoming"
+          },
+          {
+            "label": "Fr",
+            "status": "upcoming"
+          },
+          {
+            "label": "Sa",
+            "status": "upcoming"
+          },
+          {
+            "label": "So",
+            "status": "upcoming"
+          }
+        ]
+      }
+    },
+    "command": {
+      "requestId": "boss-progress",
+      "skillId": "running",
+      "minutes": 60
+    },
+    "snapshot": {
+      "dayKey": "2026-10-05",
+      "character": {
+        "id": "demo-player",
+        "createdByPlayer": false,
+        "name": "Ari",
+        "title": "Wanderer des Morgenlichts",
+        "totalXp": 1160,
+        "attributes": {
+          "strength": 23,
+          "endurance": 16,
+          "focus": 22,
+          "knowledge": 21,
+          "mindfulness": 12,
+          "recovery": 18
+        },
+        "appearance": {
+          "presentation": "male",
+          "body": "base",
+          "hair": "m-spiky",
+          "outfit": "wanderer",
+          "aura": "sage",
+          "skinColor": "#e6b995",
+          "hairColor": "#d9cbb4",
+          "outfitColor": "#729e8e"
+        }
+      },
+      "skills": [
+        {
+          "skillId": "calisthenics",
+          "totalXp": 720
+        },
+        {
+          "skillId": "running",
+          "totalXp": 180
+        },
+        {
+          "skillId": "meditation",
+          "totalXp": 30
+        },
+        {
+          "skillId": "programming",
+          "totalXp": 60
+        },
+        {
+          "skillId": "weightlifting",
+          "totalXp": 0
+        },
+        {
+          "skillId": "swimming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "boxing",
+          "totalXp": 0
+        },
+        {
+          "skillId": "bjj",
+          "totalXp": 0
+        },
+        {
+          "skillId": "breathwork",
+          "totalXp": 0
+        },
+        {
+          "skillId": "recovery",
+          "totalXp": 0
+        },
+        {
+          "skillId": "reading",
+          "totalXp": 0
+        },
+        {
+          "skillId": "languages",
+          "totalXp": 0
+        },
+        {
+          "skillId": "healthy-cooking",
+          "totalXp": 0
+        },
+        {
+          "skillId": "music",
+          "totalXp": 0
+        }
+      ],
+      "quests": [
+        {
+          "id": "q-move",
+          "title": "Werde ein Stück stärker",
+          "description": "20 Minuten Calisthenics",
+          "skillId": "calisthenics",
+          "targetMinutes": 20,
+          "progressMinutes": 20,
+          "bonusXp": 50,
+          "claimed": true
+        },
+        {
+          "id": "q-mind",
+          "title": "Finde deine innere Ruhe",
+          "description": "10 Minuten Meditation",
+          "skillId": "meditation",
+          "targetMinutes": 10,
+          "progressMinutes": 0,
+          "bonusXp": 30,
+          "claimed": false
+        },
+        {
+          "id": "q-learn",
+          "title": "Baue an deiner Zukunft",
+          "description": "30 Minuten Programming",
+          "skillId": "programming",
+          "targetMinutes": 30,
+          "progressMinutes": 0,
+          "bonusXp": 40,
+          "claimed": false
+        }
+      ],
+      "boss": {
+        "id": "mosswarden",
+        "name": "Der Mooswächter",
+        "weekLabel": "05. – 11. Oktober",
+        "maxHp": 2400,
+        "hp": 1320
+      },
+      "activities": [
+        {
+          "requestId": "boss-progress",
+          "skillId": "running",
+          "minutes": 60,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 60,
+          "xp": 180
+        },
+        {
+          "requestId": "new-week",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 90,
+          "xp": 360
+        },
+        {
+          "requestId": "quest-programming",
+          "skillId": "programming",
+          "minutes": 30,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 60
+        },
+        {
+          "requestId": "quest-meditation",
+          "skillId": "meditation",
+          "minutes": 10,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 10,
+          "xp": 30
+        },
+        {
+          "requestId": "over-cap",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 0,
+          "xp": 0
+        },
+        {
+          "requestId": "daily-cap",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 120
+        },
+        {
+          "requestId": "first",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 60,
+          "xp": 240
+        }
+      ],
+      "unlockedAuras": [],
+      "momentum": {
+        "value": 10,
+        "lastRewardDay": "2026-10-05",
+        "rhythm": [
+          {
+            "label": "Mo",
+            "status": "today"
+          },
+          {
+            "label": "Di",
+            "status": "upcoming"
+          },
+          {
+            "label": "Mi",
+            "status": "upcoming"
+          },
+          {
+            "label": "Do",
+            "status": "upcoming"
+          },
+          {
+            "label": "Fr",
+            "status": "upcoming"
+          },
+          {
+            "label": "Sa",
+            "status": "upcoming"
+          },
+          {
+            "label": "So",
+            "status": "upcoming"
+          }
+        ]
+      }
+    },
+    "reward": {
+      "activityXp": 180,
+      "questXp": 0,
+      "damage": 360,
+      "rewardedMinutes": 60,
+      "duplicate": false
+    }
+  },
+  {
+    "name": "boss-progress-2",
+    "before": {
+      "dayKey": "2026-10-05",
+      "character": {
+        "id": "demo-player",
+        "createdByPlayer": false,
+        "name": "Ari",
+        "title": "Wanderer des Morgenlichts",
+        "totalXp": 1160,
+        "attributes": {
+          "strength": 23,
+          "endurance": 16,
+          "focus": 22,
+          "knowledge": 21,
+          "mindfulness": 12,
+          "recovery": 18
+        },
+        "appearance": {
+          "presentation": "male",
+          "body": "base",
+          "hair": "m-spiky",
+          "outfit": "wanderer",
+          "aura": "sage",
+          "skinColor": "#e6b995",
+          "hairColor": "#d9cbb4",
+          "outfitColor": "#729e8e"
+        }
+      },
+      "skills": [
+        {
+          "skillId": "calisthenics",
+          "totalXp": 720
+        },
+        {
+          "skillId": "running",
+          "totalXp": 180
+        },
+        {
+          "skillId": "meditation",
+          "totalXp": 30
+        },
+        {
+          "skillId": "programming",
+          "totalXp": 60
+        },
+        {
+          "skillId": "weightlifting",
+          "totalXp": 0
+        },
+        {
+          "skillId": "swimming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "boxing",
+          "totalXp": 0
+        },
+        {
+          "skillId": "bjj",
+          "totalXp": 0
+        },
+        {
+          "skillId": "breathwork",
+          "totalXp": 0
+        },
+        {
+          "skillId": "recovery",
+          "totalXp": 0
+        },
+        {
+          "skillId": "reading",
+          "totalXp": 0
+        },
+        {
+          "skillId": "languages",
+          "totalXp": 0
+        },
+        {
+          "skillId": "healthy-cooking",
+          "totalXp": 0
+        },
+        {
+          "skillId": "music",
+          "totalXp": 0
+        }
+      ],
+      "quests": [
+        {
+          "id": "q-move",
+          "title": "Werde ein Stück stärker",
+          "description": "20 Minuten Calisthenics",
+          "skillId": "calisthenics",
+          "targetMinutes": 20,
+          "progressMinutes": 20,
+          "bonusXp": 50,
+          "claimed": true
+        },
+        {
+          "id": "q-mind",
+          "title": "Finde deine innere Ruhe",
+          "description": "10 Minuten Meditation",
+          "skillId": "meditation",
+          "targetMinutes": 10,
+          "progressMinutes": 0,
+          "bonusXp": 30,
+          "claimed": false
+        },
+        {
+          "id": "q-learn",
+          "title": "Baue an deiner Zukunft",
+          "description": "30 Minuten Programming",
+          "skillId": "programming",
+          "targetMinutes": 30,
+          "progressMinutes": 0,
+          "bonusXp": 40,
+          "claimed": false
+        }
+      ],
+      "boss": {
+        "id": "mosswarden",
+        "name": "Der Mooswächter",
+        "weekLabel": "05. – 11. Oktober",
+        "maxHp": 2400,
+        "hp": 1320
+      },
+      "activities": [
+        {
+          "requestId": "boss-progress",
+          "skillId": "running",
+          "minutes": 60,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 60,
+          "xp": 180
+        },
+        {
+          "requestId": "new-week",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 90,
+          "xp": 360
+        },
+        {
+          "requestId": "quest-programming",
+          "skillId": "programming",
+          "minutes": 30,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 60
+        },
+        {
+          "requestId": "quest-meditation",
+          "skillId": "meditation",
+          "minutes": 10,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 10,
+          "xp": 30
+        },
+        {
+          "requestId": "over-cap",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 0,
+          "xp": 0
+        },
+        {
+          "requestId": "daily-cap",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 120
+        },
+        {
+          "requestId": "first",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 60,
+          "xp": 240
+        }
+      ],
+      "unlockedAuras": [],
+      "momentum": {
+        "value": 10,
+        "lastRewardDay": "2026-10-05",
+        "rhythm": [
+          {
+            "label": "Mo",
+            "status": "today"
+          },
+          {
+            "label": "Di",
+            "status": "upcoming"
+          },
+          {
+            "label": "Mi",
+            "status": "upcoming"
+          },
+          {
+            "label": "Do",
+            "status": "upcoming"
+          },
+          {
+            "label": "Fr",
+            "status": "upcoming"
+          },
+          {
+            "label": "Sa",
+            "status": "upcoming"
+          },
+          {
+            "label": "So",
+            "status": "upcoming"
+          }
+        ]
+      }
+    },
+    "command": {
+      "requestId": "boss-progress-2",
+      "skillId": "programming",
+      "minutes": 90
+    },
+    "snapshot": {
+      "dayKey": "2026-10-05",
+      "character": {
+        "id": "demo-player",
+        "createdByPlayer": false,
+        "name": "Ari",
+        "title": "Wanderer des Morgenlichts",
+        "totalXp": 1380,
+        "attributes": {
+          "strength": 23,
+          "endurance": 16,
+          "focus": 22,
+          "knowledge": 21,
+          "mindfulness": 12,
+          "recovery": 18
+        },
+        "appearance": {
+          "presentation": "male",
+          "body": "base",
+          "hair": "m-spiky",
+          "outfit": "wanderer",
+          "aura": "sage",
+          "skinColor": "#e6b995",
+          "hairColor": "#d9cbb4",
+          "outfitColor": "#729e8e"
+        }
+      },
+      "skills": [
+        {
+          "skillId": "calisthenics",
+          "totalXp": 720
+        },
+        {
+          "skillId": "running",
+          "totalXp": 180
+        },
+        {
+          "skillId": "meditation",
+          "totalXp": 30
+        },
+        {
+          "skillId": "programming",
+          "totalXp": 240
+        },
+        {
+          "skillId": "weightlifting",
+          "totalXp": 0
+        },
+        {
+          "skillId": "swimming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "boxing",
+          "totalXp": 0
+        },
+        {
+          "skillId": "bjj",
+          "totalXp": 0
+        },
+        {
+          "skillId": "breathwork",
+          "totalXp": 0
+        },
+        {
+          "skillId": "recovery",
+          "totalXp": 0
+        },
+        {
+          "skillId": "reading",
+          "totalXp": 0
+        },
+        {
+          "skillId": "languages",
+          "totalXp": 0
+        },
+        {
+          "skillId": "healthy-cooking",
+          "totalXp": 0
+        },
+        {
+          "skillId": "music",
+          "totalXp": 0
+        }
+      ],
+      "quests": [
+        {
+          "id": "q-move",
+          "title": "Werde ein Stück stärker",
+          "description": "20 Minuten Calisthenics",
+          "skillId": "calisthenics",
+          "targetMinutes": 20,
+          "progressMinutes": 20,
+          "bonusXp": 50,
+          "claimed": true
+        },
+        {
+          "id": "q-mind",
+          "title": "Finde deine innere Ruhe",
+          "description": "10 Minuten Meditation",
+          "skillId": "meditation",
+          "targetMinutes": 10,
+          "progressMinutes": 0,
+          "bonusXp": 30,
+          "claimed": false
+        },
+        {
+          "id": "q-learn",
+          "title": "Baue an deiner Zukunft",
+          "description": "30 Minuten Programming",
+          "skillId": "programming",
+          "targetMinutes": 30,
+          "progressMinutes": 30,
+          "bonusXp": 40,
+          "claimed": true
+        }
+      ],
+      "boss": {
+        "id": "mosswarden",
+        "name": "Der Mooswächter",
+        "weekLabel": "05. – 11. Oktober",
+        "maxHp": 2400,
+        "hp": 960
+      },
+      "activities": [
+        {
+          "requestId": "boss-progress-2",
+          "skillId": "programming",
+          "minutes": 90,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 90,
+          "xp": 180
+        },
+        {
+          "requestId": "boss-progress",
+          "skillId": "running",
+          "minutes": 60,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 60,
+          "xp": 180
+        },
+        {
+          "requestId": "new-week",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 90,
+          "xp": 360
+        },
+        {
+          "requestId": "quest-programming",
+          "skillId": "programming",
+          "minutes": 30,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 60
+        },
+        {
+          "requestId": "quest-meditation",
+          "skillId": "meditation",
+          "minutes": 10,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 10,
+          "xp": 30
+        },
+        {
+          "requestId": "over-cap",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 0,
+          "xp": 0
+        },
+        {
+          "requestId": "daily-cap",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 120
+        },
+        {
+          "requestId": "first",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 60,
+          "xp": 240
+        }
+      ],
+      "unlockedAuras": [],
+      "momentum": {
+        "value": 10,
+        "lastRewardDay": "2026-10-05",
+        "rhythm": [
+          {
+            "label": "Mo",
+            "status": "today"
+          },
+          {
+            "label": "Di",
+            "status": "upcoming"
+          },
+          {
+            "label": "Mi",
+            "status": "upcoming"
+          },
+          {
+            "label": "Do",
+            "status": "upcoming"
+          },
+          {
+            "label": "Fr",
+            "status": "upcoming"
+          },
+          {
+            "label": "Sa",
+            "status": "upcoming"
+          },
+          {
+            "label": "So",
+            "status": "upcoming"
+          }
+        ]
+      }
+    },
+    "reward": {
+      "activityXp": 180,
+      "questXp": 40,
+      "damage": 360,
+      "rewardedMinutes": 90,
+      "duplicate": false
+    }
+  },
+  {
+    "name": "boss-progress-3",
+    "before": {
+      "dayKey": "2026-10-06",
+      "character": {
+        "id": "demo-player",
+        "createdByPlayer": false,
+        "name": "Ari",
+        "title": "Wanderer des Morgenlichts",
+        "totalXp": 1380,
+        "attributes": {
+          "strength": 23,
+          "endurance": 16,
+          "focus": 22,
+          "knowledge": 21,
+          "mindfulness": 12,
+          "recovery": 18
+        },
+        "appearance": {
+          "presentation": "male",
+          "body": "base",
+          "hair": "m-spiky",
+          "outfit": "wanderer",
+          "aura": "sage",
+          "skinColor": "#e6b995",
+          "hairColor": "#d9cbb4",
+          "outfitColor": "#729e8e"
+        }
+      },
+      "skills": [
+        {
+          "skillId": "calisthenics",
+          "totalXp": 720
+        },
+        {
+          "skillId": "running",
+          "totalXp": 180
+        },
+        {
+          "skillId": "meditation",
+          "totalXp": 30
+        },
+        {
+          "skillId": "programming",
+          "totalXp": 240
+        },
+        {
+          "skillId": "weightlifting",
+          "totalXp": 0
+        },
+        {
+          "skillId": "swimming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "boxing",
+          "totalXp": 0
+        },
+        {
+          "skillId": "bjj",
+          "totalXp": 0
+        },
+        {
+          "skillId": "breathwork",
+          "totalXp": 0
+        },
+        {
+          "skillId": "recovery",
+          "totalXp": 0
+        },
+        {
+          "skillId": "reading",
+          "totalXp": 0
+        },
+        {
+          "skillId": "languages",
+          "totalXp": 0
+        },
+        {
+          "skillId": "healthy-cooking",
+          "totalXp": 0
+        },
+        {
+          "skillId": "music",
+          "totalXp": 0
+        }
+      ],
+      "quests": [
+        {
+          "id": "q-move",
+          "title": "Werde ein Stück stärker",
+          "description": "20 Minuten Calisthenics",
+          "skillId": "calisthenics",
+          "targetMinutes": 20,
+          "progressMinutes": 0,
+          "bonusXp": 50,
+          "claimed": false
+        },
+        {
+          "id": "q-mind",
+          "title": "Finde deine innere Ruhe",
+          "description": "10 Minuten Meditation",
+          "skillId": "meditation",
+          "targetMinutes": 10,
+          "progressMinutes": 0,
+          "bonusXp": 30,
+          "claimed": false
+        },
+        {
+          "id": "q-learn",
+          "title": "Baue an deiner Zukunft",
+          "description": "30 Minuten Programming",
+          "skillId": "programming",
+          "targetMinutes": 30,
+          "progressMinutes": 0,
+          "bonusXp": 40,
+          "claimed": false
+        }
+      ],
+      "boss": {
+        "id": "mosswarden",
+        "name": "Der Mooswächter",
+        "weekLabel": "05. – 11. Oktober",
+        "maxHp": 2400,
+        "hp": 960
+      },
+      "activities": [
+        {
+          "requestId": "boss-progress-2",
+          "skillId": "programming",
+          "minutes": 90,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 90,
+          "xp": 180
+        },
+        {
+          "requestId": "boss-progress",
+          "skillId": "running",
+          "minutes": 60,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 60,
+          "xp": 180
+        },
+        {
+          "requestId": "new-week",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 90,
+          "xp": 360
+        },
+        {
+          "requestId": "quest-programming",
+          "skillId": "programming",
+          "minutes": 30,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 60
+        },
+        {
+          "requestId": "quest-meditation",
+          "skillId": "meditation",
+          "minutes": 10,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 10,
+          "xp": 30
+        },
+        {
+          "requestId": "over-cap",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 0,
+          "xp": 0
+        },
+        {
+          "requestId": "daily-cap",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 120
+        },
+        {
+          "requestId": "first",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 60,
+          "xp": 240
+        }
+      ],
+      "unlockedAuras": [],
+      "momentum": {
+        "value": 10,
+        "lastRewardDay": "2026-10-05",
+        "rhythm": [
+          {
+            "label": "Mo",
+            "status": "done"
+          },
+          {
+            "label": "Di",
+            "status": "today"
+          },
+          {
+            "label": "Mi",
+            "status": "upcoming"
+          },
+          {
+            "label": "Do",
+            "status": "upcoming"
+          },
+          {
+            "label": "Fr",
+            "status": "upcoming"
+          },
+          {
+            "label": "Sa",
+            "status": "upcoming"
+          },
+          {
+            "label": "So",
+            "status": "upcoming"
+          }
+        ]
+      }
+    },
+    "command": {
+      "requestId": "boss-progress-3",
+      "skillId": "calisthenics",
+      "minutes": 90
+    },
+    "snapshot": {
+      "dayKey": "2026-10-06",
+      "character": {
+        "id": "demo-player",
+        "createdByPlayer": false,
+        "name": "Ari",
+        "title": "Wanderer des Morgenlichts",
+        "totalXp": 1790,
+        "attributes": {
+          "strength": 23,
+          "endurance": 16,
+          "focus": 22,
+          "knowledge": 21,
+          "mindfulness": 12,
+          "recovery": 18
+        },
+        "appearance": {
+          "presentation": "male",
+          "body": "base",
+          "hair": "m-spiky",
+          "outfit": "wanderer",
+          "aura": "sage",
+          "skinColor": "#e6b995",
+          "hairColor": "#d9cbb4",
+          "outfitColor": "#729e8e"
+        }
+      },
+      "skills": [
+        {
+          "skillId": "calisthenics",
+          "totalXp": 1080
+        },
+        {
+          "skillId": "running",
+          "totalXp": 180
+        },
+        {
+          "skillId": "meditation",
+          "totalXp": 30
+        },
+        {
+          "skillId": "programming",
+          "totalXp": 240
+        },
+        {
+          "skillId": "weightlifting",
+          "totalXp": 0
+        },
+        {
+          "skillId": "swimming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "boxing",
+          "totalXp": 0
+        },
+        {
+          "skillId": "bjj",
+          "totalXp": 0
+        },
+        {
+          "skillId": "breathwork",
+          "totalXp": 0
+        },
+        {
+          "skillId": "recovery",
+          "totalXp": 0
+        },
+        {
+          "skillId": "reading",
+          "totalXp": 0
+        },
+        {
+          "skillId": "languages",
+          "totalXp": 0
+        },
+        {
+          "skillId": "healthy-cooking",
+          "totalXp": 0
+        },
+        {
+          "skillId": "music",
+          "totalXp": 0
+        }
+      ],
+      "quests": [
+        {
+          "id": "q-move",
+          "title": "Werde ein Stück stärker",
+          "description": "20 Minuten Calisthenics",
+          "skillId": "calisthenics",
+          "targetMinutes": 20,
+          "progressMinutes": 20,
+          "bonusXp": 50,
+          "claimed": true
+        },
+        {
+          "id": "q-mind",
+          "title": "Finde deine innere Ruhe",
+          "description": "10 Minuten Meditation",
+          "skillId": "meditation",
+          "targetMinutes": 10,
+          "progressMinutes": 0,
+          "bonusXp": 30,
+          "claimed": false
+        },
+        {
+          "id": "q-learn",
+          "title": "Baue an deiner Zukunft",
+          "description": "30 Minuten Programming",
+          "skillId": "programming",
+          "targetMinutes": 30,
+          "progressMinutes": 0,
+          "bonusXp": 40,
+          "claimed": false
+        }
+      ],
+      "boss": {
+        "id": "mosswarden",
+        "name": "Der Mooswächter",
+        "weekLabel": "05. – 11. Oktober",
+        "maxHp": 2400,
+        "hp": 240
+      },
+      "activities": [
+        {
+          "requestId": "boss-progress-3",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-06",
+          "rewardedMinutes": 90,
+          "xp": 360
+        },
+        {
+          "requestId": "boss-progress-2",
+          "skillId": "programming",
+          "minutes": 90,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 90,
+          "xp": 180
+        },
+        {
+          "requestId": "boss-progress",
+          "skillId": "running",
+          "minutes": 60,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 60,
+          "xp": 180
+        },
+        {
+          "requestId": "new-week",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 90,
+          "xp": 360
+        },
+        {
+          "requestId": "quest-programming",
+          "skillId": "programming",
+          "minutes": 30,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 60
+        },
+        {
+          "requestId": "quest-meditation",
+          "skillId": "meditation",
+          "minutes": 10,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 10,
+          "xp": 30
+        },
+        {
+          "requestId": "over-cap",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 0,
+          "xp": 0
+        },
+        {
+          "requestId": "daily-cap",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 120
+        },
+        {
+          "requestId": "first",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 60,
+          "xp": 240
+        }
+      ],
+      "unlockedAuras": [],
+      "momentum": {
+        "value": 15,
+        "lastRewardDay": "2026-10-06",
+        "rhythm": [
+          {
+            "label": "Mo",
+            "status": "done"
+          },
+          {
+            "label": "Di",
+            "status": "today"
+          },
+          {
+            "label": "Mi",
+            "status": "upcoming"
+          },
+          {
+            "label": "Do",
+            "status": "upcoming"
+          },
+          {
+            "label": "Fr",
+            "status": "upcoming"
+          },
+          {
+            "label": "Sa",
+            "status": "upcoming"
+          },
+          {
+            "label": "So",
+            "status": "upcoming"
+          }
+        ]
+      }
+    },
+    "reward": {
+      "activityXp": 360,
+      "questXp": 50,
+      "damage": 720,
+      "rewardedMinutes": 90,
+      "duplicate": false
+    }
+  },
+  {
+    "name": "boss-drop",
+    "before": {
+      "dayKey": "2026-10-06",
+      "character": {
+        "id": "demo-player",
+        "createdByPlayer": false,
+        "name": "Ari",
+        "title": "Wanderer des Morgenlichts",
+        "totalXp": 1790,
+        "attributes": {
+          "strength": 23,
+          "endurance": 16,
+          "focus": 22,
+          "knowledge": 21,
+          "mindfulness": 12,
+          "recovery": 18
+        },
+        "appearance": {
+          "presentation": "male",
+          "body": "base",
+          "hair": "m-spiky",
+          "outfit": "wanderer",
+          "aura": "sage",
+          "skinColor": "#e6b995",
+          "hairColor": "#d9cbb4",
+          "outfitColor": "#729e8e"
+        }
+      },
+      "skills": [
+        {
+          "skillId": "calisthenics",
+          "totalXp": 1080
+        },
+        {
+          "skillId": "running",
+          "totalXp": 180
+        },
+        {
+          "skillId": "meditation",
+          "totalXp": 30
+        },
+        {
+          "skillId": "programming",
+          "totalXp": 240
+        },
+        {
+          "skillId": "weightlifting",
+          "totalXp": 0
+        },
+        {
+          "skillId": "swimming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "boxing",
+          "totalXp": 0
+        },
+        {
+          "skillId": "bjj",
+          "totalXp": 0
+        },
+        {
+          "skillId": "breathwork",
+          "totalXp": 0
+        },
+        {
+          "skillId": "recovery",
+          "totalXp": 0
+        },
+        {
+          "skillId": "reading",
+          "totalXp": 0
+        },
+        {
+          "skillId": "languages",
+          "totalXp": 0
+        },
+        {
+          "skillId": "healthy-cooking",
+          "totalXp": 0
+        },
+        {
+          "skillId": "music",
+          "totalXp": 0
+        }
+      ],
+      "quests": [
+        {
+          "id": "q-move",
+          "title": "Werde ein Stück stärker",
+          "description": "20 Minuten Calisthenics",
+          "skillId": "calisthenics",
+          "targetMinutes": 20,
+          "progressMinutes": 20,
+          "bonusXp": 50,
+          "claimed": true
+        },
+        {
+          "id": "q-mind",
+          "title": "Finde deine innere Ruhe",
+          "description": "10 Minuten Meditation",
+          "skillId": "meditation",
+          "targetMinutes": 10,
+          "progressMinutes": 0,
+          "bonusXp": 30,
+          "claimed": false
+        },
+        {
+          "id": "q-learn",
+          "title": "Baue an deiner Zukunft",
+          "description": "30 Minuten Programming",
+          "skillId": "programming",
+          "targetMinutes": 30,
+          "progressMinutes": 0,
+          "bonusXp": 40,
+          "claimed": false
+        }
+      ],
+      "boss": {
+        "id": "mosswarden",
+        "name": "Der Mooswächter",
+        "weekLabel": "05. – 11. Oktober",
+        "maxHp": 2400,
+        "hp": 240
+      },
+      "activities": [
+        {
+          "requestId": "boss-progress-3",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-06",
+          "rewardedMinutes": 90,
+          "xp": 360
+        },
+        {
+          "requestId": "boss-progress-2",
+          "skillId": "programming",
+          "minutes": 90,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 90,
+          "xp": 180
+        },
+        {
+          "requestId": "boss-progress",
+          "skillId": "running",
+          "minutes": 60,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 60,
+          "xp": 180
+        },
+        {
+          "requestId": "new-week",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 90,
+          "xp": 360
+        },
+        {
+          "requestId": "quest-programming",
+          "skillId": "programming",
+          "minutes": 30,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 60
+        },
+        {
+          "requestId": "quest-meditation",
+          "skillId": "meditation",
+          "minutes": 10,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 10,
+          "xp": 30
+        },
+        {
+          "requestId": "over-cap",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 0,
+          "xp": 0
+        },
+        {
+          "requestId": "daily-cap",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 120
+        },
+        {
+          "requestId": "first",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 60,
+          "xp": 240
+        }
+      ],
+      "unlockedAuras": [],
+      "momentum": {
+        "value": 15,
+        "lastRewardDay": "2026-10-06",
+        "rhythm": [
+          {
+            "label": "Mo",
+            "status": "done"
+          },
+          {
+            "label": "Di",
+            "status": "today"
+          },
+          {
+            "label": "Mi",
+            "status": "upcoming"
+          },
+          {
+            "label": "Do",
+            "status": "upcoming"
+          },
+          {
+            "label": "Fr",
+            "status": "upcoming"
+          },
+          {
+            "label": "Sa",
+            "status": "upcoming"
+          },
+          {
+            "label": "So",
+            "status": "upcoming"
+          }
+        ]
+      }
+    },
+    "command": {
+      "requestId": "boss-drop",
+      "skillId": "running",
+      "minutes": 60
+    },
+    "snapshot": {
+      "dayKey": "2026-10-06",
+      "character": {
+        "id": "demo-player",
+        "createdByPlayer": false,
+        "name": "Ari",
+        "title": "Wanderer des Morgenlichts",
+        "totalXp": 1970,
+        "attributes": {
+          "strength": 23,
+          "endurance": 16,
+          "focus": 22,
+          "knowledge": 21,
+          "mindfulness": 12,
+          "recovery": 18
+        },
+        "appearance": {
+          "presentation": "male",
+          "body": "base",
+          "hair": "m-spiky",
+          "outfit": "wanderer",
+          "aura": "sage",
+          "skinColor": "#e6b995",
+          "hairColor": "#d9cbb4",
+          "outfitColor": "#729e8e"
+        }
+      },
+      "skills": [
+        {
+          "skillId": "calisthenics",
+          "totalXp": 1080
+        },
+        {
+          "skillId": "running",
+          "totalXp": 360
+        },
+        {
+          "skillId": "meditation",
+          "totalXp": 30
+        },
+        {
+          "skillId": "programming",
+          "totalXp": 240
+        },
+        {
+          "skillId": "weightlifting",
+          "totalXp": 0
+        },
+        {
+          "skillId": "swimming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "boxing",
+          "totalXp": 0
+        },
+        {
+          "skillId": "bjj",
+          "totalXp": 0
+        },
+        {
+          "skillId": "breathwork",
+          "totalXp": 0
+        },
+        {
+          "skillId": "recovery",
+          "totalXp": 0
+        },
+        {
+          "skillId": "reading",
+          "totalXp": 0
+        },
+        {
+          "skillId": "languages",
+          "totalXp": 0
+        },
+        {
+          "skillId": "healthy-cooking",
+          "totalXp": 0
+        },
+        {
+          "skillId": "music",
+          "totalXp": 0
+        }
+      ],
+      "quests": [
+        {
+          "id": "q-move",
+          "title": "Werde ein Stück stärker",
+          "description": "20 Minuten Calisthenics",
+          "skillId": "calisthenics",
+          "targetMinutes": 20,
+          "progressMinutes": 20,
+          "bonusXp": 50,
+          "claimed": true
+        },
+        {
+          "id": "q-mind",
+          "title": "Finde deine innere Ruhe",
+          "description": "10 Minuten Meditation",
+          "skillId": "meditation",
+          "targetMinutes": 10,
+          "progressMinutes": 0,
+          "bonusXp": 30,
+          "claimed": false
+        },
+        {
+          "id": "q-learn",
+          "title": "Baue an deiner Zukunft",
+          "description": "30 Minuten Programming",
+          "skillId": "programming",
+          "targetMinutes": 30,
+          "progressMinutes": 0,
+          "bonusXp": 40,
+          "claimed": false
+        }
+      ],
+      "boss": {
+        "id": "mosswarden",
+        "name": "Der Mooswächter",
+        "weekLabel": "05. – 11. Oktober",
+        "maxHp": 2400,
+        "hp": 0
+      },
+      "activities": [
+        {
+          "requestId": "boss-drop",
+          "skillId": "running",
+          "minutes": 60,
+          "dayKey": "2026-10-06",
+          "rewardedMinutes": 60,
+          "xp": 180
+        },
+        {
+          "requestId": "boss-progress-3",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-06",
+          "rewardedMinutes": 90,
+          "xp": 360
+        },
+        {
+          "requestId": "boss-progress-2",
+          "skillId": "programming",
+          "minutes": 90,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 90,
+          "xp": 180
+        },
+        {
+          "requestId": "boss-progress",
+          "skillId": "running",
+          "minutes": 60,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 60,
+          "xp": 180
+        },
+        {
+          "requestId": "new-week",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 90,
+          "xp": 360
+        },
+        {
+          "requestId": "quest-programming",
+          "skillId": "programming",
+          "minutes": 30,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 60
+        },
+        {
+          "requestId": "quest-meditation",
+          "skillId": "meditation",
+          "minutes": 10,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 10,
+          "xp": 30
+        },
+        {
+          "requestId": "over-cap",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 0,
+          "xp": 0
+        },
+        {
+          "requestId": "daily-cap",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 120
+        },
+        {
+          "requestId": "first",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 60,
+          "xp": 240
+        }
+      ],
+      "unlockedAuras": [
+        "moss-spirit"
+      ],
+      "momentum": {
+        "value": 15,
+        "lastRewardDay": "2026-10-06",
+        "rhythm": [
+          {
+            "label": "Mo",
+            "status": "done"
+          },
+          {
+            "label": "Di",
+            "status": "today"
+          },
+          {
+            "label": "Mi",
+            "status": "upcoming"
+          },
+          {
+            "label": "Do",
+            "status": "upcoming"
+          },
+          {
+            "label": "Fr",
+            "status": "upcoming"
+          },
+          {
+            "label": "Sa",
+            "status": "upcoming"
+          },
+          {
+            "label": "So",
+            "status": "upcoming"
+          }
+        ]
+      }
+    },
+    "reward": {
+      "activityXp": 180,
+      "questXp": 0,
+      "damage": 240,
+      "rewardedMinutes": 60,
+      "duplicate": false
+    }
+  },
+  {
+    "name": "level20-aura",
+    "before": {
+      "dayKey": "2026-10-07",
+      "character": {
+        "id": "demo-player",
+        "createdByPlayer": false,
+        "name": "Ari",
+        "title": "Wanderer des Morgenlichts",
+        "totalXp": 56950,
+        "attributes": {
+          "strength": 23,
+          "endurance": 16,
+          "focus": 22,
+          "knowledge": 21,
+          "mindfulness": 12,
+          "recovery": 18
+        },
+        "appearance": {
+          "presentation": "male",
+          "body": "base",
+          "hair": "m-spiky",
+          "outfit": "wanderer",
+          "aura": "sage",
+          "skinColor": "#e6b995",
+          "hairColor": "#d9cbb4",
+          "outfitColor": "#729e8e"
+        }
+      },
+      "skills": [
+        {
+          "skillId": "calisthenics",
+          "totalXp": 1080
+        },
+        {
+          "skillId": "running",
+          "totalXp": 360
+        },
+        {
+          "skillId": "meditation",
+          "totalXp": 30
+        },
+        {
+          "skillId": "programming",
+          "totalXp": 240
+        },
+        {
+          "skillId": "weightlifting",
+          "totalXp": 0
+        },
+        {
+          "skillId": "swimming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "boxing",
+          "totalXp": 0
+        },
+        {
+          "skillId": "bjj",
+          "totalXp": 0
+        },
+        {
+          "skillId": "breathwork",
+          "totalXp": 0
+        },
+        {
+          "skillId": "recovery",
+          "totalXp": 0
+        },
+        {
+          "skillId": "reading",
+          "totalXp": 0
+        },
+        {
+          "skillId": "languages",
+          "totalXp": 0
+        },
+        {
+          "skillId": "healthy-cooking",
+          "totalXp": 0
+        },
+        {
+          "skillId": "music",
+          "totalXp": 0
+        }
+      ],
+      "quests": [
+        {
+          "id": "q-move",
+          "title": "Werde ein Stück stärker",
+          "description": "20 Minuten Calisthenics",
+          "skillId": "calisthenics",
+          "targetMinutes": 20,
+          "progressMinutes": 0,
+          "bonusXp": 50,
+          "claimed": false
+        },
+        {
+          "id": "q-mind",
+          "title": "Finde deine innere Ruhe",
+          "description": "10 Minuten Meditation",
+          "skillId": "meditation",
+          "targetMinutes": 10,
+          "progressMinutes": 0,
+          "bonusXp": 30,
+          "claimed": false
+        },
+        {
+          "id": "q-learn",
+          "title": "Baue an deiner Zukunft",
+          "description": "30 Minuten Programming",
+          "skillId": "programming",
+          "targetMinutes": 30,
+          "progressMinutes": 0,
+          "bonusXp": 40,
+          "claimed": false
+        }
+      ],
+      "boss": {
+        "id": "mosswarden",
+        "name": "Der Mooswächter",
+        "weekLabel": "05. – 11. Oktober",
+        "maxHp": 2400,
+        "hp": 0
+      },
+      "activities": [
+        {
+          "requestId": "boss-drop",
+          "skillId": "running",
+          "minutes": 60,
+          "dayKey": "2026-10-06",
+          "rewardedMinutes": 60,
+          "xp": 180
+        },
+        {
+          "requestId": "boss-progress-3",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-06",
+          "rewardedMinutes": 90,
+          "xp": 360
+        },
+        {
+          "requestId": "boss-progress-2",
+          "skillId": "programming",
+          "minutes": 90,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 90,
+          "xp": 180
+        },
+        {
+          "requestId": "boss-progress",
+          "skillId": "running",
+          "minutes": 60,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 60,
+          "xp": 180
+        },
+        {
+          "requestId": "new-week",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 90,
+          "xp": 360
+        },
+        {
+          "requestId": "quest-programming",
+          "skillId": "programming",
+          "minutes": 30,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 60
+        },
+        {
+          "requestId": "quest-meditation",
+          "skillId": "meditation",
+          "minutes": 10,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 10,
+          "xp": 30
+        },
+        {
+          "requestId": "over-cap",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 0,
+          "xp": 0
+        },
+        {
+          "requestId": "daily-cap",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 120
+        },
+        {
+          "requestId": "first",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 60,
+          "xp": 240
+        }
+      ],
+      "unlockedAuras": [
+        "moss-spirit"
+      ],
+      "momentum": {
+        "value": 15,
+        "lastRewardDay": "2026-10-06",
+        "rhythm": [
+          {
+            "label": "Mo",
+            "status": "done"
+          },
+          {
+            "label": "Di",
+            "status": "done"
+          },
+          {
+            "label": "Mi",
+            "status": "today"
+          },
+          {
+            "label": "Do",
+            "status": "upcoming"
+          },
+          {
+            "label": "Fr",
+            "status": "upcoming"
+          },
+          {
+            "label": "Sa",
+            "status": "upcoming"
+          },
+          {
+            "label": "So",
+            "status": "upcoming"
+          }
+        ]
+      }
+    },
+    "command": {
+      "requestId": "level20-aura",
+      "skillId": "calisthenics",
+      "minutes": 90
+    },
+    "snapshot": {
+      "dayKey": "2026-10-07",
+      "character": {
+        "id": "demo-player",
+        "createdByPlayer": false,
+        "name": "Ari",
+        "title": "Wanderer des Morgenlichts",
+        "totalXp": 57360,
+        "attributes": {
+          "strength": 23,
+          "endurance": 16,
+          "focus": 22,
+          "knowledge": 21,
+          "mindfulness": 12,
+          "recovery": 18
+        },
+        "appearance": {
+          "presentation": "male",
+          "body": "base",
+          "hair": "m-spiky",
+          "outfit": "wanderer",
+          "aura": "sage",
+          "skinColor": "#e6b995",
+          "hairColor": "#d9cbb4",
+          "outfitColor": "#729e8e"
+        }
+      },
+      "skills": [
+        {
+          "skillId": "calisthenics",
+          "totalXp": 1440
+        },
+        {
+          "skillId": "running",
+          "totalXp": 360
+        },
+        {
+          "skillId": "meditation",
+          "totalXp": 30
+        },
+        {
+          "skillId": "programming",
+          "totalXp": 240
+        },
+        {
+          "skillId": "weightlifting",
+          "totalXp": 0
+        },
+        {
+          "skillId": "swimming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "boxing",
+          "totalXp": 0
+        },
+        {
+          "skillId": "bjj",
+          "totalXp": 0
+        },
+        {
+          "skillId": "breathwork",
+          "totalXp": 0
+        },
+        {
+          "skillId": "recovery",
+          "totalXp": 0
+        },
+        {
+          "skillId": "reading",
+          "totalXp": 0
+        },
+        {
+          "skillId": "languages",
+          "totalXp": 0
+        },
+        {
+          "skillId": "healthy-cooking",
+          "totalXp": 0
+        },
+        {
+          "skillId": "music",
+          "totalXp": 0
+        }
+      ],
+      "quests": [
+        {
+          "id": "q-move",
+          "title": "Werde ein Stück stärker",
+          "description": "20 Minuten Calisthenics",
+          "skillId": "calisthenics",
+          "targetMinutes": 20,
+          "progressMinutes": 20,
+          "bonusXp": 50,
+          "claimed": true
+        },
+        {
+          "id": "q-mind",
+          "title": "Finde deine innere Ruhe",
+          "description": "10 Minuten Meditation",
+          "skillId": "meditation",
+          "targetMinutes": 10,
+          "progressMinutes": 0,
+          "bonusXp": 30,
+          "claimed": false
+        },
+        {
+          "id": "q-learn",
+          "title": "Baue an deiner Zukunft",
+          "description": "30 Minuten Programming",
+          "skillId": "programming",
+          "targetMinutes": 30,
+          "progressMinutes": 0,
+          "bonusXp": 40,
+          "claimed": false
+        }
+      ],
+      "boss": {
+        "id": "mosswarden",
+        "name": "Der Mooswächter",
+        "weekLabel": "05. – 11. Oktober",
+        "maxHp": 2400,
+        "hp": 0
+      },
+      "activities": [
+        {
+          "requestId": "level20-aura",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-07",
+          "rewardedMinutes": 90,
+          "xp": 360
+        },
+        {
+          "requestId": "boss-drop",
+          "skillId": "running",
+          "minutes": 60,
+          "dayKey": "2026-10-06",
+          "rewardedMinutes": 60,
+          "xp": 180
+        },
+        {
+          "requestId": "boss-progress-3",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-06",
+          "rewardedMinutes": 90,
+          "xp": 360
+        },
+        {
+          "requestId": "boss-progress-2",
+          "skillId": "programming",
+          "minutes": 90,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 90,
+          "xp": 180
+        },
+        {
+          "requestId": "boss-progress",
+          "skillId": "running",
+          "minutes": 60,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 60,
+          "xp": 180
+        },
+        {
+          "requestId": "new-week",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 90,
+          "xp": 360
+        },
+        {
+          "requestId": "quest-programming",
+          "skillId": "programming",
+          "minutes": 30,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 60
+        },
+        {
+          "requestId": "quest-meditation",
+          "skillId": "meditation",
+          "minutes": 10,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 10,
+          "xp": 30
+        },
+        {
+          "requestId": "over-cap",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 0,
+          "xp": 0
+        },
+        {
+          "requestId": "daily-cap",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 120
+        },
+        {
+          "requestId": "first",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 60,
+          "xp": 240
+        }
+      ],
+      "unlockedAuras": [
+        "moss-spirit",
+        "aurora"
+      ],
+      "momentum": {
+        "value": 20,
+        "lastRewardDay": "2026-10-07",
+        "rhythm": [
+          {
+            "label": "Mo",
+            "status": "done"
+          },
+          {
+            "label": "Di",
+            "status": "done"
+          },
+          {
+            "label": "Mi",
+            "status": "today"
+          },
+          {
+            "label": "Do",
+            "status": "upcoming"
+          },
+          {
+            "label": "Fr",
+            "status": "upcoming"
+          },
+          {
+            "label": "Sa",
+            "status": "upcoming"
+          },
+          {
+            "label": "So",
+            "status": "upcoming"
+          }
+        ]
+      }
+    },
+    "reward": {
+      "activityXp": 360,
+      "questXp": 50,
+      "damage": 0,
+      "rewardedMinutes": 90,
+      "duplicate": false
+    }
+  },
+  {
+    "name": "level40-aura",
+    "before": {
+      "dayKey": "2026-10-08",
+      "character": {
+        "id": "demo-player",
+        "createdByPlayer": false,
+        "name": "Ari",
+        "title": "Wanderer des Morgenlichts",
+        "totalXp": 194950,
+        "attributes": {
+          "strength": 23,
+          "endurance": 16,
+          "focus": 22,
+          "knowledge": 21,
+          "mindfulness": 12,
+          "recovery": 18
+        },
+        "appearance": {
+          "presentation": "male",
+          "body": "base",
+          "hair": "m-spiky",
+          "outfit": "wanderer",
+          "aura": "sage",
+          "skinColor": "#e6b995",
+          "hairColor": "#d9cbb4",
+          "outfitColor": "#729e8e"
+        }
+      },
+      "skills": [
+        {
+          "skillId": "calisthenics",
+          "totalXp": 1440
+        },
+        {
+          "skillId": "running",
+          "totalXp": 360
+        },
+        {
+          "skillId": "meditation",
+          "totalXp": 30
+        },
+        {
+          "skillId": "programming",
+          "totalXp": 240
+        },
+        {
+          "skillId": "weightlifting",
+          "totalXp": 0
+        },
+        {
+          "skillId": "swimming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "boxing",
+          "totalXp": 0
+        },
+        {
+          "skillId": "bjj",
+          "totalXp": 0
+        },
+        {
+          "skillId": "breathwork",
+          "totalXp": 0
+        },
+        {
+          "skillId": "recovery",
+          "totalXp": 0
+        },
+        {
+          "skillId": "reading",
+          "totalXp": 0
+        },
+        {
+          "skillId": "languages",
+          "totalXp": 0
+        },
+        {
+          "skillId": "healthy-cooking",
+          "totalXp": 0
+        },
+        {
+          "skillId": "music",
+          "totalXp": 0
+        }
+      ],
+      "quests": [
+        {
+          "id": "q-move",
+          "title": "Werde ein Stück stärker",
+          "description": "20 Minuten Calisthenics",
+          "skillId": "calisthenics",
+          "targetMinutes": 20,
+          "progressMinutes": 0,
+          "bonusXp": 50,
+          "claimed": false
+        },
+        {
+          "id": "q-mind",
+          "title": "Finde deine innere Ruhe",
+          "description": "10 Minuten Meditation",
+          "skillId": "meditation",
+          "targetMinutes": 10,
+          "progressMinutes": 0,
+          "bonusXp": 30,
+          "claimed": false
+        },
+        {
+          "id": "q-learn",
+          "title": "Baue an deiner Zukunft",
+          "description": "30 Minuten Programming",
+          "skillId": "programming",
+          "targetMinutes": 30,
+          "progressMinutes": 0,
+          "bonusXp": 40,
+          "claimed": false
+        }
+      ],
+      "boss": {
+        "id": "mosswarden",
+        "name": "Der Mooswächter",
+        "weekLabel": "05. – 11. Oktober",
+        "maxHp": 2400,
+        "hp": 0
+      },
+      "activities": [
+        {
+          "requestId": "level20-aura",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-07",
+          "rewardedMinutes": 90,
+          "xp": 360
+        },
+        {
+          "requestId": "boss-drop",
+          "skillId": "running",
+          "minutes": 60,
+          "dayKey": "2026-10-06",
+          "rewardedMinutes": 60,
+          "xp": 180
+        },
+        {
+          "requestId": "boss-progress-3",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-06",
+          "rewardedMinutes": 90,
+          "xp": 360
+        },
+        {
+          "requestId": "boss-progress-2",
+          "skillId": "programming",
+          "minutes": 90,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 90,
+          "xp": 180
+        },
+        {
+          "requestId": "boss-progress",
+          "skillId": "running",
+          "minutes": 60,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 60,
+          "xp": 180
+        },
+        {
+          "requestId": "new-week",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 90,
+          "xp": 360
+        },
+        {
+          "requestId": "quest-programming",
+          "skillId": "programming",
+          "minutes": 30,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 60
+        },
+        {
+          "requestId": "quest-meditation",
+          "skillId": "meditation",
+          "minutes": 10,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 10,
+          "xp": 30
+        },
+        {
+          "requestId": "over-cap",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 0,
+          "xp": 0
+        },
+        {
+          "requestId": "daily-cap",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 120
+        },
+        {
+          "requestId": "first",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 60,
+          "xp": 240
+        }
+      ],
+      "unlockedAuras": [
+        "moss-spirit",
+        "aurora"
+      ],
+      "momentum": {
+        "value": 20,
+        "lastRewardDay": "2026-10-07",
+        "rhythm": [
+          {
+            "label": "Mo",
+            "status": "done"
+          },
+          {
+            "label": "Di",
+            "status": "done"
+          },
+          {
+            "label": "Mi",
+            "status": "done"
+          },
+          {
+            "label": "Do",
+            "status": "today"
+          },
+          {
+            "label": "Fr",
+            "status": "upcoming"
+          },
+          {
+            "label": "Sa",
+            "status": "upcoming"
+          },
+          {
+            "label": "So",
+            "status": "upcoming"
+          }
+        ]
+      }
+    },
+    "command": {
+      "requestId": "level40-aura",
+      "skillId": "calisthenics",
+      "minutes": 90
+    },
+    "snapshot": {
+      "dayKey": "2026-10-08",
+      "character": {
+        "id": "demo-player",
+        "createdByPlayer": false,
+        "name": "Ari",
+        "title": "Wanderer des Morgenlichts",
+        "totalXp": 195360,
+        "attributes": {
+          "strength": 23,
+          "endurance": 16,
+          "focus": 22,
+          "knowledge": 21,
+          "mindfulness": 12,
+          "recovery": 18
+        },
+        "appearance": {
+          "presentation": "male",
+          "body": "base",
+          "hair": "m-spiky",
+          "outfit": "wanderer",
+          "aura": "sage",
+          "skinColor": "#e6b995",
+          "hairColor": "#d9cbb4",
+          "outfitColor": "#729e8e"
+        }
+      },
+      "skills": [
+        {
+          "skillId": "calisthenics",
+          "totalXp": 1800
+        },
+        {
+          "skillId": "running",
+          "totalXp": 360
+        },
+        {
+          "skillId": "meditation",
+          "totalXp": 30
+        },
+        {
+          "skillId": "programming",
+          "totalXp": 240
+        },
+        {
+          "skillId": "weightlifting",
+          "totalXp": 0
+        },
+        {
+          "skillId": "swimming",
+          "totalXp": 0
+        },
+        {
+          "skillId": "boxing",
+          "totalXp": 0
+        },
+        {
+          "skillId": "bjj",
+          "totalXp": 0
+        },
+        {
+          "skillId": "breathwork",
+          "totalXp": 0
+        },
+        {
+          "skillId": "recovery",
+          "totalXp": 0
+        },
+        {
+          "skillId": "reading",
+          "totalXp": 0
+        },
+        {
+          "skillId": "languages",
+          "totalXp": 0
+        },
+        {
+          "skillId": "healthy-cooking",
+          "totalXp": 0
+        },
+        {
+          "skillId": "music",
+          "totalXp": 0
+        }
+      ],
+      "quests": [
+        {
+          "id": "q-move",
+          "title": "Werde ein Stück stärker",
+          "description": "20 Minuten Calisthenics",
+          "skillId": "calisthenics",
+          "targetMinutes": 20,
+          "progressMinutes": 20,
+          "bonusXp": 50,
+          "claimed": true
+        },
+        {
+          "id": "q-mind",
+          "title": "Finde deine innere Ruhe",
+          "description": "10 Minuten Meditation",
+          "skillId": "meditation",
+          "targetMinutes": 10,
+          "progressMinutes": 0,
+          "bonusXp": 30,
+          "claimed": false
+        },
+        {
+          "id": "q-learn",
+          "title": "Baue an deiner Zukunft",
+          "description": "30 Minuten Programming",
+          "skillId": "programming",
+          "targetMinutes": 30,
+          "progressMinutes": 0,
+          "bonusXp": 40,
+          "claimed": false
+        }
+      ],
+      "boss": {
+        "id": "mosswarden",
+        "name": "Der Mooswächter",
+        "weekLabel": "05. – 11. Oktober",
+        "maxHp": 2400,
+        "hp": 0
+      },
+      "activities": [
+        {
+          "requestId": "level40-aura",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-08",
+          "rewardedMinutes": 90,
+          "xp": 360
+        },
+        {
+          "requestId": "level20-aura",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-07",
+          "rewardedMinutes": 90,
+          "xp": 360
+        },
+        {
+          "requestId": "boss-drop",
+          "skillId": "running",
+          "minutes": 60,
+          "dayKey": "2026-10-06",
+          "rewardedMinutes": 60,
+          "xp": 180
+        },
+        {
+          "requestId": "boss-progress-3",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-06",
+          "rewardedMinutes": 90,
+          "xp": 360
+        },
+        {
+          "requestId": "boss-progress-2",
+          "skillId": "programming",
+          "minutes": 90,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 90,
+          "xp": 180
+        },
+        {
+          "requestId": "boss-progress",
+          "skillId": "running",
+          "minutes": 60,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 60,
+          "xp": 180
+        },
+        {
+          "requestId": "new-week",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-05",
+          "rewardedMinutes": 90,
+          "xp": 360
+        },
+        {
+          "requestId": "quest-programming",
+          "skillId": "programming",
+          "minutes": 30,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 60
+        },
+        {
+          "requestId": "quest-meditation",
+          "skillId": "meditation",
+          "minutes": 10,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 10,
+          "xp": 30
+        },
+        {
+          "requestId": "over-cap",
+          "skillId": "calisthenics",
+          "minutes": 90,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 0,
+          "xp": 0
+        },
+        {
+          "requestId": "daily-cap",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 30,
+          "xp": 120
+        },
+        {
+          "requestId": "first",
+          "skillId": "calisthenics",
+          "minutes": 60,
+          "dayKey": "2026-10-04",
+          "rewardedMinutes": 60,
+          "xp": 240
+        }
+      ],
+      "unlockedAuras": [
+        "moss-spirit",
+        "aurora",
+        "starlight"
+      ],
+      "momentum": {
+        "value": 25,
+        "lastRewardDay": "2026-10-08",
+        "rhythm": [
+          {
+            "label": "Mo",
+            "status": "done"
+          },
+          {
+            "label": "Di",
+            "status": "done"
+          },
+          {
+            "label": "Mi",
+            "status": "done"
+          },
+          {
+            "label": "Do",
+            "status": "today"
+          },
+          {
+            "label": "Fr",
+            "status": "upcoming"
+          },
+          {
+            "label": "Sa",
+            "status": "upcoming"
+          },
+          {
+            "label": "So",
+            "status": "upcoming"
+          }
+        ]
+      }
+    },
+    "reward": {
+      "activityXp": 360,
+      "questXp": 50,
+      "damage": 0,
+      "rewardedMinutes": 90,
+      "duplicate": false
+    }
+  }
+]

@@ -1,0 +1,65 @@
+{
+  "id": "frost-scholar",
+  "presentation": "male",
+  "reviewedAt": "2026-10-05T20:52:54.703223+00:00",
+  "generator": "Built-in image_gen; existing generation preserved during this read-only pixel review",
+  "prompt": "body-v2.prompt.txt",
+  "master": "body-master.png",
+  "output": "frontend/public/art/characters/frost-scholar-body-v2.webp",
+  "processing": "Existing generated PNG and current runtime WebP inspected without any new rendering or pixel edits. Runtime dimensions and alpha verified; original encoder parameters were not reconstructed.",
+  "sourceQa": {
+    "width": 1024,
+    "height": 1536,
+    "hasAlpha": true,
+    "bytes": 2182407,
+    "sha256": "a7d8bb1a8911d877e66f2fec90fd37fbcc1f510def95c9cdcd060047067a82dc",
+    "alphaRange": [
+      0,
+      254
+    ],
+    "transparentPixels": 859998,
+    "partialAlphaPixels": 712866,
+    "solidEdgePixels": 0,
+    "contentBoundsAlphaOver128": {
+      "left": 64,
+      "top": 133,
+      "rightExclusive": 975,
+      "bottomExclusive": 1449
+    },
+    "clearMarginsAlphaOver128": {
+      "left": 64,
+      "top": 133,
+      "right": 49,
+      "bottom": 87
+    }
+  },
+  "outputQa": {
+    "width": 600,
+    "height": 900,
+    "hasAlpha": true,
+    "bytes": 135104,
+    "sha256": "34b61bc285f8bf9ce74335a1c38c04ce4aac9ae59c6d1b35e730bbc228443c0b",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "transparentPixels": 295735,
+    "partialAlphaPixels": 242185,
+    "solidEdgePixels": 0,
+    "contentBoundsAlphaOver128": {
+      "left": 37,
+      "top": 78,
+      "rightExclusive": 571,
+      "bottomExclusive": 849
+    },
+    "clearMarginsAlphaOver128": {
+      "left": 37,
+      "top": 78,
+      "right": 29,
+      "bottom": 51
+    }
+  },
+  "anchors": "body-v2.anchors.json",
+  "visualReview": "Inspected final runtime image individually: complete fully clothed body only, no head/hair/visible skin, gloves cover fingers, distinct outfit material and silhouette, feet/cape in frame. This is an isolated body review, not acceptance of every head/collar combination.",
+  "composedAvatarValidation": "Pending separate root visual/regression acceptance; see docs/VALIDATION.md."
+}

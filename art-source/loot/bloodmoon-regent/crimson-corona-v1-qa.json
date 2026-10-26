@@ -1,0 +1,21 @@
+{
+  "id": "crimson-corona",
+  "type": "aura",
+  "boss": "bloodmoon-regent",
+  "generator": "built-in image_gen",
+  "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-1d0b7bc3-3a79-4d19-90ed-174d9d31c4c8.png",
+  "master": "art-source/loot/bloodmoon-regent/crimson-corona-v1.png",
+  "runtime": "frontend/public/art/loot/crimson-corona-v1.webp",
+  "prompt": "art-source/loot/bloodmoon-regent/crimson-corona-v1-prompt.txt",
+  "width": 600,
+  "height": 750,
+  "bytes": 148382,
+  "alphaRange": [
+    0,
+    254
+  ],
+  "transparentPercent": 64.25,
+  "centralSlotTransparentPercent": 98.89,
+  "sha256": "7b1305ca50ffcafde8a1fda2d6bc94585105721079af2ed1f04438802d0643b7",
+  "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+}

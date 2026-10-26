@@ -24,15 +24,24 @@ describe('App', () => {
     expect(app).toBeTruthy();
   });
 
-  it('redirects the root and unknown routes to the dashboard', async () => {
+  it('opens the account entry and recovers unknown routes to the dashboard', async () => {
     const fixture = TestBed.createComponent(App);
     const router = TestBed.inject(Router);
     await router.navigateByUrl('/');
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(router.url).toBe('/dashboard');
-    expect(compiled.querySelector('h1')?.textContent).toContain('Ein neuer Schritt');
+    expect(router.url).toBe('/auth');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Dein kleines Ich');
     await router.navigateByUrl('/unknown');
     expect(router.url).toBe('/dashboard');
+  });
+
+  it('renders the real account login', async () => {
+    const fixture = TestBed.createComponent(App);
+    await TestBed.inject(Router).navigateByUrl('/auth');
+    await fixture.whenStable();
+    expect(fixture.nativeElement.textContent).toContain('Kostenlos registrieren');
+    expect(fixture.nativeElement.querySelector('input[type=\"email\"]')).not.toBeNull();
+    expect(fixture.nativeElement.querySelector('app-account-menu')).toBeNull();
   });
 });

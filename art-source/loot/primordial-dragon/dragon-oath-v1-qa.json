@@ -1,0 +1,21 @@
+{
+  "id": "dragon-oath",
+  "type": "aura",
+  "boss": "primordial-dragon",
+  "generator": "built-in image_gen",
+  "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-987941e2-ed23-470f-9129-8fee6756cc7f.png",
+  "master": "art-source/loot/primordial-dragon/dragon-oath-v1.png",
+  "runtime": "frontend/public/art/loot/dragon-oath-v1.webp",
+  "prompt": "art-source/loot/primordial-dragon/dragon-oath-v1-prompt.txt",
+  "width": 600,
+  "height": 750,
+  "bytes": 160120,
+  "alphaRange": [
+    0,
+    254
+  ],
+  "transparentPercent": 62.76,
+  "centralSlotTransparentPercent": 99.62,
+  "sha256": "d9c148997e4d47262b309763902588d681d316b9beaded85ba78b6dc7107f573",
+  "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+}

@@ -1,106 +1,114 @@
-<main id="main-content" class="battle-page">
-  <header class="page-top">
-    <a routerLink="/dashboard" class="back-link">← Zurück zu deinem Tag</a>
-    <span class="chapter">EVERBLOOM / BEGEGNUNGEN</span>
-  </header>
-  <div class="heading">
-    <div><p class="eyebrow">DEIN FORTSCHRITT WIRD LEBENDIG</p><h1>Die Mooslichtung</h1></div>
-    <span class="practice-badge"><span></span> Probekampf</span>
-  </div>
-  <p class="intro">Ein alter Wächter. Dein nächster Schritt. Dein Charakter kämpft automatisch mit der Stärke, die du im Alltag aufbaust.</p>
+<main id="main-content" class="battle-page" [style.--boss-color]="encounter().color">
+  <header class="page-top"><a routerLink="/dashboard" class="back-link">← Zurück zu deinem Tag</a><span class="chapter">HEROVERA / BEGEGNUNGEN</span></header>
+  <div class="heading"><div><p class="eyebrow">DEIN FORTSCHRITT WIRD LEBENDIG</p><h1>Große Gegner. Deine Reise.</h1></div><span class="practice-badge">{{ membership?.state()?.mode === "preview" || !game.accountMode ? "Beta · alle Modi frei" : membership?.active() ? "Plus aktiv" : "Free · bis Bosslevel 50" }}</span></div>
+  <p class="intro">{{ totalBosses }} Hüter. Neue Horizonte. Dein Charakter kämpft mit der Stärke, die du im Alltag aufbaust.</p>
 
   @if (battle.replay(); as replay) {
+    <p class="picker-hint">Wähle deine Begegnung <span>· seitlich wischen →</span></p>
+    <section class="boss-picker" aria-label="Boss auswählen">
+      @for (boss of bosses(); track boss.id) {
+        <button class="boss-choice" [class.selected]="selectedBoss() === boss.id" [attr.aria-pressed]="selectedBoss() === boss.id" [disabled]="selectionDisabled()" (click)="chooseBoss(boss.id)" [style.--choice-color]="boss.color">
+          <img [src]="visuals[boss.id].image" alt="" width="200" height="200" />
+          <span class="boss-choice-level">{{ game.level().level < boss.baseLevel ? 'Ab Level ' : 'Level ' }}{{ boss.baseLevel }}</span>
+          <strong>{{ boss.name }}</strong><span>{{ requiresPlus(boss.id, 'normal') ? 'Plus · ' : '' }}{{ boss.subtitle }}</span>
+        </button>
+      }
+    </section>
+    @if (bosses().length < totalBosses) { <p class="discovery-note">✧ Besiege {{ bosses()[bosses().length - 1].name }}, um die nächste Begegnung zu entdecken.</p> }
+    <div class="encounter-heading"><div><p class="eyebrow">{{ visuals[selectedBoss()].arenaName }}</p><h2>{{ encounter().name }}</h2><p>{{ encounter().description }}</p></div></div>
+    <details class="boss-guide" [open]="guideOpen()" (toggle)="toggleGuide($event)">
+      <summary><span>Fähigkeiten & Kampftipps</span><small>Deinen Gegner kennenlernen</small></summary>
+      <div class="guide-content">
+        <ul class="mechanics-list">
+          @for (mechanic of encounter().mechanics; track $index; let index = $index) {
+            <li><span class="mechanic-number" aria-hidden="true">0{{ index + 1 }}</span><p>{{ mechanic }}</p></li>
+          }
+        </ul>
+        <div class="tactic-tip"><strong>Vorbereiten. Dann deinem Chibi vertrauen.</strong><p>Ein goldener Hinweis zeigt dir, wenn dein Gegner einen starken Angriff auflädt. Die vorab gewählte Taktik <b>Ausdauer</b> erhöht deine Verteidigung und hilft, Schaden abzufangen.</p><p>Alle Züge laufen automatisch. Aufladungen und Schutz wirken im Kampfverlauf; während des Kampfes ist kein Eingreifen nötig.</p></div>
+      </div>
+    </details>
+    <fieldset class="difficulty-picker" [disabled]="selectionDisabled()"><legend>Wähle die Herausforderung</legend><div class="difficulty-options">
+      @for (difficulty of difficulties; track difficulty.id) {
+        <button [class.selected]="selectedDifficulty() === difficulty.id" [attr.aria-pressed]="selectedDifficulty() === difficulty.id" (click)="chooseDifficulty(difficulty.id)">
+          <strong>{{ difficulty.name }}</strong><span>{{ game.level().level < minimumLevel(encounter().baseLevel, difficulty.minimumLevelOffset) ? 'Gesperrt · ' : '' }}Level {{ minimumLevel(encounter().baseLevel, difficulty.minimumLevelOffset) }}</span>
+          <small>{{ requiresPlus(selectedBoss(), difficulty.id) ? (membership?.state()?.mode === 'preview' || !game.accountMode ? 'Beta frei' : 'Plus') : 'Dauerhaft kostenlos' }}</small>
+        </button>
+      }
+    </div></fieldset>
+    <div class="encounter-summary"><span>{{ difficultyName() }} · ab Level {{ encounter().minimumLevel }} · empfohlen {{ encounter().recommendedLevel }}</span><span>{{ cleared() ? '✓ Bereits besiegt' : 'Erster Sieg wartet' }}</span></div>
     <div class="battle-layout">
       <section class="arena-card" aria-label="Kampfbühne">
         <div class="combatants">
-          <div class="fighter hero">
-            <div class="fighter-heading"><span>DEIN CHARAKTER</span><span>LVL {{ replay.hero.stats.level }}</span></div>
-            <h2>{{ replay.hero.name }}</h2>
+          <div class="fighter hero"><div class="fighter-heading"><span>DEIN CHARAKTER</span><span>LVL {{ replay.hero.stats.level }}</span></div><h2>{{ replay.hero.name }}</h2>
             <progress [value]="battle.health().heroHp" [max]="replay.hero.stats.maxHp" [attr.aria-label]="replay.hero.name + ': Lebenspunkte'"></progress>
-            <div class="health"><span>{{ battle.health().heroHp }} / {{ replay.hero.stats.maxHp }} HP</span><span>ANG {{ replay.hero.stats.attack }}</span></div>
-          </div>
+            <div class="health"><span>{{ battle.health().heroHp }} / {{ replay.hero.stats.maxHp }} HP</span><span>ANG {{ replay.hero.stats.attack }}</span></div></div>
           <span class="versus" aria-hidden="true">VS</span>
-          <div class="fighter boss">
-            <div class="fighter-heading"><span>WALDWÄCHTER</span><span>LVL {{ replay.boss.stats.level }}</span></div>
-            <h2>{{ replay.boss.name }}</h2>
-            <progress [value]="battle.health().bossHp" [max]="replay.boss.stats.maxHp" aria-label="Mooswächter: Lebenspunkte"></progress>
-            <div class="health"><span>{{ battle.health().bossHp }} / {{ replay.boss.stats.maxHp }} HP</span><span>ANG {{ replay.boss.stats.attack }}</span></div>
-          </div>
+          <div class="fighter boss"><div class="fighter-heading"><span>{{ difficultyName() }}</span><span>LVL {{ replay.boss.stats.level }}</span></div><h2 lang="de">{{ replay.boss.name }}</h2>
+            <progress [value]="battle.health().bossHp" [max]="replay.boss.stats.maxHp" [attr.aria-label]="replay.boss.name + ': Lebenspunkte'"></progress>
+            <div class="health"><span>{{ battle.health().bossHp }} / {{ replay.boss.stats.maxHp }} HP</span><span>ANG {{ replay.boss.stats.attack }}</span></div></div>
         </div>
         @if (battle.appearance(); as appearance) {
-          <app-battle-arena [appearance]="appearance" [motion]="feedback.motionEnabled() && (battle.playing() || battle.cursor() === 0)"
-            [heroPose]="heroPose()" [bossPose]="bossPose()" />
+          <app-battle-arena [appearance]="appearance" [bossId]="selectedBoss()" [difficulty]="selectedDifficulty()" [visualProfile]="visualProfile()" [bossAbility]="battle.current()?.actor === 'boss' ? battle.current()?.abilityId : undefined" [turn]="battle.complete() ? null : battle.current()" [motion]="feedback.motionEnabled() && (battle.playing() || battle.settling() || battle.cursor() === 0)" [heroPose]="heroPose()" [bossPose]="bossPose()" />
         }
-        <div class="round-strip">
-          <span>{{ battle.current() ? 'Runde ' + battle.current()!.round : 'Bereit zur Begegnung' }}</span>
-          <span>{{ battle.current() ? phaseLabels[battle.current()!.bossPhase] : 'Erwachen' }}</span>
+        <div class="round-strip" [class.charging]="!!chargeCue()"><div class="round-meta"><span>{{ battle.current() ? 'Runde ' + battle.current()!.round : 'Bereit zur Begegnung' }}</span><span>{{ phaseName() }}</span></div>
+          @if (chargeCue(); as cue) { <p class="charge-cue"><span aria-hidden="true">⚠</span><span><strong>{{ cue }}</strong><small>Starker Angriff angekündigt · deine Taktik wirkt automatisch.</small></span></p> }
         </div>
-        <fieldset class="tactics" [disabled]="battle.playing() || battle.cursor() > 0">
-          <legend>Dein Kampfstil <span>Wähle vor dem Kampf. Dein Chibi übernimmt die Züge.</span></legend>
-          <div class="tactic-options">
-            @for (tactic of tactics; track tactic.id) {
-              <button type="button" [class.selected]="selectedTactic() === tactic.id" [attr.aria-pressed]="selectedTactic() === tactic.id"
-                [attr.aria-label]="tactic.name + ': ' + tactic.description" (click)="chooseTactic(tactic.id)">
-                <span class="tactic-symbol" aria-hidden="true">{{ tactic.symbol }}</span><strong>{{ tactic.name }}</strong>
-              </button>
+        <fieldset class="tactics" [disabled]="selectionDisabled() || battle.cursor() > 0 || !!fightResult()"><legend>Dein Kampfstil <span>Wähle vor dem Kampf. Dein Chibi übernimmt die Züge.</span></legend><div class="tactic-options">
+          @for (tactic of tactics; track tactic.id) {
+            <button [class.selected]="selectedTactic() === tactic.id" [attr.aria-pressed]="selectedTactic() === tactic.id" [attr.aria-label]="tactic.name + ': ' + tactic.description" (click)="chooseTactic(tactic.id)"><span class="tactic-symbol" aria-hidden="true">{{ tactic.symbol }}</span><strong>{{ tactic.name }}</strong></button>
+          }
+        </div><p>{{ tactics[selectedTactic() === 'power' ? 1 : selectedTactic() === 'guard' ? 2 : 0].description }}</p></fieldset>
+        @if (!fightResult()) {
+          <div class="challenge-entry">
+            @if (canChallenge()) {
+              <button class="primary challenge-button" (click)="challenge()" [disabled]="selectionDisabled()">{{ game.busy() ? 'Begegnung wird vorbereitet …' : '⚔ Boss herausfordern' }}</button>
+              <p>{{ rewardOwned() ? 'Die Erstabschluss-Beute gehört dir bereits. Weitere Siege geben keine zusätzliche Beute.' : 'Ein Sieg schaltet die Erstabschluss-Beute in deinem Konto frei.' }}</p>
+            } @else {
+              @if (plusLocked()) {
+                <p class="lock-note">{{ membership?.loading() ? 'Dein Zugang wird geprüft …' : membership?.error() || (encounter().baseLevel > freeBossMaxLevel ? 'Dein kostenloses Bosskapitel endet beim Wolkenkönig auf Level 50. Diese Begegnung ab Level 60 gehört zu Plus.' : 'Hard, Episch und Ultimate gehören zu Plus. Normal bleibt bis Bosslevel 50 kostenlos.') }}</p>
+                <a class="secondary" routerLink="/membership">Plus & Zugang verwalten →</a>
+              }
+              @if (!plusLocked()) { <p class="lock-note">{{ levelLocked() ? 'Echter Kampf ab Level ' + encounter().minimumLevel + '. Dein Charakter ist Level ' + game.level().level + '.' : 'Echte Kämpfe mit gespeicherter Beute sind mit einem eigenen Charakter im Konto möglich.' }} Die Vorschau dieser Begegnung ist offen.</p> }
             }
+            @if (game.error()) { <p class="battle-error" role="alert">{{ game.error() }}</p> }
           </div>
-          <p>{{ tactics[selectedTactic() === 'power' ? 1 : selectedTactic() === 'guard' ? 2 : 0].description }}</p>
-        </fieldset>
+        }
         <div class="turn-announcement" role="status" aria-live="polite" aria-atomic="true">
           @if (battle.complete()) { <strong>{{ resultTitle() }}</strong> }
-          @else if (battle.current(); as turn) {
-            <strong>{{ turn.actor === 'hero' ? replay.hero.name : replay.boss.name }}</strong>
-            <span>{{ turn.label }} · {{ turn.healing ? '+' + turn.healing + ' HP' : turn.damage + ' Schaden' }}{{ turn.critical ? ' · Kritischer Treffer' : '' }}</span>
-          } @else { <strong>Deine Erfahrung bestimmt den Kampf.</strong><span>Starte, lehn dich zurück und beobachte deinen Chibi.</span> }
+          @else if (battle.current(); as turn) { <strong>{{ turn.actor === 'hero' ? replay.hero.name : replay.boss.name }}</strong><span>{{ turn.label }} · {{ turn.damage ? turn.damage + ' Schaden' : turn.healing ? '+' + turn.healing + ' HP' : 'Kein direkter Schaden' }}{{ turn.damage && turn.healing ? ' · +' + turn.healing + ' eigene HP' : '' }}{{ turn.critical ? ' · Kritischer Treffer' : '' }}</span>@if (chargeCue()) { <span class="charge-status">Ein starker Angriff ist angekündigt. Dein Chibi handelt automatisch.</span> } }
+          @else if (playbackLocked()) { <strong>Plus-Begegnung</strong><span>Mit Plus setzt du deine Bossreise fort.</span> }
+          @else { <strong>{{ fightResult() ? 'Deine Begegnung ist gespeichert.' : 'Probekampf ohne Belohnungen' }}</strong><span>{{ fightResult() ? 'Sieh dir an, wie dein Chibi gekämpft hat.' : 'Entdecke den Gegner. Dein Spielstand bleibt unverändert.' }}</span> }
         </div>
         <div class="controls">
           @if (battle.playing()) { <button class="primary" (click)="battle.pause()">Ⅱ Pausieren</button> }
-          @else { <button class="primary" (click)="battle.play()">{{ battle.complete() ? '↻ Erneut ansehen' : battle.cursor() ? '▶ Fortsetzen' : '▶ Kampf starten' }}</button> }
+          @else { <button class="primary" (click)="playPreview()" [disabled]="game.busy() || playbackLocked()">{{ battle.complete() ? '↻ Erneut ansehen' : battle.cursor() ? '▶ Fortsetzen' : fightResult() ? '▶ Kampf ansehen' : '▶ Vorschau starten' }}</button> }
           <button class="secondary speed" (click)="battle.toggleSpeed()" [attr.aria-label]="'Kampfgeschwindigkeit ' + battle.speed() + '-fach. Umschalten.'">{{ battle.speed() }}×</button>
-          <button class="secondary" (click)="battle.skip()" [disabled]="battle.complete()">Zum Ergebnis</button>
+          <button class="secondary" (click)="skipPreview()" [disabled]="battle.complete() || game.busy() || playbackLocked()">Zum Ergebnis</button>
         </div>
-        <div class="quiet-controls">
-          <button class="text-button" (click)="feedback.toggleMotion()" [attr.aria-pressed]="feedback.motionEnabled()">Bewegung {{ feedback.motionEnabled() ? 'an' : 'aus' }}</button>
-          <button class="text-button" (click)="battle.step()" [disabled]="battle.complete()">Einzelner Zug →</button>
-        </div>
+        <div class="quiet-controls"><button class="text-button" (click)="feedback.toggleSound(); battle.prepareAudio()" [attr.aria-pressed]="feedback.soundEnabled()">Ton {{ feedback.soundEnabled() ? "an" : "aus" }}</button><button class="text-button" (click)="feedback.toggleMotion()" [attr.aria-pressed]="feedback.motionEnabled()">Bewegung {{ feedback.motionEnabled() ? 'an' : 'aus' }}</button><button class="text-button" (click)="stepPreview()" [disabled]="battle.complete() || game.busy() || playbackLocked()">Einzelner Zug →</button></div>
       </section>
-
       <aside class="battle-notes">
         @if (battle.complete()) {
-          <section class="result-card" role="status">
-            <span class="eyebrow">BEGEGNUNG ABGESCHLOSSEN</span>
-            <h2>{{ replay.outcome === 'victory' ? 'Gut gewachsen.' : replay.outcome === 'defeat' ? 'Deine Reise geht weiter.' : 'Bis zum nächsten Mal.' }}</h2>
+          <section class="result-card" role="status"><span class="eyebrow">{{ fightResult() ? 'BEGEGNUNG GESPEICHERT' : 'PROBEKAMPF ABGESCHLOSSEN' }}</span><h2>{{ replay.outcome === 'victory' ? 'Gut gewachsen.' : replay.outcome === 'defeat' ? 'Deine Reise geht weiter.' : 'Bis zum nächsten Mal.' }}</h2>
             <p>{{ replay.roundCount }} Runden. {{ replay.outcome === 'victory' ? 'Dein Fortschritt zeigt Wirkung.' : 'Du verlierst keine XP, Level oder Ausrüstung.' }}</p>
-            <button class="secondary" (click)="newBattle()">Mit aktuellen Werten vorbereiten</button>
+            @if (fightResult(); as result) {
+              @if (result.firstClear && earnedReward(); as earned) { <div class="earned-reward"><app-boss-loot-art [reward]="earned" /><span>✧ ERSTER SIEG</span><strong>{{ earned.name }}</strong><p>{{ rarityLabels[earned.rarity] }} · {{ slotLabels[earned.slot] }} · In deiner Sammlung gespeichert.</p><a routerLink="/character/create">Jetzt ausrüsten →</a></div> }
+              @else if (replay.outcome === 'victory') { <p>Bereits verdient: {{ reward().name }}. Wiederholte Siege vergeben keine weitere Beute.</p> }
+              @if (result.duplicate) { <p>Bereits gespeicherte Begegnung wiederhergestellt.</p> }
+            } @else { <p>Nur Vorschau: keine XP und keine Beute. Deine Sammlung bleibt unverändert.</p> }
+            @if (game.accountMode) { <a class="primary" routerLink="/dashboard">Zurück zu deinem Tag →</a> }
+            @else { <a class="primary" routerLink="/demo" [fragment]="tour?.complete() ? 'demo-complete' : 'demo-steps'">{{ tour?.complete() ? 'Demo abschließen →' : 'Weiter im Demo-Rundgang →' }}</a> }
+            <button class="secondary" (click)="newBattle()" [disabled]="game.busy()">Mit aktuellen Werten vorbereiten</button>
           </section>
         }
-        <section class="info-card">
-          <span class="eyebrow">DEINE KAMPFKRAFT</span><h2>Was du tust, zählt.</h2>
-          <div class="stat-grid">
-            <div><span>Level</span><strong>{{ replay.hero.stats.level }}</strong></div>
-            <div><span>Angriff</span><strong>{{ replay.hero.stats.attack }}</strong></div>
-            <div><span>Verteidigung</span><strong>{{ replay.hero.stats.defense }}</strong></div>
-          </div>
-          <p>Deine gesammelten Charakter-XP, Skills und Attribute bestimmen die Kampfwerte. Auch Lernen und Erholung tragen dazu bei.</p>
-          <p class="practice-note">Dies ist ein Probekampf ohne Belohnungen. Deine XP, Ausrüstung und der Wochenboss bleiben unverändert.</p>
-        </section>
-        <section class="log-card" aria-label="Kampfverlauf">
-          <div class="log-heading"><h2>Kampfverlauf</h2><span>{{ battle.cursor() }} Züge</span></div>
-          @if (battle.recentTurns().length) {
-            <ol>
-              @for (turn of battle.recentTurns(); track turn.index) {
-                <li [class.hero-turn]="turn.actor === 'hero'"><span class="round-number">{{ turn.round }}</span>
-                  <div><strong>{{ turn.actor === 'hero' ? replay.hero.name : replay.boss.name }}</strong><span>{{ turn.label }}</span></div>
-                  <b [class.healing]="turn.healing > 0">{{ turn.healing ? '+' + turn.healing : '−' + turn.damage }}<small>HP</small></b>
-                </li>
-              }
-            </ol>
-          } @else { <p class="empty-log">Der Wald hält den Atem an. Hier erscheinen die letzten sechs Züge.</p> }
+        <section class="loot-card" [attr.data-rarity]="reward().rarity"><span class="eyebrow">{{ rewardOwned() ? 'DEINE SAMMLUNG' : 'BEUTE BEIM ERSTEN SIEG' }}</span><app-boss-loot-art [reward]="reward()" /><span class="loot-type">{{ rarityLabels[reward().rarity] }} · {{ slotLabels[reward().slot] }} · {{ reward().variantLabel }}</span><h2>{{ reward().name }}</h2><p>{{ reward().description }}</p><span class="loot-state">{{ rewardOwned() ? '✓ Bereits verdient' : 'Einmal pro Boss und Modus' }}</span><p class="fine-print">Rein kosmetisch. Keine zusätzlichen Kampfwerte. Probekämpfe vergeben keine Beute.</p></section>
+        <section class="info-card"><span class="eyebrow">DEINE KAMPFKRAFT</span><h2>Was du tust, zählt.</h2><div class="stat-grid"><div><span>Level</span><strong>{{ replay.hero.stats.level }}</strong></div><div><span>Angriff</span><strong>{{ replay.hero.stats.attack }}</strong></div><div><span>Verteidigung</span><strong>{{ replay.hero.stats.defense }}</strong></div></div><p>Charakter-XP, Skills und Attribute bestimmen deine Kampfwerte. Auch Lernen und Erholung tragen dazu bei.</p><p class="practice-note">Kämpfe geben keine XP. Dein Wochenboss bleibt unverändert. Deine Stärke wächst durch echte Aktivitäten.</p></section>
+        <section class="log-card" aria-label="Kampfverlauf"><div class="log-heading"><h2>Kampfverlauf</h2><span>{{ battle.cursor() }} Züge</span></div>
+          @if (battle.recentTurns().length) { <ol>@for (turn of battle.recentTurns(); track turn.index) { <li [class.hero-turn]="turn.actor === 'hero'"><span class="round-number">{{ turn.round }}</span><div><strong>{{ turn.actor === 'hero' ? replay.hero.name : replay.boss.name }}</strong><span>{{ turn.label }}</span>@if (turn.damage && turn.healing) { <span>+{{ turn.healing }} eigene HP</span> }</div><b [class.healing]="turn.healing > 0 && !turn.damage">{{ turn.damage ? '−' + turn.damage : turn.healing ? '+' + turn.healing : '—' }}<small>{{ turn.healing || turn.damage ? 'HP' : 'Effekt' }}</small></b></li> }</ol> }
+          @else { <p class="empty-log">Die Begegnung wartet. Hier erscheinen die letzten sechs Züge.</p> }
         </section>
       </aside>
     </div>
-  } @else if (game.error()) {
-    <div class="info-card" role="alert"><p>{{ game.error() }}</p><button class="primary" (click)="game.load()">Erneut laden</button></div>
-  } @else { <p role="status">Dein Charakter wird vorbereitet …</p> }
+  } @else if (game.error()) { <div class="info-card" role="alert"><p>{{ game.error() }}</p><button class="primary" (click)="game.load()">Erneut laden</button></div> }
+  @else { <p role="status">Dein Charakter wird vorbereitet …</p> }
 </main>

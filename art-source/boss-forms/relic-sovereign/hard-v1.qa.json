@@ -1,0 +1,59 @@
+{
+  "bossId": "relic-sovereign",
+  "difficulty": "hard",
+  "generatedAt": "2026-10-05",
+  "generator": "Built-in image_gen",
+  "references": [
+    "art-source/boss-forms/relic-sovereign/normal-v1.master.png"
+  ],
+  "prompt": "hard-v1.prompt.txt",
+  "master": "hard-v1.master.png",
+  "output": "frontend/public/art/bosses/relic-sovereign-hard-v1.webp",
+  "processing": "Unmodified generated PNG copied as master; mechanical resize to774x774, padded63px transparent on each side; WebP quality85 alphaQuality100.",
+  "masterQa": {
+    "width": 1254,
+    "height": 1254,
+    "hasAlpha": true,
+    "format": "png",
+    "bytes": 2571787,
+    "sha256": "d0954857e33c2483306cdb52533806fe9e77e80bb333d419d16f0e5230edd7f2",
+    "transparentPixels": 656011,
+    "partialAlphaPixels": 915997,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 0,
+      "top": 0,
+      "right": 1235,
+      "bottom": 1253
+    },
+    "clearMargins": {
+      "left": 0,
+      "top": 0,
+      "right": 18,
+      "bottom": 0
+    }
+  },
+  "outputQa": {
+    "width": 900,
+    "height": 900,
+    "hasAlpha": true,
+    "format": "webp",
+    "bytes": 275672,
+    "sha256": "99878a5e049b47e28139403475e9ffae2a042044145a38512f9500c9c6fe5452",
+    "transparentPixels": 463194,
+    "partialAlphaPixels": 345003,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 63,
+      "top": 63,
+      "right": 825,
+      "bottom": 836
+    },
+    "clearMargins": {
+      "left": 63,
+      "top": 63,
+      "right": 74,
+      "bottom": 63
+    }
+  }
+}

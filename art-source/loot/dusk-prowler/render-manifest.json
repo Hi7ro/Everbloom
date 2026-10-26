@@ -1,0 +1,90 @@
+{
+  "date": "2026-10-05",
+  "source": "Built-in image_gen; one original render per loot item; mechanical WebP resizing only.",
+  "items": [
+    {
+      "id": "dusk-crown",
+      "type": "hair",
+      "boss": "dusk-prowler",
+      "generator": "built-in image_gen",
+      "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-36d92b2e-dac7-49e3-b1e2-05558be4dd87.png",
+      "master": "art-source/loot/dusk-prowler/dusk-crown-v1.png",
+      "runtime": "frontend/public/art/loot/dusk-crown-v1.webp",
+      "prompt": "art-source/loot/dusk-prowler/dusk-crown-v1-prompt.txt",
+      "width": 480,
+      "height": 480,
+      "bytes": 73146,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 52.85,
+      "centralSlotTransparentPercent": null,
+      "sha256": "e3f3a58613f389205b87d93180c271e9dd1342acb8b191501079781a45b48bd7",
+      "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+    },
+    {
+      "id": "eclipse-guardian",
+      "type": "aura",
+      "boss": "dusk-prowler",
+      "generator": "built-in image_gen",
+      "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-5d53001a-21c5-46d6-85f3-d043774a385b.png",
+      "master": "art-source/loot/dusk-prowler/eclipse-guardian-v1.png",
+      "runtime": "frontend/public/art/loot/eclipse-guardian-v1.webp",
+      "prompt": "art-source/loot/dusk-prowler/eclipse-guardian-v1-prompt.txt",
+      "width": 600,
+      "height": 750,
+      "bytes": 153734,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 58.85,
+      "centralSlotTransparentPercent": 99.14,
+      "sha256": "6209515638c8cd9f7874764eb85c82b5aa14ca11a196f0c82ef7fc642cba2a45",
+      "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+    },
+    {
+      "id": "twilight-mantle",
+      "type": "aura",
+      "boss": "dusk-prowler",
+      "generator": "built-in image_gen",
+      "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-1cefced0-6b4e-4270-94ca-d183c0cd309c.png",
+      "master": "art-source/loot/dusk-prowler/twilight-mantle-v1.png",
+      "runtime": "frontend/public/art/loot/twilight-mantle-v1.webp",
+      "prompt": "art-source/loot/dusk-prowler/twilight-mantle-v1-prompt.txt",
+      "width": 600,
+      "height": 750,
+      "bytes": 169066,
+      "alphaRange": [
+        0,
+        253
+      ],
+      "transparentPercent": 54.92,
+      "centralSlotTransparentPercent": 95.94,
+      "sha256": "e50694de4fe92d674a7825bbfb15c48df27c1413f3ee41c502f3aeac4d72d11e",
+      "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+    },
+    {
+      "id": "twilight-stalker",
+      "type": "outfit",
+      "boss": "dusk-prowler",
+      "generator": "built-in image_gen",
+      "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-5ef0b5f6-30f2-4bd7-a73c-f310477df586.png",
+      "master": "art-source/loot/dusk-prowler/twilight-stalker-v1.png",
+      "runtime": "frontend/public/art/loot/twilight-stalker-v1.webp",
+      "prompt": "art-source/loot/dusk-prowler/twilight-stalker-v1-prompt.txt",
+      "width": 480,
+      "height": 480,
+      "bytes": 62864,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 56.89,
+      "centralSlotTransparentPercent": null,
+      "sha256": "d1a8816c1b6724fe2b619a26b12c717ee14c49a259f11333174acedfe9772ac3",
+      "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+    }
+  ]
+}

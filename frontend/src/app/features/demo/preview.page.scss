@@ -1,0 +1,248 @@
+:host {
+  display: block;
+  background: radial-gradient(ellipse at 85% 12%, #304c3c70, transparent 38%), var(--background);
+}
+.demo-page {
+  max-width: 1140px;
+  margin: auto;
+  padding: 0 32px 48px;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 88px;
+  gap: 16px;
+}
+.brand {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: #e0e7cf;
+}
+.welcome {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  align-items: center;
+  min-height: 540px;
+  gap: 30px;
+}
+.demo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  color: #bcd0a9;
+}
+h1 {
+  font-size: clamp(42px, 5.2vw, 68px);
+  line-height: 1.04;
+  letter-spacing: -2.8px;
+  margin: 26px 0 24px;
+  font-weight: 600;
+}
+h1 em {
+  font-family: Georgia, serif;
+  font-weight: 400;
+  color: #d3dfb8;
+}
+.welcome-copy > p:not(.local-note) {
+  font-size: 17px;
+  line-height: 1.75;
+  max-width: 460px;
+  color: #b5c0b2;
+}
+.local-note {
+  font-size: 12px;
+  line-height: 1.7;
+  color: #a8b5a5;
+  margin: 18px 0 0;
+}
+.hero-art {
+  position: relative;
+  min-width: 0;
+  display: grid;
+  place-items: center;
+  min-height: 460px;
+}
+app-character-portrait {
+  display: block;
+  position: relative;
+  width: min(100%, 370px);
+  z-index: 1;
+  filter: drop-shadow(0 22px 24px #0005);
+}
+.orbit {
+  position: absolute;
+  width: 94%;
+  aspect-ratio: 1;
+  border: 1px solid #a9bf8530;
+  border-radius: 50%;
+}
+.orbit-two {
+  width: 76%;
+  border-style: dashed;
+  opacity: 0.5;
+}
+.hero-caption {
+  z-index: 2;
+  background: #20322bd9;
+  border: 1px solid #b3c59e35;
+  border-radius: 20px;
+  padding: 10px 16px;
+  color: #d2dcc2;
+  font-size: 12px;
+}
+h2 {
+  font-size: 28px;
+  font-weight: 500;
+  letter-spacing: -0.8px;
+  line-height: 1.2;
+  margin: 12px 0 22px;
+}
+.example-card {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 40px;
+  border: 1px solid #b8ca9c30;
+  border-radius: 22px;
+  background: linear-gradient(135deg, #26372c, #192821);
+  padding: 38px;
+  scroll-margin-top: 24px;
+}
+.example-copy > p:not(.eyebrow):not(.local-note) {
+  line-height: 1.75;
+  color: #b6c1af;
+}
+.sample-activity {
+  display: block;
+  margin: 24px 0 16px;
+  font-size: 14px;
+  color: #d4e0c3;
+}
+.example-result {
+  background: #121f19aa;
+  border-radius: 16px;
+  padding: 28px;
+  align-self: center;
+}
+.example-level > span {
+  display: block;
+  font-size: 9px;
+  color: #c3bd98;
+  letter-spacing: 1.1px;
+}
+.example-level strong {
+  display: block;
+  font-size: 40px;
+  font-weight: 500;
+  color: #d5e8b6;
+  margin: 16px 0 8px;
+}
+.example-level p {
+  color: #b1bfa9;
+  font-size: 13px;
+}
+.reward-breakdown {
+  margin: 20px 0;
+  display: grid;
+  gap: 12px;
+  font-size: 12px;
+}
+.reward-breakdown div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+.reward-breakdown dd {
+  color: #d4e7b5;
+  white-space: nowrap;
+  margin: 0;
+}
+footer {
+  border-top: 1px solid #a6b08c22;
+  margin-top: 48px;
+  padding-top: 24px;
+  color: #a2af9e;
+  font-size: 12px;
+  line-height: 1.8;
+  max-width: 780px;
+}
+footer a {
+  color: #cbd7be;
+}
+footer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 48px;
+}
+@media (max-width: 900px) {
+  .welcome {
+    gap: 6px;
+  }
+  .hero-art {
+    min-height: 380px;
+  }
+  h1 {
+    font-size: 48px;
+  }
+  .example-card {
+    gap: 24px;
+    padding: 26px;
+  }
+}
+@media (max-width: 599px) {
+  .demo-page {
+    padding: 0 20px 20px;
+  }
+  header {
+    min-height: 72px;
+  }
+  .brand {
+    font-size: 21px;
+  }
+  .welcome {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    gap: 20px;
+  }
+  .welcome-copy {
+    width: 100%;
+    padding-top: 26px;
+  }
+  h1 {
+    font-size: clamp(40px, 10.5vw, 60px);
+    margin: 20px 0;
+    letter-spacing: -2px;
+  }
+  .welcome-copy > p:not(.local-note) {
+    font-size: 15px;
+  }
+  .hero-art {
+    width: 100%;
+    min-height: 320px;
+    max-width: 330px;
+  }
+  app-character-portrait {
+    width: 265px;
+  }
+  .hero-caption {
+    margin-top: -5px;
+  }
+  h2 {
+    font-size: 25px;
+  }
+  .example-card {
+    grid-template-columns: 1fr;
+    padding: 24px 18px;
+    gap: 22px;
+  }
+  .example-result {
+    padding: 22px;
+  }
+  .example-copy button {
+    width: 100%;
+  }
+}

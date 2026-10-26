@@ -1,0 +1,21 @@
+{
+  "id": "bloodmoon-crown",
+  "type": "hair",
+  "boss": "bloodmoon-regent",
+  "generator": "built-in image_gen",
+  "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-c5aa2c8b-deda-4e49-b817-42e407f41737.png",
+  "master": "art-source/loot/bloodmoon-regent/bloodmoon-crown-v1.png",
+  "runtime": "frontend/public/art/loot/bloodmoon-crown-v1.webp",
+  "prompt": "art-source/loot/bloodmoon-regent/bloodmoon-crown-v1-prompt.txt",
+  "width": 480,
+  "height": 480,
+  "bytes": 84630,
+  "alphaRange": [
+    0,
+    254
+  ],
+  "transparentPercent": 54.23,
+  "centralSlotTransparentPercent": null,
+  "sha256": "f5314fdc102be78645ce2295ef3862743efc889c9aa4023a4062fa961af62bcf",
+  "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+}

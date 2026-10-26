@@ -1,7 +1,12 @@
 import { inject, Injectable, OnDestroy, signal } from '@angular/core';
 import { Milestone } from '../domain/milestones';
 import { BROWSER_STORAGE } from '../data/browser-storage';
-import { SuccessAudio } from '../shared/success-audio';
+import { SuccessAudio, SuccessCue } from '../shared/success-audio';
+
+const MILESTONE_SOUND: Readonly<Record<Milestone['kind'], SuccessCue>> = {
+  'character-level': 'level', 'skill-level': 'level', 'first-activity': 'quest',
+  'daily-quests': 'quest', 'boss-victory': 'boss', 'aura-unlock': 'loot',
+};
 
 export interface Celebration {
   id: number;
@@ -31,6 +36,10 @@ export class ProgressFeedback implements OnDestroy {
     if (this.soundEnabled()) this.audio.prepare();
   }
 
+  rewardCue() {
+    if (this.soundEnabled()) this.audio.play('loot');
+  }
+
   celebrate(milestones: Milestone[], preview = false) {
     if (!milestones.length) return;
     this.dismiss();
@@ -46,7 +55,7 @@ export class ProgressFeedback implements OnDestroy {
         : milestones.map((m) => m.detail),
       preview,
     });
-    if (this.soundEnabled()) this.audio.play();
+    if (this.soundEnabled()) this.audio.play(MILESTONE_SOUND[main.kind]);
     this.timer = setTimeout(() => this.dismiss(), 6000);
   }
 

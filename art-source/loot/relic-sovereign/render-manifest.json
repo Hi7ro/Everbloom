@@ -1,0 +1,90 @@
+{
+  "date": "2026-10-05",
+  "source": "Built-in image_gen; one original render per loot item; mechanical WebP resizing only.",
+  "items": [
+    {
+      "id": "imperial-gate",
+      "type": "aura",
+      "boss": "relic-sovereign",
+      "generator": "built-in image_gen",
+      "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-55adf2a7-2632-4c81-a499-02781ea6c2cf.png",
+      "master": "art-source/loot/relic-sovereign/imperial-gate-v1.png",
+      "runtime": "frontend/public/art/loot/imperial-gate-v1.webp",
+      "prompt": "art-source/loot/relic-sovereign/imperial-gate-v1-prompt.txt",
+      "width": 600,
+      "height": 750,
+      "bytes": 216016,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 48.0,
+      "centralSlotTransparentPercent": 91.39,
+      "sha256": "cb7dc65d6895d71f2df8ae5b212990937f25cdeee7b3a5bb51731e84c69485ef",
+      "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+    },
+    {
+      "id": "relic-arsenal",
+      "type": "aura",
+      "boss": "relic-sovereign",
+      "generator": "built-in image_gen",
+      "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-e690e6a5-f9ed-4999-9265-56f5315da990.png",
+      "master": "art-source/loot/relic-sovereign/relic-arsenal-v1.png",
+      "runtime": "frontend/public/art/loot/relic-arsenal-v1.webp",
+      "prompt": "art-source/loot/relic-sovereign/relic-arsenal-v1-prompt.txt",
+      "width": 600,
+      "height": 750,
+      "bytes": 197074,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 57.77,
+      "centralSlotTransparentPercent": 96.42,
+      "sha256": "6686b629fa5773596be2cc5f5ff556c2c8c31bea6185953fd13618a4d368784f",
+      "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+    },
+    {
+      "id": "relic-crown",
+      "type": "hair",
+      "boss": "relic-sovereign",
+      "generator": "built-in image_gen",
+      "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-139e5ea0-b029-47ba-97cd-92f3b5d1afa4.png",
+      "master": "art-source/loot/relic-sovereign/relic-crown-v1.png",
+      "runtime": "frontend/public/art/loot/relic-crown-v1.webp",
+      "prompt": "art-source/loot/relic-sovereign/relic-crown-v1-prompt.txt",
+      "width": 480,
+      "height": 480,
+      "bytes": 61038,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 66.14,
+      "centralSlotTransparentPercent": null,
+      "sha256": "f9e0b864ac2ac04d4f88d0cad549587e1c9dd1d29f412da8e6351f6d49206180",
+      "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+    },
+    {
+      "id": "sovereign-regalia",
+      "type": "outfit",
+      "boss": "relic-sovereign",
+      "generator": "built-in image_gen",
+      "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-92356d16-f723-4375-b272-9101769055be.png",
+      "master": "art-source/loot/relic-sovereign/sovereign-regalia-v1.png",
+      "runtime": "frontend/public/art/loot/sovereign-regalia-v1.webp",
+      "prompt": "art-source/loot/relic-sovereign/sovereign-regalia-v1-prompt.txt",
+      "width": 480,
+      "height": 480,
+      "bytes": 67690,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 55.26,
+      "centralSlotTransparentPercent": null,
+      "sha256": "595a7ba7f9f91eda91769234b1f7081ff9504a27e172819ae53ebe0036a2dcbe",
+      "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+    }
+  ]
+}

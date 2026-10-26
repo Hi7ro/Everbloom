@@ -1,0 +1,7 @@
+Use case: stylized-concept.
+Asset type: premium original-IP anime fantasy RPG loot illustration, a single isolated item for mobile use.
+Input image 1: the boss reference; inherit its materials, visual family and color palette, NOT its body. Input image 2: reference for existing loot painterly rendering quality and asset framing.
+Style: sophisticated dimensional hand-painted anime-fantasy illustration, refined material shading, delicate metalwork, clean readable edges and jewel highlights. Match our existing art, not simple flat vector, not screenshot, not a sheet.
+Subject: A charismatic royal anime hairstyle of long layered dark-brown/black hair brushed back and falling to the sides, warm glossy highlights. A sophisticated slim antique-gold crown set with a single lapis-blue center stone and tiny ruby accents. Noble mature silhouette, no beard or face, no skin, no head. Whole hair and crown visible.
+Composition: One floating hairstyle with its integrated ornamental circlet. Hair only: no skin, head, neck, ears, eyes, face, mannequin or bust. Empty transparent face opening. Three-quarter view. Square composition. DISTANT ITEM VIEW, entire hairstyle including every tip within central 65% of canvas; wide visible transparent margins on every side, do not zoom/crop.
+Background: genuine alpha transparency, no checkerboard, background color, scenery, floor, item shadow, border, text, watermark, logo or labels. Single requested asset only. All extremities drawn completely; no cropped weapon or wing tips.

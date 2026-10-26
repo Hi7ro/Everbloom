@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { BROWSER_STORAGE } from '../data/browser-storage';
 import { SuccessAudio } from '../shared/success-audio';
 import { ProgressFeedback, FEEDBACK_PREFERENCES_KEY } from './progress-feedback';
+import { Milestone } from '../domain/milestones';
 
 describe('progress feedback lifecycle', () => {
   const audio = { prepare: vi.fn(), play: vi.fn(), stop: vi.fn() };
@@ -32,6 +33,7 @@ describe('progress feedback lifecycle', () => {
     ]);
     expect(feedback.notice()?.details).toEqual(['Charakter 13', 'Calisthenics 10']);
     expect(audio.play).toHaveBeenCalledOnce();
+    expect(audio.play).toHaveBeenCalledWith('level');
     vi.advanceTimersByTime(6000);
     expect(feedback.notice()).toBeNull();
   });
@@ -82,5 +84,51 @@ describe('progress feedback lifecycle', () => {
     expect(audio.play).not.toHaveBeenCalled();
     expect(() => feedback.toggleSound()).not.toThrow();
     expect(feedback.soundEnabled()).toBe(true);
+  });
+
+  it.each([
+    ['character-level', 'level'], ['skill-level', 'level'], ['first-activity', 'quest'],
+    ['daily-quests', 'quest'], ['boss-victory', 'boss'], ['aura-unlock', 'loot'],
+  ] as const)('uses the %s milestone for its corresponding sound', (kind, cue) => {
+    const feedback = TestBed.inject(ProgressFeedback);
+    feedback.celebrate([{ kind, title: 'Erfolg', detail: 'Fortschritt' }]);
+    expect(audio.play).toHaveBeenCalledExactlyOnceWith(cue);
+  });
+
+  it('plays only the prioritized boss cue for a simultaneous group of milestones', () => {
+    const feedback = TestBed.inject(ProgressFeedback);
+    const milestones: Milestone[] = [
+      { kind: 'daily-quests', title: 'Tagesziel', detail: 'Quests' },
+      { kind: 'character-level', title: 'Level', detail: 'Level 20' },
+      { kind: 'aura-unlock', title: 'Aura', detail: 'Neue Aura' },
+      { kind: 'boss-victory', title: 'Boss', detail: 'Besiegt' },
+    ];
+    feedback.celebrate(milestones);
+    expect(feedback.notice()?.title).toBe('Boss');
+    expect(feedback.notice()?.details).toHaveLength(4);
+    expect(audio.play).toHaveBeenCalledExactlyOnceWith('boss');
+  });
+
+  it('uses a loot cue for a reward popup and honors mute and dismissal', () => {
+    const feedback = TestBed.inject(ProgressFeedback);
+    feedback.rewardCue();
+    expect(audio.play).toHaveBeenCalledExactlyOnceWith('loot');
+    feedback.toggleSound();
+    expect(audio.stop).toHaveBeenCalledTimes(1);
+    feedback.rewardCue();
+    expect(audio.play).toHaveBeenCalledTimes(1);
+    feedback.dismiss();
+    expect(audio.stop).toHaveBeenCalledTimes(2);
+  });
+
+  it('keeps the preview compatible with a level cue and ignores an empty milestone list', () => {
+    const feedback = TestBed.inject(ProgressFeedback);
+    feedback.celebrate([]);
+    expect(audio.play).not.toHaveBeenCalled();
+    feedback.preview();
+    expect(audio.play).toHaveBeenCalledExactlyOnceWith('level');
+    expect(feedback.notice()?.preview).toBe(true);
+    feedback.dismiss();
+    expect(vi.getTimerCount()).toBe(0);
   });
 });

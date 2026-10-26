@@ -1,0 +1,46 @@
+{
+  "id": "void-sorceress",
+  "neckX": 354,
+  "neckY": 160,
+  "footY": 796,
+  "collarFront": [
+    {
+      "x": 307,
+      "y": 139
+    },
+    {
+      "x": 320,
+      "y": 148
+    },
+    {
+      "x": 353,
+      "y": 160
+    },
+    {
+      "x": 383,
+      "y": 172
+    },
+    {
+      "x": 400,
+      "y": 153
+    },
+    {
+      "x": 396,
+      "y": 187
+    },
+    {
+      "x": 354,
+      "y": 191
+    },
+    {
+      "x": 310,
+      "y": 168
+    }
+  ],
+  "width": 700,
+  "height": 900,
+  "coordinateSpace": "Final700x900WebP",
+  "neckAnchor": "Lower/front edge of open neck collar; visually calibrated against25pxgrid.",
+  "footAnchor": "Lowest opaque sole pixel, alpha>128. Ignores tiny alpha noise outside artwork.",
+  "collarFrontNote": "Front collar lip polygon for over-head compositing; verify after attaching chosen face."
+}

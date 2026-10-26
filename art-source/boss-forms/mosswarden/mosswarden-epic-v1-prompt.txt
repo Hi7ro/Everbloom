@@ -1,0 +1,10 @@
+Built-in image_gen; 2026-10-05.
+Reference: /Users/xv7ro/dev/personal/everbloom/frontend/public/art/bosses/mosswarden-v2.webp
+
+Use case: stylized-concept.
+Asset type: transparent full-body boss sprite for an original mobile anime-fantasy RPG.
+Input image 1 is a reference for this exact boss identity, painterly rendering and material quality. Create a NEW genuinely evolved EPIC difficulty form; do not merely recolor the image.
+Subject: EPIC form, the Crown of the Deepwood: preserve the same wood-and-stone humanoid, long wooden mask, glowing emerald eyes and luminous emerald heart. A monumental asymmetrical crown of branching golden-barked antlers towers behind the head. Build broad architectural shoulder arches of living wood, emerald crystal shoulder obelisks and moss-covered stone plate armor, with a sculptural leaf-and-root mantle falling behind the elbows. Long root-clawed forearms, heavier multi-plated shins. Regal forest sovereign with clear negative spaces inside crown, much more majestic and powerful than the base and hard armor form. Emerald and warm ancient gold, no flowers overwhelming face.
+Style: exceptionally polished dimensional hand-painted anime high fantasy, refined edges, rich textured bark/stone or dragon scale/metal, detailed yet legible on a phone, original IP. Match the reference's sophisticated game illustration aesthetic, not vector, not cartoon outline, not photorealistic.
+Composition: one single creature, centered full body in a square 1024 composition; head and torso in three-quarter view facing screen LEFT, ready to fight a hero to its left. All horns, crown, wings, hands, tail and feet visible and fully inside the canvas with at least 7% completely clear transparent margin. Strong readable silhouette, feet at common baseline, no cropped extremities.
+Background: genuine alpha transparency everywhere outside the creature and a few attached glow accents. No background color, scenery, platform, ground, floor shadow, checkerboard pattern, border, words, numbers, labels, watermark or logo. No extra characters. Preserve the creature as a usable isolated game sprite.

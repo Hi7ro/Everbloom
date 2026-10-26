@@ -1,0 +1,38 @@
+{
+  "width": 750,
+  "height": 900,
+  "neckX": 367,
+  "neckY": 84,
+  "footY": 875,
+  "collarFront": [
+    {
+      "x": 311,
+      "y": 54
+    },
+    {
+      "x": 343,
+      "y": 74
+    },
+    {
+      "x": 367,
+      "y": 84
+    },
+    {
+      "x": 419,
+      "y": 97
+    },
+    {
+      "x": 434,
+      "y": 159
+    },
+    {
+      "x": 301,
+      "y": 159
+    }
+  ],
+  "id": "abyss-walker",
+  "coordinateSpace": "Current runtime WebP source pixels",
+  "authority": "frontend/src/app/domain/character-outfits.ts",
+  "neckAnchor": "Front collar rim where it meets selected head jaw; renderer handles nine portrait-unit inset when source has painted neck.",
+  "note": "Snapshot of current runtime registration. Composed avatar visual validation is separate."
+}

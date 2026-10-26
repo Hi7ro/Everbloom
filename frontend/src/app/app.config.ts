@@ -6,7 +6,8 @@ import { provideRouter, withInMemoryScrolling } from '@angular/router';
 
 import { routes } from './app.routes';
 import { GAME_REPOSITORY } from './data/game.repository';
-import { MockGameRepository } from './data/mock-game.repository';
+import { HttpGameRepository } from './data/http-game.repository';
+import { ACCOUNT_MODE } from './data/account-mode';
 
 registerLocaleData(localeDe);
 
@@ -19,6 +20,7 @@ export const appConfig: ApplicationConfig = {
       routes,
       withInMemoryScrolling({ scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled' }),
     ),
-    { provide: GAME_REPOSITORY, useClass: MockGameRepository },
+    { provide: ACCOUNT_MODE, useValue: true },
+    { provide: GAME_REPOSITORY, useClass: HttpGameRepository },
   ],
 };

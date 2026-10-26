@@ -1,0 +1,46 @@
+{
+  "id": "rose-runner",
+  "neckX": 355,
+  "neckY": 147,
+  "footY": 801,
+  "collarFront": [
+    {
+      "x": 318,
+      "y": 134
+    },
+    {
+      "x": 332,
+      "y": 141
+    },
+    {
+      "x": 355,
+      "y": 147
+    },
+    {
+      "x": 378,
+      "y": 150
+    },
+    {
+      "x": 390,
+      "y": 144
+    },
+    {
+      "x": 389,
+      "y": 175
+    },
+    {
+      "x": 355,
+      "y": 178
+    },
+    {
+      "x": 317,
+      "y": 166
+    }
+  ],
+  "width": 700,
+  "height": 900,
+  "coordinateSpace": "Final700x900WebP",
+  "neckAnchor": "Lower/front edge of open neck collar; visually calibrated against25pxgrid.",
+  "footAnchor": "Lowest opaque sole pixel, alpha>128. Ignores tiny alpha noise outside artwork.",
+  "collarFrontNote": "Front collar lip polygon for over-head compositing; verify after attaching chosen face."
+}

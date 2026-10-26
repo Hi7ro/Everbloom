@@ -1,0 +1,10 @@
+Built-in image_gen; 2026-10-05.
+References: /Users/xv7ro/dev/personal/everbloom/frontend/public/art/bosses/dusk-prowler-normal-v1.webp ; /Users/xv7ro/dev/personal/everbloom/frontend/public/art/loot/celestial-wings-v1.webp
+
+Use case: stylized-concept.
+Asset type: premium original-IP anime fantasy RPG loot illustration, a single isolated item for mobile use.
+Input image 1: the boss reference; inherit its materials, visual family and color palette, NOT its body. Input image 2: reference for existing loot painterly rendering quality and asset framing.
+Style: sophisticated dimensional hand-painted anime-fantasy illustration, refined material shading, delicate metalwork, clean readable edges and jewel highlights. Match our existing art, not simple flat vector, not screenshot, not a sheet.
+Subject: Ultimate Eclipse Guardian aura: a majestic dark-amethyst crescent crown ABOVE the empty middle, two large curving panther-claw-inspired obsidian-violet ethereal blade arcs on the outside edges framed in antique gold, luminous teal claw-rune highlights and sparse violet wisps. Lower tips curl outward, not across the center. Protective supernatural geometry, no creature, no face or body. Far more powerful than a thin aura, but the center remains wholly transparent.
+Composition: An EQUIPPABLE AURA that will render behind a chibi, no character included. Portrait composition 4:5, 1024×1280 if available. Keep the central rectangle x=32–68% and y=23–85% completely alpha-transparent so a full character is unobscured. Place all ornaments at the top or OUTER sides; the aura is an open decorative frame. NO solid circular center, clouds, fog field, central light beam, body, face or silhouette. No large transparent-but-visible glow wash in the empty middle. The entire aura including tips sits within central 75% of canvas; wide transparent margins all around.
+Background: genuine alpha transparency, no checkerboard, no background color, scenery, floor, shadow under the item, border, labels, letters, symbols resembling readable text, watermark or logo. Only the requested single asset. Do NOT tightly crop; all extremities fully visible.

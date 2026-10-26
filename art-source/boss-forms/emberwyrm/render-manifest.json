@@ -1,0 +1,86 @@
+{
+  "date": "2026-10-05",
+  "assets": [
+    {
+      "id": "emberwyrm",
+      "difficulty": "hard",
+      "generator": "built-in image_gen",
+      "master": "art-source/boss-forms/emberwyrm/emberwyrm-hard-v1.png",
+      "runtime": "frontend/public/art/bosses/emberwyrm-hard-v1.webp",
+      "prompt": "art-source/boss-forms/emberwyrm/emberwyrm-hard-v1-framing-prompt.txt",
+      "generatedOriginal": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-cff7c8f7-4363-49e5-9bea-f63319d8be12.png",
+      "runtimeBytes": 196916,
+      "masterBytes": 1755572,
+      "width": 900,
+      "height": 900,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 56.84,
+      "solidBounds": [
+        43,
+        104,
+        866,
+        808
+      ],
+      "runtimeSha256": "8ada6f2ecfda4b4c19f83f549897b1e222aa5ef82d7bcc2476b9dd43277d25f1",
+      "visualReview": "Full body, face turned left, complete extremities, differentiated mode silhouette. First tightly framed drafts rejected; framed retry selected."
+    },
+    {
+      "id": "emberwyrm",
+      "difficulty": "epic",
+      "generator": "built-in image_gen",
+      "master": "art-source/boss-forms/emberwyrm/emberwyrm-epic-v1.png",
+      "runtime": "frontend/public/art/bosses/emberwyrm-epic-v1.webp",
+      "prompt": "art-source/boss-forms/emberwyrm/emberwyrm-epic-v1-framing-prompt.txt",
+      "generatedOriginal": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-1251c88e-c6e1-4b77-bf29-123b917a1547.png",
+      "runtimeBytes": 191022,
+      "masterBytes": 1575197,
+      "width": 900,
+      "height": 900,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 62.0,
+      "solidBounds": [
+        35,
+        144,
+        863,
+        796
+      ],
+      "runtimeSha256": "f4e6f517657f8b925e1fcc1a21e46842a04193bfbdb0cfad88136503efe71a16",
+      "visualReview": "Full body, face turned left, complete extremities, differentiated mode silhouette. First tightly framed drafts rejected; framed retry selected."
+    },
+    {
+      "id": "emberwyrm",
+      "difficulty": "ultimate",
+      "generator": "built-in image_gen",
+      "master": "art-source/boss-forms/emberwyrm/emberwyrm-ultimate-v1.png",
+      "runtime": "frontend/public/art/bosses/emberwyrm-ultimate-v1.webp",
+      "prompt": "art-source/boss-forms/emberwyrm/emberwyrm-ultimate-v1-framing-prompt.txt",
+      "generatedOriginal": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-df4b7741-7f8c-4c3c-9f13-a8e9fb3d420e.png",
+      "runtimeBytes": 233618,
+      "masterBytes": 1886055,
+      "width": 900,
+      "height": 900,
+      "mode": "RGBA",
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 53.74,
+      "solidBounds": [
+        27,
+        91,
+        872,
+        820
+      ],
+      "runtimeSha256": "b8b908445c782220c34953590a99cc3d505eb8d02714c1798487e0dc6954fd00",
+      "visualReview": "Full body, face turned left, complete extremities, differentiated mode silhouette. First tightly framed drafts rejected; framed retry selected."
+    }
+  ]
+}

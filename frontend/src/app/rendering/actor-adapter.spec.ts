@@ -32,10 +32,10 @@ describe('layered battle actors', () => {
     const boss = actor(-1);
     for (const current of [hero, boss]) {
       current.adapter.setPose('attack');
-      current.adapter.update(.325, true);
+      current.adapter.update(.375, true);
     }
-    expect(hero.view.x).toBe(30);
-    expect(boss.view.x).toBe(-30);
+    expect(hero.view.x).toBe(36);
+    expect(boss.view.x).toBe(-36);
     hero.adapter.update(1, true);
     expect(hero.view.x).toBe(0);
     hero.adapter.destroy();
@@ -56,6 +56,82 @@ describe('layered battle actors', () => {
       expect(head.y).toBe(-10);
     }
     adapter.destroy();
+  });
+
+  it('shows distinct, stationary boss attack silhouettes with reduced motion and clears them on idle', () => {
+    const bounds: string[] = [];
+    for (const attackStyle of ['roots', 'fire', 'stars', 'ice', 'cloud'] as const) {
+      const view = new Container();
+      const adapter = createLayeredActor({ view, facing: -1, attackStyle });
+      adapter.setPose('attack'); adapter.update(0, false);
+      const cue = view.getChildByLabel('attack-cue')!;
+      expect(cue.visible).toBe(true);
+      bounds.push(JSON.stringify(cue.getLocalBounds().rectangle));
+      expect(view.x).toBe(0);
+      adapter.setPose('idle'); adapter.update(0, false);
+      expect(cue.visible).toBe(false);
+      adapter.destroy();
+    }
+    expect(new Set(bounds).size).toBe(5);
+  });
+
+
+  it('winds up first and delays hit reaction until the visible impact', () => {
+    const attacker = actor(), defender = actor(-1);
+    attacker.adapter.setPose('attack'); defender.adapter.setPose('hit');
+    attacker.adapter.update(.1, true); defender.adapter.update(.1, true);
+    expect(attacker.view.x).toBeLessThan(0); expect(defender.view.x).toBe(0);
+    attacker.adapter.update(.3, true); defender.adapter.update(.3, true);
+    expect(attacker.view.x).toBeGreaterThan(20); expect(defender.view.x).toBeGreaterThan(0);
+    attacker.adapter.destroy(); defender.adapter.destroy();
+  });
+
+  it('changes skill style without replacing or decoding the actor artwork', () => {
+    const { adapter, view, dispose } = actor();
+    const originalParts = [...view.children];
+    adapter.setAttackVisual?.('arcane', 3);
+    adapter.setPose('attack'); adapter.update(.375, true);
+    expect(view.x).toBe(18);
+    expect(view.children).toEqual(originalParts); expect(dispose).not.toHaveBeenCalled();
+    adapter.destroy();
+  });
+
+  it('keeps the cloud boss anchored while charging a solar strike or raising its guard', () => {
+    const view = new Container();
+    const adapter = createLayeredActor({ view, facing: -1, attackStyle: 'cloud', attackTier: 3 });
+    for (const ability of ['solar-charge', 'cloud-step']) {
+      adapter.setAbility?.(ability); adapter.setPose('idle'); adapter.setPose('attack'); adapter.update(.375, true);
+      expect(view.x).toBe(0);
+    }
+    adapter.destroy();
+  });
+
+  it('keeps all four other bosses stationary while preparing without replacing their art', () => {
+    const preparations = [
+      ['roots', 'bark-guard'], ['fire', 'ember-charge'], ['stars', 'star-seal'],
+      ['ice', 'frost-guard'], ['ice', 'frost-charge'],
+    ] as const;
+    const shapes = new Set<string>();
+    for (const [attackStyle, ability] of preparations) {
+      const view = new Container();
+      const dispose = vi.fn();
+      const adapter = createLayeredActor({ view, facing: -1, attackStyle, dispose });
+      const children = [...view.children];
+      adapter.setAbility?.(ability); adapter.setPose('attack');
+      adapter.update(.375, true);
+      expect(view.x).toBe(0); expect(view.rotation).toBe(0);
+      adapter.update(0, false);
+      const cue = view.getChildByLabel('attack-cue')!;
+      expect(cue.visible).toBe(true); expect(view.x).toBe(0);
+      shapes.add(JSON.stringify(cue.getLocalBounds().rectangle));
+      expect(view.children).toEqual(children); expect(dispose).not.toHaveBeenCalled();
+      adapter.setAbility?.(undefined); adapter.setPose('idle'); adapter.setPose('attack');
+      adapter.update(.375, true);
+      expect(view.x).toBeLessThan(0);
+      expect(cue.y).toBe(0);
+      adapter.destroy(); expect(dispose).toHaveBeenCalledOnce();
+    }
+    expect(shapes.size).toBe(preparations.length);
   });
 
   it('releases owned artwork once even when teardown races cancellation', () => {

@@ -140,13 +140,13 @@ describe('device-local character profiles', () => {
     },
   );
 
-  it('persists an explicit original look and its aura without changing earned progress', async () => {
+  it('persists an explicit original look and its starter aura without changing earned progress', async () => {
     const repository = TestBed.runInInjectionContext(() => new MockGameRepository());
     await repository.record({ requestId: 'before-look', skillId: 'meditation', minutes: 10 });
     const before = await repository.load();
     const profile: CharacterProfile = {
       name: 'Ari',
-      appearance: { ...before.character.appearance, artwork: 'original', aura: 'rose' },
+      appearance: { ...before.character.appearance, artwork: 'original', aura: 'sage' },
     };
     const saved = await repository.updateCharacter(profile);
     expect(saved.snapshot.character.totalXp).toBe(before.character.totalXp);
@@ -175,7 +175,7 @@ describe('device-local character profiles', () => {
           illustration: preset.id,
           presentation: preset.presentation,
           hair: defaultHairstyle(preset.presentation),
-          aura: 'rose',
+          aura: 'sage',
         },
       };
       const saved = await repository.updateCharacter(profile);

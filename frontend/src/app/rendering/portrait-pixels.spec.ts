@@ -1,16 +1,19 @@
 import { describe, expect, it } from 'vitest';
-import { portraitTransform, regionAlpha, tintChannel } from './portrait-pixels';
+import { createRegionAlpha, portraitTransform, tintChannel } from './portrait-pixels';
 
 describe('portrait pixel contract', () => {
   it('keeps red hair, blue skin, white iris and green outfit masks distinct', () => {
-    expect(regionAlpha(255, 0, 0, 'hair')).toBe(1);
-    expect(regionAlpha(0, 0, 255, 'hair')).toBe(0);
-    expect(regionAlpha(0, 0, 255, 'skin')).toBe(1);
-    expect(regionAlpha(255, 255, 255, 'skin')).toBe(0);
-    expect(regionAlpha(255, 255, 255, 'eyes')).toBe(1);
-    expect(regionAlpha(0, 255, 0, 'eyes')).toBe(0);
-    expect(regionAlpha(0, 255, 0, 'body')).toBe(1);
-    expect(regionAlpha(255, 0, 0, 'body')).toBe(0);
+    const hair = createRegionAlpha('hair'), skin = createRegionAlpha('skin');
+    const eyes = createRegionAlpha('eyes'), body = createRegionAlpha('body');
+    expect(hair(255, 0, 0)).toBe(1);
+    expect(hair(0, 0, 255)).toBe(0);
+    expect(hair(128, 20, 10)).toBeCloseTo(98 / 255);
+    expect(skin(0, 0, 255)).toBe(1);
+    expect(skin(255, 255, 255)).toBe(0);
+    expect(eyes(255, 255, 255)).toBe(1);
+    expect(eyes(0, 255, 0)).toBe(0);
+    expect(body(0, 255, 0)).toBe(1);
+    expect(body(255, 0, 0)).toBe(0);
   });
 
   it('preserves head rotation and outfit anchoring from existing portrait transforms', () => {

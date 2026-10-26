@@ -1,0 +1,69 @@
+{
+  "id": "dawn-priestess",
+  "generatedAt": "2026-10-05",
+  "generator": "Built-in image_gen",
+  "reference": "frontend/public/art/characters/dawn-priestess-sheet.png",
+  "prompt": "body-v2.prompt.txt",
+  "master": "body-master.png",
+  "output": "frontend/public/art/characters/dawn-priestess-body-v2.webp",
+  "processing": "Unmodified generated PNG master; mechanical proportional fit to588x756 centered on transparent700x900; WebP quality88 alpha100. No masks, retouching or recoloring.",
+  "resize": {
+    "width": 535,
+    "height": 756,
+    "offsetX": 82,
+    "offsetY": 72
+  },
+  "sourceQa": {
+    "width": 1055,
+    "height": 1491,
+    "hasAlpha": true,
+    "bytes": 1602324,
+    "sha256": "b635c170389691cdd2c2105381240e00e0e44749f55d065f43be8f92f2831a8e",
+    "transparentPixels": 820442,
+    "partialAlphaPixels": 751925,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 39,
+      "top": 19,
+      "right": 992,
+      "bottom": 1425
+    },
+    "clearMargins": {
+      "left": 39,
+      "top": 19,
+      "right": 62,
+      "bottom": 65
+    }
+  },
+  "outputQa": {
+    "width": 700,
+    "height": 900,
+    "hasAlpha": true,
+    "bytes": 97670,
+    "sha256": "ee4a0cbf77cc8b8b7088a53e1562ffa8708c03a4228cc4ea8497128fd4cc44ce",
+    "transparentPixels": 436155,
+    "partialAlphaPixels": 192212,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 115,
+      "top": 91,
+      "right": 586,
+      "bottom": 795
+    },
+    "clearMargins": {
+      "left": 115,
+      "top": 91,
+      "right": 113,
+      "bottom": 104
+    }
+  },
+  "visualReview": "Body only, fully covered limbs, complete shoes, no head/hair/skin, right-facing three-quarter; six distinct outfit identities. Reviewed together at280x360 on dark background. Collar and foot anchors calibrated against final export.",
+  "anchors": "body-v2.anchors.json",
+  "collarCalibration": {
+    "date": "2026-10-05",
+    "authority": "frontend/src/app/domain/character-outfits.ts",
+    "anchors": "body-v2.anchors.json",
+    "previousAnchors": "body-v2.anchors-before-collar-calibration.json",
+    "scope": "Metadata-only alignment with current runtime collar polygon and registration; no image or code changes."
+  }
+}

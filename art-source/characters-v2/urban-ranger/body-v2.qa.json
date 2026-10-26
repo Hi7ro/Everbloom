@@ -1,0 +1,65 @@
+{
+  "id": "urban-ranger",
+  "presentation": "male",
+  "reviewedAt": "2026-10-05T20:52:54.676707+00:00",
+  "generator": "Built-in image_gen; existing generation preserved during this read-only pixel review",
+  "prompt": "body-v2.prompt.txt",
+  "master": "body-master.png",
+  "output": "frontend/public/art/characters/urban-ranger-body-v2.webp",
+  "processing": "Existing generated PNG and current runtime WebP inspected without any new rendering or pixel edits. Runtime dimensions and alpha verified; original encoder parameters were not reconstructed.",
+  "sourceQa": {
+    "width": 1024,
+    "height": 1536,
+    "hasAlpha": true,
+    "bytes": 2065134,
+    "sha256": "260519b9a23e9ac6fa88607737df40a4100aeb0a8a7b705e9ea56525859eeaac",
+    "alphaRange": [
+      0,
+      254
+    ],
+    "transparentPixels": 818950,
+    "partialAlphaPixels": 753914,
+    "solidEdgePixels": 0,
+    "contentBoundsAlphaOver128": {
+      "left": 119,
+      "top": 122,
+      "rightExclusive": 965,
+      "bottomExclusive": 1456
+    },
+    "clearMarginsAlphaOver128": {
+      "left": 119,
+      "top": 122,
+      "right": 59,
+      "bottom": 80
+    }
+  },
+  "outputQa": {
+    "width": 600,
+    "height": 900,
+    "hasAlpha": true,
+    "bytes": 122428,
+    "sha256": "17f29d986ab52ae6fe93552e3efffbbcb4b634db85ea8df46dbefa24948fc62e",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "transparentPixels": 281516,
+    "partialAlphaPixels": 256424,
+    "solidEdgePixels": 0,
+    "contentBoundsAlphaOver128": {
+      "left": 70,
+      "top": 72,
+      "rightExclusive": 565,
+      "bottomExclusive": 853
+    },
+    "clearMarginsAlphaOver128": {
+      "left": 70,
+      "top": 72,
+      "right": 35,
+      "bottom": 47
+    }
+  },
+  "anchors": "body-v2.anchors.json",
+  "visualReview": "Inspected final runtime image individually: complete fully clothed body only, no head/hair/visible skin, gloves cover fingers, distinct outfit material and silhouette, feet/cape in frame. This is an isolated body review, not acceptance of every head/collar combination.",
+  "composedAvatarValidation": "Pending separate root visual/regression acceptance; see docs/VALIDATION.md."
+}

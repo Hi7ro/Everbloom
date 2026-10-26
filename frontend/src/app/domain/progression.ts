@@ -1,3 +1,4 @@
+import { membershipBonus } from './membership';
 import { BALANCE, SKILLS } from './catalog';
 import { grantActivityAuras } from './aura-rewards';
 import { ActivityCommand, ActivityResult, GameSnapshot, SkillDefinition } from './models';
@@ -29,6 +30,7 @@ export function recordActivity(
   state: GameSnapshot,
   command: ActivityCommand,
   catalog: readonly SkillDefinition[] = SKILLS,
+  characterBonusPercent = 0,
 ): ActivityResult {
   if (!command.requestId.trim()) throw new Error('Eine Eintrags-ID fehlt. Bitte erneut versuchen.');
   const existing = state.activities.find((a) => a.requestId === command.requestId);
@@ -56,6 +58,7 @@ export function recordActivity(
     .reduce((sum, a) => sum + a.rewardedMinutes, 0);
   const rewardedMinutes = Math.min(command.minutes, Math.max(0, skill.dailyMinuteLimit - used));
   const activityXp = rewardedMinutes * skill.xpPerMinute;
+  const membershipXp = membershipBonus(activityXp, characterBonusPercent);
   let questXp = 0;
   const quests = state.quests.map((quest) => {
     if (quest.skillId !== skill.id || quest.claimed) return quest;
@@ -68,14 +71,14 @@ export function recordActivity(
   const earnsMomentum = activityXp > 0 && state.momentum.lastRewardDay !== state.dayKey;
   const snapshot: GameSnapshot = {
     ...state,
-    character: { ...state.character, totalXp: state.character.totalXp + activityXp + questXp },
+    character: { ...state.character, totalXp: state.character.totalXp + activityXp + questXp + membershipXp },
     skills: state.skills.map((s) =>
       s.skillId === skill.id ? { ...s, totalXp: s.totalXp + activityXp } : s,
     ),
     quests,
     boss: { ...state.boss, hp: state.boss.hp - damage },
     activities: [
-      { ...command, dayKey: state.dayKey, rewardedMinutes, xp: activityXp },
+      { ...command, dayKey: state.dayKey, rewardedMinutes, xp: activityXp, ...(membershipXp ? { membershipXp } : {}) },
       ...state.activities,
     ],
     momentum: {
@@ -87,6 +90,6 @@ export function recordActivity(
   snapshot.unlockedAuras = grantActivityAuras(state, snapshot, activityXp);
   return {
     snapshot,
-    reward: { activityXp, questXp, damage, rewardedMinutes, duplicate: false },
+    reward: { activityXp, questXp, damage, rewardedMinutes, duplicate: false, ...(membershipXp ? { membershipXp } : {}) },
   };
 }

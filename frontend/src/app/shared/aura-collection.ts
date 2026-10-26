@@ -10,10 +10,10 @@ import { CharacterAura } from './character-aura';
   template: `
     <section aria-labelledby="aura-collection-title">
       <div class="heading">
-        <div><p class="eyebrow">DEINE ERFOLGE LEUCHTEN</p><h3 id="aura-collection-title">Deine Aura-Sammlung</h3></div>
+        <div><p class="eyebrow">DEINE ERFOLGE LEUCHTEN</p><h3 id="aura-collection-title">Auren deiner Alltagsreise</h3></div>
         <span class="count">{{ store.ownedAuras().length }} / {{ rewards.length }}</span>
       </div>
-      <p class="intro">Du verdienst diese Auren durch deine Fortschritte. Einmal erhalten, bleiben sie in deiner Sammlung.</p>
+      <p class="intro">Diese Auren mit ihren festen Farben verdienst du durch Levelaufstiege und den Wochenboss. Weitere Auren warten in den Bossbegegnungen. Einmal erhalten, bleiben sie in deiner Sammlung.</p>
       <div class="rewards">
         @for (aura of rewards; track aura.id) {
           <div class="reward" [class.owned]="store.canEquipAura(aura.id)" [class.equipped]="selected() === aura.id">

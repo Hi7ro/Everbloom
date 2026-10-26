@@ -1,6 +1,6 @@
-# Art Direction · Everbloom
+# Art Direction · Herovera
 
-Stand: 04.10.2026. Verbindlicher Qualitätsbrief für Figuren, Garderobe und VFX. Die bestätigte Bildrichtung („in die Richtung perfekt“) und der anschließende Wunsch nach der **exakten Vorlage** bleiben maßgeblich. Neue Varianten erweitern diese Richtung; sie ersetzen die archivierte Originalzeichnung nicht. Produktregeln und Roadmap stehen im [Master Prompt](MASTER_PROMPT.md), tatsächliche Prüfungen in [VALIDATION](VALIDATION.md).
+Stand: 05.10.2026. Verbindlicher Qualitätsbrief für Figuren, Garderobe und VFX. Die bestätigte Bildrichtung („in die Richtung perfekt“) und der anschließende Wunsch nach der **exakten Vorlage** bleiben maßgeblich. Neue Varianten erweitern diese Richtung; sie ersetzen die archivierte Originalzeichnung nicht. Produktregeln und Roadmap stehen im [Master Prompt](MASTER_PROMPT.md), tatsächliche Prüfungen in [VALIDATION](VALIDATION.md).
 
 ![Freigegebene Anime-Chibi-Stilreferenz](art/chibi-style-reference.png)
 
@@ -43,13 +43,39 @@ Der Creator verwendet ausschließlich die illustrierten Figuren. Der frühere Ve
 
 ### Originalansicht und modulare Anpassung
 
-Die vier ursprünglichen PNGs von Smaragdwächter, Urbanem Abenteurer, Nachtklinge und Sternenweberin bleiben unverändert erhalten. Ohne explizite Frisur-, Outfit- oder Farb-Overrides zeigt `CharacterPortrait` diese Originale mit separater Hintergrundmaske. Name, Starter-Aura und Bewegungsoption verändern die Bilddateien nicht. `art/chibi-style-reference.png` archiviert das bestätigte Motiv mit 1224 × 1285 Pixeln; sein Schachbrett ist eingebrannt, es besitzt keinen Alphakanal. Die gleiche Zeichnung liegt unter `frontend/public/art/characters/emerald-knight-original.png`. Die Maske blendet den Hintergrund beim Rendern aus.
+Die vier ursprünglichen PNGs bleiben unverändert als Stilreferenz archiviert. Der aktuelle
+Charakterausbau stellt alle zwölf Vorlagen auf denselben Layer-Renderer um: zwölf separat
+gerenderte, vollständig bekleidete Körper-Sprites mit eigenen Outfitankern werden mit den
+jeweils einem vollständigen gemalten Kopf aus der gewählten Frisurenvariante kombiniert. Dadurch wechselt eine Farb- oder Frisurwahl
+nicht mehr zwischen Original-Gesamtbild und einer anderen Komposition. Die neuen Teile sind
+keine pixelidentische Zerlegung der vier Originalzeichnungen. Die abschließende Sichtprüfung
+aller Kragen, Haare und Kombinationen auf Handy/Tablet ist noch offen.
 
-Beim Anpassen wird eine **modulare Bildvariante** zusammengesetzt. Die hierfür erzeugten Sheets sind eigene Neugestaltungen in derselben Art Direction; sie sind keine pixelidentische Zerlegung der vier Originale. Eine Vorlagenwahl stellt deren eigene Haare, Kleidung und Originalfarben wieder her. Alle zwölf Designs verfügen über modulare Teile. Frisur und Outfitset lassen sich unabhängig innerhalb des passenden Darstellungskatalogs wählen. Haut-, Augen- und Haarfarben bieten jeweils „Original“ plus sechs Palettefarben. Outfits sind derzeit vollständige Sets; ihre Stoff-/Metallfarben, Waffen und Accessoires haben keine eigenen Editor-Slots.
+Frisur und Outfitset lassen sich unabhängig innerhalb des passenden Darstellungskatalogs
+wählen. Haut-, Augen- und Haarfarben bieten jeweils „Original“ plus sechs Palettefarben.
+Eine Vorlagenwahl setzt diese Anpassungen zurück. Outfits sind vollständige bekleidete Sets;
+ihre Farben, Waffen und Accessoires haben noch keine eigenen Slots.
+`art/chibi-style-reference.png` bewahrt die bestätigte 1224 × 1285-Vorlage; ihr Schachbrett
+ist eingebrannt und darf nicht als echter Alphakanal ausgegeben werden.
 
-Die Komposition trennt Körper, Gesicht/Basiskopf und Haare über semantische Masken. Ein gemalter Basiskopf füllt beim Frisurwechsel freigelegte Bereiche unter kürzeren Haaren. Körper werden über Hals/Fußlinie ausgerichtet, Köpfe über zwei Irisanker; getrennte Masken erlauben gezielte Farbanpassung. Vollständige Iris-Ellipsen mit je zwei Radien im Rig färben die Augen, ohne die gemalten Pupillen und Reflexe neu zu zeichnen. Ein eigenes Vollkörper-Rig mit Armen, Händen und Gesichtsmimik ist damit noch nicht umgesetzt. Generierte Masken und geschätzte Anker können Kanten- oder Überlappungsfehler enthalten; unterschiedliche Sheet-/Maskenabmessungen werden im Renderer angeglichen. Eine gelungene Einzelansicht ist kein Nachweis aller Kombinationen.
+Die Frisurenwahl entscheidet über **einen vollständigen gemalten Kopf** einschließlich
+zusammengehöriger Haare, Gesicht, Ohren, Kiefer und Augen. Kleidung bleibt unabhängig.
+Die Laufzeit verwendet weder ein fremdes Vorlagengesicht noch eine zusätzliche Stirnfüllung.
+Ohne explizite Augenfarbe gilt die gemalte Augenfarbe des gewählten Kopfes; eine gesetzte
+Augenfarbe bleibt erhalten. Haut-, Augen- und Haartönung verwenden Regionen desselben Bildes.
+Ein eigener Gesichtswechsel unabhängig von der Frisur ist im aktuellen Renderer nicht vorhanden.
+Getrennte Gesicht-/Haarteile bleiben ein späterer Produktionsweg mit exakt passenden Layern.
 
-Ruhige Atmung bewegt das Original geschlossen. Bei modularen Figuren sind Körperdehnung und Kopfbewegung zeitlich gekoppelt, ergänzt durch ein langsames Gesamt-Idle. „Bewegung aus“ und `prefers-reduced-motion` halten Avatar und Aura statisch. Interessenbezogene Gesten, präzise Gesichtsausdrücke und eigenständige Ausrüstungsanimationen bleiben weitere Arbeit.
+Die Körper-Sprites besitzen echtes Alpha. Köpfe werden über zwei Irisanker ausgerichtet;
+der Kragen trifft unmittelbar den gewählten Kiefer. Neun Portrait-Einheiten Versatz verbergen
+vorhandene Halsanteile. Farbmasken und Iris-Ellipsen des selben Kopfes erhalten Schattierung,
+Pupillen und Reflexe. Ein eigenes Skelett mit Armen/Händen/Mimik ist noch nicht umgesetzt.
+Die abschließende Kombination aller Kopf-/Outfitvarianten bleibt eine visuelle Abnahme.
+
+Ruhige Atmung koppelt Körperdehnung und Kopfbewegung. SVG-Porträts ergänzen kurze Gesten
+passend zu Level/Interessen; Pixi nutzt Atmung und Kampfreaktionen. „Bewegung aus“ und
+`prefers-reduced-motion` halten Avatar und Aura statisch. Präzise Gesichtsausdrücke,
+einzelne animierte Arme und eigenständige Ausrüstungsanimationen bleiben weitere Arbeit.
 
 ## Animations- und Bossproduktion
 
@@ -62,8 +88,9 @@ Der [Animation Guide](ANIMATION_PIPELINE.md) definiert den nächsten Produktions
 ein männlicher und ein weiblicher Referenz-Chibi mit zwei Haar-/Outfitvarianten sowie ein
 Mooswächter-Boss, alle mit Idle, Angriff, Treffer, Sieg und Niederlage. Gemeinsame Aktionsnamen
 erlauben unterschiedliche Skelette; Bosse dürfen eigene nichtmenschliche Körperformen haben.
-Mooswächter: schwere Stein-/Rindenformen, Moos, Wurzelarme und smaragdener Kern. Die erste eigene Illustration `art/bosses/mosswarden-v1.png` ist vorerst ein einzelner
-Sprite, kein mehrteiliges Boss-Rig. Figuren, Gegner, Bühne und VFX bleiben eigene IP.
+Mooswächter: schwere Stein-/Rindenformen, Moos, Wurzelarme und smaragdener Kern. Die aktuelle Grundform `art/bosses/mosswarden-v2.webp` ist ein einzelner
+Sprite, kein mehrteiliges Boss-Rig. Zehn Bossfamilien verwenden je vier eigene Bildformen;
+Katalog und aktuelle Assetproduktion stehen in [VISUAL_AUDIO_DIRECTION.md](VISUAL_AUDIO_DIRECTION.md). Figuren, Gegner, Bühne und VFX bleiben eigene IP.
 
 Der Kampf zeigt beide Figuren einander gegenüber, leicht von der Seite. Waffen, Hände, Haare
 und Kleidung sollen später zusammenhängend reagieren. Dafür braucht es echte getrennte Teile,
@@ -71,24 +98,46 @@ verdeckte Anschlussflächen und fünf abgenommene Clips, keine reine Vergrößer
 Die bestätigte Originalzeichnung bleibt archiviert und Referenz für Stil/Material; riggbare
 Neuzeichnungen werden nicht als pixelidentisches Original ausgegeben.
 
+Bosse sollen die Kampfbühne körperlich dominieren. Der Mooswächter ist in der Demo ungefähr
+1,5-mal so hoch wie die sichtbare Heldensilhouette: Boss-Skalierung 1,30, Held 1,00.
+Fußanker und Bodenschatten berücksichtigen seine Masse. Auch die statische Ersatzansicht
+bewahrt dieses Größenverhältnis. Weitere Bossmodelle erhalten eine eigene Größenabnahme;
+Geweihe, Flügel, Rückstoß und Niederlageposen brauchen auf Handy und Tablet Randreserve.
+
 ## Garderobe und Produktionsvertrag
 
-Das Zielsystem unterstützt vollständige Sets und separat gefertigte Slots: **Kopf, Gesicht, Haare, Torso, Arme, Beine, Schuhe, Haupthand, Nebenhand, Rücken, Accessoire, Aura und Companion**. Jeder Slot benötigt passende Vorder-/Hinterteile, Abdeckung und Anker. Aktuell sind vollständiges Outfitset, Frisur, Farben sowie Starter- und verdiente Auren wählbar. Drei Aura-Belohnungen haben eine lokale Vergabe/Besitzprüfung; Einzelwaffen, Rüstungsslots und Iteminventar fehlen.
+Das Zielsystem unterstützt vollständige Sets und separat gefertigte Slots: **Kopf, Gesicht, Haare, Torso, Arme, Beine, Schuhe, Haupthand, Nebenhand, Rücken, Accessoire, Aura und Companion**. Jeder Slot benötigt passende Vorder-/Hinterteile, Abdeckung und Anker. Aktuell sind vollständiges Outfitset, Frisur, Farben sowie Starter- und verdiente Auren wählbar. Fünf Aktivitäts-Auren und zwanzig Boss-Auren sind erspielbar; im Account-Spiel prüft der Server den Besitz. Einzelwaffen, Rüstungsslots und Iteminventar bleiben separate Ausbaustufen.
 
 Für jedes neue Asset gelten diese Abnahmeanforderungen:
 
 - Referenz, Pose, Blickrichtung, Lichtführung und Zielproportion bleiben konsistent. Gelenk-/Halsanschlüsse, beide Irisanker, Fußlinie und Ausrüstungspunkte werden im Rig mit tatsächlichen Pixelmaßen erfasst. Keine abgeschnittenen Haare, Stiefel, Cape- oder Waffenspitzen.
-- Vollständige Kleidung wird auch unter Haaren und Accessoires ausgearbeitet. Für spätere Slots bleiben verdeckte Anschlussflächen vorhanden. Der Basiskopf und sichtbare Hautbereiche passen zu allen vorgesehenen Frisuren.
+- Vollständige Kleidung wird auch unter Haaren und Accessoires ausgearbeitet. Für spätere Slots bleiben verdeckte Anschlussflächen vorhanden. Für künftig separat gefertigte Gesicht-/Haarteile müssen Basisform, sichtbare Haut und verdeckte Anschlüsse exakt zusammenpassen; aktuell bleibt der vollständige Kopf eine Einheit.
 - Der Layerplan ist ausdrücklich festgelegt: Boden-VFX → rückwärtige Aura/Companion/Rückenobjekte → hintere Haare/Cape → Körper/Beine/Schuhe → Arme/Hände/Ausrüstung → Gesicht/Basiskopf → vordere Haare/Kopfschmuck → vordere Partikel und optionale Augeneffekte. Dies ist der Ausbauvertrag; die heutige vereinfachte Körper-/Kopfkomposition bildet noch nicht alle Ebenen separat ab.
 - Originalillustration und Labelmaske besitzen für Produktionsfreigabe identische Abmessungen und pixelgenaue Geometrie. Schwarz bezeichnet ausschließlich Hintergrund/Lücken, niemals dunklen Stoff oder innere Nähte. Kleine Gesichtsteile und Irisflächen dürfen nicht versehentlich ausgeschnitten werden.
 - Prüfe kurze/lange Haare, helles/dunkles Outfit, jede Palette, Körper-/Halsübergang und die gesamte Silhouette in Handygröße sowie bei vergrößerter Darstellung. Kopf, Gesicht und Hände bleiben korrekt verbunden; keine doppelte Frisur, kahlen Löcher oder schwebenden Teile.
 - Definiere vor Produktionsfreigabe messbare Budgets für Download je sichtbarem Portrait, dekodierten Texturspeicher, Texturabmessungen, gleichzeitig aktive Layer/Filter und Aura-Partikel. Die Galerie lädt die statischen Portrait-Vorschauen bereits beim Eintritt in den sichtbaren Bereich. Lade weitere Katalogbilder ebenfalls bedarfsgerecht und verhindere unnötige Animationen außerhalb des sichtbaren Bereichs. Zahlen und gewählte Formate folgen der ersten Geräte-Messreihe; derzeit gibt es keinen belegten Performance- oder Store-Reife-Nachweis für den vollständigen Assetkatalog.
 
-## Aura-Richtung und aktueller Vorschauumfang
+### Bossbelohnungen für beide Darstellungen
 
-Auren rahmen die **ganze Figur** mit mehreren Tiefenebenen ein. Bodenzeichen verankern sie, rückwärtige Formen geben Präsenz, wenige vordere Partikel schaffen Tiefe. Gesicht und Hände bleiben sichtbar; Effekte blockieren keine Berührung, Navigation oder Texte. Dunkle, helle, süße und kraftvolle Effekte sind für jede Figur vorgesehen. Farbvarianten sollen langfristig das ganze Spektrum abdecken; die aktuelle Vorschau bietet Violett, Smaragd, Eisblau, Rosé, Gold und Glut.
+Ein Bossabschluss verleiht weiterhin genau **eine Belohnungsfamilie**. Haar und Outfit besitzen
+je eine männliche und weibliche Darstellung; Sammlungsbild und passende Modulzuordnung folgen
+der aktuellen Charakterdarstellung. Ein Wechsel der Darstellung erfordert keinen zweiten Drop
+und vergibt keine doppelte Belohnung. Das sind weiterhin **40 Besitz-IDs**, nicht 60.
+Die zwanzig Aura-Belohnungen bleiben für beide Darstellungen gemeinsam. Farben und Aura-Besitz
+ändern sich durch diese Varianten nicht.
 
-Diese zehn Namen und IDs gelten gemeinsam für Creator und weitere Ausarbeitung:
+Die zehn Haar- und zehn Outfitfamilien erhalten zwanzig separate weibliche Sammlungsbilder
+unter `art/loot/{loot-id}-female-v1.webp`, 480 × 480 mit echtem Alpha. Unterschiedliche
+Flecht-, Wellen-, Bob-, Pixie- und Hochsteckformen sowie eigene Bekleidungssilhouetten bewahren
+Bossfarben und Materialidentität. Alle Sets sind vollständig bekleidet. Die vorhandenen
+Basisdateien bleiben als männliche Zuordnung erhalten. Vollständige Passformprüfung der
+tatsächlich ausgerüsteten Module erfolgt getrennt von der Sammlungsbild-Abnahme.
+
+## Aura-Richtung und Freischaltung
+
+Auren rahmen die **ganze Figur** mit mehreren Tiefenebenen ein. Bodenzeichen verankern sie, rückwärtige Formen geben Präsenz, wenige vordere Partikel schaffen Tiefe. Gesicht und Hände bleiben sichtbar; Effekte blockieren keine Berührung, Navigation oder Texte. Dunkle, helle, süße und kraftvolle Effekte sind für jede Figur vorgesehen. Farbpaletten gehören fest zum jeweiligen Design. Neue Farbvarianten sind eigene Freischaltungen; freier Farbpicker und Aura-Labor sind entfernt.
+
+Die ersten zehn Bossmotive behalten folgende Namen und IDs; der vollständige 20er-Boss-Aura-Katalog steht in `boss-loot.ts`:
 
 | Aura | Motiv | ID |
 |---|---|---|
@@ -105,11 +154,47 @@ Diese zehn Namen und IDs gelten gemeinsam für Creator und weitere Ausarbeitung:
 
 Die vom Nutzer genannten Saijajin-/Naruto-Susano-Vorbilder dienen nur als Genre-Inspiration für aufsteigende Energie und eine beschützende Erscheinung. Keine konkreten Designs, Körperformen, Symbole, Attacken, Namen oder Audiodateien dieser Franchises übernehmen. Effekte sind kosmetisch und bewerten weder Psyche noch Gesundheit.
 
-`CharacterAura` implementiert diese zehn erweiterten Entwürfe als SVG/CSS-Vorschau im Creator. Sie sind noch nicht freigeschaltet, werden nicht gespeichert und erzeugen keine Besitzrechte, XP oder Stats. Daneben existieren drei speicherbare Starter-Zuordnungen: `sage` → Waldlicht, `rose` → Blütenzauber, `void` → Leere, zusätzlich „Keine“. Die Figur wird bei der erweiterten Vorschau ohne ihre angelegte Aura gezeigt, damit sich beide Effekte nicht überlagern. Diese Vorlagen sind noch keine vollständige Produktionsbibliothek gerasterter VFX.
+Die tatsächlich angelegte Aura verwendet auf Dashboard, im Creator und in der Pixi-Kampfbühne dieselbe gemalte Grafik. `AURA_VISUALS` ist die einzige Zuordnung von Aura-ID zu Bild, Position, Größe, Deckkraft und Bewegungsart im gemeinsamen Portraitformat 240 × 300. `CharacterAura` und `createAuraLayer` lesen diese Registry; alte Linien-/Outline-Auren werden nicht parallel eingeblendet.
 
-„Bedrohlicher Blick“ ergänzt derzeit leuchtende Augen in der rückwärtigen Dämonenschattenform. Die echten Avataraugen bleiben unverändert. Künftig sind Gesichtsausdruck und Irisleuchten eigenständige, unabhängig schaltbare Parameter; sie brauchen Masken/Anker am Gesicht und dürfen die ausgewählte Augenfarbe nicht stillschweigend überschreiben.
+Die aktuelle Bibliothek umfasst **26 transparente WebP-Dateien** für 26 Aura-IDs: sechs
+Zeichnungen für `sage`, `rose`, `void`, `aurora`, `starlight` und `moss-spirit`
+(512 × 640), zehn bestehende Boss-Auren (480 × 480) und zehn neue Boss-Auren (600 × 750).
+Dämmerungsbestie, Blutmondregentin, Nharok, Vaelthar und Aureon erhalten jeweils zwei eigene
+Bilder mit freier Mitte für den Chibi. Die ehemaligen Dämmerungs-/Blutmond-Tönungsaliase
+sind ersetzt. Die neuen Master, Prompts und Alpha-Prüfungen liegen unter `art-source/loot/`.
 
-Drei weitere Aura-Designs sind inzwischen erspielbar und anlegbar: **Nordlicht (`aurora`) beim belohnten Übertritt zu Level 20** zeigt grün/petrol/violette Lichtbänder; **Sternenkranz (`starlight`) bei Level 40** bildet gold/violette Konstellationen; **Moosseele (`moss-spirit`) beim belohnten Mooswächter-Sieg** zeigt Blattranken und einen Waldgeist. Alle verwenden instanzlokale SVG-Gradienten und CSS ohne zusätzliche Rasterbilder. Der automatische Grant ist einmalig, ohne Zufallschance oder manuelles Claim; Besitz wird beim lokalen Journal-Replay wiederhergestellt. Die Sammlung und der Creator prüfen Besitz vor dem Anlegen. Eine Vorschau vergibt weiterhin nichts. Das sind lokale Prototyprechte, kein servergeprüfter Nachweis; die zehn erweiterten Entwürfe bleiben Vorschauen. Animationen bleiben langsam, mit ruhigen Phasen; Bewegung aus und reduzierte Bewegung gelten konsequent. Keine schnellen Vollbildblitze oder dauerhaft hektischen Partikel.
+Nur **Ohne Aura und Waldlicht (`sage`)** sind Starter. **Rosenlicht (`rose`) bei Level 5,
+Schattenflamme (`void`) bei Level 10, Nordlicht (`aurora`) bei Level 20, Sternenkranz
+(`starlight`) bei Level 40 und Moosseele (`moss-spirit`) beim Aktivitäts-Wochenboss-Sieg**
+sind fünf einmalige Aktivitätsbelohnungen. Zwanzig Kampagnen-Auren stammen aus epischen und
+ultimativen Erst-Siegen. Server und Creator prüfen Besitz. Laden und Duplikate vergeben nichts;
+eine enge Migration erhält früher gültiges Rosenlicht-/Schattenflamme-Eigentum.
+
+Das freie Aura-Labor mit Farbwahl und Schattenblickregler ist entfernt. Gesichtsausdruck
+und präzises Irisleuchten bleiben spätere Parameter mit eigenen Masken/Ankern. Neue Bilder
+ändern keine Freischaltregeln und verleihen weder XP noch Stats.
+
+Für Abnahme und weitere Arbeit gelten:
+
+- Eine gespeicherte Aura erscheint nach Reload mit demselben Registry-Bild auf Dashboard, im Creator und am kämpfenden Helden. Die Pixi-Aura folgt dem Helden hinter dessen Figur; sie darf Gesicht, Kragen und Bedienung nicht verdecken.
+- Pro dargestellter Aura nur das gewählte Asset laden. Im Kampf höchstens ein Aura-Sprite, kein eigener Aura-Ticker, begrenzte Texturgröße und Freigabe von Bitmap/Textur beim Verlassen oder Abbruch. DOM-Effekte pausieren außerhalb des Sichtbereichs; die Kampfszene pausiert bei verborgenem Fenster beziehungsweise außerhalb des Sichtbereichs.
+- Bewegung aus und `prefers-reduced-motion` zeigen weiterhin das gemalte Bild ruhig an. Keine schnellen Blitze. Farben folgen dem freigeschalteten Design; keine frei umgefärbte Vorschau anbieten.
+- Unbekannte IDs und „Keine“ erzeugen keine Bildanfrage. URLs kommen ausschließlich aus der Registry. Ein Ladefehler darf den Kampf nicht verhindern: im DOM ist ein dezentes Ersatzleuchten erlaubt, in Pixi entfällt das defekte Aura-Bild. Kein Rückfall auf die alten Outline-Entwürfe und kein endloses Neuladen desselben defekten Bilds.
+- Eigentums-, Aktivitäts- und Erst-Sieg-Regeln bleiben unverändert. Die Renderer vergeben weder Beute noch XP. Visuelle Abnahme auf Handy/Tablet und echte Geräte-Performance bleiben zusätzlich zu Quellcode- und Testprüfungen erforderlich.
+
+### Vollständiger Kopf ohne alte Haarreste
+
+Die aktive Komposition verwendet genau einen vollständigen Kopf pro Frisurenvariante.
+Sie hält keine alte Haarform, kein separates Vorlagengesicht und keine Stirnfüllung darunter.
+Farbvarianten werden mit `REGION_ALPHA` über dieselbe Kopfzeichnung gelegt; die Maske ist
+ein Farbkanal, kein zweites Gesicht. So wird der frühere konstruktive Ursprung von
+Haarresten und doppelten Kieferkanten entfernt. Kragenüberdeckung und gekoppelte Atmung
+gelten in SVG/Pixi gemeinsam. Kurze/lange Frisuren, Haut-/Augenfarben und Halsanschluss
+müssen dennoch sichtbar geprüft werden. Einzelne Zähltests ersetzen diese Abnahme nicht.
+
+## Verbindliche kreative Einflüsse
+
+Warcraft/World of Warcraft, Final Fantasy IV, V, VI, VII, VIII, IX, X, XII, XIII, XIV, XV, XVI und Journey to the West bilden den gewünschten Inspirationsrahmen. Die konkrete Zuordnung und ihre Anwendung auf Figuren, Rüstungen, Welt, Bosse und Effekte stehen in [Einflüsse und Umsetzung](art/INFLUENCES.md). Bestehende bestätigte Chibi-Proportionen und eigenständige IP bleiben verbindlich. Die stärksten Anleihen liegen in klaren Silhouetten, ausdrucksstarker Fashion, stimmigen Elementen und angekündigten Bossfähigkeiten.
 
 ## Wiederverwendbarer Produktionsprompt
 
@@ -121,7 +206,7 @@ Modulsheet und eine Labelmaske allein erfüllen diesen neuen Animationsauftrag n
 Vor Verwendung die Felder ausfüllen und die passende Original-/Modulreferenz tatsächlich anhängen. Für ein neues Asset wird ausschließlich der benannte Slot verändert. Bestehende Originaldateien bleiben archiviert; Generation und Maskenprüfung sind getrennte Schritte. Das folgende Template beschreibt den Zielvertrag, keine Garantie pixelgenauer Generatorausgabe.
 
 ```text
-Aufgabe: Erzeuge [ASSET_ID] für Everbloom als [HAAR / OUTFITSET / RÜSTUNGSSLOT /
+Aufgabe: Erzeuge [ASSET_ID] für Herovera als [HAAR / OUTFITSET / RÜSTUNGSSLOT /
 HAUPTHAND / NEBENHAND / RÜCKEN / ACCESSOIRE / AURA]. Eigenständige IP.
 Referenz 1: bestätigte Anime-Chibi-Illustration für Gesicht, Stil und Materialqualität.
 Referenz 2: passendes bestehendes Modulsheet für Pose, Leinwand und Anschlüsse.

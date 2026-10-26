@@ -1,0 +1,49 @@
+{
+  "id": "moonblade",
+  "neckX": 383,
+  "neckY": 181,
+  "footY": 793,
+  "collarFront": [
+    {
+      "x": 338,
+      "y": 164
+    },
+    {
+      "x": 353,
+      "y": 172
+    },
+    {
+      "x": 381,
+      "y": 181
+    },
+    {
+      "x": 411,
+      "y": 185
+    },
+    {
+      "x": 425,
+      "y": 179
+    },
+    {
+      "x": 421,
+      "y": 265
+    },
+    {
+      "x": 381,
+      "y": 269
+    },
+    {
+      "x": 338,
+      "y": 245
+    }
+  ],
+  "width": 700,
+  "height": 900,
+  "coordinateSpace": "Current runtime WebP source pixels",
+  "neckAnchor": "Current front collar rim where it meets selected complete head; renderer applies nine portrait-unit inset when source contains a painted neck.",
+  "footAnchor": "Lowest opaque sole pixel, alpha>128. Ignores tiny alpha noise outside artwork.",
+  "collarFrontNote": "Calibrated front-collar overlay copied from current runtime registry; original image pixels remain unchanged.",
+  "authority": "frontend/src/app/domain/character-outfits.ts",
+  "collarCalibration": "2026-10-05",
+  "previousCalibrationReference": "body-v2.anchors-before-collar-calibration.json"
+}

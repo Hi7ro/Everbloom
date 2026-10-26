@@ -21,6 +21,7 @@ export interface DailyRecommendation {
   readonly preview: {
     readonly activityXp: number;
     readonly questXp: number;
+    readonly membershipXp: number;
     readonly totalXp: number;
     readonly bossDamage: number;
   };
@@ -84,6 +85,7 @@ export function buildDailyAdventure(
   snapshot: GameSnapshot,
   focusSkillIds: readonly string[],
   careMode: DailyCareMode = 'balanced',
+  characterBonusPercent = 0,
 ): DailyAdventure {
   const restFriendly = careMode === 'recovery' || careMode === 'rest';
   const selection: readonly string[] = restFriendly
@@ -100,7 +102,7 @@ export function buildDailyAdventure(
     selected.add(skillId);
     const skill = SKILLS.find((definition) => definition.id === skillId);
     if (!skill) continue;
-    const recommendation = recommend(snapshot, skill, careMode);
+    const recommendation = recommend(snapshot, skill, careMode, characterBonusPercent);
     if (recommendation) recommendations.push(recommendation);
   }
   return {
@@ -116,6 +118,7 @@ function recommend(
   snapshot: GameSnapshot,
   skill: SkillDefinition,
   careMode: DailyCareMode,
+  characterBonusPercent: number,
 ): DailyRecommendation | null {
   const quests = snapshot.quests.filter((quest) => quest.skillId === skill.id);
   const openQuests = quests.filter(
@@ -138,7 +141,7 @@ function recommend(
   let requestId = `adventure-preview:${snapshot.dayKey}:${skill.id}`;
   const existingIds = new Set(snapshot.activities.map((activity) => activity.requestId));
   while (existingIds.has(requestId)) requestId += ':next';
-  const reward = recordActivity(snapshot, { requestId, skillId: skill.id, minutes }).reward;
+  const reward = recordActivity(snapshot, { requestId, skillId: skill.id, minutes }, SKILLS, characterBonusPercent).reward;
   if (!Number.isFinite(reward.activityXp) || reward.activityXp <= 0) return null;
   return {
     id: `daily:${snapshot.dayKey}:${skill.id}`,
@@ -163,7 +166,8 @@ function recommend(
     preview: {
       activityXp: reward.activityXp,
       questXp: reward.questXp,
-      totalXp: reward.activityXp + reward.questXp,
+      membershipXp: reward.membershipXp ?? 0,
+      totalXp: reward.activityXp + reward.questXp + (reward.membershipXp ?? 0),
       bossDamage: reward.damage,
     },
   };

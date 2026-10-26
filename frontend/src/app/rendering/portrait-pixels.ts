@@ -1,9 +1,9 @@
 import { SpriteRegion, REGION_ALPHA } from '../domain/character-rig';
 
-/** Uses the same channel equations as the existing SVG portrait renderer. */
-export function regionAlpha(red: number, green: number, blue: number, region: SpriteRegion): number {
+/** Prepare each layer once; its per-pixel calculation matches the SVG channel equation. */
+export function createRegionAlpha(region: SpriteRegion): (red: number, green: number, blue: number) => number {
   const [r, g, b, , offset] = REGION_ALPHA[region].split(' ').map(Number);
-  return Math.max(0, Math.min(1, (red * r + green * g + blue * b) / 255 + offset));
+  return (red, green, blue) => Math.max(0, Math.min(1, (red * r + green * g + blue * b) / 255 + offset));
 }
 
 export function portraitTransform(transform: string): [number, number, number, number, number, number] {

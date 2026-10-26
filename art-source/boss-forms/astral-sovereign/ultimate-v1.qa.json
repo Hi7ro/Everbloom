@@ -1,0 +1,54 @@
+{
+  "bossId": "astral-sovereign",
+  "difficulty": "ultimate",
+  "generatedAt": "2026-10-05",
+  "reference": "frontend/public/art/bosses/astral-sovereign-v2.webp",
+  "prompt": "ultimate-v1.prompt.txt",
+  "master": "ultimate-v1.master.png",
+  "output": "frontend/public/art/bosses/astral-sovereign-ultimate-v1.webp",
+  "processing": "Unmodified generated PNG copied as master; mechanical resize to 774x774, padded 63px transparent on each side; WebP quality85 alphaQuality100.",
+  "masterQa": {
+    "width": 1254,
+    "height": 1254,
+    "hasAlpha": true,
+    "format": "png",
+    "bytes": 2302201,
+    "sha256": "2f39202a13ca8cf08ffe5226cd11d3903c608ac28c71c9ffb337ae2b5dac28c9",
+    "transparentPixels": 680973,
+    "partialAlphaPixels": 890396,
+    "contentBounds": {
+      "left": 23,
+      "top": 0,
+      "right": 1236,
+      "bottom": 1253
+    },
+    "clearMargins": {
+      "left": 23,
+      "top": 0,
+      "right": 17,
+      "bottom": 0
+    }
+  },
+  "outputQa": {
+    "width": 900,
+    "height": 900,
+    "hasAlpha": true,
+    "format": "webp",
+    "bytes": 237960,
+    "sha256": "db9aeb49fbc1e9e1e3b285ac2884102a12094ed720649f80007562687ae38be8",
+    "transparentPixels": 471547,
+    "partialAlphaPixels": 336007,
+    "contentBounds": {
+      "left": 77,
+      "top": 63,
+      "right": 825,
+      "bottom": 836
+    },
+    "clearMargins": {
+      "left": 77,
+      "top": 63,
+      "right": 74,
+      "bottom": 63
+    }
+  }
+}

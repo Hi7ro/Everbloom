@@ -4,6 +4,7 @@ import { normalizeCharacterProfile } from '../domain/character';
 import { hasAuraAccess } from '../domain/aura-rewards';
 import { advanceGamePeriod, isValidDayKey, startGamePeriod } from '../domain/game-periods';
 import { recordActivity } from '../domain/progression';
+import { replayProgress } from '../domain/progress-replay';
 import { GameRepository } from './game.repository';
 import { createMockSnapshot } from './mock-data';
 import { CharacterProfileStorage } from './character-profile.storage';
@@ -33,15 +34,10 @@ export class MockGameRepository implements GameRepository {
       startDay: today ?? createMockSnapshot().dayKey,
       entries: [],
     };
-    this.snapshot = startGamePeriod(createMockSnapshot(), this.journal.startDay);
-    for (const entry of this.journal.entries) {
-      const period = advanceGamePeriod(this.snapshot, entry.dayKey);
-      this.snapshot = recordActivity(period, {
-        requestId: entry.requestId,
-        skillId: entry.skillId,
-        minutes: entry.minutes,
-      }).snapshot;
-    }
+    this.snapshot = replayProgress(
+      startGamePeriod(createMockSnapshot(), this.journal.startDay),
+      this.journal.entries,
+    );
     if (!journal && today) this.progress.save(this.journal);
     this.refreshPeriod(false);
     const profile = this.profiles.read();

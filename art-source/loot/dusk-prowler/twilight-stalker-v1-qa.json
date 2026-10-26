@@ -1,0 +1,21 @@
+{
+  "id": "twilight-stalker",
+  "type": "outfit",
+  "boss": "dusk-prowler",
+  "generator": "built-in image_gen",
+  "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-5ef0b5f6-30f2-4bd7-a73c-f310477df586.png",
+  "master": "art-source/loot/dusk-prowler/twilight-stalker-v1.png",
+  "runtime": "frontend/public/art/loot/twilight-stalker-v1.webp",
+  "prompt": "art-source/loot/dusk-prowler/twilight-stalker-v1-prompt.txt",
+  "width": 480,
+  "height": 480,
+  "bytes": 62864,
+  "alphaRange": [
+    0,
+    254
+  ],
+  "transparentPercent": 56.89,
+  "centralSlotTransparentPercent": null,
+  "sha256": "d1a8816c1b6724fe2b619a26b12c717ee14c49a259f11333174acedfe9772ac3",
+  "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+}

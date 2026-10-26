@@ -1,7 +1,8 @@
 import { BALANCE } from './catalog';
+import { BOSS_COSMETICS } from './boss-loot';
 import { GameSnapshot } from './models';
 
-export const STARTER_AURA_IDS = ['none', 'sage', 'rose', 'void'] as const;
+export const STARTER_AURA_IDS = ['none', 'sage'] as const;
 
 export interface AuraReward {
   readonly id: string;
@@ -13,6 +14,8 @@ export interface AuraReward {
 
 /** Earned cosmetics; advanced design previews are deliberately absent. */
 export const AURA_REWARDS = [
+  { id: 'rose', label: 'Rosenlicht', unlock: { kind: 'level', level: 5 } },
+  { id: 'void', label: 'Schattenflamme', unlock: { kind: 'level', level: 10 } },
   { id: 'aurora', label: 'Nordlicht', unlock: { kind: 'level', level: 20 } },
   { id: 'starlight', label: 'Sternenkranz', unlock: { kind: 'level', level: 40 } },
   {
@@ -25,7 +28,8 @@ export const AURA_REWARDS = [
 export function isKnownAura(auraId: string): boolean {
   return (
     STARTER_AURA_IDS.some((id) => id === auraId) ||
-    AURA_REWARDS.some((reward) => reward.id === auraId)
+    AURA_REWARDS.some((reward) => reward.id === auraId) ||
+    BOSS_COSMETICS.some((reward) => reward.auraId === auraId)
   );
 }
 
@@ -36,11 +40,11 @@ export function hasAuraAccess(
 ): boolean {
   return (
     STARTER_AURA_IDS.some((id) => id === auraId) ||
-    (AURA_REWARDS.some((reward) => reward.id === auraId) && snapshot.unlockedAuras.includes(auraId))
+    (isKnownAura(auraId) && snapshot.unlockedAuras.includes(auraId))
   );
 }
 
-function totalXpAtLevel(level: number): number {
+export function totalXpAtLevel(level: number): number {
   const completedLevels = level - 1;
   return (
     completedLevels * BALANCE.characterBase +

@@ -1,0 +1,65 @@
+{
+  "id": "emerald-knight",
+  "presentation": "male",
+  "reviewedAt": "2026-10-05T20:52:54.649271+00:00",
+  "generator": "Built-in image_gen; existing generation preserved during this read-only pixel review",
+  "prompt": "body-v2.prompt.txt",
+  "master": "body-master.png",
+  "output": "frontend/public/art/characters/emerald-knight-body-v2.webp",
+  "processing": "Existing generated PNG and current runtime WebP inspected without any new rendering or pixel edits. Runtime dimensions and alpha verified; original encoder parameters were not reconstructed.",
+  "sourceQa": {
+    "width": 1106,
+    "height": 1422,
+    "hasAlpha": true,
+    "bytes": 1747956,
+    "sha256": "e5cd1e3d5d4d46470b38ed507d252d42789963b93ee8a8f4148891666fd4615c",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "transparentPixels": 726434,
+    "partialAlphaPixels": 845258,
+    "solidEdgePixels": 0,
+    "contentBoundsAlphaOver128": {
+      "left": 38,
+      "top": 106,
+      "rightExclusive": 1072,
+      "bottomExclusive": 1341
+    },
+    "clearMarginsAlphaOver128": {
+      "left": 38,
+      "top": 106,
+      "right": 34,
+      "bottom": 81
+    }
+  },
+  "outputQa": {
+    "width": 700,
+    "height": 900,
+    "hasAlpha": true,
+    "bytes": 167388,
+    "sha256": "9aba273648a1d9d25fdedf5515fc68f7116460843921c4728340e2c8bcb68404",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "transparentPixels": 290812,
+    "partialAlphaPixels": 337223,
+    "solidEdgePixels": 0,
+    "contentBoundsAlphaOver128": {
+      "left": 24,
+      "top": 67,
+      "rightExclusive": 678,
+      "bottomExclusive": 849
+    },
+    "clearMarginsAlphaOver128": {
+      "left": 24,
+      "top": 67,
+      "right": 22,
+      "bottom": 51
+    }
+  },
+  "anchors": "body-v2.anchors.json",
+  "visualReview": "Inspected final runtime image individually: complete fully clothed body only, no head/hair/visible skin, gloves cover fingers, distinct outfit material and silhouette, feet/cape in frame. This is an isolated body review, not acceptance of every head/collar combination.",
+  "composedAvatarValidation": "Pending separate root visual/regression acceptance; see docs/VALIDATION.md."
+}

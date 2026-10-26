@@ -1,0 +1,69 @@
+{
+  "id": "sky-ranger",
+  "generatedAt": "2026-10-05",
+  "generator": "Built-in image_gen",
+  "reference": "frontend/public/art/characters/sky-ranger-sheet.png",
+  "prompt": "body-v2.prompt.txt",
+  "master": "body-master.png",
+  "output": "frontend/public/art/characters/sky-ranger-body-v2.webp",
+  "processing": "Unmodified generated PNG master; mechanical proportional fit to588x756 centered on transparent700x900; WebP quality88 alpha100. No masks, retouching or recoloring.",
+  "resize": {
+    "width": 535,
+    "height": 756,
+    "offsetX": 82,
+    "offsetY": 72
+  },
+  "sourceQa": {
+    "width": 1055,
+    "height": 1491,
+    "hasAlpha": true,
+    "bytes": 1337322,
+    "sha256": "cfa7ada7bd81e2f192ee3af6dd179a81d41ffe89e7d20868973c3a1c8508172c",
+    "transparentPixels": 951058,
+    "partialAlphaPixels": 620873,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 33,
+      "top": 37,
+      "right": 1019,
+      "bottom": 1490
+    },
+    "clearMargins": {
+      "left": 33,
+      "top": 37,
+      "right": 35,
+      "bottom": 0
+    }
+  },
+  "outputQa": {
+    "width": 700,
+    "height": 900,
+    "hasAlpha": true,
+    "bytes": 79882,
+    "sha256": "20c8031297ffc0d872cd82fa1829d61f308af679d36055245040b6b00a57a41c",
+    "transparentPixels": 469592,
+    "partialAlphaPixels": 158288,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 102,
+      "top": 107,
+      "right": 598,
+      "bottom": 827
+    },
+    "clearMargins": {
+      "left": 102,
+      "top": 107,
+      "right": 101,
+      "bottom": 72
+    }
+  },
+  "visualReview": "Body only, fully covered limbs, complete shoes, no head/hair/skin, right-facing three-quarter; six distinct outfit identities. Reviewed together at280x360 on dark background. Collar and foot anchors calibrated against final export.",
+  "anchors": "body-v2.anchors.json",
+  "collarCalibration": {
+    "date": "2026-10-05",
+    "authority": "frontend/src/app/domain/character-outfits.ts",
+    "anchors": "body-v2.anchors.json",
+    "previousAnchors": "body-v2.anchors-before-collar-calibration.json",
+    "scope": "Metadata-only alignment with current runtime collar polygon and registration; no image or code changes."
+  }
+}

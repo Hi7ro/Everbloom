@@ -1,0 +1,22 @@
+{
+  "id": "voidbound-regalia",
+  "presentation": "female",
+  "type": "outfit",
+  "boss": "void-devourer",
+  "generator": "built-in image_gen",
+  "reference": "/Users/xv7ro/dev/personal/everbloom/frontend/public/art/loot/voidbound-regalia-v1.webp",
+  "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-31f329d6-fa83-4fa9-a336-2dd1fabfb3d6.png",
+  "master": "art-source/loot/void-devourer/female/voidbound-regalia-female-v1.png",
+  "runtime": "frontend/public/art/loot/voidbound-regalia-female-v1.webp",
+  "prompt": "art-source/loot/void-devourer/female/voidbound-regalia-female-v1-prompt.txt",
+  "width": 480,
+  "height": 480,
+  "bytes": 76780,
+  "alphaRange": [
+    0,
+    254
+  ],
+  "transparentPercent": 56.65,
+  "sha256": "dfdea8cebebcd8b98e647e6831f79ae6351fe6819d60970d40dcae7db3f6b98a",
+  "visualReview": "Inspected generated artwork: distinct female silhouette, matching boss material/palette, single isolated hair/crown or fully clothed outfit with no face/skin/mannequin/background/text. Entire item visible; a few ornament tips have tighter margins than requested. Collection illustration only, not a calibrated avatar rig."
+}

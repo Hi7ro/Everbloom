@@ -1,3 +1,4 @@
+import { AURA_REWARDS } from './aura-rewards';
 import { CharacterPresentation, CharacterProfile } from './models';
 import {
   ILLUSTRATED_CHARACTERS,
@@ -5,14 +6,12 @@ import {
   resolveCharacterIllustration,
 } from './character-illustrations';
 import {
-  AURA_PROGRESSION_PLAN,
   CHARACTER_HAIRSTYLES,
   CHARACTER_OPTIONS,
   CHARACTER_PRESENTATIONS,
   defaultHairstyle,
   migrateLegacyCharacterProfile,
   normalizeCharacterProfile,
-  resolveCharacterArtwork,
 } from './character';
 
 describe('character profile validation', () => {
@@ -44,6 +43,14 @@ describe('character profile validation', () => {
     expect(result.appearance).not.toBe(profile.appearance);
   });
 
+  it('preserves known boss editions but rejects unknown or wrong-slot reward IDs', () => {
+    const appearance = { ...profile.appearance, cosmeticHair: 'moss-crown', cosmeticOutfit: 'cinder-forged' };
+    expect(normalizeCharacterProfile({ ...profile, appearance }).appearance).toMatchObject({ cosmeticHair: 'moss-crown', cosmeticOutfit: 'cinder-forged' });
+    for (const patch of [{ cosmeticHair: 'cinder-forged' }, { cosmeticOutfit: 'moss-crown' }, { cosmeticHair: 'invented' }]) {
+      expect(() => normalizeCharacterProfile({ ...profile, appearance: { ...appearance, ...patch } })).toThrow('Bossbelohnung');
+    }
+  });
+
   it.each(['male', 'female'] as const)(
     'migrates %s custom profiles to illustrated artwork without manufacturing colors or modules',
     (presentation) => {
@@ -60,8 +67,6 @@ describe('character profile validation', () => {
       const result = normalizeCharacterProfile(input);
       expect(result.name).toBe('Élia Moon');
       expect(result.appearance.artwork).toBe('original');
-      expect(resolveCharacterArtwork(result.appearance)).toBe('original');
-      expect(resolveCharacterArtwork({ ...result.appearance, artwork: 'custom' })).toBe('original');
       for (const slot of ['illustratedHair', 'outfitSet', 'eyeColor', 'skinTone', 'hairTint']) {
         expect(result.appearance).not.toHaveProperty(slot);
       }
@@ -336,13 +341,16 @@ describe('character profile validation', () => {
     ).toThrow('gültige Farbe');
   });
 
-  it('accepts earned aura IDs at the profile boundary while keeping the four starter options', () => {
-    expect(AURA_PROGRESSION_PLAN.map((aura) => aura.unlock)).toEqual([
+  it('accepts earned aura IDs at the profile boundary while keeping only the two starter options', () => {
+    expect(CHARACTER_OPTIONS.aura.map(aura => aura.id)).toEqual(['none', 'sage']);
+    expect(AURA_REWARDS.map((aura) => aura.unlock)).toEqual([
+      { kind: 'level', level: 5 },
+      { kind: 'level', level: 10 },
       { kind: 'level', level: 20 },
       { kind: 'level', level: 40 },
       { kind: 'boss-drop', bossId: 'mosswarden', bossName: 'Der Mooswächter' },
     ]);
-    for (const aura of AURA_PROGRESSION_PLAN) {
+    for (const aura of AURA_REWARDS) {
       expect(CHARACTER_OPTIONS.aura.some((available) => String(available.id) === aura.id)).toBe(
         false,
       );

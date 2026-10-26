@@ -1,0 +1,21 @@
+{
+  "id": "void-crown",
+  "type": "hair",
+  "boss": "void-devourer",
+  "generator": "built-in image_gen",
+  "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-d2fab9f9-d090-4268-b5f7-a56a42ed301c.png",
+  "master": "art-source/loot/void-devourer/void-crown-v1.png",
+  "runtime": "frontend/public/art/loot/void-crown-v1.webp",
+  "prompt": "art-source/loot/void-devourer/void-crown-v1-prompt.txt",
+  "width": 480,
+  "height": 480,
+  "bytes": 68064,
+  "alphaRange": [
+    0,
+    254
+  ],
+  "transparentPercent": 58.8,
+  "centralSlotTransparentPercent": null,
+  "sha256": "40a36edca921c7c1e651452071bd403c17e262d0a414710e469ad007828fb030",
+  "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+}

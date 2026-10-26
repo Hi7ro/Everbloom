@@ -261,9 +261,14 @@ describe('replayable local game repository', () => {
     );
     const repo = repository();
     const before = await repo.load();
+    expect(before.activities).toHaveLength(MAX_PROGRESS_ENTRIES);
+    expect(before.activities.every(activity => activity.minutes === 1)).toBe(true);
+    expect(before.activities[0].requestId).toBe(String(MAX_PROGRESS_ENTRIES - 1));
+    expect(before.character.totalXp).toBe(26046);
+    expect(before.boss.hp).toBe(1280);
     const raw = entries.get(GAME_PROGRESS_KEY);
     await expect(repo.record(command('over-limit'))).rejects.toThrow('voll');
     expect(await repo.load()).toEqual(before);
     expect(entries.get(GAME_PROGRESS_KEY)).toBe(raw);
-  }, 30_000);
+  });
 });

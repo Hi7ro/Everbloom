@@ -1,0 +1,21 @@
+{
+  "id": "primordial-wings",
+  "type": "aura",
+  "boss": "primordial-dragon",
+  "generator": "built-in image_gen",
+  "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-8a60ddfc-9855-4013-bb73-645c382d2da4.png",
+  "master": "art-source/loot/primordial-dragon/primordial-wings-v1.png",
+  "runtime": "frontend/public/art/loot/primordial-wings-v1.webp",
+  "prompt": "art-source/loot/primordial-dragon/primordial-wings-v1-prompt.txt",
+  "width": 600,
+  "height": 750,
+  "bytes": 151416,
+  "alphaRange": [
+    0,
+    254
+  ],
+  "transparentPercent": 56.31,
+  "centralSlotTransparentPercent": 97.03,
+  "sha256": "0a61acb1a700d45483ea969f93c9e645b87079e3b08a9b87d1b2b9e07e8b74d6",
+  "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+}

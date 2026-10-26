@@ -1,0 +1,46 @@
+{
+  "id": "sky-ranger",
+  "neckX": 390,
+  "neckY": 162,
+  "footY": 780,
+  "collarFront": [
+    {
+      "x": 369,
+      "y": 146
+    },
+    {
+      "x": 375,
+      "y": 155
+    },
+    {
+      "x": 391,
+      "y": 162
+    },
+    {
+      "x": 411,
+      "y": 167
+    },
+    {
+      "x": 424,
+      "y": 159
+    },
+    {
+      "x": 421,
+      "y": 193
+    },
+    {
+      "x": 391,
+      "y": 195
+    },
+    {
+      "x": 369,
+      "y": 181
+    }
+  ],
+  "width": 700,
+  "height": 900,
+  "coordinateSpace": "Final700x900WebP",
+  "neckAnchor": "Lower/front edge of open neck collar; visually calibrated against25pxgrid.",
+  "footAnchor": "Lowest opaque sole pixel, alpha>128. Ignores tiny alpha noise outside artwork.",
+  "collarFrontNote": "Front collar lip polygon for over-head compositing; verify after attaching chosen face."
+}

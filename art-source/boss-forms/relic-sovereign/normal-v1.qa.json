@@ -1,0 +1,60 @@
+{
+  "bossId": "relic-sovereign",
+  "difficulty": "normal",
+  "generatedAt": "2026-10-05",
+  "generator": "Built-in image_gen",
+  "references": [
+    "frontend/public/art/bosses/astral-sovereign-v2.webp",
+    "frontend/public/art/bosses/cloud-sovereign-v1.webp"
+  ],
+  "prompt": "normal-v1.prompt.txt",
+  "master": "normal-v1.master.png",
+  "output": "frontend/public/art/bosses/relic-sovereign-normal-v1.webp",
+  "processing": "Unmodified generated PNG copied as master; mechanical resize to774x774, padded63px transparent on each side; WebP quality85 alphaQuality100.",
+  "masterQa": {
+    "width": 1254,
+    "height": 1254,
+    "hasAlpha": true,
+    "format": "png",
+    "bytes": 2310865,
+    "sha256": "c0cbf07f6f501b2bf52a122aab3d8422bc961dfa01eba7e44a3442acf161978e",
+    "transparentPixels": 713247,
+    "partialAlphaPixels": 858757,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 0,
+      "top": 0,
+      "right": 1238,
+      "bottom": 1253
+    },
+    "clearMargins": {
+      "left": 0,
+      "top": 0,
+      "right": 15,
+      "bottom": 0
+    }
+  },
+  "outputQa": {
+    "width": 900,
+    "height": 900,
+    "hasAlpha": true,
+    "format": "webp",
+    "bytes": 237712,
+    "sha256": "8ffdafa1589e4fe0f9718aa08f3bcf69cec9f36dd37b6520c61736457499052c",
+    "transparentPixels": 484341,
+    "partialAlphaPixels": 323988,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 63,
+      "top": 63,
+      "right": 827,
+      "bottom": 836
+    },
+    "clearMargins": {
+      "left": 63,
+      "top": 63,
+      "right": 72,
+      "bottom": 63
+    }
+  }
+}

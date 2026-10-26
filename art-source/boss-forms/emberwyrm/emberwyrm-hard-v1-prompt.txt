@@ -1,0 +1,10 @@
+Built-in image_gen; 2026-10-05.
+Reference: /Users/xv7ro/dev/personal/everbloom/frontend/public/art/bosses/emberwyrm-v2.webp
+
+Use case: stylized-concept.
+Asset type: transparent full-body boss sprite for an original mobile anime-fantasy RPG.
+Input image 1 is a reference for this exact boss identity, painterly rendering and material quality. Create a NEW genuinely evolved HARD difficulty form; do not merely recolor the image.
+Subject: HARD form, the Obsidian Bastion: preserve the same upright bipedal dragon with long red draconic muzzle facing left, obsidian scales, molten fissures, ruby chest jewel, two clawed arms, two feet, two wings and curling armored tail. Visibly heavier volcanic plating: fortress-like stacked black-and-bronze shoulder slabs, serrated forearm armor, reinforced horns, angular amber crystals inset in armor. Wings become heavier with armored lava-red spars and deep dark crimson membranes. Thick clawed stance, restrained orange magma cracks. Distinct upgraded armor silhouette, intimidating and premium.
+Style: exceptionally polished dimensional hand-painted anime high fantasy, refined edges, rich textured bark/stone or dragon scale/metal, detailed yet legible on a phone, original IP. Match the reference's sophisticated game illustration aesthetic, not vector, not cartoon outline, not photorealistic.
+Composition: one single creature, centered full body in a square 1024 composition; head and torso in three-quarter view facing screen LEFT, ready to fight a hero to its left. All horns, crown, wings, hands, tail and feet visible and fully inside the canvas with at least 7% completely clear transparent margin. Strong readable silhouette, feet at common baseline, no cropped extremities.
+Background: genuine alpha transparency everywhere outside the creature and a few attached glow accents. No background color, scenery, platform, ground, floor shadow, checkerboard pattern, border, words, numbers, labels, watermark or logo. No extra characters. Preserve the creature as a usable isolated game sprite.

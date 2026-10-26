@@ -1,0 +1,46 @@
+{
+  "id": "moonblade",
+  "neckX": 383,
+  "neckY": 181,
+  "footY": 793,
+  "collarFront": [
+    {
+      "x": 338,
+      "y": 164
+    },
+    {
+      "x": 353,
+      "y": 172
+    },
+    {
+      "x": 381,
+      "y": 181
+    },
+    {
+      "x": 411,
+      "y": 185
+    },
+    {
+      "x": 425,
+      "y": 179
+    },
+    {
+      "x": 421,
+      "y": 215
+    },
+    {
+      "x": 381,
+      "y": 219
+    },
+    {
+      "x": 338,
+      "y": 195
+    }
+  ],
+  "width": 700,
+  "height": 900,
+  "coordinateSpace": "Final700x900WebP",
+  "neckAnchor": "Lower/front edge of open neck collar; visually calibrated against25pxgrid.",
+  "footAnchor": "Lowest opaque sole pixel, alpha>128. Ignores tiny alpha noise outside artwork.",
+  "collarFrontNote": "Front collar lip polygon for over-head compositing; verify after attaching chosen face."
+}

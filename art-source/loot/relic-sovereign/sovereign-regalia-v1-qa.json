@@ -1,0 +1,21 @@
+{
+  "id": "sovereign-regalia",
+  "type": "outfit",
+  "boss": "relic-sovereign",
+  "generator": "built-in image_gen",
+  "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-92356d16-f723-4375-b272-9101769055be.png",
+  "master": "art-source/loot/relic-sovereign/sovereign-regalia-v1.png",
+  "runtime": "frontend/public/art/loot/sovereign-regalia-v1.webp",
+  "prompt": "art-source/loot/relic-sovereign/sovereign-regalia-v1-prompt.txt",
+  "width": 480,
+  "height": 480,
+  "bytes": 67690,
+  "alphaRange": [
+    0,
+    254
+  ],
+  "transparentPercent": 55.26,
+  "centralSlotTransparentPercent": null,
+  "sha256": "595a7ba7f9f91eda91769234b1f7081ff9504a27e172819ae53ebe0036a2dcbe",
+  "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+}

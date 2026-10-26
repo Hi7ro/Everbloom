@@ -1,0 +1,46 @@
+{
+  "id": "dawn-priestess",
+  "neckX": 361,
+  "neckY": 140,
+  "footY": 792,
+  "collarFront": [
+    {
+      "x": 315,
+      "y": 123
+    },
+    {
+      "x": 332,
+      "y": 132
+    },
+    {
+      "x": 359,
+      "y": 139
+    },
+    {
+      "x": 384,
+      "y": 144
+    },
+    {
+      "x": 399,
+      "y": 137
+    },
+    {
+      "x": 397,
+      "y": 176
+    },
+    {
+      "x": 358,
+      "y": 176
+    },
+    {
+      "x": 317,
+      "y": 152
+    }
+  ],
+  "width": 700,
+  "height": 900,
+  "coordinateSpace": "Final700x900WebP",
+  "neckAnchor": "Lower/front edge of open neck collar; visually calibrated against25pxgrid.",
+  "footAnchor": "Lowest opaque sole pixel, alpha>128. Ignores tiny alpha noise outside artwork.",
+  "collarFrontNote": "Front collar lip polygon for over-head compositing; verify after attaching chosen face."
+}

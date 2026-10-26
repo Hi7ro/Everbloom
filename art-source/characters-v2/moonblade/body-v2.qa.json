@@ -1,0 +1,69 @@
+{
+  "id": "moonblade",
+  "generatedAt": "2026-10-05",
+  "generator": "Built-in image_gen",
+  "reference": "frontend/public/art/characters/moonblade-sheet.png",
+  "prompt": "body-v2.prompt.txt",
+  "master": "body-master.png",
+  "output": "frontend/public/art/characters/moonblade-body-v2.webp",
+  "processing": "Unmodified generated PNG master; mechanical proportional fit to588x756 centered on transparent700x900; WebP quality88 alpha100. No masks, retouching or recoloring.",
+  "resize": {
+    "width": 567,
+    "height": 756,
+    "offsetX": 66,
+    "offsetY": 72
+  },
+  "sourceQa": {
+    "width": 1086,
+    "height": 1448,
+    "hasAlpha": true,
+    "bytes": 1368972,
+    "sha256": "3a76c17e9db10af25a2f8623db5cc410c50a93a7ded8549a8f7bd47bc9f92afa",
+    "transparentPixels": 987803,
+    "partialAlphaPixels": 583566,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 50,
+      "top": 37,
+      "right": 988,
+      "bottom": 1385
+    },
+    "clearMargins": {
+      "left": 50,
+      "top": 37,
+      "right": 97,
+      "bottom": 62
+    }
+  },
+  "outputQa": {
+    "width": 700,
+    "height": 900,
+    "hasAlpha": true,
+    "bytes": 88256,
+    "sha256": "d6551f3f990665c07badb6de317ec69e0d5dc8f2b249fc10960a9b61b9e570ae",
+    "transparentPixels": 469794,
+    "partialAlphaPixels": 158272,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 92,
+      "top": 91,
+      "right": 582,
+      "bottom": 796
+    },
+    "clearMargins": {
+      "left": 92,
+      "top": 91,
+      "right": 117,
+      "bottom": 103
+    }
+  },
+  "visualReview": "Body only, fully covered limbs, complete shoes, no head/hair/skin, right-facing three-quarter; six distinct outfit identities. Reviewed together at280x360 on dark background. Collar and foot anchors calibrated against final export.",
+  "anchors": "body-v2.anchors.json",
+  "collarCalibration": {
+    "date": "2026-10-05",
+    "authority": "frontend/src/app/domain/character-outfits.ts",
+    "anchors": "body-v2.anchors.json",
+    "previousAnchors": "body-v2.anchors-before-collar-calibration.json",
+    "scope": "Metadata-only alignment with current runtime collar polygon and registration; no image or code changes."
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "id": "starweaver",
+  "generatedAt": "2026-10-05",
+  "generator": "Built-in image_gen",
+  "reference": "frontend/public/art/characters/starweaver-sheet.png",
+  "prompt": "body-v2.prompt.txt",
+  "master": "body-master.png",
+  "output": "frontend/public/art/characters/starweaver-body-v2.webp",
+  "processing": "Unmodified generated PNG master; mechanical proportional fit to588x756 centered on transparent700x900; WebP quality88 alpha100. No masks, retouching or recoloring.",
+  "resize": {
+    "width": 588,
+    "height": 749,
+    "offsetX": 56,
+    "offsetY": 75
+  },
+  "sourceQa": {
+    "width": 1111,
+    "height": 1416,
+    "hasAlpha": true,
+    "bytes": 1355715,
+    "sha256": "b3aaf35e945e0053e5bfc2644604674ee55de9a99418997251036e60c4af8c60",
+    "transparentPixels": 970953,
+    "partialAlphaPixels": 601508,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 0,
+      "top": 37,
+      "right": 1078,
+      "bottom": 1335
+    },
+    "clearMargins": {
+      "left": 0,
+      "top": 37,
+      "right": 32,
+      "bottom": 80
+    }
+  },
+  "outputQa": {
+    "width": 700,
+    "height": 900,
+    "hasAlpha": true,
+    "bytes": 84598,
+    "sha256": "1e9c5ec5f8ac40d4006ab26f23f51f56ce0c06a59885b430d4d37dd0708e53d9",
+    "transparentPixels": 460748,
+    "partialAlphaPixels": 167604,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 56,
+      "top": 94,
+      "right": 621,
+      "bottom": 781
+    },
+    "clearMargins": {
+      "left": 56,
+      "top": 94,
+      "right": 78,
+      "bottom": 118
+    }
+  },
+  "visualReview": "Body only, fully covered limbs, complete shoes, no head/hair/skin, right-facing three-quarter; six distinct outfit identities. Reviewed together at280x360 on dark background. Collar and foot anchors calibrated against final export.",
+  "anchors": "body-v2.anchors.json",
+  "collarCalibration": {
+    "date": "2026-10-05",
+    "authority": "frontend/src/app/domain/character-outfits.ts",
+    "anchors": "body-v2.anchors.json",
+    "previousAnchors": "body-v2.anchors-before-collar-calibration.json",
+    "scope": "Metadata-only alignment with current runtime collar polygon and registration; no image or code changes."
+  }
+}

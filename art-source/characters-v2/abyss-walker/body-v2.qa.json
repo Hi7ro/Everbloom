@@ -1,0 +1,65 @@
+{
+  "id": "abyss-walker",
+  "presentation": "male",
+  "reviewedAt": "2026-10-05T20:52:54.782219+00:00",
+  "generator": "Built-in image_gen; existing generation preserved during this read-only pixel review",
+  "prompt": "body-v2.prompt.txt",
+  "master": "body-master.png",
+  "output": "frontend/public/art/characters/abyss-walker-body-v2.webp",
+  "processing": "Existing generated PNG and current runtime WebP inspected without any new rendering or pixel edits. Runtime dimensions and alpha verified; original encoder parameters were not reconstructed.",
+  "sourceQa": {
+    "width": 1145,
+    "height": 1374,
+    "hasAlpha": true,
+    "bytes": 1499969,
+    "sha256": "339d7d3f1d0e6f51ca4510c36dc837d39aa159b3561b54437a7096dd39943e72",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "transparentPixels": 851453,
+    "partialAlphaPixels": 721071,
+    "solidEdgePixels": 0,
+    "contentBoundsAlphaOver128": {
+      "left": 138,
+      "top": 56,
+      "rightExclusive": 1046,
+      "bottomExclusive": 1336
+    },
+    "clearMarginsAlphaOver128": {
+      "left": 138,
+      "top": 56,
+      "right": 99,
+      "bottom": 38
+    }
+  },
+  "outputQa": {
+    "width": 750,
+    "height": 900,
+    "hasAlpha": true,
+    "bytes": 144110,
+    "sha256": "2e3f3d24e5e9cedbebc8c1d4b2f27b3d5f5253e1031c5ab164a207fbb2732b9e",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "transparentPixels": 365427,
+    "partialAlphaPixels": 307985,
+    "solidEdgePixels": 0,
+    "contentBoundsAlphaOver128": {
+      "left": 90,
+      "top": 37,
+      "rightExclusive": 685,
+      "bottomExclusive": 875
+    },
+    "clearMarginsAlphaOver128": {
+      "left": 90,
+      "top": 37,
+      "right": 65,
+      "bottom": 25
+    }
+  },
+  "anchors": "body-v2.anchors.json",
+  "visualReview": "Inspected final runtime image individually: complete fully clothed body only, no head/hair/visible skin, gloves cover fingers, distinct outfit material and silhouette, feet/cape in frame. This is an isolated body review, not acceptance of every head/collar combination.",
+  "composedAvatarValidation": "Pending separate root visual/regression acceptance; see docs/VALIDATION.md."
+}

@@ -1,0 +1,38 @@
+{
+  "width": 700,
+  "height": 900,
+  "neckX": 405,
+  "neckY": 106,
+  "footY": 849,
+  "collarFront": [
+    {
+      "x": 343,
+      "y": 80
+    },
+    {
+      "x": 372,
+      "y": 97
+    },
+    {
+      "x": 405,
+      "y": 106
+    },
+    {
+      "x": 452,
+      "y": 111
+    },
+    {
+      "x": 465,
+      "y": 190
+    },
+    {
+      "x": 337,
+      "y": 190
+    }
+  ],
+  "id": "emerald-knight",
+  "coordinateSpace": "Current runtime WebP source pixels",
+  "authority": "frontend/src/app/domain/character-outfits.ts",
+  "neckAnchor": "Front collar rim where it meets selected head jaw; renderer handles nine portrait-unit inset when source has painted neck.",
+  "note": "Snapshot of current runtime registration. Composed avatar visual validation is separate."
+}

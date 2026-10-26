@@ -83,7 +83,7 @@ import { DailyCareStore } from '../state/daily-care.store';
         </form>
       }
       <p class="care-status" role="status" aria-live="polite">{{ care.message() }}</p>
-      @if (!care.persisted() && care.message()) {
+      @if (!care.accountMode && !care.persisted() && care.message()) {
         <p class="storage-note">
           Nur für diese Sitzung: Auf diesem Gerät konnte deine Auswahl nicht gespeichert werden.
         </p>

@@ -24,6 +24,8 @@ const workout = { requestId: 'rewarded-activity', skillId: 'calisthenics', minut
 
 describe('earned aura rewards', () => {
   it.each([
+    ['rose', 6000, 5],
+    ['void', 18000, 10],
     ['aurora', level20Xp, 20],
     ['starlight', level40Xp, 40],
   ] as const)(
@@ -153,9 +155,9 @@ describe('earned aura rewards', () => {
 });
 
 describe('aura ownership boundaries', () => {
-  it('always allows the four starter auras without recording them as earned loot', () => {
+  it('always allows only the two starter auras without recording them as earned loot', () => {
     const snapshot = createMockSnapshot();
-    expect(STARTER_AURA_IDS).toEqual(['none', 'sage', 'rose', 'void']);
+    expect(STARTER_AURA_IDS).toEqual(['none', 'sage']);
     for (const auraId of STARTER_AURA_IDS) expect(hasAuraAccess(snapshot, auraId)).toBe(true);
     expect(snapshot.unlockedAuras).toEqual([]);
   });
@@ -172,7 +174,7 @@ describe('aura ownership boundaries', () => {
     expect(hasAuraAccess(snapshot, 'starlight')).toBe(false);
   });
 
-  it.each(['stars', 'guardian', 'demonic', 'unreleased', ''])(
+  it.each(['unreleased', 'invented', ''])(
     'never treats preview/unknown ID %s as owned loot',
     (auraId) => {
       const snapshot = createMockSnapshot();

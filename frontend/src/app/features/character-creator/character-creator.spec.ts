@@ -1,7 +1,6 @@
 import { computed, signal } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { TestBed, DeferBlockBehavior } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { CharacterAura } from '../../shared/character-aura';
 import { CharacterPortrait } from '../../shared/character-portrait';
 import { BROWSER_STORAGE } from '../../data/browser-storage';
 import { ActivatedRoute, convertToParamMap, provideRouter, Router } from '@angular/router';
@@ -37,6 +36,7 @@ describe('character creator flow', () => {
     load.mockClear();
     await TestBed.configureTestingModule({
       imports: [CharacterCreator],
+      deferBlockBehavior: DeferBlockBehavior.Manual,
       providers: [
         provideRouter([]),
         { provide: BROWSER_STORAGE, useValue: null },
@@ -97,7 +97,29 @@ describe('character creator flow', () => {
     expect(updateCharacter).not.toHaveBeenCalled();
   });
 
+  it('equips only owned boss cosmetics and allows returning to regular styles', async () => {
+    const fixture = TestBed.createComponent(CharacterCreator);
+    await fixture.whenStable();
+    const component = fixture.componentInstance;
+    const before = structuredClone(component.draft());
+    component.chooseBossCosmetic('moss-crown');
+    expect(component.draft()).toEqual(before);
+    snapshot.update(value => ({ ...value!, bossProgress: { clearedEncounterIds: ['mosswarden:normal', 'mosswarden:hard', 'mosswarden:epic'], unlockedCosmetics: ['moss-crown', 'verdant-warden', 'eternal-blossom'] }, unlockedAuras: ['blossom'] }));
+    component.chooseBossCosmetic('moss-crown');
+    component.chooseBossCosmetic('verdant-warden');
+    component.chooseBossCosmetic('eternal-blossom');
+    expect(component.draft()?.appearance).toMatchObject({ cosmeticHair: 'moss-crown', cosmeticOutfit: 'verdant-warden', aura: 'blossom' });
+    await component.save();
+    expect(updateCharacter.mock.calls[0][0].appearance).toMatchObject({ cosmeticHair: 'moss-crown', cosmeticOutfit: 'verdant-warden' });
+    component.chooseModule('illustratedHair', 'urban-ranger');
+    component.chooseModule('outfitSet', 'emerald-knight');
+    expect(component.draft()?.appearance.cosmeticHair).toBeUndefined();
+    expect(component.draft()?.appearance.cosmeticOutfit).toBeUndefined();
+    expect(snapshot()?.bossProgress?.unlockedCosmetics).toHaveLength(3);
+  });
+
   it('previews independent module and color edits, saves a normalized profile and returns to the dashboard', async () => {
+    snapshot.update(value => ({ ...value!, unlockedAuras: ['rose'] }));
     const fixture = TestBed.createComponent(CharacterCreator);
     await fixture.whenStable();
     const root = fixture.nativeElement as HTMLElement;
@@ -114,10 +136,7 @@ describe('character creator flow', () => {
     )!;
     hair.click();
     root.querySelector<HTMLButtonElement>('button[aria-label="Augenfarbe: Blau"]')!.click();
-    const aura = Array.from(root.querySelectorAll('.aura-choices label')).find((label) =>
-      label.textContent?.includes('Blütenzauber'),
-    )!;
-    aura.querySelector<HTMLInputElement>('input')!.click();
+    root.querySelector<HTMLButtonElement>('[aria-label="Rosenlicht auswählen"]')!.click();
     await fixture.whenStable();
     const preview = fixture.debugElement.query(By.css('.preview app-character-portrait'))
       .componentInstance as CharacterPortrait;
@@ -179,6 +198,42 @@ describe('character creator flow', () => {
     await fixture.componentInstance.save();
     expect(updateCharacter).toHaveBeenCalledTimes(2);
     expect(TestBed.inject(Router).navigateByUrl).toHaveBeenCalledWith('/dashboard');
+  });
+
+  it('adopts a shared initial load that finishes after the creator opens', async () => {
+    snapshot.set(null);
+    busy.set(true);
+    const fixture = TestBed.createComponent(CharacterCreator);
+    await fixture.whenStable();
+    expect(fixture.componentInstance.draft()).toBeNull();
+    expect(fixture.nativeElement.textContent).toContain('Dein Charakter wird geladen');
+    expect(load).not.toHaveBeenCalled();
+
+    const loaded = createMockSnapshot();
+    loaded.character.name = 'Mira';
+    snapshot.set(loaded);
+    busy.set(false);
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance.draft()?.name).toBe('Mira');
+    expect(fixture.nativeElement.querySelector('form')).not.toBeNull();
+    expect(updateCharacter).not.toHaveBeenCalled();
+  });
+
+  it('keeps unsaved edits when the shared snapshot refreshes after initialization', async () => {
+    const fixture = TestBed.createComponent(CharacterCreator);
+    await fixture.whenStable();
+    fixture.componentInstance.setName('Mein Entwurf');
+    fixture.componentInstance.chooseModule('illustratedHair', 'forest-scout');
+    const draft = structuredClone(fixture.componentInstance.draft());
+    const refreshed = createMockSnapshot();
+    refreshed.character.name = 'Anderer geladener Name';
+    refreshed.character.totalXp += 100;
+    snapshot.set(refreshed);
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance.draft()).toEqual(draft);
+    expect(updateCharacter).not.toHaveBeenCalled();
   });
 
   it('loads a missing profile and cancels without saving draft changes', async () => {
@@ -255,6 +310,7 @@ describe('character creator flow', () => {
   });
 
   it('choosing a preset resets only illustrated modules and colors, including a repeated selection', async () => {
+    snapshot.update(value => ({ ...value!, unlockedAuras: ['void'] }));
     const fixture = TestBed.createComponent(CharacterCreator);
     await fixture.whenStable();
     const component = fixture.componentInstance;
@@ -362,100 +418,37 @@ describe('character creator flow', () => {
     expect(snapshot()).toEqual(before);
   });
 
-  it('previews future aura effects and colors without saving them or changing progression', async () => {
+  it('offers only starter auras freely and never bypasses ownership through direct selection', async () => {
     const fixture = TestBed.createComponent(CharacterCreator);
     await fixture.whenStable();
     const component = fixture.componentInstance;
-    component.chooseAura('rose');
-    const before = structuredClone(snapshot());
-    const profile = structuredClone(component.draft());
     const root = fixture.nativeElement as HTMLElement;
-    const details = root.querySelector<HTMLDetailsElement>('.aura-lab details')!;
-    details.open = true;
-    await fixture.whenStable();
-    const buttons = Array.from(
-      root.querySelectorAll<HTMLButtonElement>('.advanced-aura-choices button'),
-    );
-    expect(buttons).toHaveLength(10);
-    buttons.find((button) => button.textContent?.includes('Geistwächter'))!.click();
-    await fixture.whenStable();
-    root.querySelector<HTMLButtonElement>('[aria-label="Aurafarbe: Gold"]')!.click();
-    await fixture.whenStable();
-    const aura = fixture.debugElement.query(By.css('.aura-tryout'))
-      .componentInstance as CharacterAura;
-    const portrait = fixture.debugElement.query(By.css('.preview app-character-portrait'))
-      .componentInstance as CharacterPortrait;
-    expect(aura.aura()).toBe('guardian');
-    expect(aura.color()).toBe('#f1d58e');
-    expect(portrait.appearance()).toEqual({ ...profile!.appearance, aura: 'none' });
-    expect(component.draft()).toEqual(profile);
-    expect(snapshot()).toEqual(before);
-    expect(root.querySelector('#aura-preview-note')?.textContent).toContain(
-      'Wird nicht gespeichert',
-    );
-    await component.save();
-    expect(updateCharacter).toHaveBeenCalledExactlyOnceWith(profile);
-    expect(snapshot()).toEqual(before);
+    expect(root.querySelectorAll('.aura-choices input')).toHaveLength(2);
+    expect(root.querySelector('.aura-choices')!.textContent).toContain('Waldlicht');
+    expect(root.querySelector('.aura-choices')!.textContent).not.toContain('Rosenlicht');
+    expect(root.querySelector('.aura-lab, .aura-tryout, [aria-label^="Aurafarbe:"]')).toBeNull();
+    const before = structuredClone(component.draft());
+    for (const id of ['rose', 'void', 'guardian', 'unknown']) component.chooseAura(id);
+    expect(component.draft()).toEqual(before);
+    expect(root.querySelector<HTMLButtonElement>('[aria-label="Rosenlicht auswählen"]')!.disabled).toBe(true);
+    expect(root.textContent).toContain('Erreiche Level 5');
+    expect(root.textContent).toContain('Erreiche Level 10');
   });
 
-  it('ends the tryout when choosing a real aura, preset, presentation or closing its controls', async () => {
+  it('equips earned aura IDs without adding color overrides or changing progression', async () => {
+    snapshot.update(value => ({ ...value!, unlockedAuras: ['rose'] }));
+    const before = structuredClone(snapshot());
     const fixture = TestBed.createComponent(CharacterCreator);
     await fixture.whenStable();
-    const component = fixture.componentInstance;
-    const details = fixture.nativeElement.querySelector('.aura-lab details') as HTMLDetailsElement;
-    details.open = true;
+    const root = fixture.nativeElement as HTMLElement;
+    root.querySelector<HTMLButtonElement>('[aria-label="Rosenlicht auswählen"]')!.click();
     await fixture.whenStable();
-    const endActions = [
-      () => component.chooseAura('sage'),
-      () => component.chooseIllustration('urban-ranger'),
-      () => component.setPresentation('female'),
-      () => component.endAuraPreview(),
-      () => {
-        details.open = false;
-        details.dispatchEvent(new Event('toggle'));
-      },
-    ];
-    for (const end of endActions) {
-      component.choosePreviewAura('demonic');
-      component.previewFierce.set(true);
-      expect(component.previewAppearance()?.aura).toBe('none');
-      end();
-      expect(component.previewAura()).toBeNull();
-      expect(component.previewFierce()).toBe(false);
-      expect(component.previewAppearance()).toBe(component.draft()!.appearance);
-    }
-    await fixture.whenStable();
-    expect(fixture.nativeElement.querySelector('.aura-tryout')).toBeNull();
-  });
-
-  it('limits preview inputs and passes the motion setting and optional shadow eyes to the effect', async () => {
-    const fixture = TestBed.createComponent(CharacterCreator);
-    await fixture.whenStable();
-    const component = fixture.componentInstance;
-    component.choosePreviewAura('unreleased');
-    expect(component.previewAura()).toBeNull();
-    const details = fixture.nativeElement.querySelector('.aura-lab details') as HTMLDetailsElement;
-    details.open = true;
-    await fixture.whenStable();
-    component.choosePreviewAura('demonic');
-    const defaultColor = component.previewColor();
-    component.choosePreviewColor('url(https://example.org)');
-    expect(component.previewColor()).toBe(defaultColor);
-    await fixture.whenStable();
-    fixture.nativeElement.querySelector('input[name="previewFierce"]').click();
-    if (component.feedback.motionEnabled()) component.feedback.toggleMotion();
-    await fixture.whenStable();
-    const aura = fixture.debugElement.query(By.css('.aura-tryout'))
-      .componentInstance as CharacterAura;
-    expect(aura.fierce()).toBe(true);
-    expect(aura.animated()).toBe(false);
-    const profile = structuredClone(component.draft());
-    busy.set(true);
-    component.choosePreviewAura('angel');
-    component.choosePreviewColor('#f1d58e');
-    expect(component.previewAura()).toBe('demonic');
-    expect(component.previewColor()).toBe(defaultColor);
-    expect(component.draft()).toEqual(profile);
+    const portrait = fixture.debugElement.query(By.css('.preview app-character-portrait')).componentInstance as CharacterPortrait;
+    expect(portrait.appearance().aura).toBe('rose');
+    expect(portrait.appearance()).not.toHaveProperty('auraColor');
+    await fixture.componentInstance.save();
+    expect(updateCharacter).toHaveBeenCalledWith(expect.objectContaining({ appearance: expect.objectContaining({ aura: 'rose' }) }));
+    expect(snapshot()).toEqual(before);
   });
 
   it('returns a first successful profile to onboarding before preferences are configured', async () => {
@@ -572,4 +565,83 @@ describe('character creator flow', () => {
     expect(TestBed.inject(Router).navigateByUrl).toHaveBeenCalledTimes(2);
     expect(TestBed.inject(Router).navigateByUrl).toHaveBeenLastCalledWith('/dashboard');
   });
+  it('restores only the chosen template style while preserving the draft name, earned aura and complete game progress', async () => {
+    snapshot.update(value => ({ ...value!, unlockedAuras: ['rose'],
+      quests: value!.quests.map((quest, index) => index === 0 ? { ...quest, progressMinutes: 12 } : quest),
+      bossProgress: { clearedEncounterIds: ['mosswarden:normal', 'mosswarden:hard'], unlockedCosmetics: ['moss-crown', 'verdant-warden'] } }));
+    const saved = structuredClone(snapshot());
+    const fixture = TestBed.createComponent(CharacterCreator);
+    await fixture.whenStable();
+    const component = fixture.componentInstance;
+    const root = fixture.nativeElement as HTMLElement;
+    component.chooseIllustration('urban-ranger');
+    component.setName('Mika Fern');
+    component.chooseAura('rose');
+    component.chooseModule('illustratedHair', 'forest-scout');
+    component.chooseModule('outfitSet', 'abyss-walker');
+    component.chooseColor('eyeColor', '#5e92c7');
+    component.chooseColor('skinTone', '#68442f');
+    component.chooseColor('hairTint', '#9478bc');
+    component.chooseBossCosmetic('moss-crown');
+    component.chooseBossCosmetic('verdant-warden');
+    await fixture.whenStable();
+    const reset = root.querySelector<HTMLButtonElement>('.reset-look')!;
+    expect(reset.disabled).toBe(false);
+    const customized = structuredClone(component.draft());
+    busy.set(true); await fixture.whenStable();
+    expect(reset.disabled).toBe(true);
+    component.resetLook(); expect(component.draft()).toEqual(customized);
+    busy.set(false); await fixture.whenStable();
+    reset.click(); await fixture.whenStable();
+    expect(component.draft()).toMatchObject({ name: 'Mika Fern', appearance: {
+      presentation: 'male', artwork: 'original', illustration: 'urban-ranger', aura: 'rose',
+    } });
+    expect(component.selectedHair()).toBe('urban-ranger');
+    expect(component.selectedOutfit()).toBe('urban-ranger');
+    for (const key of ['illustratedHair', 'outfitSet', 'eyeColor', 'skinTone', 'hairTint', 'cosmeticHair', 'cosmeticOutfit'])
+      expect(component.draft()!.appearance).not.toHaveProperty(key);
+    expect(reset.disabled).toBe(true);
+    expect(snapshot()).toEqual(saved);
+    expect(updateCharacter).not.toHaveBeenCalled();
+    expect(TestBed.inject(Router).navigateByUrl).not.toHaveBeenCalled();
+    await component.save();
+    expect(updateCharacter).toHaveBeenCalledExactlyOnceWith(component.draft());
+    expect(snapshot()).toEqual(saved);
+  });
+
+  it('enlarges and collapses the same unsaved character preview without saving or altering progression', async () => {
+    snapshot.update(value => ({ ...value!, unlockedAuras: ['rose'] }));
+    const saved = structuredClone(snapshot());
+    const fixture = TestBed.createComponent(CharacterCreator);
+    await fixture.whenStable();
+    const component = fixture.componentInstance;
+    component.setName('Liora Fern');
+    component.setPresentation('female');
+    component.chooseModule('outfitSet', 'dawn-priestess');
+    component.chooseAura('rose');
+    await fixture.whenStable();
+    const draft = structuredClone(component.draft());
+    const root = fixture.nativeElement as HTMLElement;
+    const toggle = root.querySelector<HTMLButtonElement>('.preview-size')!;
+    const preview = root.querySelector('.preview')!;
+    const portrait = fixture.debugElement.query(By.css('.preview app-character-portrait')).componentInstance as CharacterPortrait;
+    expect(toggle.getAttribute('aria-controls')).toBe('character-preview-art');
+    expect(root.querySelector('#character-preview-art')).not.toBeNull();
+    expect(toggle.getAttribute('aria-expanded')).toBe('false');
+    expect(preview.classList.contains('enlarged')).toBe(false);
+    for (const expanded of [true, false]) {
+      toggle.click(); await fixture.whenStable();
+      expect(toggle.getAttribute('aria-expanded')).toBe(String(expanded));
+      expect(preview.classList.contains('enlarged')).toBe(expanded);
+      expect(toggle.textContent).toBe(expanded ? 'Kompakte Vorschau' : 'Figur vergrößern');
+      expect(fixture.debugElement.query(By.css('.preview app-character-portrait')).componentInstance).toBe(portrait);
+      expect(portrait.appearance()).toEqual(draft!.appearance);
+      expect(component.draft()).toEqual(draft);
+      expect(snapshot()).toEqual(saved);
+    }
+    expect(updateCharacter).not.toHaveBeenCalled();
+    expect(load).not.toHaveBeenCalled();
+    expect(TestBed.inject(Router).navigateByUrl).not.toHaveBeenCalled();
+  });
+
 });

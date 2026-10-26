@@ -1,7 +1,15 @@
-# Explicit loopback-only development profile. Production cookies stay Secure.
+# Never use this profile on a public bind address. AccountMail also checks this at startup.
 server:
   address: 127.0.0.1
   servlet:
     session:
       cookie:
         secure: false
+spring:
+  mail:
+    test-connection: false
+app:
+  auth:
+    public-base-url: http://127.0.0.1:4201
+  mail:
+    mode: outbox

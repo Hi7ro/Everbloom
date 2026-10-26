@@ -1,0 +1,38 @@
+{
+  "width": 600,
+  "height": 900,
+  "neckX": 300,
+  "neckY": 103,
+  "footY": 843,
+  "collarFront": [
+    {
+      "x": 246,
+      "y": 84
+    },
+    {
+      "x": 272,
+      "y": 98
+    },
+    {
+      "x": 300,
+      "y": 103
+    },
+    {
+      "x": 344,
+      "y": 100
+    },
+    {
+      "x": 365,
+      "y": 178
+    },
+    {
+      "x": 238,
+      "y": 178
+    }
+  ],
+  "id": "ember-striker",
+  "coordinateSpace": "Current runtime WebP source pixels",
+  "authority": "frontend/src/app/domain/character-outfits.ts",
+  "neckAnchor": "Front collar rim where it meets selected head jaw; renderer handles nine portrait-unit inset when source has painted neck.",
+  "note": "Snapshot of current runtime registration. Composed avatar visual validation is separate."
+}

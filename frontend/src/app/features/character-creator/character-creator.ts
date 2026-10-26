@@ -2,10 +2,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   ElementRef,
   inject,
   OnInit,
   signal,
+  untracked,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -22,14 +24,14 @@ import {
   IllustratedColor,
   resolveCharacterIllustration,
 } from '../../domain/character-illustrations';
-import { ADVANCED_AURA_DESIGNS, AURA_PREVIEW_COLORS } from '../../domain/aura-designs';
 import { AuraCollection } from '../../shared/aura-collection';
 import { ProgressStorageNote } from '../../shared/progress-storage-note';
-import { CharacterAura } from '../../shared/character-aura';
 import { CharacterPortrait } from '../../shared/character-portrait';
 import { GameStore } from '../../state/game.store';
 import { JourneyStore } from '../../state/journey.store';
 import { ProgressFeedback } from '../../state/progress-feedback';
+import { BOSS_COSMETICS, bossCosmeticForAppearance, hasBossCosmetic, resolveBossCosmetic } from '../../domain/boss-loot';
+import { BossLootCollection } from '../../shared/boss-loot-collection';
 
 @Component({
   selector: 'app-character-creator',
@@ -37,9 +39,9 @@ import { ProgressFeedback } from '../../state/progress-feedback';
     FormsModule,
     RouterLink,
     CharacterPortrait,
-    CharacterAura,
     AuraCollection,
     ProgressStorageNote,
+    BossLootCollection,
   ],
   templateUrl: './character-creator.html',
   styleUrl: './character-creator.scss',
@@ -56,26 +58,15 @@ export class CharacterCreator implements OnInit {
   private readonly appearances: Partial<Record<CharacterPresentation, Appearance>> = {};
   readonly draft = signal<CharacterProfile | null>(null);
   readonly formError = signal('');
+  readonly enlargedPreview = signal(false);
   readonly stage = signal<1 | 2 | 3>(
-    inject(ActivatedRoute).snapshot.fragment === 'aura-rewards' ? 3 : 1,
+    inject(ActivatedRoute).snapshot.fragment === 'aura-rewards' ? 3 : inject(ActivatedRoute).snapshot.fragment === 'boss-loot' ? 2 : 1,
   );
   readonly stages = [
     { id: 1, label: 'Figur', detail: 'Name & Vorlage' },
     { id: 2, label: 'Stil', detail: 'Haare & Farben' },
     { id: 3, label: 'Aura', detail: 'Dein Leuchten' },
   ] as const;
-  readonly previewAura = signal<string | null>(null);
-  readonly previewFierce = signal(false);
-  readonly previewColor = signal<string>('#a78bfa');
-  readonly advancedAuras = ADVANCED_AURA_DESIGNS;
-  readonly auraPreviewColors = AURA_PREVIEW_COLORS;
-  readonly previewAuraDesign = computed(
-    () => this.advancedAuras.find((aura) => aura.id === this.previewAura()) ?? null,
-  );
-  readonly previewAppearance = computed(() => {
-    const appearance = this.draft()?.appearance;
-    return appearance && this.previewAura() ? { ...appearance, aura: 'none' } : appearance;
-  });
   readonly options = CHARACTER_OPTIONS;
   readonly presentations = CHARACTER_PRESENTATIONS;
   readonly palettes = ILLUSTRATED_COLOR_PALETTES;
@@ -103,20 +94,52 @@ export class CharacterCreator implements OnInit {
       : [];
   });
   readonly selectedHair = computed(
-    () => this.draft()?.appearance.illustratedHair ?? this.selectedIllustration()?.id,
+    () => this.draft()?.appearance.cosmeticHair ? null : this.draft()?.appearance.illustratedHair ?? this.selectedIllustration()?.id,
   );
   readonly selectedOutfit = computed(
-    () => this.draft()?.appearance.outfitSet ?? this.selectedIllustration()?.id,
+    () => this.draft()?.appearance.cosmeticOutfit ? null : this.draft()?.appearance.outfitSet ?? this.selectedIllustration()?.id,
   );
+
+  readonly lookSummary = computed(() => {
+    const profile = this.draft();
+    if (!profile) return '';
+    const hair = resolveBossCosmetic(profile.appearance.cosmeticHair ?? '', profile.appearance.presentation)?.name ??
+      this.illustrationOptions().find(item => item.id === this.selectedHair())?.hairLabel;
+    const outfit = resolveBossCosmetic(profile.appearance.cosmeticOutfit ?? '', profile.appearance.presentation)?.name ??
+      this.illustrationOptions().find(item => item.id === this.selectedOutfit())?.outfitLabel;
+    return [hair, outfit].filter(Boolean).join(' · ');
+  });
+  readonly hasCustomStyle = computed(() => {
+    const appearance = this.draft()?.appearance;
+    return !!appearance && ['illustratedHair', 'outfitSet', 'eyeColor', 'skinTone', 'hairTint', 'cosmeticHair', 'cosmeticOutfit']
+      .some(key => appearance[key as keyof Appearance] !== undefined);
+  });
+  resetLook() {
+    const id = this.selectedIllustration()?.id;
+    if (id) this.chooseIllustration(id);
+  }
+
+  constructor() {
+    // Another screen may already be loading the shared game when this route opens.
+    // Adopt its eventual result once, without replacing an edited creator draft.
+    effect(() => {
+      const character = this.store.snapshot()?.character;
+      if (character) untracked(() => this.initializeDraft(character));
+    });
+  }
 
   ngOnInit() {
     void this.loadProfile();
   }
 
   async loadProfile() {
-    if (!this.store.snapshot()) await this.store.load();
+    if (!this.store.snapshot() && !this.store.busy()) await this.store.load();
     const character = this.store.snapshot()?.character;
-    if (!character) return;
+    if (character) this.initializeDraft(character);
+  }
+
+  private initializeDraft(character: CharacterProfile) {
+    if (this.draft()) return;
     try {
       const profile = normalizeCharacterProfile({
         name: character.name,
@@ -124,6 +147,7 @@ export class CharacterCreator implements OnInit {
       });
       this.appearances[profile.appearance.presentation] = { ...profile.appearance };
       this.draft.set(profile);
+      this.formError.set('');
     } catch (error) {
       this.formError.set(
         error instanceof Error ? error.message : 'Bitte lade deinen Charakter erneut.',
@@ -134,7 +158,6 @@ export class CharacterCreator implements OnInit {
   selectStage(stage: 1 | 2 | 3) {
     if (this.store.busy() || this.stage() === stage) return;
     this.stage.set(stage);
-    if (stage !== 3) this.endAuraPreview();
     queueMicrotask(() => {
       const heading = this.element.nativeElement.querySelector<HTMLElement>(
         `.editor-section:not([hidden]) h2`,
@@ -154,7 +177,6 @@ export class CharacterCreator implements OnInit {
     const current = this.draft();
     if (!current || this.store.busy() || current.appearance.presentation === presentation) return;
     if (!CHARACTER_PRESENTATIONS.some((option) => option.id === presentation)) return;
-    this.endAuraPreview();
     this.appearances[current.appearance.presentation] = { ...current.appearance };
     const first = ILLUSTRATED_CHARACTERS.find((option) => option.presentation === presentation)!;
     const appearance =
@@ -179,21 +201,29 @@ export class CharacterCreator implements OnInit {
       !this.illustrationOptions().some((option) => option.id === id)
     )
       return;
-    this.endAuraPreview();
     this.draft.set({ ...current, appearance: this.presetAppearance(current.appearance, id) });
     this.formError.set('');
   }
 
   chooseModule(slot: 'illustratedHair' | 'outfitSet', id: string) {
     if (this.store.busy() || !this.illustrationOptions().some((option) => option.id === id)) return;
-    this.draft.update((current) =>
-      current
-        ? {
-            ...current,
-            appearance: { ...current.appearance, [slot]: id },
-          }
-        : current,
-    );
+    this.draft.update(current => {
+      if (!current) return current;
+      const appearance = { ...current.appearance, [slot]: id };
+      delete appearance[slot === 'illustratedHair' ? 'cosmeticHair' : 'cosmeticOutfit'];
+      return { ...current, appearance };
+    });
+    this.formError.set('');
+  }
+
+  chooseBossCosmetic(id: string) {
+    const snapshot = this.store.snapshot();
+    const reward = BOSS_COSMETICS.find(item => item.id === id);
+    if (this.store.busy() || !snapshot || !reward || !hasBossCosmetic(snapshot, id)) return;
+    if (reward.slot === 'aura') { this.chooseAura(reward.auraId!); return; }
+    this.draft.update(current => current ? { ...current, appearance: {
+      ...current.appearance, [reward.slot === 'hair' ? 'cosmeticHair' : 'cosmeticOutfit']: id,
+    } } : current);
     this.formError.set('');
   }
 
@@ -206,6 +236,10 @@ export class CharacterCreator implements OnInit {
     this.draft.update((current) => {
       if (!current) return current;
       const appearance = { ...current.appearance };
+      if (slot === 'hairTint' && appearance.cosmeticHair) {
+        appearance.illustratedHair = bossCosmeticForAppearance(appearance, 'hair')?.modules?.[appearance.presentation];
+        delete appearance.cosmeticHair;
+      }
       if (value === undefined) delete appearance[slot];
       else appearance[slot] = value;
       return { ...current, appearance };
@@ -215,7 +249,6 @@ export class CharacterCreator implements OnInit {
 
   chooseAura(value: string) {
     if (this.store.busy() || !this.store.canEquipAura(value)) return;
-    this.endAuraPreview();
     this.draft.update((current) =>
       current
         ? {
@@ -227,30 +260,6 @@ export class CharacterCreator implements OnInit {
     this.formError.set('');
   }
 
-  choosePreviewAura(id: string) {
-    const design = this.advancedAuras.find((aura) => aura.id === id);
-    if (!design || this.store.busy()) return;
-    this.previewAura.set(id);
-    this.previewFierce.set(false);
-    this.previewColor.set(
-      this.auraPreviewColors.find((color) => color.hex === design.color)?.hex ?? '#a78bfa',
-    );
-  }
-
-  choosePreviewColor(value: string) {
-    if (this.store.busy() || !this.auraPreviewColors.some((color) => color.hex === value)) return;
-    this.previewColor.set(value);
-  }
-
-  endAuraPreview() {
-    this.previewAura.set(null);
-    this.previewFierce.set(false);
-  }
-
-  onAuraPreviewToggle(event: Event) {
-    if (!(event.target as HTMLDetailsElement).open) this.endAuraPreview();
-  }
-
   private presetAppearance(appearance: Appearance, illustration: string): Appearance {
     const result: Appearance = { ...appearance, artwork: 'original', illustration };
     for (const slot of [
@@ -259,6 +268,8 @@ export class CharacterCreator implements OnInit {
       'eyeColor',
       'skinTone',
       'hairTint',
+      'cosmeticHair',
+      'cosmeticOutfit',
     ] as const)
       delete result[slot];
     return result;

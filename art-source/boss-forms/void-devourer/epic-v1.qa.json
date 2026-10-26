@@ -1,0 +1,62 @@
+{
+  "bossId": "void-devourer",
+  "difficulty": "epic",
+  "generatedAt": "2026-10-05",
+  "generator": "Built-in image_gen",
+  "references": [
+    "../../../.codex/generated_images/01a10d0a-b307-7b10-b1f0-31e13905eb72/exec-46ff7800-477d-423a-8445-1dc06fae87fe.png"
+  ],
+  "prompt": "epic-v1.prompt.txt",
+  "master": "epic-v1.master.png",
+  "output": "frontend/public/art/bosses/void-devourer-epic-v1.webp",
+  "processing": "Unmodified generated PNG copied as master; mechanical resize to774x774, padded63px transparent on each side; WebP quality85 alphaQuality100.",
+  "masterQa": {
+    "width": 1254,
+    "height": 1254,
+    "hasAlpha": true,
+    "format": "png",
+    "bytes": 1829611,
+    "sha256": "f7d77565edfc81ddd1a702fa48ba6d6a7386209ccb46487e41fdfdee9acdc17d",
+    "transparentPixels": 904415,
+    "partialAlphaPixels": 667304,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 21,
+      "top": 49,
+      "right": 1193,
+      "bottom": 1197
+    },
+    "clearMargins": {
+      "left": 21,
+      "top": 49,
+      "right": 60,
+      "bottom": 56
+    }
+  },
+  "outputQa": {
+    "width": 900,
+    "height": 900,
+    "hasAlpha": true,
+    "format": "webp",
+    "bytes": 198232,
+    "sha256": "93b63501e86e04c15f91db135f3ae8371fb83df5ecb45cbf7f3e2dbfe92dd25f",
+    "transparentPixels": 557158,
+    "partialAlphaPixels": 250400,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 76,
+      "top": 93,
+      "right": 799,
+      "bottom": 792
+    },
+    "clearMargins": {
+      "left": 76,
+      "top": 93,
+      "right": 100,
+      "bottom": 107
+    }
+  },
+  "refinementPrompt": "epic-v1-reframe.prompt.txt",
+  "initialMaster": "epic-v1.initial.png",
+  "refinementReason": "Complete uncropped outer tips with more transparent room; identity retained."
+}

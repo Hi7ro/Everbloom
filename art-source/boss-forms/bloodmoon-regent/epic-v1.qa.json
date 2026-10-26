@@ -1,0 +1,59 @@
+{
+  "bossId": "bloodmoon-regent",
+  "difficulty": "epic",
+  "generatedAt": "2026-10-05",
+  "generator": "Built-in image_gen",
+  "references": [
+    "art-source/boss-forms/bloodmoon-regent/normal-v1.master.png"
+  ],
+  "prompt": "epic-v1.prompt.txt",
+  "master": "epic-v1.master.png",
+  "output": "frontend/public/art/bosses/bloodmoon-regent-epic-v1.webp",
+  "processing": "Unmodified generated PNG copied as master; mechanical resize to774x774, padded63px transparent on each side; WebP quality85 alphaQuality100.",
+  "masterQa": {
+    "width": 1254,
+    "height": 1254,
+    "hasAlpha": true,
+    "format": "png",
+    "bytes": 2250811,
+    "sha256": "4190355bb8fe1d9b9f7511e81c3ce8b817dbc0e2f6a309c619ad704827e05dc5",
+    "transparentPixels": 697666,
+    "partialAlphaPixels": 873443,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 0,
+      "top": 0,
+      "right": 1252,
+      "bottom": 1241
+    },
+    "clearMargins": {
+      "left": 0,
+      "top": 0,
+      "right": 1,
+      "bottom": 12
+    }
+  },
+  "outputQa": {
+    "width": 900,
+    "height": 900,
+    "hasAlpha": true,
+    "format": "webp",
+    "bytes": 239120,
+    "sha256": "04a776801bd22caf1dd866b9861643a37baa722b19b47fd692532135d430a6d2",
+    "transparentPixels": 478268,
+    "partialAlphaPixels": 328677,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 63,
+      "top": 63,
+      "right": 830,
+      "bottom": 830
+    },
+    "clearMargins": {
+      "left": 63,
+      "top": 63,
+      "right": 69,
+      "bottom": 69
+    }
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "bossId": "void-devourer",
+  "difficulty": "normal",
+  "generatedAt": "2026-10-05",
+  "generator": "Built-in image_gen",
+  "references": [
+    "frontend/public/art/bosses/astral-sovereign-v2.webp",
+    "frontend/public/art/bosses/cloud-sovereign-v1.webp"
+  ],
+  "prompt": "normal-v1.prompt.txt",
+  "master": "normal-v1.master.png",
+  "output": "frontend/public/art/bosses/void-devourer-normal-v1.webp",
+  "processing": "Unmodified generated PNG copied as master; mechanical resize to774x774, padded63px transparent on each side; WebP quality85 alphaQuality100.",
+  "masterQa": {
+    "width": 1254,
+    "height": 1254,
+    "hasAlpha": true,
+    "format": "png",
+    "bytes": 2310584,
+    "sha256": "2dadbd3125c1298a90db8629aa0c5dc834029b4f571a24a43e6460d986b74375",
+    "transparentPixels": 725367,
+    "partialAlphaPixels": 845859,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 0,
+      "top": 0,
+      "right": 1247,
+      "bottom": 1253
+    },
+    "clearMargins": {
+      "left": 0,
+      "top": 0,
+      "right": 6,
+      "bottom": 0
+    }
+  },
+  "outputQa": {
+    "width": 900,
+    "height": 900,
+    "hasAlpha": true,
+    "format": "webp",
+    "bytes": 221074,
+    "sha256": "cf78e55eee54a270f3d7dce62da090305887eb064bff7011d2e3de0f41646156",
+    "transparentPixels": 487085,
+    "partialAlphaPixels": 319811,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 63,
+      "top": 63,
+      "right": 833,
+      "bottom": 836
+    },
+    "clearMargins": {
+      "left": 63,
+      "top": 63,
+      "right": 66,
+      "bottom": 63
+    }
+  }
+}

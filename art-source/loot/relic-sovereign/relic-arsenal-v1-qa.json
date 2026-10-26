@@ -1,0 +1,21 @@
+{
+  "id": "relic-arsenal",
+  "type": "aura",
+  "boss": "relic-sovereign",
+  "generator": "built-in image_gen",
+  "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-e690e6a5-f9ed-4999-9265-56f5315da990.png",
+  "master": "art-source/loot/relic-sovereign/relic-arsenal-v1.png",
+  "runtime": "frontend/public/art/loot/relic-arsenal-v1.webp",
+  "prompt": "art-source/loot/relic-sovereign/relic-arsenal-v1-prompt.txt",
+  "width": 600,
+  "height": 750,
+  "bytes": 197074,
+  "alphaRange": [
+    0,
+    254
+  ],
+  "transparentPercent": 57.77,
+  "centralSlotTransparentPercent": 96.42,
+  "sha256": "6686b629fa5773596be2cc5f5ff556c2c8c31bea6185953fd13618a4d368784f",
+  "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+}

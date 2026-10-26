@@ -1,0 +1,46 @@
+{
+  "id": "starweaver",
+  "neckX": 351,
+  "neckY": 182,
+  "footY": 778,
+  "collarFront": [
+    {
+      "x": 306,
+      "y": 160
+    },
+    {
+      "x": 320,
+      "y": 171
+    },
+    {
+      "x": 348,
+      "y": 181
+    },
+    {
+      "x": 373,
+      "y": 185
+    },
+    {
+      "x": 390,
+      "y": 180
+    },
+    {
+      "x": 393,
+      "y": 208
+    },
+    {
+      "x": 352,
+      "y": 222
+    },
+    {
+      "x": 306,
+      "y": 187
+    }
+  ],
+  "width": 700,
+  "height": 900,
+  "coordinateSpace": "Final700x900WebP",
+  "neckAnchor": "Lower/front edge of open neck collar; visually calibrated against25pxgrid.",
+  "footAnchor": "Lowest opaque sole pixel, alpha>128. Ignores tiny alpha noise outside artwork.",
+  "collarFrontNote": "Front collar lip polygon for over-head compositing; verify after attaching chosen face."
+}

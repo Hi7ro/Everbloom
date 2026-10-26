@@ -1,0 +1,22 @@
+{
+  "id": "void-crown",
+  "presentation": "female",
+  "type": "hair",
+  "boss": "void-devourer",
+  "generator": "built-in image_gen",
+  "reference": "/Users/xv7ro/dev/personal/everbloom/frontend/public/art/loot/void-crown-v1.webp",
+  "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-a8500a58-efb7-4818-9f31-e525074a4adb.png",
+  "master": "art-source/loot/void-devourer/female/void-crown-female-v1.png",
+  "runtime": "frontend/public/art/loot/void-crown-female-v1.webp",
+  "prompt": "art-source/loot/void-devourer/female/void-crown-female-v1-prompt.txt",
+  "width": 480,
+  "height": 480,
+  "bytes": 71906,
+  "alphaRange": [
+    0,
+    254
+  ],
+  "transparentPercent": 57.62,
+  "sha256": "cac50ea644150e19a2f912f0393a4fd50812eaf449ab74523f18d81c22e54386",
+  "visualReview": "Inspected generated artwork: distinct female silhouette, matching boss material/palette, single isolated hair/crown or fully clothed outfit with no face/skin/mannequin/background/text. Entire item visible; a few ornament tips have tighter margins than requested. Collection illustration only, not a calibrated avatar rig."
+}

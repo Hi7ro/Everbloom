@@ -9,6 +9,9 @@ export interface Appearance {
   /** Illustrated module IDs; omitted values follow the selected preset. */
   illustratedHair?: string;
   outfitSet?: string;
+  /** Server-owned boss rewards; variants reuse authored modules with exclusive tints. */
+  cosmeticHair?: string;
+  cosmeticOutfit?: string;
   /** Allowlisted palette colors; omitted values preserve the original artwork. */
   eyeColor?: string;
   skinTone?: string;
@@ -54,6 +57,8 @@ export interface ActivityCommand {
   minutes: number;
 }
 export interface Activity extends ActivityCommand {
+  /** Additional character-only XP. Absent in older saved activities. */
+  membershipXp?: number;
   dayKey: string;
   rewardedMinutes: number;
   xp: number;
@@ -88,9 +93,11 @@ export interface GameSnapshot {
   activities: Activity[];
   /** Cosmetics earned by accepted activity transactions; starter auras are implicit. */
   unlockedAuras: string[];
+  bossProgress?: { clearedEncounterIds: string[]; unlockedCosmetics: string[] };
   momentum: { value: number; lastRewardDay: string | null; rhythm: RhythmDay[] };
 }
 export interface Reward {
+  membershipXp?: number;
   activityXp: number;
   questXp: number;
   damage: number;

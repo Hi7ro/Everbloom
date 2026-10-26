@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   ElementRef,
   inject,
   Injectable,
@@ -9,6 +10,8 @@ import {
   signal,
 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { ACCOUNT_MODE } from '../../data/account-mode';
+import { AuthStore } from '../../state/auth.store';
 import { SKILLS } from '../../domain/catalog';
 import {
   DEFAULT_JOURNEY,
@@ -29,7 +32,25 @@ interface JourneyDraft {
 /** Only preserves an unfinished visit to the character creator, never writes device storage. */
 @Injectable({ providedIn: 'root' })
 class OnboardingDraft {
-  value: JourneyDraft | null = null;
+  private readonly auth = inject(ACCOUNT_MODE) ? inject(AuthStore) : null;
+  private ownerEpoch = this.auth?.epoch();
+  private entry: { epoch: number | undefined; draft: JourneyDraft } | null = null;
+  get value(): JourneyDraft | null {
+    return this.entry?.epoch === this.auth?.epoch() ? (this.entry?.draft ?? null) : null;
+  }
+  set value(draft: JourneyDraft | null) {
+    this.entry = draft ? { epoch: this.auth?.epoch(), draft } : null;
+  }
+  constructor() {
+    if (this.auth)
+      effect(() => {
+        const epoch = this.auth!.epoch();
+        if (epoch !== this.ownerEpoch) {
+          this.ownerEpoch = epoch;
+          this.entry = null;
+        }
+      });
+  }
 }
 
 const INTEREST_COPY: Record<string, { symbol: string; description: string }> = {
@@ -156,7 +177,19 @@ export class Onboarding implements OnInit {
     this.savedDraft.value = { step: this.step(), preferences: structuredClone(this.draft()) };
   }
 
-  cancel() {
+  async cancel() {
+    if (this.saving()) return;
+    if (this.store.accountMode && !this.journey.configured()) {
+      this.saving.set(true);
+      try {
+        if (!(await this.journey.commit(DEFAULT_JOURNEY))) {
+          this.formError.set(this.journey.error());
+          return;
+        }
+      } finally {
+        this.saving.set(false);
+      }
+    }
     this.savedDraft.value = null;
     void this.router.navigateByUrl('/dashboard');
   }
@@ -164,13 +197,14 @@ export class Onboarding implements OnInit {
   async finish() {
     if (this.step() !== 3 || this.saving() || this.store.busy() || !this.store.snapshot()) return;
     this.formError.set('');
-    if (!this.journey.save(this.draft())) {
-      this.formError.set(this.journey.error() || 'Deine Auswahl konnte nicht übernommen werden.');
-      return;
-    }
-    this.savedDraft.value = null;
     this.saving.set(true);
     try {
+      if (!(await this.journey.commit(this.draft()))) {
+        this.formError.set(this.journey.error() || 'Deine Auswahl konnte nicht übernommen werden.');
+        return;
+      }
+      this.savedDraft.value = null;
+      // The dashboard guard reloads the account snapshot, including its current daily quests.
       const navigated = await this.router.navigateByUrl('/dashboard');
       if (!navigated)
         this.formError.set('Deine Auswahl ist übernommen. Öffne das Dashboard erneut.');

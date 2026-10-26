@@ -1,0 +1,65 @@
+{
+  "id": "forest-scout",
+  "presentation": "male",
+  "reviewedAt": "2026-10-05T20:52:54.759100+00:00",
+  "generator": "Built-in image_gen; existing generation preserved during this read-only pixel review",
+  "prompt": "body-v2.prompt.txt",
+  "master": "body-master.png",
+  "output": "frontend/public/art/characters/forest-scout-body-v2.webp",
+  "processing": "Existing generated PNG and current runtime WebP inspected without any new rendering or pixel edits. Runtime dimensions and alpha verified; original encoder parameters were not reconstructed.",
+  "sourceQa": {
+    "width": 1024,
+    "height": 1536,
+    "hasAlpha": true,
+    "bytes": 2259195,
+    "sha256": "27404282858c8220576238915a12b4b7ee40a5bfd7138d301cf3b489dedef62c",
+    "alphaRange": [
+      0,
+      254
+    ],
+    "transparentPixels": 848985,
+    "partialAlphaPixels": 723879,
+    "solidEdgePixels": 0,
+    "contentBoundsAlphaOver128": {
+      "left": 132,
+      "top": 133,
+      "rightExclusive": 949,
+      "bottomExclusive": 1479
+    },
+    "clearMarginsAlphaOver128": {
+      "left": 132,
+      "top": 133,
+      "right": 75,
+      "bottom": 57
+    }
+  },
+  "outputQa": {
+    "width": 600,
+    "height": 900,
+    "hasAlpha": true,
+    "bytes": 137978,
+    "sha256": "2f56df37db843693c7a3e51e221260b6719fa7aaf56b01c2a71dd116d160bb51",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "transparentPixels": 292131,
+    "partialAlphaPixels": 245932,
+    "solidEdgePixels": 0,
+    "contentBoundsAlphaOver128": {
+      "left": 77,
+      "top": 78,
+      "rightExclusive": 556,
+      "bottomExclusive": 867
+    },
+    "clearMarginsAlphaOver128": {
+      "left": 77,
+      "top": 78,
+      "right": 44,
+      "bottom": 33
+    }
+  },
+  "anchors": "body-v2.anchors.json",
+  "visualReview": "Inspected final runtime image individually: complete fully clothed body only, no head/hair/visible skin, gloves cover fingers, distinct outfit material and silhouette, feet/cape in frame. This is an isolated body review, not acceptance of every head/collar combination.",
+  "composedAvatarValidation": "Pending separate root visual/regression acceptance; see docs/VALIDATION.md."
+}

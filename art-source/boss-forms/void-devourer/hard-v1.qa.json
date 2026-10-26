@@ -1,0 +1,59 @@
+{
+  "bossId": "void-devourer",
+  "difficulty": "hard",
+  "generatedAt": "2026-10-05",
+  "generator": "Built-in image_gen",
+  "references": [
+    "art-source/boss-forms/void-devourer/normal-v1.master.png"
+  ],
+  "prompt": "hard-v1.prompt.txt",
+  "master": "hard-v1.master.png",
+  "output": "frontend/public/art/bosses/void-devourer-hard-v1.webp",
+  "processing": "Unmodified generated PNG copied as master; mechanical resize to774x774, padded63px transparent on each side; WebP quality85 alphaQuality100.",
+  "masterQa": {
+    "width": 1254,
+    "height": 1254,
+    "hasAlpha": true,
+    "format": "png",
+    "bytes": 2586613,
+    "sha256": "31020fb805d4d661733fc8eb9586e573ee15c44a1d7f78d0466a58020b771083",
+    "transparentPixels": 595789,
+    "partialAlphaPixels": 976146,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 0,
+      "top": 0,
+      "right": 1252,
+      "bottom": 1253
+    },
+    "clearMargins": {
+      "left": 0,
+      "top": 0,
+      "right": 1,
+      "bottom": 0
+    }
+  },
+  "outputQa": {
+    "width": 900,
+    "height": 900,
+    "hasAlpha": true,
+    "format": "webp",
+    "bytes": 241246,
+    "sha256": "33c074bd801a77a6824e4d81b6005309ed675d88de277512416955fc1a22fda0",
+    "transparentPixels": 439208,
+    "partialAlphaPixels": 368798,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 63,
+      "top": 63,
+      "right": 834,
+      "bottom": 836
+    },
+    "clearMargins": {
+      "left": 63,
+      "top": 63,
+      "right": 65,
+      "bottom": 63
+    }
+  }
+}

@@ -1,0 +1,10 @@
+Built-in image_gen; 2026-10-05.
+References: /Users/xv7ro/dev/personal/everbloom/frontend/public/art/bosses/bloodmoon-regent-normal-v1.webp ; /Users/xv7ro/dev/personal/everbloom/frontend/public/art/loot/astral-regalia-v2.webp
+
+Use case: stylized-concept.
+Asset type: premium original-IP anime fantasy RPG loot illustration, a single isolated item for mobile use.
+Input image 1: the boss reference; inherit its materials, visual family and color palette, NOT its body. Input image 2: reference for existing loot painterly rendering quality and asset framing.
+Style: sophisticated dimensional hand-painted anime-fantasy illustration, refined material shading, delicate metalwork, clean readable edges and jewel highlights. Match our existing art, not simple flat vector, not screenshot, not a sheet.
+Subject: A complete regal bloodmoon outfit suitable for an anime-chibi adventurer: deep ruby layered long coat and split ceremonial skirt panels over fitted dark trousers, sculptural antique-gold shoulder armor, crimson jewel chestplate, long fitted armored gloves, gold-trimmed pointed boots. Moon-arc gold embroidery and small ruby pendants echo the reference queen. Fully clothed unisex wearable set, no person, no exposed skin. One coherent silhouette.
+Composition: One complete outfit from collar to boots on a wholly invisible wearer: coherent equipped shape, EMPTY transparent head opening, no head, no neck/skin or mannequin. Include matching torso, arms/gloves, waist, leg clothing and both boots; not separate laid-out pieces. Three-quarter view. Square composition, whole set within central 70% of canvas with generous transparent space at all edges. No weapon unless specified.
+Background: genuine alpha transparency, no checkerboard, no background color, scenery, floor, shadow under the item, border, labels, letters, symbols resembling readable text, watermark or logo. Only the requested single asset. Do NOT tightly crop; all extremities fully visible.

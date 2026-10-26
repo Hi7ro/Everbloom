@@ -7,12 +7,33 @@ spring:
     password: ${EVERBLOOM_DB_PASSWORD:}
   flyway:
     enabled: true
+  session:
+    timeout: 30m
+    jdbc:
+      initialize-schema: never
+      cleanup-cron: '0 * * * * *'
+  mail:
+    host: ${EVERBLOOM_SMTP_HOST:}
+    port: ${EVERBLOOM_SMTP_PORT:587}
+    username: ${EVERBLOOM_SMTP_USER:}
+    password: ${EVERBLOOM_SMTP_PASSWORD:}
+    test-connection: ${EVERBLOOM_SMTP_TEST_CONNECTION:true}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.smtp.starttls.required: true
+      mail.smtp.connectiontimeout: 5000
+      mail.smtp.timeout: 5000
+      mail.smtp.writetimeout: 5000
+      mail.debug: false
   jackson:
     deserialization:
       fail-on-unknown-properties: true
 server:
   address: ${EVERBLOOM_BIND_ADDRESS:127.0.0.1}
   port: ${EVERBLOOM_PORT:8080}
+  forward-headers-strategy: none
+  max-http-request-header-size: 16KB
   servlet:
     session:
       timeout: 30m
@@ -23,15 +44,35 @@ server:
         secure: true
         same-site: lax
         path: /
+        max-age: 30m
   error:
     include-message: never
     include-stacktrace: never
     include-binding-errors: never
 app:
+  billing:
+    mode: ${EVERBLOOM_BILLING_MODE:preview}
+    secret-api-key: ${REVENUECAT_SECRET_API_KEY:}
+    webhook-authorization: ${REVENUECAT_WEBHOOK_AUTHORIZATION:}
+    apple-api-key: ${REVENUECAT_APPLE_API_KEY:}
+    google-api-key: ${REVENUECAT_GOOGLE_API_KEY:}
+    entitlement-id: ${REVENUECAT_ENTITLEMENT_ID:everbloom_plus}
+    apple-product-id: ${REVENUECAT_APPLE_PRODUCT_ID:everbloom_plus_monthly}
+    google-product-id: ${REVENUECAT_GOOGLE_PRODUCT_ID:everbloom_plus:monthly}
+    offering-id: ${REVENUECAT_OFFERING_ID:default}
+    allow-sandbox: ${REVENUECAT_ALLOW_SANDBOX:false}
+  security:
+    trusted-proxy-ips: ${EVERBLOOM_TRUSTED_PROXY_IPS:}
   game:
     zone: Europe/Vienna
   auth:
-    login-limit: 15
-    register-limit: 5
+    public-base-url: ${EVERBLOOM_PUBLIC_BASE_URL:}
+    login-limit: 10
+    register-limit: 3
+    request-limit: 3
+    ip-limit: 60
     window-seconds: 900
     max-rate-keys: 10000
+  mail:
+    mode: smtp
+    from: ${EVERBLOOM_MAIL_FROM:}

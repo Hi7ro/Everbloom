@@ -1,0 +1,129 @@
+apply plugin: 'com.android.application'
+
+// External upload-key settings only. Never use the debug identity for a release.
+def releaseSigningEnvironment = [
+    storeFile: 'HEROVERA_ANDROID_KEYSTORE',
+    storePassword: 'HEROVERA_ANDROID_STORE_PASSWORD',
+    keyAlias: 'HEROVERA_ANDROID_KEY_ALIAS',
+    keyPassword: 'HEROVERA_ANDROID_KEY_PASSWORD'
+]
+def releaseSigningValues = releaseSigningEnvironment.collectEntries { field, variable ->
+    [(field): System.getenv(variable)]
+}
+
+android {
+    namespace = "com.everbloom.app"
+    compileSdk = rootProject.ext.compileSdkVersion
+    defaultConfig {
+        applicationId "com.everbloom.app"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 2
+        versionName "0.2.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        aaptOptions {
+             // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
+             // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
+            ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
+        }
+    }
+    signingConfigs {
+        release {
+            if (releaseSigningValues.values().every { it != null && !it.isEmpty() }) {
+                storeFile file(releaseSigningValues.storeFile)
+                storePassword releaseSigningValues.storePassword
+                keyAlias releaseSigningValues.keyAlias
+                keyPassword releaseSigningValues.keyPassword
+            }
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+def validateReleaseSigning = tasks.register('validateReleaseSigning') {
+    group = 'verification'
+    description = 'Checks externally supplied upload-key settings without signing an artifact.'
+    notCompatibleWithConfigurationCache('Upload-key credentials must not enter a reusable configuration cache.')
+    doLast {
+        if (project.properties.keySet().any { it.startsWith('android.injected.signing.') }) {
+            throw new GradleException('Injected signing overrides are not supported. Use the documented HEROVERA_ANDROID_* environment settings.')
+        }
+        def missing = releaseSigningEnvironment.findAll { field, variable ->
+            releaseSigningValues[field] == null || releaseSigningValues[field].isEmpty()
+        }.values()
+        if (!missing.isEmpty()) {
+            throw new GradleException('Release signing is not configured. Set: ' + missing.join(', ') + '. See docs/NATIVE_BETA.md.')
+        }
+        def keystore = new File(releaseSigningValues.storeFile)
+        def repository = rootProject.file('../..').canonicalFile.toPath()
+        if (!keystore.isAbsolute() || keystore.canonicalFile.toPath().startsWith(repository)) {
+            throw new GradleException('HEROVERA_ANDROID_KEYSTORE must be an absolute path outside this repository.')
+        }
+        if (!keystore.isFile() || !keystore.canRead()) {
+            throw new GradleException('HEROVERA_ANDROID_KEYSTORE must point to a readable existing upload keystore.')
+        }
+        if (keystore.name.equalsIgnoreCase('debug.keystore') || releaseSigningValues.keyAlias.equalsIgnoreCase('androiddebugkey')) {
+            throw new GradleException('A debug keystore or debug key alias cannot sign a release.')
+        }
+        def certificate
+        try {
+            def store = java.security.KeyStore.getInstance(keystore, releaseSigningValues.storePassword.toCharArray())
+            if (!(store.getKey(releaseSigningValues.keyAlias, releaseSigningValues.keyPassword.toCharArray()) instanceof java.security.PrivateKey)) {
+                throw new IllegalArgumentException()
+            }
+            certificate = store.getCertificate(releaseSigningValues.keyAlias)
+            if (!(certificate instanceof java.security.cert.X509Certificate)) throw new IllegalArgumentException()
+            certificate.checkValidity()
+        } catch (Exception ignored) {
+            // Do not leak supplied credentials, alias or keystore contents into build logs.
+            throw new GradleException('Upload keystore validation failed. Check the file, alias, passwords and certificate validity.')
+        }
+        def debugCertificate = new javax.naming.ldap.LdapName(certificate.subjectX500Principal.name).rdns.any {
+            it.type.equalsIgnoreCase('CN') && it.value.toString().equalsIgnoreCase('Android Debug')
+        }
+        if (debugCertificate) throw new GradleException('An Android Debug certificate cannot sign a release.')
+        logger.lifecycle('Release upload-key settings validated; no artifact signed by this check.')
+    }
+}
+
+// Covers aggregate builds and direct packaging tasks, without gating assembleDebug or IDE sync.
+tasks.configureEach {
+    if (name in ['preReleaseBuild', 'validateSigningRelease', 'packageRelease', 'packageReleaseBundle', 'signReleaseBundle']) {
+        dependsOn validateReleaseSigning
+    }
+}
+
+repositories {
+    flatDir{
+        dirs '../capacitor-cordova-android-plugins/src/main/libs', 'libs'
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "androidx.appcompat:appcompat:$androidxAppCompatVersion"
+    implementation "androidx.coordinatorlayout:coordinatorlayout:$androidxCoordinatorLayoutVersion"
+    implementation "androidx.core:core-splashscreen:$coreSplashScreenVersion"
+    implementation project(':capacitor-android')
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
+    implementation project(':capacitor-cordova-android-plugins')
+}
+
+apply from: 'capacitor.build.gradle'
+
+try {
+    def servicesJSON = file('google-services.json')
+    if (servicesJSON.text) {
+        apply plugin: 'com.google.gms.google-services'
+    }
+} catch(Exception e) {
+    logger.info("google-services.json not found, google-services plugin not applied. Push Notifications won't work")
+}

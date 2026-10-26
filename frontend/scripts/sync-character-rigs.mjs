@@ -86,6 +86,15 @@ async function readRig(filename) {
   requireValue(right.x > left.x, `${id}: Augenanker müssen links und rechts getrennt liegen.`);
   // Filename is authoritative: older hand-authored JSON files may omit or contain a stale id.
   const rig = { id, width, height, divider, body: { neckX, neckY, footY }, eyes: { left, right } };
+  if (!face) {
+    requireValue(Array.isArray(body.collarFront) && body.collarFront.length >= 3 && body.collarFront.length <= 12,
+      `${id}.body.collarFront: begrenzte Polygonkontur des vorderen Kragens erwartet.`);
+    rig.body.collarFront = body.collarFront.map((point, index) => ({
+      x: coordinate(point.x, 0, divider, `${id}.body.collarFront.${index}.x`),
+      y: coordinate(point.y, 0, footY, `${id}.body.collarFront.${index}.y`),
+    }));
+    requireValue(source.head !== undefined, `${id}.head: Halsanker fehlt.`);
+  }
   if (source.iris !== undefined) {
     const iris = record(source.iris, `${id}.iris`);
     requireValue(
@@ -117,6 +126,7 @@ async function readRig(filename) {
     rig.head = {
       neckX: coordinate(head.neckX, divider, width, `${id}.head.neckX`),
       neckY: coordinate(head.neckY, 0, height, `${id}.head.neckY`),
+      inset: coordinate(head.inset ?? 0, 0, 5, `${id}.head.inset`),
     };
   }
   if (source.maskWidth !== undefined)

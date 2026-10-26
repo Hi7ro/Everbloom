@@ -1,0 +1,4 @@
+Use case: precise-object-edit.
+Edit target: the supplied EPIC Nharok void-devourer sprite. Preserve exactly this creature's single turquoise-violet eye, black obsidian armor, crown, coiled body, levitating shards and broken orbital arcs, left-facing pose, colors, anatomy and painted fantasy style.
+Change ONLY the framing: the small rightmost blade-fin tip touches the image border. Zoom out and restore the complete tip, keeping every part of the creature, every floating shard and the entire orbit within the central80percent of a square canvas. Leave completely transparent empty margins around all four sides. Do not change the creature or remove any designed part.
+Transparent alpha background, no floor, shadow, backdrop, text or new objects.

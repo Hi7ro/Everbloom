@@ -1,0 +1,21 @@
+{
+  "id": "world-devourer",
+  "type": "aura",
+  "boss": "void-devourer",
+  "generator": "built-in image_gen",
+  "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-e56690da-50fa-48e6-abf3-638d33fde49a.png",
+  "master": "art-source/loot/void-devourer/world-devourer-v1.png",
+  "runtime": "frontend/public/art/loot/world-devourer-v1.webp",
+  "prompt": "art-source/loot/void-devourer/world-devourer-v1-prompt.txt",
+  "width": 600,
+  "height": 750,
+  "bytes": 168688,
+  "alphaRange": [
+    0,
+    254
+  ],
+  "transparentPercent": 59.8,
+  "centralSlotTransparentPercent": 99.88,
+  "sha256": "a75f31e1c74d974ef139442e8ad7a5c2757ceb7b3874c554357f27f57bf423c0",
+  "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+}

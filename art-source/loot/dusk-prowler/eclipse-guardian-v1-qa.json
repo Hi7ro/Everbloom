@@ -1,0 +1,21 @@
+{
+  "id": "eclipse-guardian",
+  "type": "aura",
+  "boss": "dusk-prowler",
+  "generator": "built-in image_gen",
+  "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-5d53001a-21c5-46d6-85f3-d043774a385b.png",
+  "master": "art-source/loot/dusk-prowler/eclipse-guardian-v1.png",
+  "runtime": "frontend/public/art/loot/eclipse-guardian-v1.webp",
+  "prompt": "art-source/loot/dusk-prowler/eclipse-guardian-v1-prompt.txt",
+  "width": 600,
+  "height": 750,
+  "bytes": 153734,
+  "alphaRange": [
+    0,
+    254
+  ],
+  "transparentPercent": 58.85,
+  "centralSlotTransparentPercent": 99.14,
+  "sha256": "6209515638c8cd9f7874764eb85c82b5aa14ca11a196f0c82ef7fc642cba2a45",
+  "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+}

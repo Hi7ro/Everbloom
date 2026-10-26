@@ -1,6 +1,6 @@
 # Animation Pipeline · Everbloom
 
-Stand: 2026-10-04. Akzeptierte Richtung: **Angular für App und Bedienung, PixiJS für die
+Stand: 2026-10-05. Akzeptierte Richtung: **Angular für App und Bedienung, PixiJS für die
 2D-Kampfbühne; künftig professionell geriggte Chibis und Bosse.** Die bestätigten gemalten
 Anime-Vorlagen bleiben die Art Direction. Unity und eine 3D-Neuentwicklung sind nicht Teil
 dieses Schritts.
@@ -10,15 +10,26 @@ dieses Schritts.
 Der Nutzer besitzt derzeit keine Spine-Lizenz und hat den Start mit PixiJS bestätigt.
 Deshalb enthält dieser Slice **keine Spine-Runtime, keinen Spine-Editor und keine Spine-Exporte**.
 PixiJS bildet Bühne, Ebenen und einfache Bewegung ab. Die bestehende Figur wird aus vorhandenem
-Profil/Bildmaterial dargestellt; der Mooswächter erhält eine eigene vorläufige Darstellung.
+Profil/Bildmaterial dargestellt. Zehn Bossfamilien besitzen je vier eigene gemalte Bildformen.
 Körperbewegung und Posen aus diesen Bildern sind noch kein vollständiges Skelett mit separat
 animierbaren Armen, Händen, Augen und Kleidung. Die zwölf vorhandenen Bilder werden dadurch
 nicht automatisch zu zwölf fertig geriggten Spielfiguren.
 
-Die erste Kampfszene unter `/battle` ist eine wiederholbare lokale Übung. Ihr Ergebnis verändert
-keine XP, Aktivitäten, Quests, Wochenboss-HP oder Besitzrechte. Der Renderer zeichnet ausschließlich
-vorgegebene Kampfereignisse. Der bestehende Wochenboss folgt bis zu einer ausdrücklich versionierten
-Regeländerung weiter den Aktivitätsregeln in [GAME_DESIGN.md](GAME_DESIGN.md).
+`/battle` bietet accountgebundene, serverautorisierte Kampagnenkämpfe und getrennte Probekämpfe.
+Nur ein bestätigter Erstabschluss vergibt genau eine der 40 kosmetischen Belohnungen.
+Kämpfe und Replay vergeben keine XP; Probekämpfe verändern keinen Besitz.
+Im Live-Betrieb gelten auch für die Wiedergabe von Probekämpfen die Bossrechte: fünf
+Normal-Bosse bis Basislevel 50 Free, die übrigen 35 Begegnungen Plus. Nur die ausdrücklich
+lokale, gekennzeichnete Billing-Testvorschau öffnet alle Modi ohne gekauften Plus-Status.
+Der Renderer zeichnet ausschließlich vorgegebene Ereignisse. Der Aktivitäts-Wochenboss bleibt
+davon getrennt und folgt [GAME_DESIGN.md](GAME_DESIGN.md).
+
+Der aktuelle Charakterausbau nutzt zwölf separat gerenderte Körperbilder mit eigenem Outfit-Rig
+und vollständige gemalte Köpfe je Frisurenvariante über einen einheitlichen Layerpfad. SVG-Porträts zeigen
+einfache interessenbezogene Gesten, Pixi Atmung und Kampfreaktionen. Kragen-/Kombinationsprüfung
+und Geräteabnahme bleiben offen; das ist kein fertiges Skelett. Auren nutzen 26 eigene Bilder,
+feste freizuschaltende Paletten und eine freie Bildmitte; ein frei umgefärbtes Aura-Labor gibt es nicht.
+
 
 Spine bleibt ein möglicher späterer Produktionsweg für Skins, Attachments und professionell
 animierte Skelette. Vor einer Integration werden passende Editor-/Runtime-Nutzungsrechte, die
@@ -65,6 +76,11 @@ Ein Actor besitzt eine stabile Asset-ID, Revision, Zielausrichtung, einen Urspru
 standardisierte Bounds und einen dokumentierten Maßstab. Held links und Gegner rechts stehen in
 leichter Dreiviertelansicht einander gegenüber. Spiegeln darf asymmetrische Waffen oder Symbole
 nicht unbemerkt verfälschen; die Produktionsfreigabe benennt unterstützte Ausrichtungen.
+
+Der aktuelle Kopf ist eine vollständige gemalte Einheit pro Frisur, einschließlich Gesicht.
+Farbmasken ändern Haut, Augen oder Haare derselben Zeichnung. Die folgenden getrennten
+Gesichts-/Haar- und Gelenkteile beschreiben eine künftige Produktion mit exakt passenden
+Anschlüssen; sie sind kein vorhandener Runtime-Layeraufbau.
 
 ## Rig, Slots und Garderobe als Produktionsziel
 
@@ -119,9 +135,11 @@ Exportformate, Blattgröße und Qualitätsstufen werden nach Messung auf Zielger
 Der erste Boss ist der **Mooswächter**: massiger Waldhüter mit Stein-/Rindenkörper, Moospolstern,
 wurzelartigen Gliedmaßen und sanftem Smaragdlicht. Silhouette und Material wirken neben den Anime-
 Chibis zusammengehörig. Er ist deutlich größer als der Held, bleibt aber auf einem schmalen Display
-vollständig lesbar. Die erste eigene Illustration liegt unter
-`frontend/public/art/bosses/mosswarden-v1.png`; sie ist vorerst ein einzelner Sprite, kein
-mehrteiliges Boss-Rig. Ihre Entstehung steht in [Mosswarden-Provenienz](art/mosswarden-prompts.md).
+vollständig lesbar. Die aktuelle Grundform liegt unter
+`frontend/public/art/bosses/mosswarden-v2.webp`; sie ist ein einzelner Sprite, kein
+mehrteiliges Boss-Rig. Der Gesamtbestand umfasst zehn Bosse von Level 10 bis 100 mit je vier
+Formen. Master/Prompts liegen unter `art-source/boss-forms/`; der aktuelle Ausbau ist in
+[VISUAL_AUDIO_DIRECTION.md](VISUAL_AUDIO_DIRECTION.md) dokumentiert.
 
 Sein künftiges Rig trennt Körper, Kopf/Kern, Arme/Wurzeln und Blätter. `attack` kann einen lesbaren
 Wurzelstoß, `hit` eine kurze Rückbewegung und `defeat` ein ruhiges Zusammensinken zeigen. Phasen

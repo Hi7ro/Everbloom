@@ -1,0 +1,49 @@
+{
+  "id": "starweaver",
+  "neckX": 351,
+  "neckY": 182,
+  "footY": 778,
+  "collarFront": [
+    {
+      "x": 306,
+      "y": 160
+    },
+    {
+      "x": 320,
+      "y": 171
+    },
+    {
+      "x": 348,
+      "y": 181
+    },
+    {
+      "x": 373,
+      "y": 185
+    },
+    {
+      "x": 390,
+      "y": 180
+    },
+    {
+      "x": 393,
+      "y": 258
+    },
+    {
+      "x": 352,
+      "y": 272
+    },
+    {
+      "x": 306,
+      "y": 237
+    }
+  ],
+  "width": 700,
+  "height": 900,
+  "coordinateSpace": "Current runtime WebP source pixels",
+  "neckAnchor": "Current front collar rim where it meets selected complete head; renderer applies nine portrait-unit inset when source contains a painted neck.",
+  "footAnchor": "Lowest opaque sole pixel, alpha>128. Ignores tiny alpha noise outside artwork.",
+  "collarFrontNote": "Calibrated front-collar overlay copied from current runtime registry; original image pixels remain unchanged.",
+  "authority": "frontend/src/app/domain/character-outfits.ts",
+  "collarCalibration": "2026-10-05",
+  "previousCalibrationReference": "body-v2.anchors-before-collar-calibration.json"
+}

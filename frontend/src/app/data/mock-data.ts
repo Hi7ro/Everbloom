@@ -9,7 +9,7 @@ const DEMO_SKILL_XP: Readonly<Record<string, number>> = {
   programming: 14400,
 };
 
-/** A fixed day deliberately avoids client-clock-based reward resets in the demo. */
+/** Deterministic seed. The repository starts and advances periods with its injected clock. */
 export function createMockSnapshot(): GameSnapshot {
   return {
     dayKey: '2026-09-08',

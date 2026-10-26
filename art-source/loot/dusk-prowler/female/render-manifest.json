@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-05",
+  "source": "Built-in image_gen; separate render for each item; mechanical WebP resize only.",
+  "items": [
+    {
+      "id": "dusk-crown",
+      "presentation": "female",
+      "type": "hair",
+      "boss": "dusk-prowler",
+      "generator": "built-in image_gen",
+      "reference": "/Users/xv7ro/dev/personal/everbloom/frontend/public/art/loot/dusk-crown-v1.webp",
+      "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-dd000188-bf9d-4b88-bfcf-216c54ba04f5.png",
+      "master": "art-source/loot/dusk-prowler/female/dusk-crown-female-v1.png",
+      "runtime": "frontend/public/art/loot/dusk-crown-female-v1.webp",
+      "prompt": "art-source/loot/dusk-prowler/female/dusk-crown-female-v1-prompt.txt",
+      "width": 480,
+      "height": 480,
+      "bytes": 62428,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 59.35,
+      "sha256": "48d703e419c854b75da80de6a6e6ff52e13bf182e1b9cca8f25fd9681f20952d",
+      "visualReview": "Inspected generated artwork: distinct female silhouette, matching boss material/palette, single isolated hair/crown or fully clothed outfit with no face/skin/mannequin/background/text. Entire item visible; a few ornament tips have tighter margins than requested. Collection illustration only, not a calibrated avatar rig."
+    },
+    {
+      "id": "twilight-stalker",
+      "presentation": "female",
+      "type": "outfit",
+      "boss": "dusk-prowler",
+      "generator": "built-in image_gen",
+      "reference": "/Users/xv7ro/dev/personal/everbloom/frontend/public/art/loot/twilight-stalker-v1.webp",
+      "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-02e39ea0-24c4-4f12-8a7a-333c82896d00.png",
+      "master": "art-source/loot/dusk-prowler/female/twilight-stalker-female-v1.png",
+      "runtime": "frontend/public/art/loot/twilight-stalker-female-v1.webp",
+      "prompt": "art-source/loot/dusk-prowler/female/twilight-stalker-female-v1-prompt.txt",
+      "width": 480,
+      "height": 480,
+      "bytes": 64292,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 58.98,
+      "sha256": "99c425d8a427cc0d5d55b57ff1623b21ed83007f5088fe8d80cd5ffed80cc438",
+      "visualReview": "Inspected generated artwork: distinct female silhouette, matching boss material/palette, single isolated hair/crown or fully clothed outfit with no face/skin/mannequin/background/text. Entire item visible; a few ornament tips have tighter margins than requested. Collection illustration only, not a calibrated avatar rig."
+    }
+  ]
+}

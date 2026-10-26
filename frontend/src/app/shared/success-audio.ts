@@ -8,16 +8,35 @@ export const AUDIO_CONTEXT_FACTORY = new InjectionToken<() => AudioContext | nul
   },
 );
 
+export type SuccessCue = 'level' | 'quest' | 'boss' | 'loot';
+export const MAX_SUCCESS_VOICES = 6;
+type Note = readonly [frequency: number, delay: number, duration: number, volume: number, wave?: OscillatorType];
+type Voice = { oscillator: OscillatorNode; envelope: GainNode };
+
+/** Original small motifs: one family, different rhythm/register for each kind of success. */
+const MOTIFS: Readonly<Record<SuccessCue, readonly Note[]>> = {
+  quest: [[392, .02, .22, .021], [493.88, .12, .22, .018], [783.99, .24, .28, .022]],
+  level: [[587.33, .02, .28, .021], [659.25, .14, .28, .018],
+    [880, .30, .34, .020], [1174.66, .48, .38, .021]],
+  boss: [[293.66, .02, .40, .012, 'triangle'], [440, .02, .48, .009],
+    [587.33, .14, .26, .020], [880, .28, .34, .018],
+    [1108.73, .42, .30, .015], [1174.66, .60, .42, .022]],
+  loot: [[659.25, .02, .28, .017], [987.77, .09, .30, .014],
+    [1318.51, .19, .32, .016], [1661.22, .31, .35, .012]],
+};
+
 @Injectable({ providedIn: 'root' })
 export class SuccessAudio implements OnDestroy {
   private readonly factory = inject(AUDIO_CONTEXT_FACTORY);
   private context: AudioContext | null = null;
   private ready: Promise<void> | null = null;
-  private readonly active = new Set<OscillatorNode>();
+  private readonly active = new Set<Voice>();
   private generation = 0;
+  private destroyed = false;
 
   /** Must be called directly from a click/submit, before awaiting any game request. */
   prepare() {
+    if (this.destroyed) return;
     try {
       if (!this.context || this.context.state === 'closed') this.context = this.factory();
       const context = this.context;
@@ -29,53 +48,60 @@ export class SuccessAudio implements OnDestroy {
     }
   }
 
-  play() {
+  play(cue: SuccessCue = 'level') {
     this.stop();
     const generation = this.generation;
-    if (!this.ready) return;
+    if (this.destroyed || !this.ready) return;
     void this.ready
       .then(() => {
         const context = this.context;
-        if (!context || context.state !== 'running' || generation !== this.generation) return;
-        // Original short ascending chime, synthesized locally; no game audio samples.
-        const notes = [523.25, 659.25, 783.99, 1046.5];
-        notes.forEach((frequency, index) => {
-          const start = context.currentTime + 0.02 + index * 0.16;
+        if (!context || context.state !== 'running' || generation !== this.generation || this.destroyed) return;
+        // Synthesized locally; no game samples, music download or background loop.
+        for (const [frequency, delay, duration, volume, wave] of MOTIFS[cue]) {
+          if (this.active.size >= MAX_SUCCESS_VOICES) break;
+          const start = context.currentTime + delay;
           const oscillator = context.createOscillator();
           const envelope = context.createGain();
-          oscillator.type = 'sine';
+          const voice = { oscillator, envelope };
+          this.active.add(voice);
+          oscillator.type = wave ?? 'sine';
           oscillator.frequency.setValueAtTime(frequency, start);
           envelope.gain.setValueAtTime(0.0001, start);
-          envelope.gain.exponentialRampToValueAtTime(0.045, start + 0.02);
-          envelope.gain.exponentialRampToValueAtTime(0.0001, start + 0.65);
+          envelope.gain.exponentialRampToValueAtTime(volume, start + 0.018);
+          envelope.gain.exponentialRampToValueAtTime(0.0001, start + duration);
           oscillator.connect(envelope);
           envelope.connect(context.destination);
-          this.active.add(oscillator);
-          oscillator.onended = () => {
-            oscillator.disconnect();
-            envelope.disconnect();
-            this.active.delete(oscillator);
-          };
+          oscillator.onended = () => this.release(voice);
           oscillator.start(start);
-          oscillator.stop(start + 0.7);
-        });
+          oscillator.stop(start + duration + .01);
+        }
       })
-      .catch(() => {}); // Audio failure must never reject a successful activity.
+      .catch(() => {
+        if (generation === this.generation) this.stop();
+      }); // Audio failure must never reject a successful activity.
+  }
+
+  private release(voice: Voice) {
+    if (!this.active.delete(voice)) return;
+    voice.oscillator.disconnect();
+    voice.envelope.disconnect();
   }
 
   stop() {
     this.generation++;
-    for (const oscillator of this.active) {
+    for (const voice of this.active) {
       try {
-        oscillator.stop();
+        voice.oscillator.stop();
       } catch {
         /* Already finished. */
       }
+      this.release(voice);
     }
-    this.active.clear();
   }
 
   ngOnDestroy() {
+    if (this.destroyed) return;
+    this.destroyed = true;
     this.stop();
     if (this.context && this.context.state !== 'closed') void this.context.close().catch(() => {});
   }

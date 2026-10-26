@@ -1,0 +1,60 @@
+{
+  "bossId": "bloodmoon-regent",
+  "difficulty": "normal",
+  "generatedAt": "2026-10-05",
+  "generator": "Built-in image_gen",
+  "references": [
+    "frontend/public/art/bosses/astral-sovereign-v2.webp",
+    "frontend/public/art/bosses/cloud-sovereign-v1.webp"
+  ],
+  "prompt": "normal-v1.prompt.txt",
+  "master": "normal-v1.master.png",
+  "output": "frontend/public/art/bosses/bloodmoon-regent-normal-v1.webp",
+  "processing": "Unmodified generated PNG copied as master; mechanical resize to774x774, padded63px transparent on each side; WebP quality85 alphaQuality100.",
+  "masterQa": {
+    "width": 1254,
+    "height": 1254,
+    "hasAlpha": true,
+    "format": "png",
+    "bytes": 1943675,
+    "sha256": "dabfe243b60996c0d2f8284ea935473e6218d0d8f7b50b25674a3de9dd8b5dc5",
+    "transparentPixels": 795043,
+    "partialAlphaPixels": 776061,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 0,
+      "top": 11,
+      "right": 1253,
+      "bottom": 1253
+    },
+    "clearMargins": {
+      "left": 0,
+      "top": 11,
+      "right": 0,
+      "bottom": 0
+    }
+  },
+  "outputQa": {
+    "width": 900,
+    "height": 900,
+    "hasAlpha": true,
+    "format": "webp",
+    "bytes": 195750,
+    "sha256": "74521c896af77019f4cb0ebc8d4725520ff4bb9b1d1bd55081c2484846671da7",
+    "transparentPixels": 514526,
+    "partialAlphaPixels": 292661,
+    "solidEdgePixels": 0,
+    "contentBounds": {
+      "left": 63,
+      "top": 69,
+      "right": 836,
+      "bottom": 836
+    },
+    "clearMargins": {
+      "left": 63,
+      "top": 69,
+      "right": 63,
+      "bottom": 63
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "id": "dusk-crown",
+  "type": "hair",
+  "boss": "dusk-prowler",
+  "generator": "built-in image_gen",
+  "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-36d92b2e-dac7-49e3-b1e2-05558be4dd87.png",
+  "master": "art-source/loot/dusk-prowler/dusk-crown-v1.png",
+  "runtime": "frontend/public/art/loot/dusk-crown-v1.webp",
+  "prompt": "art-source/loot/dusk-prowler/dusk-crown-v1-prompt.txt",
+  "width": 480,
+  "height": 480,
+  "bytes": 73146,
+  "alphaRange": [
+    0,
+    254
+  ],
+  "transparentPercent": 52.85,
+  "centralSlotTransparentPercent": null,
+  "sha256": "e3f3a58613f389205b87d93180c271e9dd1342acb8b191501079781a45b48bd7",
+  "visualReview": "Inspected generated artwork: matching boss palette; whole single hair/outfit or open aura frame with empty center; no character in aura, no scenery/text."
+}

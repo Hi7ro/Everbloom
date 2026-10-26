@@ -1,15 +1,66 @@
+@let state = membership.state();
 <main class="membership-page" id="main-content">
-  <header><a routerLink="/dashboard" class="back-link">← Zurück zu deinem Abenteuer</a><span class="wordmark">everbloom<span>+</span></span></header>
+  <header><a routerLink="/dashboard" class="back-link">← Dein Abenteuer</a><span class="wordmark">herovera<span>+</span></span></header>
   <section class="membership-hero" aria-labelledby="membership-title">
     <div class="hero-copy">
-      <span class="soon-label">MEMBERSHIP · IN ENTWICKLUNG</span>
+      <span class="soon-label">{{ state?.mode === 'preview' ? 'VORSCHAU · NOCH NICHT BUCHBAR' : membership.active() ? 'DEIN PLUS-ZUGANG IST AKTIV' : 'HEROVERA PLUS' }}</span>
       <h1 id="membership-title">Dein Alltag.<br>Ein größeres <em>Abenteuer.</em></h1>
-      <p>Mehr Geschichten erleben. Neue Seiten an dir entdecken. Und einen Charakter gestalten, der sich ganz nach dir anfühlt.</p>
-      <div class="price"><strong>{{ price }}</strong><span>pro Monat<br><small>geplanter Preis</small></span></div>
-      <a routerLink="/dashboard" class="primary">Kostenlos weiterspielen <span>↗</span></a>
-      <p class="availability">Membership ist noch nicht buchbar. Hier siehst du die geplante Erweiterung.</p>
+      <p>Stell dich neuen Bossherausforderungen, verdiene besondere Looks und gib deinem Fortschritt einen kleinen Rückenwind.</p>
+
+      <div class="membership-access" [attr.aria-busy]="membership.loading() || membership.busy()">
+        @if (membership.loading() && !state) {
+          <p class="availability" role="status">Dein Abo-Status wird geladen …</p>
+        } @else if (membership.active()) {
+          <div class="active-plan"><span aria-hidden="true">✧</span><div><strong>Herovera Plus</strong><span>Dein Zugang ist bestätigt.</span></div></div>
+          @if (accessUntil(); as date) { <p class="access-date">Zugang bestätigt bis {{ date }}.</p> }
+          @if (state?.willRenew === false) { <p class="availability">Die automatische Verlängerung ist ausgeschaltet. Dein bestätigter Zugang bleibt bis zum Ablauf bestehen.</p> }
+          @else if (state?.willRenew === true) { <p class="availability">Dein Abo verlängert sich automatisch. Du kannst es jederzeit im Store verwalten.</p> }
+          @if (managementUrl(); as url) {
+            @if (membership.native) { <button class="primary manage-button" type="button" [disabled]="membership.busy() || membership.loading()" (click)="membership.manage()">Abo verwalten ↗</button> }
+            @else { <a class="primary manage-link" [href]="url" target="_blank" rel="noopener noreferrer">Abo im Store verwalten ↗</a> }
+          } @else { <p class="availability">Deine Abos kannst du auch direkt in deinem App-Store- oder Google-Play-Konto verwalten.</p> }
+        } @else if (state?.mode === 'preview') {
+          <div class="price"><strong>{{ plannedPrice }}</strong><span>pro Monat<br><small>geplanter Preis · kein Kauf möglich</small></span></div>
+          <a routerLink="/dashboard" class="primary">Kostenlos weiterspielen <span>↗</span></a>
+          <p class="availability">Der Kaufstart ist noch nicht freigegeben. In dieser Vorschau sind alle Bossmodi kostenlos testbar, sobald du sie im Spiel erreichst.</p>
+        } @else if (state?.mode === 'live') {
+          @if (membership.offer(); as offer) {
+            <div class="price"><strong>{{ offer.priceString }}</strong><span>pro Monat<br><small>Preis aus deinem Store</small></span></div>
+            <button class="primary buy-button" type="button" [disabled]="!membership.canBuy()" (click)="membership.purchase()">{{ membership.busy() ? 'Store-Vorgang läuft …' : 'Plus für ' + offer.priceString + ' / Monat abonnieren' }}</button>
+            <p class="subscription-terms">Monatliches Abo mit automatischer Verlängerung. Zahlung über deinen Store. Dort kannst du vor der nächsten Verlängerung kündigen; dein bezahlter Zugang bleibt bis zum Ablauf erhalten.</p>
+          } @else if (!membership.native) {
+            <p class="availability">Plus abonnierst du in der iOS- oder Android-App. Melde dich dort mit demselben Herovera-Konto an.</p>
+          } @else {
+            <p class="availability" role="status">{{ membership.loading() ? 'Dein Monatsangebot wird geladen …' : 'Der Store hat noch kein Monatsangebot bereitgestellt. Bitte prüfe den Status erneut.' }}</p>
+          }
+        } @else if (!membership.loading()) {
+          <p class="availability">Dein Abo-Status konnte noch nicht geladen werden. Dein kostenloses Abenteuer bleibt verfügbar.</p>
+        }
+
+        @if (membership.pendingVerification()) {
+          <p class="pending-note" role="status">Dein Kauf wartet auf Bestätigung. Bitte kaufe nicht erneut; prüfe den Abo-Status oder stelle deinen Kauf wieder her.</p>
+          <details class="availability">
+            <summary>Der Store-Vorgang wurde abgebrochen?</summary>
+            <p>Prüfe zuerst in deinem App Store oder Google Play, dass weder ein aktives Abo
+              noch eine Zahlung auf Bestätigung wartet. Nur wenn der Vorgang dort tatsächlich
+              abgebrochen ist, kannst du die lokale Kaufprüfung aufheben.</p>
+            <button class="text-button" type="button" [disabled]="membership.busy() || membership.loading()"
+              (click)="membership.retryAfterStoreCancellation()">Im Store geprüft und abgebrochen · Kaufprüfung aufheben</button>
+          </details>
+        }
+        @if (membership.message()) { <p class="feedback" role="status">{{ membership.message() }}</p> }
+        @if (membership.error()) { <p class="error" role="alert">{{ membership.error() }}</p> }
+
+        <div class="store-actions">
+          @if (membership.native && state?.mode === 'live' && state?.purchaseConfig) {
+            <button class="text-button restore-button" type="button" [disabled]="membership.busy() || membership.loading()" (click)="membership.restore()">Käufe wiederherstellen</button>
+          }
+          <button class="text-button refresh-button" type="button" [disabled]="membership.busy() || membership.loading()" (click)="membership.refresh()">{{ membership.loading() ? 'Wird geprüft …' : 'Abo-Status prüfen' }}</button>
+        </div>
+        <nav class="purchase-links" aria-label="Informationen zur Mitgliedschaft"><a routerLink="/terms">Nutzungsbedingungen</a><a routerLink="/privacy">Datenschutz</a><a routerLink="/support">Hilfe</a></nav>
+      </div>
     </div>
-    <div class="hero-art" aria-label="Zwei der kostenlosen Everbloom-Startlooks">
+    <div class="hero-art" aria-label="Zwei der kostenlosen Herovera-Startlooks">
       <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
       <span class="art-spark spark-one" aria-hidden="true">✧</span><span class="art-spark spark-two" aria-hidden="true">✦</span>
       @for (appearance of portraits; track appearance.illustration) { <app-character-portrait [appearance]="appearance" [animated]="false" /> }
@@ -18,30 +69,33 @@
   </section>
 
   <section class="promise" aria-label="Das kostenlose Grundspiel bleibt vollständig spielbar">
-    <span class="promise-symbol" aria-hidden="true">∞</span><div><h2>Deine Entwicklung braucht kein Abo.</h2><p>Charakter, Fortschritt, wiederkehrende Ziele und Erholung gehören zum Grundspiel. Membership erweitert deine Welt.</p></div>
+    <span class="promise-symbol" aria-hidden="true">∞</span><div><h2>Deine Entwicklung braucht kein Abo.</h2><p>Dein Charakter, alle verfügbaren Skills, persönliche Tagesziele und die {{ freeBossCount }} normalen Bosse bis Level {{ freeBossMaxLevel }} einschließlich des Wolkenkönigs gehören zum kostenlosen Grundspiel. Du bestimmst dein Tempo.</p></div>
   </section>
 
-  <section class="chapters" aria-label="Geplante Membership-Inhalte">
-    @for (chapter of chapters; track chapter.number) {
-      <article><div class="chapter-top"><span>{{ chapter.number }}</span><span class="planned">Geplant</span></div><span class="chapter-symbol" aria-hidden="true">{{ chapter.symbol }}</span><h2>{{ chapter.name }}</h2><p>{{ chapter.detail }}</p></article>
+  <section class="chapters" aria-label="Das bietet Herovera Plus">
+    @for (chapter of chapters; track chapter.name) {
+      <article><div class="chapter-top"><strong>{{ chapter.number }}</strong><span class="plan-label">PLUS</span></div><span class="chapter-symbol" aria-hidden="true">{{ chapter.symbol }}</span><h2>{{ chapter.name }}</h2><p>{{ chapter.detail }}</p></article>
     }
   </section>
 
   <section class="comparison" aria-labelledby="comparison-title">
-    <p class="eyebrow">WÄHLE DEIN TEMPO</p><h2 id="comparison-title">Eine Reise. Mehr Möglichkeiten.</h2>
-    <p class="comparison-note">Produktplan für das Grundspiel und seine Erweiterung. Der aktuelle Prototyp enthält noch nicht alle geplanten Funktionen.</p>
-    <div class="comparison-table" role="table" aria-label="Geplanter Vergleich Free und Membership">
-      <div class="comparison-row table-head" role="row"><span role="columnheader">Dein Erlebnis</span><strong role="columnheader">Free</strong><strong role="columnheader">Membership</strong></div>
+    <p class="eyebrow">WÄHLE DEIN TEMPO</p><h2 id="comparison-title">Deine Reise. Deine Entscheidung.</h2>
+    <p class="comparison-note">Plus öffnet die Bosskampagne von Level 60 bis 100 sowie Hard, Episch und Ultimate für alle Bosse. Entdeckung, nötiges Level und deine Vorbereitung zählen weiterhin. Die Belohnungen verdienst du durch Siege.</p>
+    <div class="comparison-table" role="table" aria-label="Vergleich kostenloses Grundspiel und Herovera Plus">
+      <div class="comparison-row table-head" role="row"><span role="columnheader">Dein Erlebnis</span><strong role="columnheader">Free</strong><strong role="columnheader">Plus</strong></div>
       @for (row of comparison; track row[0]) { <div class="comparison-row" role="row"><span role="rowheader">{{ row[0] }}</span><span role="cell">{{ row[1] }}</span><span role="cell">{{ row[2] }}</span></div> }
     </div>
+    @if (state?.mode === 'preview') { <p class="comparison-note">Aktuelle Testvorschau: Alle zehn Bosse mit allen vier Modi sind ohne Abo testbar. Das ist die Beta-Testfreigabe; im veröffentlichten Free-Tarif endet die Bosskampagne bei Level {{ freeBossMaxLevel }}. Der kostenpflichtige Plus-Zugang und sein XP-Bonus sind noch nicht aktiv.</p> }
   </section>
 
   <section class="questions" aria-labelledby="questions-title">
     <h2 id="questions-title">Gut zu wissen</h2>
-    <details><summary>Werde ich ohne Abo ausgebremst?</summary><p>Free soll dauerhaft sinnvoll spielbar bleiben. Du entwickelst deinen Charakter, sammelst XP und verdienst Auren. Die Erweiterung ist für zusätzliche Inhalte gedacht.</p></details>
-    <details><summary>Verschwinden meine Level, wenn ich kündige?</summary><p>Verdiente XP und Level bleiben erhalten. Die genaue Nutzung zusätzlicher Member-Inhalte nach Abo-Ende wird vor dem Kaufstart transparent festgelegt.</p></details>
-    <details><summary>Gibt es einen XP-Vorteil?</summary><p>Ein moderater Bonus von 10 % auf Charakter-Aktivitäts-XP ist vorgesehen. Er ist noch nicht aktiv und gilt nicht automatisch für Skill-XP, Questboni oder Boss-Schaden.</p></details>
-    <details><summary>Was kann ich heute schon spielen?</summary><p>Im lokalen Prototyp kannst du deinen Chibi gestalten, Aktivitäten erfassen, Fortschritt und Aura-Belohnungen sammeln und den automatischen Probekampf ausprobieren. Cloud-Spielstand und Membership-Käufe folgen später.</p></details>
+    <details><summary>Was bleibt dauerhaft kostenlos?</summary><p>Charaktergestaltung, Aktivitäten, alle verfügbaren Skills, persönliche Tagesziele, Erholung und {{ freeBossCount }} Bossbegegnungen im normalen Modus bis Level {{ freeBossMaxLevel }} einschließlich des Wolkenkönigs. Dein Fortschritt gehört zu deinem Konto.</p></details>
+    <details><summary>Welche Herausforderungen bekomme ich mit Plus?</summary><p>Du erhältst die {{ plusBossCount }} weiteren Bosse auf Level 60 bis 100 und Hard, Episch sowie Ultimate für alle {{ bossCount }} Bosse: insgesamt {{ plusEncounters }} zusätzliche Begegnungen. Die höheren Levelanforderungen gelten weiterhin. Jeder erste Sieg pro Boss und Modus hat eine feste kosmetische Belohnung.</p></details>
+    <details><summary>Was passiert, wenn ich kündige?</summary><p>Level, XP und bereits verdiente Frisuren, Ausrüstungssets und Auren bleiben erhalten. Die normalen Bosse bis Level {{ freeBossMaxLevel }} bleiben spielbar. Nach Ablauf des bezahlten Zeitraums enden der Zugang zu Bossen ab Level 60, zu den höheren Bossmodi und der Plus-XP-Bonus.</p></details>
+    <details><summary>Wie funktioniert der XP-Bonus?</summary><p>Plus gibt 10 % zusätzliche Charakter-XP auf anrechenbare Aktivitäten, auf ganze XP abgerundet. Aus 100 Charakter-Aktivitäts-XP werden 110. Skill-XP, Questboni, Boss-Schaden und die Anrechnungsgrenzen bleiben unverändert.</p></details>
+    <details><summary>Kann ich mein Abo auf einem anderen Gerät nutzen?</summary><p>Melde dich mit demselben Herovera-Konto an. Dein bestätigter Plus-Zugang gehört zu diesem Konto. Für eine Wiederherstellung brauchst du außerdem das Store-Konto des ursprünglichen Kaufs. Ein Kauf wird nicht auf ein anderes Herovera-Konto übertragen.</p></details>
+    <details><summary>Wie verwalte oder kündige ich mein Abo?</summary><p>Über „Abo verwalten“ gelangst du zu dem Store, in dem du abonniert hast. Alternativ öffnest du dort deine Abonnements direkt. Das Löschen der App oder deines Herovera-Kontos kündigt ein Store-Abo nicht.</p></details>
   </section>
-  <footer><h2>Dein nächstes Kapitel beginnt bei dir.</h2><a routerLink="/dashboard" class="primary">Zurück zu deinem Charakter →</a><p>Kein Abo nötig. Kleine Schritte zählen.</p></footer>
+  <footer><h2>Dein nächster Schritt zählt.</h2><a routerLink="/dashboard" class="primary">Zurück zu deinem Abenteuer →</a><p>Mit Plus oder kostenlos. In deinem Tempo.</p></footer>
 </main>

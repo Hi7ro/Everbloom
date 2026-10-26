@@ -1,0 +1,10 @@
+Built-in image_gen; 2026-10-05.
+References: /Users/xv7ro/dev/personal/everbloom/frontend/public/art/bosses/bloodmoon-regent-normal-v1.webp ; /Users/xv7ro/dev/personal/everbloom/frontend/public/art/loot/astral-crown-v1.webp
+
+Use case: stylized-concept.
+Asset type: premium original-IP anime fantasy RPG loot illustration, a single isolated item for mobile use.
+Input image 1: the boss reference; inherit its materials, visual family and color palette, NOT its body. Input image 2: reference for existing loot painterly rendering quality and asset framing.
+Style: sophisticated dimensional hand-painted anime-fantasy illustration, refined material shading, delicate metalwork, clean readable edges and jewel highlights. Match our existing art, not simple flat vector, not screenshot, not a sheet.
+Subject: An elegant moon-white anime hairstyle with long layered sweeping fringe and glossy silver-white flowing side locks, finished with a delicate ruby and gold crescent tiara inspired by the bloodmoon queen. Rich pearl shadows, deep ruby accents and refined thin gold filigree. Entire hairstyle isolated with an empty face opening, no person.
+Composition: One floating hairstyle with its integrated ornamental circlet. Hair only: absolutely no skin, head, neck, ears, eyes, face, mannequin or bust. Empty transparent face opening. Three-quarter view. Square composition, whole hairstyle within central 70% of canvas, fully draw every strand with wide transparent margins.
+Background: genuine alpha transparency, no checkerboard, no background color, scenery, floor, shadow under the item, border, labels, letters, symbols resembling readable text, watermark or logo. Only the requested single asset. Do NOT tightly crop; all extremities fully visible.

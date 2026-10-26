@@ -1,0 +1,50 @@
+{
+  "date": "2026-10-05",
+  "source": "Built-in image_gen; separate render for each item; mechanical WebP resize only.",
+  "items": [
+    {
+      "id": "wyrm-crown",
+      "presentation": "female",
+      "type": "hair",
+      "boss": "primordial-dragon",
+      "generator": "built-in image_gen",
+      "reference": "/Users/xv7ro/dev/personal/everbloom/frontend/public/art/loot/wyrm-crown-v1.webp",
+      "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-52323140-a5c9-4744-9918-ff6dd33b53f5.png",
+      "master": "art-source/loot/primordial-dragon/female/wyrm-crown-female-v1.png",
+      "runtime": "frontend/public/art/loot/wyrm-crown-female-v1.webp",
+      "prompt": "art-source/loot/primordial-dragon/female/wyrm-crown-female-v1-prompt.txt",
+      "width": 480,
+      "height": 480,
+      "bytes": 69418,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 60.73,
+      "sha256": "1155ada40ef2e5113605ed978dd4ecd30eea89760bc78275a643cc41c48a2c3d",
+      "visualReview": "Inspected generated artwork: distinct female silhouette, matching boss material/palette, single isolated hair/crown or fully clothed outfit with no face/skin/mannequin/background/text. Entire item visible; a few ornament tips have tighter margins than requested. Collection illustration only, not a calibrated avatar rig."
+    },
+    {
+      "id": "prismatic-scale",
+      "presentation": "female",
+      "type": "outfit",
+      "boss": "primordial-dragon",
+      "generator": "built-in image_gen",
+      "reference": "/Users/xv7ro/dev/personal/everbloom/frontend/public/art/loot/prismatic-scale-v1.webp",
+      "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-85620700-bf78-4a8b-ba84-e514ce77a5d4.png",
+      "master": "art-source/loot/primordial-dragon/female/prismatic-scale-female-v1.png",
+      "runtime": "frontend/public/art/loot/prismatic-scale-female-v1.webp",
+      "prompt": "art-source/loot/primordial-dragon/female/prismatic-scale-female-v1-prompt.txt",
+      "width": 480,
+      "height": 480,
+      "bytes": 82224,
+      "alphaRange": [
+        0,
+        254
+      ],
+      "transparentPercent": 50.5,
+      "sha256": "2e723e0193b051841f288bcfca0bb57c73636aec2087345a040c780c8ac7544d",
+      "visualReview": "Inspected generated artwork: distinct female silhouette, matching boss material/palette, single isolated hair/crown or fully clothed outfit with no face/skin/mannequin/background/text. Entire item visible; a few ornament tips have tighter margins than requested. Collection illustration only, not a calibrated avatar rig."
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "bossId": "frost-titan",
+  "difficulty": "epic",
+  "generatedAt": "2026-10-05",
+  "reference": "frontend/public/art/bosses/frost-titan-v1.webp",
+  "prompt": "epic-v1.prompt.txt",
+  "master": "epic-v1.master.png",
+  "output": "frontend/public/art/bosses/frost-titan-epic-v1.webp",
+  "processing": "Unmodified generated PNG copied as master; mechanical resize to 774x774, padded 63px transparent on each side; WebP quality85 alphaQuality100.",
+  "masterQa": {
+    "width": 1254,
+    "height": 1254,
+    "hasAlpha": true,
+    "format": "png",
+    "bytes": 2534166,
+    "sha256": "831d7fc4a3bdd2c559578b006bb8db971bb480174f023443acd5d7594c3466dc",
+    "transparentPixels": 563158,
+    "partialAlphaPixels": 1008738,
+    "contentBounds": {
+      "left": 0,
+      "top": 7,
+      "right": 1219,
+      "bottom": 1253
+    },
+    "clearMargins": {
+      "left": 0,
+      "top": 7,
+      "right": 34,
+      "bottom": 0
+    }
+  },
+  "outputQa": {
+    "width": 900,
+    "height": 900,
+    "hasAlpha": true,
+    "format": "webp",
+    "bytes": 233870,
+    "sha256": "000449e9a20630b415fcc1549f4e8e6767f77b5501c73503505c7cf1334ae594",
+    "transparentPixels": 426711,
+    "partialAlphaPixels": 381226,
+    "contentBounds": {
+      "left": 63,
+      "top": 67,
+      "right": 815,
+      "bottom": 836
+    },
+    "clearMargins": {
+      "left": 63,
+      "top": 67,
+      "right": 84,
+      "bottom": 63
+    }
+  }
+}

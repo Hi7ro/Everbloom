@@ -1,0 +1,22 @@
+{
+  "id": "glacier-guard",
+  "presentation": "female",
+  "type": "outfit",
+  "boss": "frost-titan",
+  "generator": "built-in image_gen",
+  "reference": "/Users/xv7ro/dev/personal/everbloom/frontend/public/art/loot/glacier-guard-v2.webp",
+  "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-3262febe-4f4f-4a59-9788-0b0c24bc1f90.png",
+  "master": "art-source/loot/frost-titan/female/glacier-guard-female-v1.png",
+  "runtime": "frontend/public/art/loot/glacier-guard-female-v1.webp",
+  "prompt": "art-source/loot/frost-titan/female/glacier-guard-female-v1-prompt.txt",
+  "width": 480,
+  "height": 480,
+  "bytes": 42616,
+  "alphaRange": [
+    0,
+    254
+  ],
+  "transparentPercent": 70.54,
+  "sha256": "1c4c2bdf98d3d8f00f616ec292b7229e0211ead370789aa9d49e0ac72c82624d",
+  "visualReview": "Inspected generated artwork: distinct female silhouette, matching boss material/palette, single isolated hair/crown or fully clothed outfit with no face/skin/mannequin/background/text. Entire item visible; a few ornament tips have tighter margins than requested. Collection illustration only, not a calibrated avatar rig."
+}

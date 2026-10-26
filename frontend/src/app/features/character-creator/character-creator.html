@@ -1,7 +1,7 @@
 <a class="skip-link" href="/character/create#main">Zum Charakter-Editor</a>
 <header class="creator-header">
-  <a class="brand" routerLink="/dashboard" aria-label="Everbloom – zum Dashboard"
-    ><span aria-hidden="true">✧</span> everbloom</a
+  <a class="brand" routerLink="/dashboard" aria-label="Herovera – zum Dashboard"
+    ><span aria-hidden="true">✧</span> herovera</a
   >
   <span class="chapter">DEIN CHARAKTER</span>
 </header>
@@ -18,25 +18,11 @@
   }
   @if (draft(); as profile) {
     <div class="creator-grid">
-      <aside class="preview" aria-label="Live-Vorschau deines Charakters">
-        <div class="avatar-stage">
-          <div
-            class="portrait-frame"
-            [class.tall-aura-preview]="
-              previewAura() === 'guardian' || (previewAura() === 'demonic' && previewFierce())
-            "
-          >
-            @if (previewAura(); as aura) {
-              <app-character-aura
-                class="aura-tryout"
-                [aura]="aura"
-                [animated]="feedback.motionEnabled()"
-                [color]="previewColor()"
-                [fierce]="previewFierce()"
-              />
-            }
+      <aside class="preview" [class.enlarged]="enlargedPreview()" aria-label="Live-Vorschau deines Charakters">
+        <div id="character-preview-art" class="avatar-stage" [style.--look-accent]="selectedIllustration()?.accent">
+          <div class="portrait-frame">
             <app-character-portrait
-              [appearance]="previewAppearance()!"
+              [appearance]="profile.appearance"
               [level]="store.level().level"
               [interest]="store.avatarInterest()"
               [animated]="feedback.motionEnabled()"
@@ -46,10 +32,8 @@
         <div class="preview-caption">
           <span class="eyebrow">DEIN BEGLEITER</span>
           <h2>{{ profile.name.trim() || 'Dein Name' }}</h2>
-          <p>{{ selectedIllustration()?.name }}</p>
-          @if (previewAura()) {
-            <p class="preview-only-badge" role="status">Aura nur zur Vorschau</p>
-          }
+          <p>{{ selectedIllustration()?.name }} · {{ selectedIllustration()?.style }}</p>
+          <p class="look-summary">{{ lookSummary() }}</p>
           <button
             class="motion-toggle"
             type="button"
@@ -58,6 +42,7 @@
           >
             Bewegung: {{ feedback.motionEnabled() ? 'Ein' : 'Aus' }}
           </button>
+          <button class="preview-size" type="button" [attr.aria-expanded]="enlargedPreview()" aria-controls="character-preview-art" (click)="enlargedPreview.set(!enlargedPreview())">{{ enlargedPreview() ? 'Kompakte Vorschau' : 'Figur vergrößern' }}</button>
         </div>
       </aside>
       <form class="editor" (ngSubmit)="save()" aria-describedby="profile-storage-note" novalidate>
@@ -129,6 +114,7 @@
                   class="illustration-choice"
                   type="button"
                   [attr.aria-pressed]="selectedIllustration()?.id === option.id"
+                  [style.--look-accent]="option.accent"
                   (click)="chooseIllustration(option.id)"
                   [attr.aria-label]="option.name + ' als Vorlage wählen'"
                 >
@@ -140,6 +126,7 @@
                     }
                   </span>
                   <strong>{{ option.name }}</strong>
+                  <small class="style-tag">{{ option.style }}</small>
                   <span class="illustration-check" aria-hidden="true">{{
                     selectedIllustration()?.id === option.id ? '✓' : '○'
                   }}</span>
@@ -167,6 +154,7 @@
                   [attr.aria-pressed]="selectedHair() === option.id"
                   (click)="chooseModule('illustratedHair', option.id)"
                 >
+                  <img class="module-art hair-art" [src]="'/art/characters/' + option.id + '-hair-preview-v2.webp'" alt="" width="80" height="80" loading="lazy" decoding="async" />
                   <span>{{ option.hairLabel }}</span
                   ><span aria-hidden="true">{{ selectedHair() === option.id ? '✓' : '○' }}</span>
                 </button>
@@ -182,6 +170,7 @@
                   [attr.aria-pressed]="selectedOutfit() === option.id"
                   (click)="chooseModule('outfitSet', option.id)"
                 >
+                  <img class="module-art outfit-art" [src]="'/art/characters/' + option.id + '-body-v2.webp'" alt="" width="80" height="96" loading="lazy" decoding="async" />
                   <span>{{ option.outfitLabel }}</span
                   ><span aria-hidden="true">{{ selectedOutfit() === option.id ? '✓' : '○' }}</span>
                 </button>
@@ -191,6 +180,8 @@
               Ein vollständiges Set mit passender Ausrüstung und Accessoires.
             </p>
           </fieldset>
+          <button class="reset-look" type="button" [disabled]="store.busy() || !hasCustomStyle()" (click)="resetLook()">Vorlagen-Look wiederherstellen</button>
+          <p class="hint">Set und Frisur lassen sich unabhängig wechseln. Name, Aura und Fortschritt bleiben beim Zurücksetzen erhalten.</p>
           @for (group of colorGroups; track group.slot) {
             <fieldset class="color-field" [attr.data-color]="group.slot" [disabled]="store.busy()">
               <legend>{{ group.label }}</legend>
@@ -198,7 +189,7 @@
                 <button
                   type="button"
                   class="color-choice"
-                  [attr.aria-pressed]="profile.appearance[group.slot] === undefined"
+                  [attr.aria-pressed]="profile.appearance[group.slot] === undefined && !(group.slot === 'hairTint' && profile.appearance.cosmeticHair)"
                   [attr.aria-label]="group.label + ': Original'"
                   (click)="chooseColor(group.slot, undefined)"
                 >
@@ -209,23 +200,30 @@
                   <button
                     type="button"
                     class="color-choice"
-                    [attr.aria-pressed]="profile.appearance[group.slot] === color.hex"
+                    [attr.aria-pressed]="profile.appearance[group.slot] === color.hex && !(group.slot === 'hairTint' && profile.appearance.cosmeticHair)"
                     [attr.aria-label]="group.label + ': ' + color.label"
                     (click)="chooseColor(group.slot, color.hex)"
                   >
                     <span class="swatch" [style.--swatch]="color.hex" aria-hidden="true">{{
-                      profile.appearance[group.slot] === color.hex ? '✓' : ''
+                      profile.appearance[group.slot] === color.hex && !(group.slot === 'hairTint' && profile.appearance.cosmeticHair) ? '✓' : ''
                     }}</span>
                     <span>{{ color.label }}</span>
                   </button>
                 }
               </div>
+              @if (group.slot === 'hairTint' && profile.appearance.cosmeticHair) {
+                <p class="hint">Die exklusive Farbe deiner Boss-Edition ist aktiv. Eine andere Farbe wechselt zurück zur normalen Frisur.</p>
+              }
             </fieldset>
           }
         </section>
+        <section class="editor-section" id="boss-loot" [hidden]="stage() !== 2">
+          <app-boss-loot-collection [appearance]="profile.appearance" (picked)="chooseBossCosmetic($event)" />
+        </section>
         <section class="editor-section" id="creator-stage-3" [hidden]="stage() !== 3">
           <p class="eyebrow">03 · DEINE AURA</p>
-          <h2 tabindex="-1">Ein Hauch Magie.</h2>
+          <h2 tabindex="-1">Deine Erfolge leuchten.</h2>
+          <p class="hint">Waldlicht begleitet dich von Anfang an. Weitere Auren und ihre festen Farben verdienst du durch Levelaufstiege und Boss-Siege.</p>
           <fieldset [disabled]="store.busy()">
             <legend>Aura</legend>
             <div class="choice-grid aura-choices">
@@ -253,70 +251,7 @@
               (picked)="chooseAura($event)"
             />
           </div>
-        </section>
-        <section
-          class="editor-section aura-lab"
-          [hidden]="stage() !== 3"
-          aria-label="Künftige Auren als Vorschau"
-        >
-          <details (toggle)="onAuraPreviewToggle($event)">
-            <summary>Künftige Auren ausprobieren</summary>
-            <p id="aura-preview-note" class="preview-notice">
-              Vorschau – noch nicht freigeschaltet. Wird nicht gespeichert.
-            </p>
-            <fieldset [disabled]="store.busy()" aria-describedby="aura-preview-note">
-              <legend>Welcher Zauber passt zu dir?</legend>
-              <div class="choice-grid advanced-aura-choices">
-                @for (aura of advancedAuras; track aura.id) {
-                  <button
-                    type="button"
-                    [attr.aria-pressed]="previewAura() === aura.id"
-                    (click)="choosePreviewAura(aura.id)"
-                  >
-                    <span>{{ aura.label }}</span
-                    ><span aria-hidden="true">{{ previewAura() === aura.id ? '✓' : '○' }}</span>
-                  </button>
-                }
-              </div>
-            </fieldset>
-            @if (previewAuraDesign(); as aura) {
-              <p class="hint aura-description">{{ aura.description }}</p>
-              <fieldset [disabled]="store.busy()">
-                <legend>Aurafarbe in der Vorschau</legend>
-                <div class="palette-grid aura-preview-colors">
-                  @for (color of auraPreviewColors; track color.hex) {
-                    <button
-                      type="button"
-                      class="color-choice"
-                      [attr.aria-pressed]="previewColor() === color.hex"
-                      [attr.aria-label]="'Aurafarbe: ' + color.label"
-                      (click)="choosePreviewColor(color.hex)"
-                    >
-                      <span class="swatch" [style.--swatch]="color.hex" aria-hidden="true">{{
-                        previewColor() === color.hex ? '✓' : ''
-                      }}</span>
-                      <span>{{ color.label }}</span>
-                    </button>
-                  }
-                </div>
-              </fieldset>
-              @if (aura.id === 'demonic') {
-                <label class="fierce-toggle">
-                  <input
-                    type="checkbox"
-                    name="previewFierce"
-                    [ngModel]="previewFierce()"
-                    (ngModelChange)="previewFierce.set($event)"
-                    [disabled]="store.busy()"
-                  />
-                  <span>Schattenaugen hinter dem Kopf</span>
-                </label>
-              }
-              <button type="button" class="secondary end-aura-preview" (click)="endAuraPreview()">
-                Vorschau beenden
-              </button>
-            }
-          </details>
+          <app-boss-loot-collection [appearance]="profile.appearance" kind="aura" (picked)="chooseBossCosmetic($event)" />
         </section>
         <div class="save-section">
           @if (stage() < 3) {
@@ -331,13 +266,18 @@
             </button>
           }
           <p id="profile-storage-note" class="hint">
-            @if (store.persistence().state === 'saved') {
-              <span class="local-save-status"
-                ><span aria-hidden="true">✓</span> Aktivitäten lokal gespeichert</span
-              >
+            @if (store.accountMode) {
+              Dein Look wird in deinem Konto gespeichert. Gestalten verändert keine XP oder
+              Fähigkeiten.
+            } @else {
+              @if (store.persistence().state === 'saved') {
+                <span class="local-save-status"
+                  ><span aria-hidden="true">✓</span> Aktivitäten lokal gespeichert</span
+                >
+              }
+              Dein Look bleibt auf diesem Gerät. Gestalten verändert keine XP oder Fähigkeiten. Eine
+              Cloud-Sicherung ist noch nicht verfügbar.
             }
-            Dein Look bleibt auf diesem Gerät. Gestalten verändert keine XP oder Fähigkeiten. Eine
-            Cloud-Sicherung ist noch nicht verfügbar.
           </p>
           <p id="profile-form-error" class="error" role="alert">{{ formError() }}</p>
           @if (store.error()) {

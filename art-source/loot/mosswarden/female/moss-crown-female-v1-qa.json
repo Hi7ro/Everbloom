@@ -1,0 +1,22 @@
+{
+  "id": "moss-crown",
+  "presentation": "female",
+  "type": "hair",
+  "boss": "mosswarden",
+  "generator": "built-in image_gen",
+  "reference": "/Users/xv7ro/dev/personal/everbloom/frontend/public/art/loot/moss-crown-v1.webp",
+  "originalGeneratedPath": "/Users/xv7ro/.codex/generated_images/01a10d0a-64eb-7411-8556-e2c0b1ebe292/exec-a1046484-7325-4212-8f96-36e21bd39207.png",
+  "master": "art-source/loot/mosswarden/female/moss-crown-female-v1.png",
+  "runtime": "frontend/public/art/loot/moss-crown-female-v1.webp",
+  "prompt": "art-source/loot/mosswarden/female/moss-crown-female-v1-prompt.txt",
+  "width": 480,
+  "height": 480,
+  "bytes": 79000,
+  "alphaRange": [
+    0,
+    254
+  ],
+  "transparentPercent": 50.76,
+  "sha256": "a45e532ff5d6eb16e32b52f29e05350881bb63fc7f44d3c475fd6858f1a4df9c",
+  "visualReview": "Inspected generated artwork: distinct female silhouette, matching boss material/palette, single isolated hair/crown or fully clothed outfit with no face/skin/mannequin/background/text. Entire item visible; a few ornament tips have tighter margins than requested. Collection illustration only, not a calibrated avatar rig."
+}
