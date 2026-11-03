@@ -10,7 +10,7 @@
     ><a href="/dashboard#skills">Skills</a><a href="/dashboard#boss">Mooslichtung</a>
   </nav>
   <a class="header-status" [routerLink]="store.accountMode ? '/account' : '/demo'"
-    ><span aria-hidden="true"></span> {{ store.accountMode ? 'Mein Konto' : 'Demo-Rundgang' }} ↗</a
+    ><span aria-hidden="true"></span> {{ store.accountMode ? 'Mein Konto' : store.supportsBossChallenges ? 'Lokale Fassung' : 'Demo-Rundgang' }} ↗</a
   >
 </header>
 
@@ -24,7 +24,7 @@
       <span aria-hidden="true">＋</span> Aktivität eintragen
     </button>
   </div>
-  @if (store.snapshot() && store.persistence().state !== 'saved') {
+  @if (store.snapshot() && store.persistence().state !== 'saved' && !store.persistence().quiet) {
     @if (!store.accountMode) {
       <app-progress-storage-note />
     }
@@ -59,7 +59,7 @@
   }
 
   @if (store.snapshot(); as game) {
-    @if (!store.accountMode) {
+    @if (!store.accountMode && !store.supportsBossChallenges) {
       <app-demo-guide />
     }
     <div class="dashboard-grid">
@@ -175,8 +175,8 @@
         }
       </section>
 
-      @if (store.accountMode && (horizon().boss || horizon().aura)) {
-        <app-progression-horizon class="horizon-panel" [goals]="horizon()" [plusAccess]="membership?.advancedBosses() ?? false" />
+      @if ((store.accountMode || store.supportsBossChallenges) && (horizon().boss || horizon().aura)) {
+        <app-progression-horizon class="horizon-panel" [goals]="horizon()" [plusAccess]="!store.accountMode || (membership?.advancedBosses() ?? false)" />
       }
 
       <details class="daily-checkin panel">
@@ -352,7 +352,7 @@
           </div>
         }
         <p class="section-foot">
-          @if (store.accountMode) {
+          @if (store.accountMode || store.supportsPersonalQuests) {
             Bis zu drei kostenlose Quests aus deinen Fokus-Skills. Nach dem ersten Eintrag bleibt
             die heutige Auswahl bestehen; ein neuer Quest-Fokus gilt ab morgen.
             <a routerLink="/onboarding">Fokus ändern ↗</a>
@@ -360,7 +360,7 @@
             Beispielquests für deinen Demo-Rundgang. Im eigenen Konto passen sie zu deinen Fokus-Skills.
           }
           Quest-Boni kommen zu deinen Aktivitäts-XP dazu.
-          @if (store.accountMode) { Sie wachsen mit deinem Level und stehen für den heutigen Plan fest. }
+          @if (store.accountMode || store.supportsPersonalQuests) { Sie wachsen mit deinem Level und stehen für den heutigen Plan fest. }
         </p>
       </section>
 
@@ -555,7 +555,7 @@
             : 'Spielstand nur in dieser Sitzung'
       }}</span
     ><a [routerLink]="store.accountMode ? '/account' : '/demo'"
-      >{{ store.accountMode ? 'Mein Konto' : 'Demo-Rundgang' }} ↗</a
+      >{{ store.accountMode ? 'Mein Konto' : store.supportsBossChallenges ? 'Lokale Fassung' : 'Demo-Rundgang' }} ↗</a
     >
   </footer>
   <button
@@ -574,7 +574,7 @@
     ><button class="close-button" (click)="closeActivity()" aria-label="Schließen">×</button>
   </div>
   <h2 id="activity-title">{{ store.accountMode && store.pendingActivity() ? 'Unbestätigten Eintrag prüfen' : 'Was hast du heute geschafft?' }}</h2>
-  <p>{{ store.accountMode && store.pendingActivity() ? 'Wir prüfen den ursprünglichen Eintrag. Falls er schon gespeichert wurde, werden keine weiteren XP vergeben. Ein bisher nicht gespeicherter Eintrag zählt zum heutigen Tag.' : 'Halte eine abgeschlossene reale Aktivität fest.' }}</p>
+  <p>{{ store.accountMode && store.pendingActivity() ? 'Wir prüfen den ursprünglichen Eintrag. Falls er schon gespeichert wurde, werden keine weiteren XP vergeben. Ein bisher nicht gespeicherter Eintrag zählt zum heutigen Tag.' : !store.accountMode && store.supportsBossChallenges ? 'Probiere eine Aktivität im lokalen Beispielstand aus.' : 'Halte eine abgeschlossene reale Aktivität fest.' }}</p>
   <form (ngSubmit)="submit()" novalidate>
     <label for="activity-skill">Aktivität</label>
     <select

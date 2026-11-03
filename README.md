@@ -76,6 +76,22 @@ Bestätigungs-/Resetlinks aus dieser Test-Outbox ersetzen einen echten SMTP-Vers
 In der öffentlichen Beta sind HTTPS und ein echter SMTP-Dienst erforderlich; das `dev`-Profil
 gehört niemals auf einen öffentlichen Server.
 
+## Interaktive Portfolio-Demo ohne Konto
+
+Für eine statisch hostbare Vorschau gibt es einen **separaten Demo-Build** mit dem vorhandenen
+Dashboard, Charaktereditor, Interessen-Onboarding, Skills, Tagesquests, Bosskampagne und
+Plus-Vorschau. Vorbereitete Stände auf Level 12, 50 und 130 liegen nur im Arbeitsspeicher des Tabs; es gibt weder Anmeldung noch Backend-API-Anfragen oder
+Datenbankzugriffe. Die reguläre Account-Anwendung bleibt unverändert.
+
+```sh
+cd frontend
+npm run demo:start
+```
+
+Einstieg: **http://127.0.0.1:4392/demos/herovera/**. `npm run demo:build` erzeugt
+`frontend/dist/portfolio-demo/browser/` für den Unterpfad `/demos/herovera/`.
+Auslieferungsgrenze, Hash-Routen und Testablauf: [Portfolio-Demo](docs/PORTFOLIO_DEMO.md).
+
 ## Prüfungen
 
 ```sh

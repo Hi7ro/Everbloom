@@ -85,7 +85,7 @@ export class BattlePage {
   readonly rewardOwned = computed(() => this.presentedSnapshot()?.bossProgress?.unlockedCosmetics.includes(this.reward().id) ?? false);
   readonly cleared = computed(() => this.presentedSnapshot()?.bossProgress?.clearedEncounterIds.includes(bossEncounterId(this.selectedBoss(), this.selectedDifficulty())) ?? false);
   readonly levelLocked = computed(() => this.game.level().level < this.encounter().minimumLevel);
-  readonly canChallenge = computed(() => this.game.accountMode && this.game.profileIsSaved() && !this.levelLocked()
+  readonly canChallenge = computed(() => (this.game.accountMode || this.game.supportsBossChallenges) && this.game.profileIsSaved() && !this.levelLocked()
     && !this.plusLocked() && isBossDiscovered(this.game.snapshot() ?? {}, this.selectedBoss()));
   readonly selectionDisabled = computed(() => this.game.busy() || this.battle.playing());
   readonly difficultyName = computed(() => this.difficulties.find(item => item.id === this.selectedDifficulty())!.name);

@@ -16,6 +16,8 @@ export interface GameProgressJournal {
   readonly entries: readonly ProgressEntry[];
 }
 export interface ProgressPersistenceStatus {
+  /** Deliberate ephemeral modes may explain storage in their own compact mode control. */
+  readonly quiet?: boolean;
   readonly state:
     'saved' | 'server' | 'session' | 'unavailable' | 'corrupt' | 'unsupported' | 'limit' | 'clock';
   readonly message: string | null;

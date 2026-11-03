@@ -70,6 +70,33 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
+            },
+            "portfolio-demo": {
+              "browser": "src/main.portfolio-demo.ts",
+              "baseHref": "/demos/herovera/",
+              "outputPath": "dist/portfolio-demo",
+              "assets": [
+                {
+                  "glob": "**/*",
+                  "input": "public/art",
+                  "output": "art",
+                  "ignore": [
+                    "**/.DS_Store",
+                    "characters/*-rig.json",
+                    "characters/*-original.png",
+                    "characters/*-mask.png",
+                    "characters/face-male.png",
+                    "characters/face-male-layers.png",
+                    "characters/face-female.png",
+                    "characters/face-female-layers.png"
+                  ]
+                },
+                {
+                  "glob": "favicon.ico",
+                  "input": "public",
+                  "output": "/"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"

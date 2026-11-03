@@ -62,7 +62,7 @@
           <div class="challenge-entry">
             @if (canChallenge()) {
               <button class="primary challenge-button" (click)="challenge()" [disabled]="selectionDisabled()">{{ game.busy() ? 'Begegnung wird vorbereitet …' : '⚔ Boss herausfordern' }}</button>
-              <p>{{ rewardOwned() ? 'Die Erstabschluss-Beute gehört dir bereits. Weitere Siege geben keine zusätzliche Beute.' : 'Ein Sieg schaltet die Erstabschluss-Beute in deinem Konto frei.' }}</p>
+              <p>{{ rewardOwned() ? 'Die Erstabschluss-Beute gehört dir bereits. Weitere Siege geben keine zusätzliche Beute.' : (game.accountMode ? 'Ein Sieg schaltet die Erstabschluss-Beute in deinem Konto frei.' : 'Ein Sieg schaltet die Erstabschluss-Beute in diesem lokalen Spielstand frei.') }}</p>
             } @else {
               @if (plusLocked()) {
                 <p class="lock-note">{{ membership?.loading() ? 'Dein Zugang wird geprüft …' : membership?.error() || (encounter().baseLevel > freeBossMaxLevel ? 'Dein kostenloses Bosskapitel endet beim Wolkenkönig auf Level 50. Diese Begegnung ab Level 60 gehört zu Plus.' : 'Hard, Episch und Ultimate gehören zu Plus. Normal bleibt bis Bosslevel 50 kostenlos.') }}</p>
@@ -96,7 +96,7 @@
               @else if (replay.outcome === 'victory') { <p>Bereits verdient: {{ reward().name }}. Wiederholte Siege vergeben keine weitere Beute.</p> }
               @if (result.duplicate) { <p>Bereits gespeicherte Begegnung wiederhergestellt.</p> }
             } @else { <p>Nur Vorschau: keine XP und keine Beute. Deine Sammlung bleibt unverändert.</p> }
-            @if (game.accountMode) { <a class="primary" routerLink="/dashboard">Zurück zu deinem Tag →</a> }
+            @if (game.accountMode || game.supportsBossChallenges) { <a class="primary" routerLink="/dashboard">Zurück zu deinem Tag →</a> }
             @else { <a class="primary" routerLink="/demo" [fragment]="tour?.complete() ? 'demo-complete' : 'demo-steps'">{{ tour?.complete() ? 'Demo abschließen →' : 'Weiter im Demo-Rundgang →' }}</a> }
             <button class="secondary" (click)="newBattle()" [disabled]="game.busy()">Mit aktuellen Werten vorbereiten</button>
           </section>

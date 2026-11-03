@@ -13,7 +13,10 @@
     "native:sync:demo": "npm run build && cap sync",
     "native:ios": "cap open ios",
     "native:android": "cap open android",
-    "native:doctor": "cap doctor"
+    "native:doctor": "cap doctor",
+    "demo:build": "ng build --configuration production,portfolio-demo && node scripts/prepare-portfolio-demo.mjs",
+    "demo:serve": "node scripts/serve-portfolio-demo.mjs",
+    "demo:start": "npm run demo:build && npm run demo:serve"
   },
   "private": true,
   "packageManager": "npm@10.8.2",

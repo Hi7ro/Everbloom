@@ -269,6 +269,9 @@
             @if (store.accountMode) {
               Dein Look wird in deinem Konto gespeichert. Gestalten verändert keine XP oder
               Fähigkeiten.
+            } @else if (store.persistence().state === 'session') {
+              Dein Look gilt nur für diese Sitzung. Beim Neuladen gehen Änderungen verloren.
+              Gestalten verändert keine XP oder Fähigkeiten.
             } @else {
               @if (store.persistence().state === 'saved') {
                 <span class="local-save-status"

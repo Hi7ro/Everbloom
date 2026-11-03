@@ -62,6 +62,8 @@ export class GameStore {
     this.rewardNotifications.clear();
   }
   private readonly repository = inject(GAME_REPOSITORY);
+  readonly supportsBossChallenges = this.accountMode || this.repository.localBossChallenges === true;
+  readonly supportsPersonalQuests = this.accountMode || this.repository.localPersonalQuests === true;
   private readonly journey = inject(JourneyStore);
   private readonly feedback = inject(ProgressFeedback);
   private readonly rewardNotifications = inject(RewardNotifications);
@@ -174,7 +176,7 @@ export class GameStore {
     let shouldRefresh = true;
     try {
       shouldRefresh =
-        this.accountMode ||
+        this.supportsPersonalQuests ||
         this.snapshot()!.dayKey !== this.today() ||
         this.persistence().state === 'clock';
     } catch {
@@ -304,7 +306,7 @@ export class GameStore {
   async fightBoss(bossId: BossId, difficulty: BossDifficulty, tactic: BattleTactic): Promise<BossFightResult | null> {
     let accepted: BossFightResult | null = null;
     const completed = await this.execute(async (current) => {
-      if (!this.accountMode || !this.repository.fightBoss)
+      if (!this.supportsBossChallenges || !this.repository.fightBoss)
         throw new Error('Echte Bosskämpfe benötigen ein angemeldetes Konto. Das Training bleibt ohne Beute.');
       if (!this.snapshot()?.character.createdByPlayer)
         throw new Error('Erstelle zuerst deinen Charakter.');
@@ -317,7 +319,7 @@ export class GameStore {
       try {
         result = await this.repository.fightBoss(this.pendingFight);
       } catch (error) {
-        if (current() && error instanceof ApiError && error.status >= 400 && error.status < 500 && error.status !== 408 && error.status !== 429)
+        if (current() && (this.repository.localBossChallenges === true || (error instanceof ApiError && error.status >= 400 && error.status < 500 && error.status !== 408 && error.status !== 429)))
           this.pendingFight = null;
         throw error;
       }
@@ -341,11 +343,11 @@ export class GameStore {
       if (!current()) return;
       this.snapshotState.set(result.snapshot);
       this.messageState.set(
-        result.persisted
+        result.persistenceMessage ?? (result.persisted
           ? this.accountMode
             ? 'Dein Charakter ist in deinem Konto gespeichert.'
             : 'Dein Charakter ist gespeichert und bleibt auf diesem Gerät erhalten.'
-          : 'Dein Charakter wurde übernommen. Dein Browser blockiert die Speicherung; nach Neuladen geht diese Änderung verloren.',
+          : 'Dein Charakter wurde übernommen. Dein Browser blockiert die Speicherung; nach Neuladen geht diese Änderung verloren.'),
       );
     });
   }
